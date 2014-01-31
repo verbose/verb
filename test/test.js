@@ -27,7 +27,7 @@ describe('process:', function () {
   });
 
   it('should change the name of the project to a custom value.', function () {
-    var actual = phaser.process('{%= name %}', {name: "foo"});
+    var actual = phaser.process('{%= name %}', {data: {name: "foo"}});
     var expected = 'foo';
     expect(actual).to.eql(expected);
   });
@@ -52,6 +52,23 @@ describe('process files:', function () {
     var fixture = 'test/fixtures/name.tmpl';
     var actual = phaser.processFileSync(fixture);
     var expected = 'phaser';
+    expect(actual).to.eql(expected);
+  });
+});
+
+
+describe('options data:', function () {
+  it('should extend the context with data from options.data.', function () {
+    var fixture = 'test/fixtures/author.tmpl';
+    var actual = phaser.processFileSync(fixture, {data: {author: {name: "Brian Woodward"}}});
+    var expected = 'Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should extend the context with data from options.data.', function () {
+    var fixture = 'test/fixtures/author.tmpl';
+    var actual = phaser.processFileSync(fixture, {data: 'test/fixtures/data/author.json'});
+    var expected = 'Brian Woodward';
     expect(actual).to.eql(expected);
   });
 });
