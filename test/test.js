@@ -19,6 +19,7 @@ var _ = require('lodash');
 // Local libs
 var phaser = require('../');
 
+    // file.writeDataSync('test/expected/globbed-basic.json', actual);
 
 /**
  * Vanilla Lo-Dash, for comparison.
@@ -45,6 +46,26 @@ describe('process templates using _.template:', function () {
  * Begin Phaser tests.
  */
 
+
+describe('config:', function () {
+  it('should use the project\'s package.json file as the default config object (passed as context to templates)', function () {
+    var actual = phaser('');
+    var expected = file.readJSONSync('test/expected/config-default.json');
+    expect(actual).to.eql(expected);
+  });
+
+  it('should use a custom config object (to pass as context to templates)', function () {
+    var actual = phaser('', {config: {name: 'Custom Config'}});
+    var expected = file.readJSONSync('test/expected/config-custom.json');
+    expect(actual).to.eql(expected);
+  });
+});
+
+
+/**
+ * phaser()
+ */
+
 describe('phaser:', function () {
   it('should return the value of the name field in package.json', function () {
     var actual = phaser('{%= name %}').content;
@@ -52,7 +73,13 @@ describe('phaser:', function () {
     expect(actual).to.eql(expected);
   });
 
-  it('should change the name of the project to a custom value.', function () {
+  it('should change the name of the project to a custom value from the root context.', function () {
+    var actual = phaser('{%= name %}', {name: "foo"}).content;
+    var expected = 'foo';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should change the name of the project to a custom value from the data object.', function () {
     var actual = phaser('{%= name %}', {data: {name: "foo"}}).content;
     var expected = 'foo';
     expect(actual).to.eql(expected);
@@ -72,7 +99,12 @@ describe('phaser.process:', function () {
     expect(actual).to.eql(expected);
   });
 
-  it('should change the name of the project to a custom value.', function () {
+  it('should change the name of the project to a custom value from the root context.', function () {
+    var actual = phaser.process('{%= name %}', {name: "foo"});
+    var expected = 'foo';
+    expect(actual).to.eql(expected);
+  });
+  it('should change the name of the project to a custom value from the data object.', function () {
     var actual = phaser.process('{%= name %}', {data: {name: "foo"}});
     var expected = 'foo';
     expect(actual).to.eql(expected);
@@ -86,51 +118,93 @@ describe('phaser.process:', function () {
 });
 
 
-describe('phaser.processFileSync:', function () {
+describe('phaser.read:', function () {
   it('should read the file, process templates therein, and return the author name.', function () {
     var fixture = 'test/fixtures/author.tmpl';
-    var actual = phaser.processFileSync(fixture);
+    var actual = phaser.read(fixture);
     var expected = 'Jon Schlinkert';
     expect(actual).to.eql(expected);
   });
 
   it('should read the file, process templates therein, and return the project name.', function () {
     var fixture = 'test/fixtures/name.tmpl';
-    var actual = phaser.processFileSync(fixture);
+    var actual = phaser.read(fixture);
     var expected = 'phaser';
     expect(actual).to.eql(expected);
   });
 });
 
 
-describe('options.data:', function () {
+describe('options.data (raw object):', function () {
+  it('should extend the context with data from options (root context).', function () {
+    var fixture = 'test/fixtures/author.tmpl';
+    var actual = phaser.read(fixture, {author: {name: "Brian Woodward"}});
+    var expected = 'Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+
   it('should extend the context with data from options.data.', function () {
     var fixture = 'test/fixtures/author.tmpl';
-    var actual = phaser.processFileSync(fixture, {data: {author: {name: "Brian Woodward"}}});
-    var expected = 'Brian Woodward';
-    expect(actual).to.eql(expected);
-  });
-
-  it('should extend the context with "author.name", which IS namespaced data from options.data.', function () {
-    var fixture = 'test/fixtures/author.tmpl';
-    var actual = phaser.processFileSync(fixture, {data: 'test/fixtures/data/author.json', namespace: true});
-    var expected = 'Brian Woodward';
-    expect(actual).to.eql(expected);
-  });
-
-  it('should extend the context with "name", which is NOT namespaced data from options.data.', function () {
-    var fixture = 'test/fixtures/name.tmpl';
-    var actual = phaser.processFileSync(fixture, {data: 'test/fixtures/data/author.json', namespace: false});
+    var actual = phaser.read(fixture, {data: {author: {name: "Brian Woodward"}}});
     var expected = 'Brian Woodward';
     expect(actual).to.eql(expected);
   });
 });
 
 
+describe('options.data (string):', function () {
+  it('should extend the context with the "name", which IS namespaced, and is from a file that is read-in', function () {
+    var fixture = 'test/fixtures/author.tmpl';
+    var actual = phaser.read(fixture, {data: 'test/fixtures/data/author.json', namespace: true});
+    var expected = 'Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should extend the context with the "name", which is NOT namespaced, and is from a file that is read-in', function () {
+    var fixture = 'test/fixtures/name.tmpl';
+    var actual = phaser.read(fixture, {data: 'test/fixtures/data/author.json', namespace: false});
+    var expected = 'Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+});
+
+
+/**
+ * Globbing
+ */
+
+describe('options.data (glob):', function () {
+  it('should extend the context with the "name", which is NOT namespaced, and is from a file that is globbed.', function () {
+    var fixture = 'test/fixtures/name.tmpl';
+    var actual = phaser.read(fixture, {data: 'test/fixtures/**/author.json', namespace: false});
+    var expected = 'Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should extend the context with data from globbed files.', function () {
+    var fixture = file.readFileSync('test/fixtures/name.tmpl');
+    var actual = phaser(fixture, {data: 'test/fixtures/data/*.json'});
+    var expected = file.readJSONSync('test/expected/globbed-basic.json');
+    expect(actual).to.eql(expected);
+  });
+
+  it('should extend the context with data from an array of globbed files.', function () {
+    var fixture = file.readFileSync('test/fixtures/name.tmpl');
+    var actual = phaser(fixture, {data: ['test/fixtures/**/foo.json', 'test/fixtures/data/{a,b}*.json']});
+    var expected = file.readJSONSync('test/expected/globbed-array.json');
+    expect(actual).to.eql(expected);
+  });
+});
+
+
+/**
+ * Front matter
+ */
+
 describe('front-matter:', function () {
   it('should extend the context with data from options.data.', function () {
     var fixture = 'test/fixtures/matter.md';
-    var actual = phaser.processFileSync(fixture);
+    var actual = phaser.read(fixture);
     var expected = 'Matter';
     expect(actual).to.eql(expected);
   });
