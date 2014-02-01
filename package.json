@@ -22,13 +22,14 @@
   },
   "main": "index.js",
   "dependencies": {
-    "lodash": "~2.4.1",
-    "template": "~0.1.3",
-    "fs-utils": "~0.1.11",
-    "findup-sync": "~0.1.2",
     "gray-matter": "~0.2.3",
+    "findup-sync": "~0.1.2",
     "frep": "~0.1.3",
-    "marked-toc": "~0.1.5"
+    "globule": "~0.2.0",
+    "lodash": "~2.4.1",
+    "marked-toc": "~0.1.5",
+    "template": "~0.1.3",
+    "fs-utils": "~0.2.0"
   },
   "devDependencies": {
     "chai": "~1.9.0",

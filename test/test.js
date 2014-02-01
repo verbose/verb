@@ -19,7 +19,53 @@ var _ = require('lodash');
 // Local libs
 var phaser = require('../');
 
-describe('process:', function () {
+
+/**
+ * Vanilla Lo-Dash, for comparison.
+ */
+
+describe('process templates using _.template:', function () {
+  it('should process a template with default delimiters.', function () {
+    var compiled = _.template('hello <%= name %>');
+    compiled({ 'name': 'fred' });
+    var actual = compiled({ 'name': 'fred' });
+    expect(actual).to.eql('hello fred');
+  });
+
+  it('should process a template with es6 delimiters.', function () {
+    var compiled = _.template('hello ${ name }');
+    compiled({ 'name': 'fred' });
+    var actual = compiled({ 'name': 'fred' });
+    expect(actual).to.eql('hello fred');
+  });
+});
+
+
+/**
+ * Begin Phaser tests.
+ */
+
+describe('phaser:', function () {
+  it('should return the value of the name field in package.json', function () {
+    var actual = phaser('{%= name %}').content;
+    var expected = 'phaser';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should change the name of the project to a custom value.', function () {
+    var actual = phaser('{%= name %}', {data: {name: "foo"}}).content;
+    var expected = 'foo';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should return the author name.', function () {
+    var actual = phaser('{%= author.name %}').content;
+    var expected = 'Jon Schlinkert';
+    expect(actual).to.eql(expected);
+  });
+});
+
+describe('phaser.process:', function () {
   it('should return the value of the name field in package.json', function () {
     var actual = phaser.process('{%= name %}');
     var expected = 'phaser';
@@ -40,7 +86,7 @@ describe('process:', function () {
 });
 
 
-describe('process files:', function () {
+describe('phaser.processFileSync:', function () {
   it('should read the file, process templates therein, and return the author name.', function () {
     var fixture = 'test/fixtures/author.tmpl';
     var actual = phaser.processFileSync(fixture);
@@ -57,7 +103,7 @@ describe('process files:', function () {
 });
 
 
-describe('options data:', function () {
+describe('options.data:', function () {
   it('should extend the context with data from options.data.', function () {
     var fixture = 'test/fixtures/author.tmpl';
     var actual = phaser.processFileSync(fixture, {data: {author: {name: "Brian Woodward"}}});
@@ -65,10 +111,27 @@ describe('options data:', function () {
     expect(actual).to.eql(expected);
   });
 
-  it('should extend the context with data from options.data.', function () {
+  it('should extend the context with "author.name", which IS namespaced data from options.data.', function () {
     var fixture = 'test/fixtures/author.tmpl';
-    var actual = phaser.processFileSync(fixture, {data: 'test/fixtures/data/author.json'});
+    var actual = phaser.processFileSync(fixture, {data: 'test/fixtures/data/author.json', namespace: true});
     var expected = 'Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should extend the context with "name", which is NOT namespaced data from options.data.', function () {
+    var fixture = 'test/fixtures/name.tmpl';
+    var actual = phaser.processFileSync(fixture, {data: 'test/fixtures/data/author.json', namespace: false});
+    var expected = 'Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+});
+
+
+describe('front-matter:', function () {
+  it('should extend the context with data from options.data.', function () {
+    var fixture = 'test/fixtures/matter.md';
+    var actual = phaser.processFileSync(fixture);
+    var expected = 'Matter';
     expect(actual).to.eql(expected);
   });
 });
@@ -161,25 +224,5 @@ describe('options data:', function () {
 //     var actual = phaser('{%= _.pluck(authors, "name") %}');
 //     var expected = 'Jon Schlinkert,Brian Woodward';
 //     expect(actual).to.eql(expected);
-//   });
-// });
-
-
-
-// describe('process templates using _.template:', function () {
-//   it('should process a template with default delimiters.', function () {
-//     var compiled = _.template('hello <%= name %>');
-//     compiled({ 'name': 'fred' });
-
-//     var actual = compiled({ 'name': 'fred' });
-//     expect(actual).to.eql('hello fred');
-//   });
-
-//   it('should process a template with es6 delimiters.', function () {
-//     var compiled = _.template('hello ${ name }');
-//     compiled({ 'name': 'fred' });
-
-//     var actual = compiled({ 'name': 'fred' });
-//     expect(actual).to.eql('hello fred');
 //   });
 // });
