@@ -1,0 +1,8 @@
+{
+  "context": {
+    "verbose": false,
+    "toc": ""
+  },
+  "content": "jonschlinkert",
+  "original": "---yaml\nuser: jonschlinkert\n---\n{%= user %}"
+}

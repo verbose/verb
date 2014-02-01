@@ -1,0 +1,8 @@
+{
+  "context": {
+    "verbose": false,
+    "toc": ""
+  },
+  "content": "jonschlinkert",
+  "original": "---\nuser: jonschlinkert\n---\n{%= user %}"
+}

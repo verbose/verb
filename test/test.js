@@ -19,7 +19,6 @@ var _ = require('lodash');
 // Local libs
 var phaser = require('../');
 
-    // file.writeDataSync('test/expected/globbed-basic.json', actual);
 
 /**
  * Vanilla Lo-Dash, for comparison.
@@ -92,6 +91,11 @@ describe('phaser:', function () {
   });
 });
 
+
+/**
+ * phaser.process()
+ */
+
 describe('phaser.process:', function () {
   it('should return the value of the name field in package.json', function () {
     var actual = phaser.process('{%= name %}');
@@ -118,6 +122,10 @@ describe('phaser.process:', function () {
 });
 
 
+/**
+ * phaser.read()
+ */
+
 describe('phaser.read:', function () {
   it('should read the file, process templates therein, and return the author name.', function () {
     var fixture = 'test/fixtures/author.tmpl';
@@ -134,6 +142,10 @@ describe('phaser.read:', function () {
   });
 });
 
+
+/**
+ * options.data
+ */
 
 describe('options.data (raw object):', function () {
   it('should extend the context with data from options (root context).', function () {
@@ -170,7 +182,7 @@ describe('options.data (string):', function () {
 
 
 /**
- * Globbing
+ * options.data (minimatch)
  */
 
 describe('options.data (glob):', function () {
@@ -198,105 +210,183 @@ describe('options.data (glob):', function () {
 
 
 /**
- * Front matter
+ * YAML Front matter
  */
 
-describe('front-matter:', function () {
-  it('should extend the context with data from options.data.', function () {
+describe('YAML front-matter:', function () {
+  it('should extend the context with data from YAML front matter.', function () {
     var fixture = 'test/fixtures/matter.md';
     var actual = phaser.read(fixture);
     var expected = 'Matter';
     expect(actual).to.eql(expected);
   });
+
 });
 
 
-// describe('meta.authors:', function () {
-//   it('should return the name of the first author from the AUTHORS file.', function () {
-//     var actual = phaser('{%= authors[0].name %}');
-//     var expected = 'Jon Schlinkert';
-//     expect(actual).to.eql(expected);
-//   });
-// });
+/**
+ * Coffee Front Matter
+ */
+
+describe('Coffee front-matter:', function () {
+  it('should extend the context with data from Coffee Front matter.', function () {
+    var fixture = 'test/fixtures/matter-coffee.md';
+    var actual = phaser.read(fixture);
+    var expected = 'Coffee Front Matter';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should parse coffee front matter.', function (done) {
+    var fixture = file.readFileSync('test/fixtures/coffee.md');
+    var actual = phaser(fixture, {lang: 'coffee'}).content;
+    expect(actual).to.deep.equal('Coffee Front Matter');
+    done();
+  });
+
+  it('should evaluate functions in coffee front matter.', function (done) {
+    var fixture = file.readFileSync('test/fixtures/coffee-fn.md');
+    var actual = phaser(fixture);
+    expect(actual.content).to.equal('jonschlinkert\ntreknilhcsnoj');
+    done();
+  });
+});
 
 
-// describe('meta.contributors:', function () {
-//   it('should return the name of the first contributor listed.', function () {
-//     var actual = phaser('{%= contributors[0].name %}');
-//     var expected = 'Jon Schlinkert';
-//     expect(actual).to.eql(expected);
-//   });
-// });
+/**
+ * Front matter: language detection
+ */
+
+describe('autodetect language', function () {
+  it('should detect JSON as the language defined.', function (done) {
+    var fixture = file.readFileSync('./test/fixtures/autodetect-json.md');
+    var actual = phaser(fixture, {matter: {delims: [';;;', ';;;']}});
+    expect(actual.content).to.deep.equal('JSON Front Matter');
+    done();
+  });
+
+  it('should detect CoffeeScript as the language.', function (done) {
+    var fixture = file.readFileSync('./test/fixtures/autodetect.md');
+    var actual = phaser(fixture, {config: false});
+    expect(actual.content).to.deep.equal('jonschlinkert');
+    done();
+  });
+
+  it('should detect YAML as the language, although no language is defined after the first fence.', function (done) {
+    var fixture = file.readFileSync('./test/fixtures/autodetect-no-lang.md');
+    var actual = phaser(fixture, {config: false});
+    var expected = file.readJSONSync('test/expected/autodetect-no-lang.json');
+    expect(actual).to.deep.equal(expected);
+    done();
+  });
+
+  it('should detect YAML as the language.', function (done) {
+    var fixture = file.readFileSync('./test/fixtures/autodetect-yaml.md');
+    var actual = phaser(fixture, {config: false});
+    var expected = file.readJSONSync('test/expected/autodetect-yaml.json');
+    expect(actual).to.deep.equal(expected);
+    done();
+  });
+});
 
 
-// describe('_.contributors:', function () {
-//   it('should return the name of the contributors using a mixin.', function () {
-//     var actual = phaser('{%= _.contributors() %}');
-//     var expected = '* Jon Schlinkert\n* Brian Woodward';
-//     expect(actual).to.eql(expected);
-//   });
-// });
+/**
+ * Mixins: date
+ */
+
+describe('mixins.date:', function () {
+  it('should return the current year.', function () {
+    var actual = phaser('{%= _.date("YYYY") %}');
+    expect(actual.content).to.eql('2014');
+  });
+
+  it('should return the full date.', function () {
+    var actual = phaser('{%= _.date("full") %}');
+    expect(actual.content.indexOf(2014) !== -1).to.eql(true);
+  });
+});
 
 
-// describe('meta.date:', function () {
-//   it('should return the current year.', function () {
-//     var actual = phaser('{%= _.date("YYYY") %}');
-//     var expected = '2014';
-//     expect(actual).to.eql(expected);
-//   });
 
-//   it('should return the full date.', function () {
-//     var actual = phaser('{%= _.date("full") %}');
-//     expect(actual.indexOf(2014) !== -1).to.eql(true);
-//   });
-// });
+/**
+ * Mixins:author
+ */
 
-
-// describe('meta.homepage:', function () {
-//   it('should return a normalized version of the homepage URL listed in package.json.', function () {
-//     var actual = phaser('{%= homepage %}');
-//     var expected = 'https://github.com/jonschlinkert/phaser';
-//     expect(actual).to.eql(expected);
-//   });
-
-//   it('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
-//     var actual = phaser('{%= homepage %}', {metadata: {homepage: 'git://github.com/foo/bar'}});
-//     var expected = 'https://github.com/foo/bar';
-//     expect(actual).to.eql(expected);
-//   });
-
-//   it('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
-//     var actual = phaser('{%= homepage %}', {metadata: {homepage: 'git://github.com/baz/quux/'}});
-//     var expected = 'https://github.com/baz/quux/';
-//     expect(actual).to.eql(expected);
-//   });
-
-//   it('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
-//     var actual = phaser('{%= _.homepage() %}');
-//     var expected = 'https://github.com/jonschlinkert/phaser';
-//     expect(actual).to.eql(expected);
-//   });
-// });
+describe('meta.authors:', function () {
+  it.skip('should return the name of the first author from the AUTHORS file.', function () {
+    var actual = phaser('{%= authors[0].name %}');
+    var expected = 'Jon Schlinkert';
+    expect(actual).to.eql(expected);
+  });
+});
 
 
-// describe('process template mixins:', function () {
 
-//   it('should return the authors from the config or the "AUTHORS" file.', function () {
-//     var tmpl = '{% _.each(authors, function(author) { %} + [{%= author.name %}]({%= author.url %})\n {% }); %}';
-//     var actual = phaser(tmpl);
-//     var expected = '+ [Jon Schlinkert](https://github.com/jonschlinkert)\n  + [Brian Woodward](https://github.com/doowb)\n ';
-//     expect(actual).to.eql(expected);
-//   });
+/**
+ * Mixins: contributors
+ */
 
-//   it('should return the names of the authors from config or the "AUTHORS" file.', function () {
-//     var actual = phaser('{%= _.authors("name") %}');
-//     var expected = 'Jon Schlinkert,Brian Woodward';
-//     expect(actual).to.eql(expected);
-//   });
+describe('meta.contributors:', function () {
+  it.skip('should return the name of the first contributor listed.', function () {
+    var actual = phaser('{%= contributors[0].name %}');
+    var expected = 'Jon Schlinkert';
+    expect(actual).to.eql(expected);
+  });
+});
 
-//   it('should pluck the names of the authors from the config or the "AUTHORS" file.', function () {
-//     var actual = phaser('{%= _.pluck(authors, "name") %}');
-//     var expected = 'Jon Schlinkert,Brian Woodward';
-//     expect(actual).to.eql(expected);
-//   });
-// });
+
+describe('_.contributors:', function () {
+  it.skip('should return the name of the contributors using a mixin.', function () {
+    var actual = phaser('{%= _.contributors() %}');
+    var expected = '* Jon Schlinkert\n* Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+});
+
+
+describe('meta.homepage:', function () {
+  it.skip('should return a normalized version of the homepage URL listed in package.json.', function () {
+    var actual = phaser('{%= homepage %}');
+    var expected = 'https://github.com/jonschlinkert/phaser';
+    expect(actual).to.eql(expected);
+  });
+
+  it.skip('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
+    var actual = phaser('{%= homepage %}', {metadata: {homepage: 'git://github.com/foo/bar'}});
+    var expected = 'https://github.com/foo/bar';
+    expect(actual).to.eql(expected);
+  });
+
+  it.skip('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
+    var actual = phaser('{%= homepage %}', {metadata: {homepage: 'git://github.com/baz/quux/'}});
+    var expected = 'https://github.com/baz/quux/';
+    expect(actual).to.eql(expected);
+  });
+
+  it.skip('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
+    var actual = phaser('{%= _.homepage() %}');
+    var expected = 'https://github.com/jonschlinkert/phaser';
+    expect(actual).to.eql(expected);
+  });
+});
+
+
+describe('process template mixins:', function () {
+  it.skip('should return the authors from the config or the "AUTHORS" file.', function () {
+    var tmpl = '{% _.each(authors, function(author) { %} + [{%= author.name %}]({%= author.url %})\n {% }); %}';
+    var actual = phaser(tmpl);
+    var expected = '+ [Jon Schlinkert](https://github.com/jonschlinkert)\n  + [Brian Woodward](https://github.com/doowb)\n ';
+    expect(actual).to.eql(expected);
+  });
+
+  it.skip('should return the names of the authors from config or the "AUTHORS" file.', function () {
+    var actual = phaser('{%= _.authors("name") %}');
+    var expected = 'Jon Schlinkert,Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+
+  it.skip('should pluck the names of the authors from the config or the "AUTHORS" file.', function () {
+    var actual = phaser('{%= _.pluck(authors, "name") %}');
+    var expected = 'Jon Schlinkert,Brian Woodward';
+    expect(actual).to.eql(expected);
+  });
+});
