@@ -2,32 +2,58 @@
 
 > Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.
 
+Please [report any bugs or feature requests](https://github.com/jonschlinkert/phaser/issues/new), thanks!
+
 ## Quickstart
 ```bash
 npm install phaser --save-dev
 ```
 
+## Examples
+Example document:
+
+```js
+# {%= name %}
+
+> {%= description %}
+
+{%= toc %}
+
+## Overview
+{%= _.doc("overview.md") %}
+
 ## Options
-# Options
+{%= _.doc("options.md") %}
+
+## Examples
+{%= _.doc("examples.md") %}
+
+## License and Copyright
+{%= copyright %}
+{%= license %}
+```
+
+## Options
+## Options
 
 * defaults
 * options
 
-### metadata
+#### metadata
 Type: `object|array|string`
 
 Default: `undefined`
 
 * `string`: When defined as a string,
 
-### variable
+#### variable
 Type: `string`
 
 Default: `undefined`
 
 Lo-Dash opts...
 
-### namespace
+#### namespace
 Type: `boolean|string`
 
 Default: `undefined` (options: `true`|`"only"`)
@@ -36,12 +62,12 @@ When `namespace` defined, an object is created for each data file, where the top
 
 
 ## Config
-# Config
+## Config
 
 * package.json | alt config object
 * metadata
 
-### metadata
+#### metadata
 
 Unless overridden in the options, Phaser will attempt to process templates using only the data from your project's [package.json](./package.json). Thus, using only the default settings our context might look something like this:
 
@@ -68,11 +94,11 @@ Unless overridden in the options, Phaser will attempt to process templates using
 For the majority of projects, this will be enough. _But Phaser gives you as much flexibility as you need to extend the context._
 
 
-## Context
+### Context
 
 Your project's [package.json](./package.json) will be used as the default config object, which is passed as context to templates. If no other config object is passed to the `config` option, and no metadata is passed in through other means, then this is the context that will be used to process your templates.
 
-### Overriding default config
+#### Overriding default config
 As mentioned in the previous section, the default config object, `package.json`, can be explicitly overridden by passing an object to `options.config`. Example:
 
 ```js
@@ -83,7 +109,7 @@ phaser(str, {config: {name: 'foo'}});
 phaser(str, {config: 'path/to/*.json'});
 ```
 
-### Extending the Context
+#### Extending the Context
 From least specific to most specific, this is how the context is extended. In other words, the **last wins**:
 
 * `mixins|functions`: [Lo-Dash mixins]() and custom functions may be used to build up the context when other more conventional means aren't available. For example, an `authors()` mixin/function might be used to read the [AUTHORS](./AUTHORS) file, and then extend the context with the names of the authors therein.
@@ -102,14 +128,14 @@ For example, let's say we need to extend the context with some data that isn't i
 * Front matter in the templates themselves
 * JSON / YAML data files, e.g. `foo.json`, `foo.yml` etc.
 
-### options.config vs options.data
+#### options.config vs options.data
 Although the options are similar, they serve a different purpose:
 
 * `options.config`: overrides the default config object, so **no data** from `package.json` will be used as the context.
 * `options.data`: extend the config object, so **both** data from `package.json` and from `options.data` will be used to extend the context.
 
 
-#### Raw
+##### Raw
 
 Example:
 
@@ -122,7 +148,7 @@ options: {
 }
 ```
 
-#### Front Matter
+##### Front Matter
 
 Example:
 
@@ -134,7 +160,7 @@ Visit [some link](https://github.com/{%= username %}/foo) to learn more!
 
 ```
 
-#### Data files
+##### Data files
 
 `foo.json, bar/baz/*.json`
 
@@ -147,7 +173,7 @@ Visit [some link](https://github.com/{%= username %}/foo) to learn more!
 }
 ```
 
-##### namespacing
+###### namespacing
 Given we have a file named `author.json` with the following contents:
 
 **namespace: false**
@@ -172,3 +198,49 @@ The following object would be merged into the context:
   }
 }
 ```
+
+
+## Defaults
+```js
+{
+  // Logging
+  verbose: true,
+  debug: 'tmp/ctx.json',
+
+  // Metadata
+  namespace: '',
+
+  // Extensions
+  mixins: 'test/mixins/*.js',
+  contributing: true,
+
+  // Glob defaults
+  matchBase: true,
+
+  // Processing
+  delimiters: [''],
+  replacements: [],
+}
+```
+
+## Contributing
+Find a bug? Have a feature request? Please [create an Issue](https://github.com/jonschlinkert/phaser/issues).
+
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with [grunt-readme](https://github.com/assemble/grunt-readme).
+
+Pull requests are also encouraged, and if you find this project useful please consider "starring" it to show your support! Thanks!
+
+## Authors
+
+**Jon Schlinkert**
+
++ [github/jonschlinkert](https://github.com/jonschlinkert)
++ [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
+
+## License
+Copyright (c) 2014 Jon Schlinkert, contributors.
+Released under the MIT license
+
+***
+
+_This file was generated by [grunt-readme](https://github.com/assemble/grunt-readme) on Saturday, February 01, 2014._

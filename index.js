@@ -32,7 +32,7 @@ var phaser = function(src, options) {
   var config    = lib.config.init(opts.config);
   var data      = lib.data.init(opts);
   var functions = lib.functions.init(opts);
-  var mixins    = lib.mixins.init(opts);
+  var mixins    = lib.mixins.init(config, opts);
 
   // Extract and parse front matter
   var page      = matter(src, opts);
