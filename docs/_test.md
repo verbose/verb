@@ -5,7 +5,7 @@ name: Test
 
 > {%= _.reverse(name) %}
 
-{%= toc %}
+{%= toc() %}
 
 ## Quickstart
 This is the quickstart section.

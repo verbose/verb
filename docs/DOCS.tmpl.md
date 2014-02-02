@@ -1,7 +1,7 @@
 # Documentation
 
 **Table of Contents**
-{%= toc %}
+{%= toc() %}
 
 ## Overview
 In general, the conventions used by this task are as follows:

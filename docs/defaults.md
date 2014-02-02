@@ -1,4 +1,5 @@
 ```js
+# Foo
 {
   // Logging
   verbose: true,

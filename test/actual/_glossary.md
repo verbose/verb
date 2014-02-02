@@ -1,14 +1,14 @@
-# Example
+# [Example](../../docs/docs-example.md)
 
 
-# Examples
+# [Examples](../../docs/docs-examples.md)
 
 * [Template Examples](../../docs/docs-examples.md/#template-examples)
   * [Name](../../docs/docs-examples.md/#name)
   * [Version](../../docs/docs-examples.md/#version)
   * [Description](../../docs/docs-examples.md/#description)
   * [Homepage](../../docs/docs-examples.md/#homepage)
-  * [[AUTHORS](NPM https://npmjs.org/doc/json.html)](../../docs/docs-examples.md/#authorsnpm-https-npmjs-org-doc-json-html)
+  * [AUTHORS](../../docs/docs-examples.md/#authors)
   * [Time and date](../../docs/docs-examples.md/#time-and-date)
   * [Banner](../../docs/docs-examples.md/#banner)
   * [Changelog / Release History](../../docs/docs-examples.md/#changelog-release-history)
@@ -16,20 +16,22 @@
   * [Contributors](../../docs/docs-examples.md/#contributors)
   * [Metadata](../../docs/docs-examples.md/#metadata)
 
-# Features
+# [Features](../../docs/docs-features.md)
 
+* [templates](../../docs/docs-features.md/#templates)
+* [Readme template](../../docs/docs-features.md/#readme-template)
 * [YAML Front Matter](../../docs/docs-features.md/#yaml-front-matter)
 * [Code Comments](../../docs/docs-features.md/#code-comments)
 * [Escaping](../../docs/docs-features.md/#escaping)
   * [Escaping hashes](../../docs/docs-features.md/#escaping-hashes)
   * [Escaping Lo-Dash templates](../../docs/docs-features.md/#escaping-lo-dash-templates)
 
-# Front-Matter
+# [Front-Matter](../../docs/docs-front-matter.md)
 
 * [Front Matter](../../docs/docs-front-matter.md/#front-matter)
   * [Examples](../../docs/docs-front-matter.md/#examples)
 
-# Mixins
+# [Mixins](../../docs/docs-mixins.md)
 
 * ["include" mixins](../../docs/docs-mixins.md/#include-mixins)
   * [_.include()](../../docs/docs-mixins.md/#include)
@@ -44,7 +46,7 @@
   * [_.username()](../../docs/docs-mixins.md/#username)
   * [_.homepage()](../../docs/docs-mixins.md/#homepage)
 
-# Options
+# [Options](../../docs/docs-options.md)
 
 * [Overview of available options](../../docs/docs-options.md/#overview-of-available-options)
 * [readme](../../docs/docs-options.md/#readme)

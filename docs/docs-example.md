@@ -1,22 +1,22 @@
 Example document:
 
 ```js
-`# [%= name %]
+# [%= name %]
 
 > [%= description %]
 
 [%= toc %]
 
-# Overview
+## Overview
 [%= _.doc("overview.md") %]
 
-# Options
+## Options
 [%= _.doc("options.md") %]
 
-# Examples
+## Examples
 [%= _.doc("examples.md") %]
 
-# License and Copyright
+## License and Copyright
 [%= copyright %]
 [%= license %]
 ```

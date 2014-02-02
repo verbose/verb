@@ -1,3 +1,13 @@
+## templates
+
+## Readme template
+
+* `docs/`
+* `node_modules/grunt-readme/templates/`
+* `options.readme`
+* `options.resolve.readme`
+
+
 ## YAML Front Matter
 Add YAML front matter to documents to extend the metadata that is supplied to your project's templates.
 

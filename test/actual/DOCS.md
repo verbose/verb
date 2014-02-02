@@ -1,4 +1,4 @@
-# Documentation
+## Documentation
 
 **Table of Contents**
 * [Overview](#overview)
@@ -12,17 +12,23 @@
 * [License](#license)
 
 
-## Overview
+### Overview
 In general, the conventions used by this task are as follows:
 
 **Templates**
 * Files with extension `.tmpl.md` are generally templates that will be compiled one-to-one into documents
 * Files with extension `.md` are generally intended to be used as includes.
-* `{%= _.doc("foo") %}` is used to included files from your project's `./docs` directory
-* `{%= _.include("foo") %}` is used to include boilerplate files from phaser
+* `[%= _.doc("foo") %]` is used to included files from your project's `./docs` directory
+* `[%= _.include("foo") %]` is used to include boilerplate files from phaser
 
-## Advanced configuration
-To change the plugin's defaults, add a section to your project's Gruntfile named `phaser` to the data object passed into `grunt.initConfig()`:
+### Advanced configuration
+To change the plugin's defaults, add a section to your project's Gruntfile named `function (name, options) {
+    var opts = _.extend({}, options);
+    if(opts.blacklist === false) {blacklist = [];}
+    var exclusions = _.union(blacklist, utils.arrayify(options.omit));
+    var re = new RegExp('^(?:' + exclusions.join('|') + ')[-_]?', 'g');
+    return name.replace(re, '');
+  }` to the data object passed into `grunt.initConfig()`:
 
 ```js
 grunt.initConfig({
@@ -42,7 +48,17 @@ grunt.loadNpmTasks('phaser');
 grunt.registerTask('default', ['readme']);
 ```
 
-## Features
+### Features
+#### templates
+
+### Readme template
+
+* `docs/`
+* `node_modules/grunt-readme/templates/`
+* `options.readme`
+* `options.resolve.readme`
+
+
 ### YAML Front Matter
 Add YAML front matter to documents to extend the metadata that is supplied to your project's templates.
 
@@ -60,24 +76,24 @@ This is probably most useful when:
 Code comments may be used in markdown templates, and they will be stripped from the rendered README as long as they adhere to the following syntax:
 
 ```handlebars
-{{!-- foo --}}
-{{! foo }}
-{{!foo}}
+[[!-- foo --]]
+[[! foo ]]
+[[!foo]]
 ```
 
 ### Escaping
 
-#### Escaping hashes
+##### Escaping hashes
 This task automatically adjusts heading levels in included templates. For example, `#` is adjusted to `##`, so that heading levels "line up" properly after the README is built.
 
 This can cause problems if you're using hashes for a reason other than headings, such as CSS Id's in code comments. So to prevent phaser from converting `#id {}` to `##id {}`, just add a  single backtick before the hash: <code>`#id {}</code>.
 
-#### Escaping Lo-Dash templates
-To prevent Lo-Dash from attempting to evaluat templates that shouldn't be (_as with code examples_), just use square brackets instead of curly braces in any templates that have similar patterns to these: `{%= .. %}`, `{%- .. %}`, and `{% .. %}`. The square brackets will be replaced with curly braces in the rendered output.
+##### Escaping Lo-Dash templates
+To prevent Lo-Dash from attempting to evaluat templates that shouldn't be (_as with code examples_), just use square brackets instead of curly braces in any templates that have similar patterns to these: `[%= .. %]`, `[%- .. %]`, and `[% .. %]`. The square brackets will be replaced with curly braces in the rendered output.
 
 
-## Options
-### Overview of available options
+### Options
+#### Overview of available options
 
 [Also see examples →](./DOCS.md#examples)
 ```js
@@ -166,8 +182,8 @@ readme: {
 
 Since context is the value of "this", the `metadata` path is not required in templates, only property names:
 
-* `{%= name %}` (e.g. not `{%= metadata.name %}`) => `Foo`
-* `{%= description %}` => `This is foo.`
+* `[%= name %]` (e.g. not `[%= metadata.name %]`) => `Foo`
+* `[%= description %]` => `This is foo.`
 
 
 
@@ -175,7 +191,7 @@ Since context is the value of "this", the `metadata` path is not required in tem
 Type: `String`
 Default: `./docs/`
 
-Override the default directory for files included using `{%= _.doc('foo.md') %}`. This defaults to the `./docs` directory in the root of your project.
+Override the default directory for files included using `[%= _.doc('foo.md') %]`. This defaults to the `./docs` directory in the root of your project.
 
 ```js
 readme: {
@@ -186,11 +202,11 @@ readme: {
 ```
 
 
-#### templates
+##### templates
 Type: `String`
 Default: `./node_modules/phaser/tasks/templates/` (relative to your project)
 
-Override the default `cwd` for files included by using `{%= _.include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
+Override the default `cwd` for files included by using `[%= _.include('foo.md') %]`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
 
 ```js
 readme: {
@@ -205,7 +221,7 @@ readme: {
 Type: `Array`
 Default: `grunt|helper|mixin`
 
-Any string defined in the remove will be removed from the content passed in using the `{%= _.shortname() %}` template. Example:
+Any string defined in the remove will be removed from the content passed in using the `[%= _.shortname() %]` template. Example:
 
 ```js
 readme: {
@@ -226,13 +242,13 @@ Given a `package.json` with the following property:
 when referenced in a template like this:
 
 ```js
-## {%= _.titleize(_.shortname(name)) %}
+# [%= _.titleize(_.shortname(name)) %]
 ```
 
 will renders to:
 
 ```
-## Module
+# Module
 ```
 
 ### contributing
@@ -260,17 +276,17 @@ readme: {
 
 or as a second parameter in the `include` or `doc` mixins.
 
-* `{%= _.include("docs-*.md", "***") %}` (more below...)
-* `{%= _.doc("*.md", "\n***\n") %}` (more below...)
+* `[%= _.include("docs-*.md", "***") %]` (more below...)
+* `[%= _.doc("*.md", "\n***\n") %]` (more below...)
 
 [minimatch]: https://github.com/isaacs/minimatch
 
 
-## Mixins
+### Mixins
 Mixins use the following formats:
 
 * `_.mixin()`: when used in JavaScript
-* `{%= _.mixin() %}`: when used in templates
+* `[%= _.mixin() %]`: when used in templates
 
 
 ### "include" mixins
@@ -279,23 +295,23 @@ Mixins use the following formats:
 
 Here is a summary of what they do (settings for the `include` and `doc` mixins can be customized in the task options):
 
-* `{%= _.include("file.md") %}`: include a file (or files using [minimatch][minimatch] patterns) from the `./templates/` directory of _the phaser task_.
-* `{%= _.doc("file.md") %}`:  include a file (or files using [minimatch][minimatch] patterns) from the `./docs/` directory of _your project_.
-* `{%= _.resolve("file.md") %}`: include a **specific file** from *node_modules*`.
-* `{%= _.contrib("file.md") %}`: include a file (or files using [minimatch][minimatch] patterns) from the `./contrib/` directory of _the phaser task_. This mixin is for the [Assemble](http://assemble.io).
+* `[%= _.include("file.md") %]`: include a file (or files using [minimatch][minimatch] patterns) from the `./templates/` directory of _the phaser task_.
+* `[%= _.doc("file.md") %]`:  include a file (or files using [minimatch][minimatch] patterns) from the `./docs/` directory of _your project_.
+* `[%= _.resolve("file.md") %]`: include a **specific file** from *node_modules*`.
+* `[%= _.contrib("file.md") %]`: include a file (or files using [minimatch][minimatch] patterns) from the `./contrib/` directory of _the phaser task_. This mixin is for the [Assemble](http://assemble.io).
 
 
 #### _.include()
 Use the `include` mixin in templates to pull in content from other files:
 
 ```js
-{%= _.include("examples.md") %}
+[%= _.include("examples.md") %]
 ```
 
 [Minimatch][minimatch] patterns may also be used:
 
 ```js
-{%= _.include("docs-*.md") %}
+[%= _.include("docs-*.md") %]
 ```
 
 Unless overridden in the `templates` option, the `include` mixin will use the `./node_modules/phaser/tasks/templates/` directory (from the root of your project) as the `cwd` for templates.
@@ -309,7 +325,7 @@ Same as the `include` mixin but is hard-coded to use the `docs/` folder of your 
 Use the `resolve` mixin in templates to include content _from named NPM modules listed in `devDependencies`_:
 
 ```js
-{%= _.resolve("my-boilerplate-readme") %}
+[%= _.resolve("my-boilerplate-readme") %]
 ```
 
 where `my-boilerplate-readme` is the name of a `devDependency` currently installed in `node_modules`.
@@ -338,20 +354,20 @@ In the `package.json` of the project that will store your templates, you might d
 Get the value of any property in `package.json`. Example:
 
 ```js
-{%= _.meta('name') %}
-{%= _.meta('version') %}
-{%= _.meta('contributors') %}
-{%= _.meta('keywords') %}
+[%= _.meta('name') %]
+[%= _.meta('version') %]
+[%= _.meta('contributors') %]
+[%= _.meta('keywords') %]
 ```
-A second paramter can be passed in to set the indentation on returned JSON: `{%= _.meta('contributors', 4) %}`. _This only works for stringified objects_.
+A second paramter can be passed in to set the indentation on returned JSON: `[%= _.meta('contributors', 4) %]`. _This only works for stringified objects_.
 
-Also, if left undefined (`{%= _.meta() %}`) the mixin will return the entire metadata object (by default, this is the entire contents of `package.json`):
+Also, if left undefined (`[%= _.meta() %]`) the mixin will return the entire metadata object (by default, this is the entire contents of `package.json`):
 
 #### _.jsdocs()
 Parse and extract comments from specified JavaScript files to generate output for each code comment block encountered.
 
 ```js
-{%= _.jsdocs("tasks/readme.js") %}
+[%= _.jsdocs("tasks/readme.js") %]
 ```
 
 Currently, only the block is output and a link to the block in the source code is provided. This needs to be updated to only generate the markdown for jsdoc comments and to do something to make them more readable.
@@ -367,10 +383,10 @@ Parameters:
 Examples:
 
 ```js
-{%= _.copyright() %}
+[%= _.copyright() %]
 // => Copyright (c) 2013 Jeffrey Herb, contributors.
 
-{%= _.copyright('2011') %}
+[%= _.copyright('2011') %]
 // => Copyright (c) 2011-2013 Jeffrey Herb, contributors.
 ```
 
@@ -381,14 +397,14 @@ Add a "license statement" to the README, using the license(s) specified in packa
 Examples:
 
 ```js
-{%= _.license() %}
+[%= _.license() %]
 ```
 > Released under the MIT license
 
 Customize the output:
 
 ```js
-{%= _.license('Licensed under the ') %}
+[%= _.license('Licensed under the ') %]
 ```
 > Licensed under the MIT license
 
@@ -407,7 +423,7 @@ Extract the homepage URL from the project's package.json. If a `homepage` proper
 [minimatch]: https://github.com/isaacs/minimatch
 
 
-## Examples
+### Examples
 ## Template Examples
 
 > Copy/paste any of these examples into your templates as a starting point.
@@ -416,7 +432,7 @@ Extract the homepage URL from the project's package.json. If a `homepage` proper
 ### Name
 
 ```js
-{%= name %}
+[%= name %]
 ```
 > phaser
 
@@ -424,10 +440,10 @@ Extract the homepage URL from the project's package.json. If a `homepage` proper
 ### Version
 
 ```js
-{%= version %}
-v{%= version %}
-{%= version ? " v" + version : "" %}
-{%= version ? " * @version " + version + "\\n" : "" %}
+[%= version %]
+v[%= version %]
+[%= version ? " v" + version : "" %]
+[%= version ? " * @version " + version + "\\n" : "" %]
 ```
 > 0.1.3
 > v0.1.3
@@ -437,8 +453,8 @@ v{%= version %}
 ### Description
 
 ```js
-{%= description %}
-{%= description ? " * " + description + "\\n" : "" %}
+[%= description %]
+[%= description ? " * " + description + "\\n" : "" %]
 ```
 > Generate your README from a template. If you already use Grunt, this is a no brainer.
 > * Generate your README from a template. If you already use Grunt, this is a no brainer.\n
@@ -448,9 +464,9 @@ v{%= version %}
 ### Homepage
 
 ```js
-{%= homepage ? " | " + homepage : "" %}
-{%= homepage ? " * " + homepage + "\n" : "" %}
-{%= homepage ? " * @docs " + homepage + "\\n" : "" %}
+[%= homepage ? " | " + homepage : "" %]
+[%= homepage ? " * " + homepage + "\n" : "" %]
+[%= homepage ? " * @docs " + homepage + "\\n" : "" %]
 ```
 >  | https://github.com/assemble/phaser
 > * https://github.com/assemble/phaser
@@ -459,20 +475,22 @@ v{%= version %}
 
 
 
-### [AUTHORS](NPM https://npmjs.org/doc/json.html)
+### AUTHORS
+
+[AUTHORS](NPM https://npmjs.org/doc/json.html)
 
 > If there is an `AUTHORS` file in the root of your package, npm will treat each line as a `Name <email> (url)` format, where email and url are optional. Lines which start with a # or are blank, will be ignored. **[-- NPM]((NPM https://npmjs.org/doc/json.html)**
 
 To use `author` data from `package.json`:
 
 ```js
-[{%= author.name %}]({%= author.url %})
+[[%= author.name %]]([%= author.url %])
 ```
 > [Jon schlinkert](http://github.com/jonschlinkert)
 
 ```js
-{%= author.name ? " * @author " + author.name + "\\n" : "" %}
-{%= author.url ? " * @link " + author.url + "\\n" : "" %}
+[%= author.name ? " * @author " + author.name + "\\n" : "" %]
+[%= author.url ? " * @link " + author.url + "\\n" : "" %]
 ```
 >  * @author Jon Schlinkert\n
 >  * @link https://github.com/jonschlinkert\n
@@ -480,7 +498,7 @@ To use `author` data from `package.json`:
 Or, if you prefer to use an `AUTHORS` file in the root of the project:
 
 ```js
-[{%= authors[0].name %}]({%= authors[0].url %})
+[[%= authors[0].name %]]([%= authors[0].url %])
 ```
 > [Jon schlinkert](http://github.com/jonschlinkert)
 > [Brian Woodward](http://github.com/doowb)
@@ -489,22 +507,22 @@ Or, if you prefer to use an `AUTHORS` file in the root of the project:
 ### Time and date
 
 ```js
-{%= grunt.template.today() %}
+[%= grunt.template.today() %]
 ```
 > Tue Sep 17 2013 18:38:42
 
 ```js
-{%= grunt.template.today("yyyy") %}
+[%= grunt.template.today("yyyy") %]
 ```
 > 2013
 
 ```js
-{%= grunt.template.today("yyyy-mm-dd") %}
+[%= grunt.template.today("yyyy-mm-dd") %]
 ```
 > 2013-09-17
 
 ```js
-_This file was generated on {%= grunt.template.date("fullDate") %}._
+_This file was generated on [%= grunt.template.date("fullDate") %]._
 ```
 > _This file was generated on Monday, September 30, 2013._
 
@@ -513,10 +531,10 @@ _This file was generated on {%= grunt.template.date("fullDate") %}._
 
 ```js
 /*!
- * {%= name %} v{%= version %},  {%= grunt.template.today("yyyy-mm-dd") %}
- * {%= homepage %}
- * Copyright (c) {%= grunt.template.today("yyyy") %} {%= author %}, contributors.
- * {%= _.license() %}.
+ * [%= name %] v[%= version %],  [%= grunt.template.today("yyyy-mm-dd") %]
+ * [%= homepage %]
+ * Copyright (c) [%= grunt.template.today("yyyy") %] [%= author %], contributors.
+ * [%= _.license() %].
  */
 ```
 
@@ -530,7 +548,7 @@ _This file was generated on {%= grunt.template.date("fullDate") %}._
 ### Changelog / Release History
 
 ```js
-{%= _.include("docs-changelog.md") %}
+[%= _.include("docs-changelog.md") %]
 ```
 
 > * 2013-09-21   **v0.1.3**   Completely refactored. Adds a lot of documentation.
@@ -540,16 +558,16 @@ _This file was generated on {%= grunt.template.date("fullDate") %}._
 Or:
 
 ```js
- * {%= grunt.template.today('yyyy') %}   v0.1.0   First commit
+ * [%= grunt.template.today('yyyy') %]   v0.1.0   First commit
 ```
 > * 2013   v0.1.0   First commit
 
 
 
-### License
+#### License
 
 ```
-{%= _.license() %}
+[%= _.license() %]
 ```
 > Released under the [MIT license](./LICENSE-MIT).
 
@@ -558,7 +576,7 @@ Or:
 ### Contributors
 
 ```js
-{%= _.contributors() %}
+[%= _.contributors() %]
 ```
 > Jon Schlinkert
 > Brian Woodward
@@ -611,14 +629,14 @@ grunt.initConfig({
 }
 ```
 
-## Contributing
+### Contributing
 Find a bug? Have a feature request? Please [create an Issue](https://github.com/jonschlinkert/phaser/issues).
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with [grunt-readme](https://github.com/assemble/grunt-readme).
 
 Pull requests are also encouraged, and if you find this project useful please consider "starring" it to show your support! Thanks!
 
-## Authors
+### Authors
 
 **Jon Schlinkert**
 
@@ -630,7 +648,7 @@ Pull requests are also encouraged, and if you find this project useful please co
 + [github/doowb](https://github.com/doowb)
 + [twitter/doowb](http://twitter.com/jonschlinkert)
 
-## License
+#### License
 Copyright (c) 2014 Jon Schlinkert, contributors.
 Released under the MIT license
 

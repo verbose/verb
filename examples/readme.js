@@ -35,23 +35,11 @@ var expand = function (src, options) {
 var opts = {
   mixins: ['./lib/mixins/*.js'],
   functions: {
-    docs: function (name, options) {
-      var opts = _.extend(defaults, options);
-      var src = '';
-      try {
-        src = require(name);
-      } catch(e) {
-        // Re-write heading levels
-        src = expand(name + opts.ext, opts);
-      }
-      return src.replace(/^#/gm, '##');
-    },
     include: function (name, options) {
       name = !Array.isArray(name) ? [name] : name;
       var opts = _.extend(defaults, options);
       var templates = require('readme-templates');
       var includes = templates('*').includes;
-      console.log(includes);
       // var filepaths = includes.filter(function (filepath) {
       //   return file.basename(filepath) === name[0];
       // });

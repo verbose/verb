@@ -7,23 +7,29 @@
 
 'use strict';
 
-var util     = require('util');
+var util      = require('util');
 
 // node_modules
-var chalk    = require('chalk');
-var file     = require('fs-utils');
-var glob     = require('globule');
-var _        = require('lodash');
+var chalk     = require('chalk');
+var file      = require('fs-utils');
+var glob      = require('globule');
+var _         = require('lodash');
 
-var success  = chalk.green;
-var error    = chalk.red;
+var success   = chalk.green;
+var error     = chalk.red;
 
 // Internal libs
-var utils    = require('./lib/utils');
-var lib      = require('./lib');
-var template = lib.template;
-var mixins   = lib.mixins;
-var matter   = lib.matter;
+var utils     = require('./lib/utils');
+var lib       = require('./lib');
+var template  = lib.template;
+var mixins    = lib.mixins;
+var functions = lib.functions;
+var matter    = lib.matter;
+
+
+/**
+ * Phaser
+ */
 
 var phaser = function(src, options) {
   var opts = _.extend({verbose: false}, options);
@@ -31,7 +37,7 @@ var phaser = function(src, options) {
   // Initialize modules
   var config    = lib.config.init(opts.config);
   var data      = lib.data.init(opts);
-  var functions = lib.functions.init(opts);
+  // var functions = lib.functions.init(opts);
 
   // Extract and parse front matter
   var page      = matter(src, opts);
@@ -51,15 +57,22 @@ var phaser = function(src, options) {
     page: page
   });
 
+  // Initialize functions
+  var fn = functions.init(config, opts, {
+    context: _.cloneDeep(context),
+    page: page
+  });
+
   // Extend context with custom functions and filters,
   // but we won't pass these back in the JSON result.
-  var fnContext = _.defaults({}, metadata, functions, context);
+  var fnContext = _.defaults({}, metadata, fn, context);
   // console.log(util.inspect(fnContext, 10, 2));
 
   // Process templates and render content
   var settings = _.defaults({}, opts.settings);
   var rendered = template(content, fnContext, settings);
-  var result = utils.postProcess(rendered, opts);
+  // var result = utils.postProcess(rendered, opts);
+  var result = utils.headings(rendered);
 
   return {
     context: context,

@@ -1,45 +1,46 @@
-# phaser
+
+## phaser
 
 > Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.
 
 Please [report any bugs or feature requests](https://github.com/jonschlinkert/phaser/issues/new), thanks!
 
-## Quickstart
+### Quickstart
 ```bash
 npm install phaser --save-dev
 ```
 
-## Examples
+### Examples
 Example document:
 
 ```js
-# {%= name %}
+# [%= name %]
 
-> {%= description %}
+> [%= description %]
 
-{%= toc %}
+[%= toc %]
 
 ## Overview
-{%= _.doc("overview.md") %}
+[%= _.doc("overview.md") %]
 
-## Options
-{%= _.doc("options.md") %}
+#### Options
+[%= _.doc("options.md") %]
 
-## Examples
-{%= _.doc("examples.md") %}
+### Examples
+[%= _.doc("examples.md") %]
 
-## License and Copyright
-{%= copyright %}
-{%= license %}
+### License and Copyright
+[%= copyright %]
+[%= license %]
 ```
 
-## Options
-## Options
+#### Options
+#### Options
 
 * defaults
 * options
 
-#### metadata
+##### metadata
 Type: `object|array|string`
 
 Default: `undefined`
@@ -61,13 +62,13 @@ Default: `undefined` (options: `true`|`"only"`)
 When `namespace` defined, an object is created for each data file, where the top level property on the object is the name of the file itself, and the data contained within the file is extended into that object. [See examples](#namespacing).
 
 
-## Config
-## Config
+#### Config
+### Config
 
 * package.json | alt config object
 * metadata
 
-#### metadata
+##### metadata
 
 Unless overridden in the options, Phaser will attempt to process templates using only the data from your project's [package.json](./package.json). Thus, using only the default settings our context might look something like this:
 
@@ -156,7 +157,7 @@ Example:
 ---
 username: jonschlinkert
 ---
-Visit [some link](https://github.com/{%= username %}/foo) to learn more!
+Visit [some link](https://github.com/[%= username %]/foo) to learn more!
 
 ```
 
@@ -199,9 +200,9 @@ The following object would be merged into the context:
 }
 ```
 
-
-## Defaults
+### Defaults
 ```js
+# Foo
 {
   // Logging
   verbose: true,
@@ -223,21 +224,21 @@ The following object would be merged into the context:
 }
 ```
 
-## Contributing
+### Contributing
 Find a bug? Have a feature request? Please [create an Issue](https://github.com/jonschlinkert/phaser/issues).
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with [grunt-readme](https://github.com/assemble/grunt-readme).
 
 Pull requests are also encouraged, and if you find this project useful please consider "starring" it to show your support! Thanks!
 
-## Authors
+### Authors
 
 **Jon Schlinkert**
 
 + [github/jonschlinkert](https://github.com/jonschlinkert)
 + [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
 
-## License
+### License
 Copyright (c) 2014 Jon Schlinkert, contributors.
 Released under the MIT license
 
