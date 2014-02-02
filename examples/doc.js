@@ -7,7 +7,7 @@
 
 'use strict';
 
-// Node.js
+var _ = require('lodash');
 var phaser = require('../');
 
 var opts = {
@@ -16,4 +16,5 @@ var opts = {
   // mixins: ['./lib/mixins/*.js']
 };
 
-phaser.expand('_test.md', 'test/actual/', opts);
+var dest = './test/actual/';
+phaser.expand('_glossary.md', dest, _.extend(opts, {dest: dest}));

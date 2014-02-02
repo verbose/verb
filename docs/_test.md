@@ -5,8 +5,6 @@ name: Test
 
 > {%= _.reverse(name) %}
 
-{%= _.toc('docs/docs-*.md') %}
-
 {%= toc %}
 
 ## Quickstart
