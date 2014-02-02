@@ -7,22 +7,23 @@
 
 'use strict';
 
-var util = require('util');
+var util     = require('util');
 
 // node_modules
-var chalk = require('chalk');
-var file = require('fs-utils');
-var glob = require('globule');
-var _ = require('lodash');
+var chalk    = require('chalk');
+var file     = require('fs-utils');
+var glob     = require('globule');
+var _        = require('lodash');
 
-var success = chalk.green;
-var error = chalk.red;
+var success  = chalk.green;
+var error    = chalk.red;
 
 // Internal libs
-var utils = require('./lib/utils');
-var lib = require('./lib');
+var utils    = require('./lib/utils');
+var lib      = require('./lib');
 var template = lib.template;
-var matter = lib.matter;
+var mixins   = lib.mixins;
+var matter   = lib.matter;
 
 
 var phaser = function(src, options) {
@@ -32,7 +33,6 @@ var phaser = function(src, options) {
   var config    = lib.config.init(opts.config);
   var data      = lib.data.init(opts);
   var functions = lib.functions.init(opts);
-  var mixins    = lib.mixins.init(config, opts);
 
   // Extract and parse front matter
   var page      = matter(src, opts);
@@ -46,9 +46,16 @@ var phaser = function(src, options) {
   // Add Table of Contents to templates with: {%= toc %}
   context.toc = utils.toc(content);
 
-  // Extend context with mixins and custom functions.
-  // We won't pass these back in the JSON result.
+  // Initialize mixins
+  mixins.init(config, opts, {
+    context: _.cloneDeep(context),
+    page: page
+  });
+
+  // Extend context with custom functions and filters,
+  // but we won't pass these back in the JSON result.
   var fnContext = _.defaults({}, metadata, functions, context);
+  // console.log(util.inspect(fnContext, 10, 2));
 
   // Process templates and render content
   var settings = _.defaults({}, opts.settings);
@@ -78,20 +85,9 @@ phaser.copy = function(src, dest, options) {
 };
 
 phaser.expand = function(src, dest, options) {
-  // Options defaults
-  var opts = _.defaults({cwd: 'docs', ext: '.md'}, options);
+  var opts = _.extend({}, options);
 
-  // Globule defaults
-  var globOpts = {
-    flatten: true,
-    matchBase: true,
-    prefixBase: false,
-    srcBase: opts.cwd,
-    destBase: dest,
-    ext: opts.ext
-  };
-
-  glob.findMapping(src, globOpts).map(function(fp) {
+  utils.expandMapping(src, dest, opts.glob).map(function(fp) {
     file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
     console.log(success('>> Saved to:'), fp.dest);
   });

@@ -33,6 +33,7 @@ var expand = function (src, options) {
 // console.log(tmpl.badges);
 
 var opts = {
+  mixins: ['./lib/mixins/*.js'],
   functions: {
     docs: function (name, options) {
       var opts = _.extend(defaults, options);
@@ -50,15 +51,15 @@ var opts = {
       var opts = _.extend(defaults, options);
       var templates = require('readme-templates');
       var includes = templates('*').includes;
+      console.log(includes);
+      // var filepaths = includes.filter(function (filepath) {
+      //   return file.basename(filepath) === name[0];
+      // });
 
-      var filepaths = includes.filter(function (filepath) {
-        return file.basename(filepath) === name[0];
-      });
-
-      return filepaths.map(function(filepath) {
-        var content = file.readFileSync(filepath, opts);
-        return content.replace(/^#/gm, '##');
-      });
+      // return filepaths.map(function(filepath) {
+      //   var content = file.readFileSync(filepath, opts);
+      //   return content.replace(/^#/gm, '##');
+      // });
     },
     contrib: function (name, options) {
       var opts = _.extend(defaults, options);

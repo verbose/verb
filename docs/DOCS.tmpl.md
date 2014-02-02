@@ -13,7 +13,7 @@ In general, the conventions used by this task are as follows:
 * `[%= _.include("foo") %]` is used to include boilerplate files from {%= name %}
 
 ## Advanced configuration
-To change the plugin's defaults, add a section to your project's Gruntfile named `{%= shortname(name) %}` to the data object passed into `grunt.initConfig()`:
+To change the plugin's defaults, add a section to your project's Gruntfile named `{%= shortname %}` to the data object passed into `grunt.initConfig()`:
 
 ```js
 grunt.initConfig({

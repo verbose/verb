@@ -1,13 +1,11 @@
-# Test
+---
+name: Test
+---
+# {%= name %}
 
-> tseT
+> {%= _.reverse(name) %}
 
-* [Quickstart](#quickstart)
-* [Options](#options)
-* [Usage examples](#usage-examples)
-* [Contributing](#contributing)
-* [Author](#author)
-
+{%= _.toc() %}
 
 ## Quickstart
 This is the quickstart section.

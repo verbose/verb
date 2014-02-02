@@ -306,6 +306,21 @@ describe('mixins.date:', function () {
 });
 
 
+describe('mixins.reverse:', function () {
+  it('should return the reversed string.', function () {
+    var actual = phaser('{%= _.reverse("abc") %}', {mixins: 'test/mixins/reverse.js'});
+    expect(actual.content).to.eql('cba');
+  });
+});
+
+describe('mixins.lowercase:', function () {
+  it('should return the lowercased string.', function () {
+    var actual = phaser('{%= _.lowercase("ABC") %}', {mixins: 'test/mixins/*.js'});
+    expect(actual.content).to.eql('abc');
+  });
+});
+
+
 
 /**
  * Mixins:author

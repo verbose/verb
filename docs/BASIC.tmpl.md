@@ -1,3 +1,6 @@
+---
+name: BASIC
+---
 # {%= name %}
 
 > {%= description %}

@@ -7,17 +7,12 @@
 
 'use strict';
 
-var _ = require('lodash');
-
-// Local libs
-var utils = require('../utils');
-
 // Custom mixins
 module.exports = function(config, options) {
   options = options || {};
 
-  exports.date = function(format) {
-    return utils.date(new Date(), format);
+  exports.lowercase = function(src) {
+    return src.toLowerCase();
   };
 
   return exports;
