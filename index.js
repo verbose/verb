@@ -25,7 +25,6 @@ var template = lib.template;
 var mixins   = lib.mixins;
 var matter   = lib.matter;
 
-
 var phaser = function(src, options) {
   var opts = _.extend({verbose: false}, options);
 
