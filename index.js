@@ -71,8 +71,7 @@ var phaser = function(src, options) {
   // Process templates and render content
   var settings = _.defaults({}, opts.settings);
   var rendered = template(content, fnContext, settings);
-  // var result = utils.postProcess(rendered, opts);
-  var result = utils.headings(rendered);
+  var result = utils.headings(utils.postProcess(rendered, opts));
 
   return {
     context: context,

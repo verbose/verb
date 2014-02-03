@@ -1,4 +1,3 @@
-
 ## phaser
 
 > Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.
@@ -14,24 +13,24 @@ npm install phaser --save-dev
 Example document:
 
 ```js
-# [%= name %]
+# {%= name %}
 
-> [%= description %]
+> {%= description %}
 
-[%= toc %]
+{%= toc %}
 
 ## Overview
-[%= _.doc("overview.md") %]
+{%= _.doc("overview.md") %}
 
 #### Options
-[%= _.doc("options.md") %]
+{%= _.doc("options.md") %}
 
 ### Examples
-[%= _.doc("examples.md") %]
+{%= _.doc("examples.md") %}
 
 ### License and Copyright
-[%= copyright %]
-[%= license %]
+{%= copyright %}
+{%= license %}
 ```
 
 #### Options
@@ -157,7 +156,7 @@ Example:
 ---
 username: jonschlinkert
 ---
-Visit [some link](https://github.com/[%= username %]/foo) to learn more!
+Visit [some link](https://github.com/{%= username %}/foo) to learn more!
 
 ```
 
