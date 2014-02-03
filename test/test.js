@@ -18,6 +18,7 @@ var _ = require('lodash');
 
 // Local libs
 var phaser = require('../');
+var utils = require('../lib/utils');
 
 
 /**
@@ -287,6 +288,39 @@ describe('autodetect language', function () {
     done();
   });
 });
+
+
+
+/**
+ * Utils:headings
+ */
+
+describe('utils.headings:', function () {
+  it('should adjust the heading level.', function () {
+    var actual = utils.headings('# Heading');
+    var expected = '## Heading';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should adjust the heading level.', function () {
+    var actual = utils.headings('## Heading');
+    var expected = '### Heading';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should not adjust headings in code blocks.', function () {
+    var actual = utils.headings('```\n## Heading\n```');
+    var expected = '```\n## Heading\n```';
+    expect(actual).to.eql(expected);
+  });
+
+  it('should not adjust headings in code backticks.', function () {
+    var actual = utils.headings('`## Heading`');
+    var expected = '`## Heading`';
+    expect(actual).to.eql(expected);
+  });
+});
+
 
 
 /**

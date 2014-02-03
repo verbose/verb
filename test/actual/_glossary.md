@@ -1,7 +1,7 @@
-# [Example](../../docs/docs-example.md)
+## [Example](../../docs/docs-example.md)
 
 
-# [Examples](../../docs/docs-examples.md)
+## [Examples](../../docs/docs-examples.md)
 
 * [Template Examples](../../docs/docs-examples.md/#template-examples)
   * [Name](../../docs/docs-examples.md/#name)
@@ -16,7 +16,7 @@
   * [Contributors](../../docs/docs-examples.md/#contributors)
   * [Metadata](../../docs/docs-examples.md/#metadata)
 
-# [Features](../../docs/docs-features.md)
+## [Features](../../docs/docs-features.md)
 
 * [templates](../../docs/docs-features.md/#templates)
 * [Readme template](../../docs/docs-features.md/#readme-template)
@@ -26,12 +26,12 @@
   * [Escaping hashes](../../docs/docs-features.md/#escaping-hashes)
   * [Escaping Lo-Dash templates](../../docs/docs-features.md/#escaping-lo-dash-templates)
 
-# [Front-Matter](../../docs/docs-front-matter.md)
+## [Front-Matter](../../docs/docs-front-matter.md)
 
 * [Front Matter](../../docs/docs-front-matter.md/#front-matter)
   * [Examples](../../docs/docs-front-matter.md/#examples)
 
-# [Mixins](../../docs/docs-mixins.md)
+## [Mixins](../../docs/docs-mixins.md)
 
 * ["include" mixins](../../docs/docs-mixins.md/#include-mixins)
   * [_.include()](../../docs/docs-mixins.md/#include)
@@ -46,7 +46,7 @@
   * [_.username()](../../docs/docs-mixins.md/#username)
   * [_.homepage()](../../docs/docs-mixins.md/#homepage)
 
-# [Options](../../docs/docs-options.md)
+## [Options](../../docs/docs-options.md)
 
 * [Overview of available options](../../docs/docs-options.md/#overview-of-available-options)
 * [readme](../../docs/docs-options.md/#readme)

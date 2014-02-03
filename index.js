@@ -31,7 +31,7 @@ var matter    = lib.matter;
  * Phaser
  */
 
-var phaser = function(src, options) {
+var phaser = module.exports = function(src, options) {
   var opts = _.extend({verbose: false}, options);
 
   // Initialize modules
@@ -66,10 +66,11 @@ var phaser = function(src, options) {
   // Extend context with custom functions and filters,
   // but we won't pass these back in the JSON result.
   var fnContext = _.defaults({}, metadata, fn, context);
-  // console.log(util.inspect(fnContext, 10, 2));
+
+  // Template settings
+  var settings = _.defaults({}, opts.settings);
 
   // Process templates and render content
-  var settings = _.defaults({}, opts.settings);
   var rendered = template(content, fnContext, settings);
   var result = utils.headings(utils.postProcess(rendered, opts));
 
@@ -97,12 +98,9 @@ phaser.copy = function(src, dest, options) {
 
 phaser.expand = function(src, dest, options) {
   var opts = _.extend({}, options);
-
   utils.expandMapping(src, dest, opts.glob).map(function(fp) {
     file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
     console.log(success('>> Saved to:'), fp.dest);
   });
   console.log(success('\n>> Completed successfully.'));
 };
-
-module.exports = phaser;
