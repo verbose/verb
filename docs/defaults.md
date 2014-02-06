@@ -1,5 +1,4 @@
 ```js
-# Foo
 {
   // Logging
   verbose: true,
@@ -16,7 +15,7 @@
   matchBase: true,
 
   // Processing
-  delimiters: ['{%', '%}'],
+  delimiters: ['[%', '%]'],
   replacements: [],
 }
 ```

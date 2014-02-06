@@ -7,24 +7,21 @@
 
 'use strict';
 
-var util      = require('util');
-
 // node_modules
-var chalk     = require('chalk');
-var file      = require('fs-utils');
-var glob      = require('globule');
-var _         = require('lodash');
+var chalk      = require('chalk');
+var file       = require('fs-utils');
+var _          = require('lodash');
 
-var success   = chalk.green;
-var error     = chalk.red;
+var success    = chalk.green;
 
 // Internal libs
-var utils     = require('./lib/utils');
-var lib       = require('./lib');
-var template  = lib.template;
-var mixins    = lib.mixins;
-var functions = lib.functions;
-var matter    = lib.matter;
+var utils      = require('./lib/utils');
+var lib        = require('./lib');
+var template   = lib.template;
+var mixins     = lib.mixins;
+var exclusions = lib.exclusions;
+var functions  = lib.functions;
+var matter     = lib.matter;
 
 
 /**
@@ -35,21 +32,23 @@ var phaser = module.exports = function(src, options) {
   var opts = _.extend({verbose: false}, options);
 
   // Initialize modules
-  var config    = lib.config.init(opts.config);
-  var data      = lib.data.init(opts);
-  // var functions = lib.functions.init(opts);
+  var config   = lib.config.init(opts.config);
+  var data     = lib.data.init(opts);
 
   // Extract and parse front matter
-  var page      = matter(src, opts);
-  var content   = page.content;
-  var metadata  = page.context;
+  var page     = matter.init(src, opts);
+  var content  = page.content;
+  var metadata = page.context;
 
   // Build up the context
-  var context = _.extend({}, config, opts, data);
+  var context  = _.extend({}, config, opts, data);
   delete context.config;
 
   // Add Table of Contents to templates with: {%= toc %}
   context.toc = utils.toc(content);
+
+  // Exclude options from context
+  context = exclusions.init(context, opts);
 
   // Initialize mixins
   mixins.init(config, opts, {
@@ -64,15 +63,14 @@ var phaser = module.exports = function(src, options) {
   });
 
   // Extend context with custom functions and filters,
-  // but we won't pass these back in the JSON result.
-  var fnContext = _.defaults({}, metadata, fn, context);
+  var fnContext = _.defaults(metadata, fn, context);
 
   // Template settings
   var settings = _.defaults({}, opts.settings);
 
   // Process templates and render content
   var rendered = template(content, fnContext, settings);
-  var result = utils.headings(utils.postProcess(rendered, opts));
+  var result = utils.postProcess(rendered, opts);
 
   return {
     context: context,
@@ -80,6 +78,7 @@ var phaser = module.exports = function(src, options) {
     original: src
   };
 };
+
 
 // Alias for phaser(src).content;
 phaser.process = function(src, options) {
@@ -94,11 +93,14 @@ phaser.read = function(src, options) {
 phaser.copy = function(src, dest, options) {
   var opts = _.extend({}, options);
   file.writeFileSync(dest, phaser.read(src, opts));
+  console.log(success('>> Saved to:'), dest);
 };
 
 phaser.expand = function(src, dest, options) {
   var opts = _.extend({}, options);
-  utils.expandMapping(src, dest, opts.glob).map(function(fp) {
+
+  utils.expandMapping(src, dest, opts.glob || {}).map(function(fp) {
+
     file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
     console.log(success('>> Saved to:'), fp.dest);
   });

@@ -3,7 +3,7 @@
     "name": "Brian Woodward",
     "description": "Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.",
     "version": "0.1.0",
-    "homepge": "https://github.com/jonschlinkert/phaser",
+    "homepage": "https://github.com/jonschlinkert/phaser",
     "author": {
       "name": "Jon Schlinkert",
       "url": "https://github.com/jonschlinkert"
@@ -31,7 +31,7 @@
       "gray-matter": "~0.2.3",
       "lodash": "~2.4.1",
       "marked": "~0.3.1",
-      "marked-toc": "~0.1.5",
+      "marked-toc": "~0.2.1",
       "minimatch": "~0.2.14",
       "readme-boilerplates": "~0.1.2",
       "readme-contrib": "~0.1.2",
@@ -46,12 +46,11 @@
     "foo": "foo",
     "bar": "bar",
     "baz": "baz",
-    "verbose": false,
     "data": [
       "test/fixtures/**/foo.json",
       "test/fixtures/data/{a,b}*.json"
     ],
-    "toc": ""
+    "toc": {}
   },
   "content": "Brian Woodward",
   "original": "{%= name %}"

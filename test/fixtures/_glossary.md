@@ -1,0 +1,1 @@
+{%= _.toc('docs/docs-*.md') %}

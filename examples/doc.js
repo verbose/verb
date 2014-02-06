@@ -11,10 +11,11 @@ var _ = require('lodash');
 var phaser = require('../');
 
 var opts = {
-  cwd: 'docs',
+  cwd: 'test/fixtures',
   ext: '.md',
+  destBase: './test/actual/'
   // mixins: ['./lib/mixins/*.js']
 };
 
-var dest = './test/actual/';
-phaser.expand('_glossary.md', dest, _.extend(opts, {dest: dest}));
+var dest = opts.destBase;
+phaser.expand('*.md', dest, _.extend({glob: {srcbase: opts.cwd}}, opts));

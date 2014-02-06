@@ -57,4 +57,4 @@ grunt.registerTask('default', ['readme']);
 
 ***
 
-{%= _.include("footer.md") %}
+{%= include("footer.md") %}

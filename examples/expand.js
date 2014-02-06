@@ -7,6 +7,5 @@
 
 'use strict';
 
-var name = module.exports = function(src) {
-  return src.replace(/\.js$/, '');
-};
+var phaser = require('../');
+phaser.expand('*.tmpl.md', 'test/actual/');

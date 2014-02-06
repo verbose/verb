@@ -13,7 +13,7 @@ json = (src) ->
 pkg = json('package.json')
 ---
 
-> {%= pkg.name %}
+> [%= pkg.name %]
 
 ```
 
@@ -35,8 +35,8 @@ include = (src) ->
 reverseUser = reverse(user)
 ---
 
-{%= user %}
-{%= reverse(user) %}
-{%= include('file.md') %}
-{%= reverseUser %}
+[%= user %]
+[%= reverse(user) %]
+[%= include('file.md') %]
+[%= reverseUser %]
 ```
