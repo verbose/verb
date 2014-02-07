@@ -13,16 +13,17 @@ var file       = require('fs-utils');
 var _          = require('lodash');
 
 var success    = chalk.green;
+var error      = chalk.red;
 
 // Internal libs
 var utils      = require('./lib/utils');
 var lib        = require('./lib');
 var template   = lib.template;
 var mixins     = lib.mixins;
+var partials   = lib.partials;
 var exclusions = lib.exclusions;
 var functions  = lib.functions;
 var matter     = lib.matter;
-
 
 /**
  * Phaser
@@ -44,6 +45,10 @@ var phaser = module.exports = function(src, options) {
   var context  = _.extend({}, config, opts, data);
   delete context.config;
 
+  if(!page && !context) {
+    throw new Error(error('Phaser: no source files defined.'));
+  }
+
   // Add Table of Contents to templates with: {%= toc %}
   context.toc = utils.toc(content);
 
@@ -56,19 +61,33 @@ var phaser = module.exports = function(src, options) {
     page: page
   });
 
+  // Initialize mixins
+  partials.init(config, opts, {
+    context: _.cloneDeep(context),
+    phaser: this
+  });
+
   // Initialize functions
   var fn = functions.init(config, opts, {
     context: _.cloneDeep(context),
     page: page
   });
 
+  // Initialize plugins
+  var plugins = functions.init(config, opts, {
+    context: _.cloneDeep(context),
+    page: page
+  });
+
   // Extend context with custom functions and filters,
-  var fnContext = _.defaults(metadata, fn, context);
+  var fnContext = _.defaults(metadata, plugins, fn, context);
 
   // Template settings
   var settings = _.defaults({}, opts.settings);
 
   // Process templates and render content
+  var block = utils.block(config, opts, page);
+  content = block.block(content);
   var rendered = template(content, fnContext, settings);
   var result = utils.postProcess(rendered, opts);
 
@@ -79,6 +98,8 @@ var phaser = module.exports = function(src, options) {
   };
 };
 
+// Expose utils;
+phaser.utils = utils;
 
 // Alias for phaser(src).content;
 phaser.process = function(src, options) {
@@ -99,7 +120,7 @@ phaser.copy = function(src, dest, options) {
 phaser.expand = function(src, dest, options) {
   var opts = _.extend({}, options);
 
-  utils.expandMapping(src, dest, opts.glob || {}).map(function(fp) {
+  utils.expand.mapping(src, dest, opts.glob || {}).map(function(fp) {
 
     file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
     console.log(success('>> Saved to:'), fp.dest);

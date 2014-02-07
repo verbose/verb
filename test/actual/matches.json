@@ -1,0 +1,251 @@
+{
+  "config.js": {
+    "name": "config.js",
+    "path": "lib/config.js",
+    "comments": [
+      {
+        "comment": "/**\n * Initialize config object. This defaults\n * to package.json, unless overridden by\n * passing an object to `options.config`\n *\n * @param {Object} config\n * @return {Object}\n * @api private\n */"
+      }
+    ]
+  },
+  "data.js": {
+    "name": "data.js",
+    "path": "lib/data.js",
+    "comments": [
+      {
+        "comment": "/**\n * Extend context with metadata from\n * `options.data`.\n *\n * @param {Object} options\n * @return {Object}\n * @api private\n */"
+      }
+    ]
+  },
+  "exclusions.js": {
+    "name": "exclusions.js",
+    "path": "lib/exclusions.js",
+    "comments": [
+      {
+        "comment": "/**\n * Default exclusions\n */"
+      },
+      {
+        "comment": "/**\n * Omit properties from the context\n *\n * @return {Object}\n * @api private\n */"
+      }
+    ]
+  },
+  "filters.js": {
+    "name": "filters.js",
+    "path": "lib/filters.js",
+    "comments": []
+  },
+  "functions.js": {
+    "name": "functions.js",
+    "path": "lib/functions.js",
+    "comments": [
+      {
+        "comment": "/**\n * Adds functions to the context\n *\n * @name functions\n * @param {Object} options\n * @return {Object}\n * @api private\n */"
+      }
+    ]
+  },
+  "boilerplates.js": {
+    "name": "boilerplates.js",
+    "path": "lib/functions/boilerplates.js",
+    "comments": []
+  },
+  "comments.js": {
+    "name": "comments.js",
+    "path": "lib/functions/comments.js",
+    "comments": []
+  },
+  "contrib.js": {
+    "name": "contrib.js",
+    "path": "lib/functions/contrib.js",
+    "comments": []
+  },
+  "copyright.js": {
+    "name": "copyright.js",
+    "path": "lib/functions/copyright.js",
+    "comments": []
+  },
+  "date.js": {
+    "name": "date.js",
+    "path": "lib/utils/date.js",
+    "comments": [
+      {
+        "comment": "/**\n * Date functions used in _.date() filter\n *\n * @name formatDate\n * @param  {Object} dateobj The date object to format.\n * @param  {String} pattern The pattern to use, e.g. 'YYYY-MM-DD'.\n *\n * @return {String} The formatted date.\n * @api public\n */"
+      }
+    ]
+  },
+  "docs.js": {
+    "name": "docs.js",
+    "path": "lib/functions/docs.js",
+    "comments": []
+  },
+  "include.js": {
+    "name": "include.js",
+    "path": "lib/functions/include.js",
+    "comments": []
+  },
+  "license.js": {
+    "name": "license.js",
+    "path": "lib/functions/license.js",
+    "comments": []
+  },
+  "partials.js": {
+    "name": "partials.js",
+    "path": "lib/partials.js",
+    "comments": []
+  },
+  "pkg.js": {
+    "name": "pkg.js",
+    "path": "lib/functions/pkg.js",
+    "comments": []
+  },
+  "reverse.js": {
+    "name": "reverse.js",
+    "path": "lib/utils/reverse.js",
+    "comments": [
+      {
+        "comment": "/**\n * Reverse a string\n *\n * @name reverse\n * @param  {String} str The string to reverse\n * @return {String}     The reversed string.\n * @api public\n */"
+      }
+    ]
+  },
+  "safename.js": {
+    "name": "safename.js",
+    "path": "lib/functions/safename.js",
+    "comments": []
+  },
+  "shortname.js": {
+    "name": "shortname.js",
+    "path": "lib/functions/shortname.js",
+    "comments": []
+  },
+  "toc.js": {
+    "name": "toc.js",
+    "path": "lib/utils/toc.js",
+    "comments": [
+      {
+        "comment": "/**\n * Generate a Table of Contents.\n * Use {%= toc %} in templates\n *\n * @param  {String} str\n * @param  {Object} options\n *\n * @return {String} the Table of Contents\n * @api public\n */"
+      }
+    ]
+  },
+  "index.js": {
+    "name": "index.js",
+    "path": "lib/utils/index.js",
+    "comments": []
+  },
+  "matter.js": {
+    "name": "matter.js",
+    "path": "lib/matter.js",
+    "comments": [
+      {
+        "comment": "/**\n * Omit properties from the context\n *\n * @return {Object}\n * @api public\n */"
+      }
+    ]
+  },
+  "mixins.js": {
+    "name": "mixins.js",
+    "path": "lib/mixins.js",
+    "comments": []
+  },
+  "plugins.js": {
+    "name": "plugins.js",
+    "path": "lib/plugins.js",
+    "comments": [
+      {
+        "comment": "/**\n * Adds plugins to the context\n *\n * @name plugins\n * @param {Object} options\n * @return {Object}\n * @api private\n */"
+      }
+    ]
+  },
+  "template.js": {
+    "name": "template.js",
+    "path": "lib/template.js",
+    "comments": [
+      {
+        "comment": "/**\n * Compile Lo-Dash templates.\n *\n * @param  {String} str      The templates to process.\n * @param  {Object} data     Context for the templates\n * @param  {Object} settings Options to pass to Lo-Dash\n * @return {String}\n *\n * @api public\n */"
+      }
+    ]
+  },
+  "adjust.js": {
+    "name": "adjust.js",
+    "path": "lib/utils/adjust.js",
+    "comments": [
+      {
+        "comment": "/**\n * Adjust heading levels. Adds one heading\n * level next to all markdown headings to\n * make them correct within the scope of the\n * inheriting document. Headings in fenced\n * code blocks are skipped.\n *\n * @return {String}\n * @api public\n */"
+      },
+      {
+        "comment": "/**\n * Unescapes delimiters\n *\n * @return {String}\n * @api public\n */"
+      }
+    ]
+  },
+  "arrayify.js": {
+    "name": "arrayify.js",
+    "path": "lib/utils/arrayify.js",
+    "comments": [
+      {
+        "comment": "/**\n * Coerce the value to an array\n *\n * @param {name} arrayify\n * @param {Array|String} arr\n *\n * @return {Array}\n * @api public\n */"
+      }
+    ]
+  },
+  "block.js": {
+    "name": "block.js",
+    "path": "lib/utils/block.js",
+    "comments": []
+  },
+  "dir.js": {
+    "name": "dir.js",
+    "path": "lib/utils/dir.js",
+    "comments": [
+      {
+        "comment": "/**\n * Get the relative path from process.cwd() to\n * the specifiied paths, from any other directory\n * in the project.\n *\n * @return {String}\n * @api public\n */"
+      }
+    ]
+  },
+  "expand.js": {
+    "name": "expand.js",
+    "path": "lib/utils/expand.js",
+    "comments": [
+      {
+        "comment": "/**\n * Expand files.\n *\n * @name expand\n * @param {String} src\n * @param {Object} options\n *\n * @return {Array}\n * @api public\n */"
+      },
+      {
+        "comment": "/**\n * Expand files and read in content.\n *\n * @name expand\n * @param {String} src\n * @param {Object} options\n *\n * @return {Array}\n * @api public\n */"
+      },
+      {
+        "comment": "/**\n * Expand mapping\n *\n * @param  {name} expandMapping\n * @param  {Array|String} patterns Accepts either comma separated\n *         globbing patterns or an array of globbing patterns.\n * @param  {String} dest The base path for dest files.\n * @param  {Object} options Options to pass in:\n *     @option {String} cwd: the current working directory for source files.\n *     @option {String} ext: the file extension to use on dest files.\n *\n * @return {Array} Returns an array of src-dest file mappings.\n * @api public\n */"
+      }
+    ]
+  },
+  "expandData.js": {
+    "name": "expandData.js",
+    "path": "lib/utils/expandData.js",
+    "comments": [
+      {
+        "comment": "/**\n * Read in data from a string, object or array\n *\n * @name expandData\n * @param  {String|Object|Array} data     String, object or array\n * @param  {Object}              options  Pass an object of options\n * @return {Object}                       Returns an object of metadata\n *\n * @api {Public}\n */"
+      }
+    ]
+  },
+  "isType.js": {
+    "name": "isType.js",
+    "path": "lib/utils/isType.js",
+    "comments": [
+      {
+        "comment": "/**\n * Returns the `typeOf` a JavaScript value\n *\n * @return {String}\n * @api public\n */"
+      }
+    ]
+  },
+  "postProcess.js": {
+    "name": "postProcess.js",
+    "path": "lib/utils/postProcess.js",
+    "comments": [
+      {
+        "comment": "/**\n * Post-process content with RegExp replacement patterns\n * @param  {String} str      The string with patterns to replace.\n * @param  {Object} options  The options to use\n *    @option {patterns} Replacement patterns to use\n *\n * @return {String}          The transformed string.\n * @api public\n */"
+      }
+    ]
+  },
+  "username.js": {
+    "name": "username.js",
+    "path": "lib/utils/username.js",
+    "comments": [
+      {
+        "comment": "/**\n * Extract a username/org from a\n * GitHub URL.\n *\n * @param  {String}\n * @return {String}\n * @api public\n */"
+      }
+    ]
+  }
+}

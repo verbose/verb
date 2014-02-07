@@ -7,10 +7,5 @@
 
 'use strict';
 
-/**
- * isJavaScript
- */
-
-module.exports = function(src) {
-  return src.match(/.+\.js/g);
-};
+var phaser = require('../');
+phaser.copy('examples/templates/block.md', 'test/actual/block.md');

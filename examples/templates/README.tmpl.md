@@ -1,0 +1,2 @@
+{%= partial('one') %}
+{%= partial('two') %}

@@ -7,15 +7,14 @@
 
 'use strict';
 
-var _ = require('lodash');
 var phaser = require('../');
 
 var opts = {
-  cwd: 'test/fixtures',
+  cwd: 'examples/templates',
   ext: '.md',
   destBase: './test/actual/',
-  mixins: ['./lib/mixins/*.js']
+  partials: ['./test/fixtures/partials/*.md']
 };
 
-var dest = opts.destBase;
-phaser.expand(['*.md'], dest, _.extend({glob: {srcbase: opts.cwd}}, opts));
+// _.definePartial('tooltip', '<div class="tooltip">${ content }</div>');
+phaser.copy('examples/templates/README.tmpl.md', 'test/actual/partials.md', opts);

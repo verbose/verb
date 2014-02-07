@@ -20,34 +20,34 @@ var phaser = require('../');
 var utils = require('../lib/utils');
 
 
-describe('utils.adjustHeadings', function () {
+describe('utils.adjust.headings', function () {
 
 
   /**
    * Utils:headings
    */
 
-  describe('when utils.adjustHeadings is used', function () {
+  describe('when utils.adjust.headings is used', function () {
     it('should add one level to each heading.', function () {
-      var actual = utils.adjustHeadings('# Heading');
+      var actual = utils.adjust.headings('# Heading');
       var expected = '## Heading';
       expect(actual).to.eql(expected);
     });
 
     it('should add one level to each heading.', function () {
-      var actual = utils.adjustHeadings('## Heading');
+      var actual = utils.adjust.headings('## Heading');
       var expected = '### Heading';
       expect(actual).to.eql(expected);
     });
 
     it('should not adjust heading levels in code backticks.', function () {
-      var actual = utils.adjustHeadings('`## Heading`');
+      var actual = utils.adjust.headings('`## Heading`');
       var expected = '`## Heading`';
       expect(actual).to.eql(expected);
     });
 
     it('should not adjust headings in code blocks.', function () {
-      var actual = utils.adjustHeadings('```\n## Heading\n```');
+      var actual = utils.adjust.headings('```\n## Heading\n```');
       var expected = '```\n## Heading\n```';
       expect(actual).to.eql(expected);
     });
@@ -89,7 +89,7 @@ describe('utils.adjustHeadings', function () {
         '```'
       ].join('\n');
 
-      var actual = utils.adjustHeadings(fixture);
+      var actual = utils.adjust.headings(fixture);
       expect(actual).to.eql(expected);
     });
 
@@ -111,6 +111,39 @@ describe('utils.arrayify:', function () {
       var expected = ['str'];
       expect(actual).to.eql(expected);
     });
+  });
+});
+
+describe('utils.date:', function () {
+  describe('when utils.date():', function () {
+    it('should return the current year.', function () {
+      var actual = utils.date(new Date(), 'YYYY');
+      expect(actual).to.eql(2014);
+    });
+
+    it('should return the full date.', function () {
+      var actual = utils.date(new Date(), 'full');
+      expect(actual.indexOf(2014) !== -1).to.eql(true);
+    });
+  });
+});
+
+
+describe('utils.reverse:', function () {
+  it('should return the reversed string.', function () {
+    var actual = utils.reverse('abc');
+    expect(actual).to.eql('cba');
+  });
+});
+
+
+
+describe('mixins.lowercase:', function () {
+  it('should return the lowercased string.', function () {
+    var actual = phaser('{%= _.lowercase("ABC") %}', {
+      mixins: 'test/mixins/*.js'
+    });
+    expect(actual.content).to.eql('abc');
   });
 });
 

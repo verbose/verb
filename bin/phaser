@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'phaser';
+
+// Node.js
+var path = require('path');
+
+// node_modules
+var chalk = require('chalk');
+var glob = require('globule');
+var file = require('fs-utils');
+var program = require('commander');
+var prompt = require('prompt');
+
+// Local libs
+var phaser = require('../index');
+var pkg = require('../package.json');
+var version = pkg.version;
+
+// CLI
+
+program
+  .version(version)
+  .usage('[options] [dir]')
+  .option('-v, --verbose', 'verbose logging')
+  .parse(process.argv);
+
+
+// Messages
+
+var success = chalk.green;
+var warn    = chalk.yellow;
+var error   = chalk.red;
+
+// Phaser
+
+// glob.find(process.argv[2] + '*', {filter: 'isFile'}).map(function(task) {
+//   require(path.resolve(task));
+//   console.log(success('Success\n'));
+// });
+
+
+// Defaults
+var config = {readme: 'README.tmpl.md'};
+var supplied = {};
+
+function render(filepath) {
+  var template = path.join(filepath, config.readme);
+
+  // Check for a README template before continuing
+  if (!file.exists(template)) {
+    console.log(error('README.tmpl.md not found.'));
+    return;
+  }
+
+  // Run phaser
+  var content = file.readFileSync(template);
+  file.writeFileSync('README.md', phaser(content));
+  console.log('\n>> README rendered.\n' + success('>> Completed successfully.'));
+};
+
+
+// If no path is specified, ask for one.
+if (process.argv.length < 3) {
+  prompt.message = 'Please supply a source directory';
+  prompt.start();
+  prompt.get(['path'], function (err, result) {
+    render(result.path);
+  });
+} else {
+  render(process.argv[2]);
+}
