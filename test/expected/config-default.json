@@ -24,6 +24,7 @@
     "main": "index.js",
     "dependencies": {
       "chalk": "~0.4.0",
+      "commander": "~2.1.0",
       "findup-sync": "~0.1.2",
       "frep": "~0.1.3",
       "fs-utils": "~0.2.0",

@@ -112,7 +112,7 @@ phaser(str, {config: 'path/to/*.json'});
 ### Extending the Context
 From least specific to most specific, this is how the context is extended. In other words, the **last wins**:
 
-* `mixins|functions`: [Lo-Dash mixins]() and custom functions may be used to build up the context when other more conventional means aren't available. For example, an `authors()` mixin/function might be used to read the [AUTHORS](./AUTHORS) file, and then extend the context with the names of the authors therein.
+* `filters|functions`: [Lo-Dash filters]() and custom functions may be used to build up the context when other more conventional means aren't available. For example, an `authors()` mixin/function might be used to read the [AUTHORS](./AUTHORS) file, and then extend the context with the names of the authors therein.
 * `options`: Variables defined directly on the `options` object, e.g. `{name: "phaser"}`.
 * `options.data`: Variables from the `options.data` property. This is a very flexible property:
   - `Object`: You may pass a raw object directly to the property, e.g. `{data: {name: "phaser"}}`.
@@ -210,7 +210,7 @@ The following object would be merged into the context:
   namespace: '',
 
   // Extensions
-  mixins: 'test/mixins/*.js',
+  filters: 'test/filters/*.js',
   contributing: true,
 
   // Glob defaults

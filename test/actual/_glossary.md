@@ -1,5 +1,3 @@
-[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
-
 # [Examples](../../docs/docs-examples.md)
 
 * [Template Examples](../../docs/docs-examples.md/#template-examples)
@@ -32,11 +30,11 @@
 
 # [Mixins](../../docs/docs-mixins.md)
 
-* ["include" mixins](../../docs/docs-mixins.md/#include-mixins)
+* ["include" filters](../../docs/docs-mixins.md/#include-filters)
   * [_.include()](../../docs/docs-mixins.md/#include)
   * [_.doc()](../../docs/docs-mixins.md/#doc)
   * [_.resolve()](../../docs/docs-mixins.md/#resolve)
-* [convenience mixins](../../docs/docs-mixins.md/#convenience-mixins)
+* [convenience filters](../../docs/docs-mixins.md/#convenience-filters)
   * [_.meta()](../../docs/docs-mixins.md/#meta)
   * [_.jsdocs()](../../docs/docs-mixins.md/#jsdocs)
   * [_.copyright()](../../docs/docs-mixins.md/#copyright)
@@ -56,4 +54,3 @@
 * [remove](../../docs/docs-options.md/#remove)
 * [contributing](../../docs/docs-options.md/#contributing)
 * [sep](../../docs/docs-options.md/#sep)
-

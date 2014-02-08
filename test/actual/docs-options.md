@@ -167,7 +167,7 @@ By default, the README task copies a basic `CONTRIBUTING.md` file to the root of
 Type: `String`
 Default: `\n`
 
-Separator to use between sections of content that is included using the `include` or `doc` mixins (more about these in the "Mixins" section below). This option is more useful when you use [minimatch][] patterns to specify the files to include.
+Separator to use between sections of content that is included using the `include` or `doc` filters (more about these in the "filters" section below). This option is more useful when you use [minimatch][] patterns to specify the files to include.
 
 The `sep` option can either be defined in the task options:
 
@@ -179,7 +179,7 @@ readme: {
 }
 ```
 
-or as a second parameter in the `include` or `doc` mixins.
+or as a second parameter in the `include` or `doc` filters.
 
 * `{%= _.include("docs-*.md", "***") %}` (more below...)
 * `{%= _.doc("*.md", "\n***\n") %}` (more below...)

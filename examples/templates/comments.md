@@ -1,0 +1,1 @@
+{%= comments('lib/**/*.js') %}

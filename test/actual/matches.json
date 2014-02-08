@@ -4,7 +4,23 @@
     "path": "lib/config.js",
     "comments": [
       {
-        "comment": "/**\n * Initialize config object. This defaults\n * to package.json, unless overridden by\n * passing an object to `options.config`\n *\n * @param {Object} config\n * @return {Object}\n * @api private\n */"
+        "comment": [
+          {
+            "description": "Initialize config object. This defaults\nto package.json, unless overridden by\npassing an object to `options.config`",
+            "param": "{Object} config",
+            "return": "{Object}",
+            "api": "private",
+            "description_html": "<p>Initialize config object. This defaults\nto package.json, unless overridden by\npassing an object to <code>options.config</code></p>",
+            "params": [
+              {
+                "type": "Object",
+                "name": "config",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -13,7 +29,23 @@
     "path": "lib/data.js",
     "comments": [
       {
-        "comment": "/**\n * Extend context with metadata from\n * `options.data`.\n *\n * @param {Object} options\n * @return {Object}\n * @api private\n */"
+        "comment": [
+          {
+            "description": "Extend context with metadata from\n`options.data`.",
+            "param": "{Object} options",
+            "return": "{Object}",
+            "api": "private",
+            "description_html": "<p>Extend context with metadata from\n<code>options.data</code>.</p>",
+            "params": [
+              {
+                "type": "Object",
+                "name": "options",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -22,10 +54,24 @@
     "path": "lib/exclusions.js",
     "comments": [
       {
-        "comment": "/**\n * Default exclusions\n */"
+        "comment": [
+          {
+            "description": "Default exclusions",
+            "description_html": "<p>Default exclusions</p>",
+            "line": 1
+          }
+        ]
       },
       {
-        "comment": "/**\n * Omit properties from the context\n *\n * @return {Object}\n * @api private\n */"
+        "comment": [
+          {
+            "description": "Omit properties from the context",
+            "return": "{Object}",
+            "api": "private",
+            "description_html": "<p>Omit properties from the context</p>",
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -39,7 +85,24 @@
     "path": "lib/functions.js",
     "comments": [
       {
-        "comment": "/**\n * Adds functions to the context\n *\n * @name functions\n * @param {Object} options\n * @return {Object}\n * @api private\n */"
+        "comment": [
+          {
+            "description": "Adds functions to the context",
+            "name": "functions",
+            "param": "{Object} options",
+            "return": "{Object}",
+            "api": "private",
+            "description_html": "<p>Adds functions to the context</p>",
+            "params": [
+              {
+                "type": "Object",
+                "name": "options",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -68,7 +131,32 @@
     "path": "lib/utils/date.js",
     "comments": [
       {
-        "comment": "/**\n * Date functions used in _.date() filter\n *\n * @name formatDate\n * @param  {Object} dateobj The date object to format.\n * @param  {String} pattern The pattern to use, e.g. 'YYYY-MM-DD'.\n *\n * @return {String} The formatted date.\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Date functions used in _.date() filter",
+            "name": "formatDate",
+            "param": [
+              "{Object} dateobj The date object to format.",
+              "{String} pattern The pattern to use, e.g. 'YYYY-MM-DD'."
+            ],
+            "return": "{String} The formatted date.",
+            "api": "public",
+            "description_html": "<p>Date functions used in _.date() filter</p>",
+            "params": [
+              {
+                "type": "Object",
+                "name": "dateobj",
+                "description": "The date object to format."
+              },
+              {
+                "type": "String",
+                "name": "pattern",
+                "description": "The pattern to use, e.g. 'YYYY-MM-DD'."
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -87,9 +175,9 @@
     "path": "lib/functions/license.js",
     "comments": []
   },
-  "partials.js": {
-    "name": "partials.js",
-    "path": "lib/partials.js",
+  "partial.js": {
+    "name": "partial.js",
+    "path": "lib/functions/partial.js",
     "comments": []
   },
   "pkg.js": {
@@ -102,7 +190,24 @@
     "path": "lib/utils/reverse.js",
     "comments": [
       {
-        "comment": "/**\n * Reverse a string\n *\n * @name reverse\n * @param  {String} str The string to reverse\n * @return {String}     The reversed string.\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Reverse a string",
+            "name": "reverse",
+            "param": "{String} str The string to reverse",
+            "return": "{String}     The reversed string.",
+            "api": "public",
+            "description_html": "<p>Reverse a string</p>",
+            "params": [
+              {
+                "type": "String",
+                "name": "str",
+                "description": "The string to reverse"
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -116,12 +221,62 @@
     "path": "lib/functions/shortname.js",
     "comments": []
   },
+  "strip.js": {
+    "name": "strip.js",
+    "path": "lib/utils/strip.js",
+    "comments": [
+      {
+        "comment": [
+          {
+            "description": "Strip newlines and whitespace padding.",
+            "name": "reverse",
+            "param": "{String} str The string to reverse",
+            "return": "{String}     The reversed string.",
+            "api": "public",
+            "description_html": "<p>Strip newlines and whitespace padding.</p>",
+            "params": [
+              {
+                "type": "String",
+                "name": "str",
+                "description": "The string to reverse"
+              }
+            ],
+            "line": 1
+          }
+        ]
+      }
+    ]
+  },
   "toc.js": {
     "name": "toc.js",
     "path": "lib/utils/toc.js",
     "comments": [
       {
-        "comment": "/**\n * Generate a Table of Contents.\n * Use {%= toc %} in templates\n *\n * @param  {String} str\n * @param  {Object} options\n *\n * @return {String} the Table of Contents\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Generate a Table of Contents.",
+            "param": [
+              "{String} str",
+              "{Object} options"
+            ],
+            "return": "{String} the Table of Contents",
+            "api": "public",
+            "description_html": "<p>Generate a Table of Contents.</p>",
+            "params": [
+              {
+                "type": "String",
+                "name": "str",
+                "description": ""
+              },
+              {
+                "type": "Object",
+                "name": "options",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -135,13 +290,21 @@
     "path": "lib/matter.js",
     "comments": [
       {
-        "comment": "/**\n * Omit properties from the context\n *\n * @return {Object}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Parse and extract YAML, JSON or Coffee\nfront matter.",
+            "return": "{Object}",
+            "api": "public",
+            "description_html": "<p>Parse and extract YAML, JSON or Coffee\nfront matter.</p>",
+            "line": 1
+          }
+        ]
       }
     ]
   },
-  "mixins.js": {
-    "name": "mixins.js",
-    "path": "lib/mixins.js",
+  "partials.js": {
+    "name": "partials.js",
+    "path": "lib/partials.js",
     "comments": []
   },
   "plugins.js": {
@@ -149,7 +312,24 @@
     "path": "lib/plugins.js",
     "comments": [
       {
-        "comment": "/**\n * Adds plugins to the context\n *\n * @name plugins\n * @param {Object} options\n * @return {Object}\n * @api private\n */"
+        "comment": [
+          {
+            "description": "Register plugins with Phaser",
+            "name": "plugins",
+            "param": "{Object} options",
+            "return": "{Object}",
+            "api": "private",
+            "description_html": "<p>Register plugins with Phaser</p>",
+            "params": [
+              {
+                "type": "Object",
+                "name": "options",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -158,7 +338,37 @@
     "path": "lib/template.js",
     "comments": [
       {
-        "comment": "/**\n * Compile Lo-Dash templates.\n *\n * @param  {String} str      The templates to process.\n * @param  {Object} data     Context for the templates\n * @param  {Object} settings Options to pass to Lo-Dash\n * @return {String}\n *\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Compile Lo-Dash templates.",
+            "param": [
+              "{String} str      The templates to process.",
+              "{Object} data     Context for the templates",
+              "{Object} settings Options to pass to Lo-Dash"
+            ],
+            "return": "{String}",
+            "api": "public",
+            "description_html": "<p>Compile Lo-Dash templates.</p>",
+            "params": [
+              {
+                "type": "String",
+                "name": "str",
+                "description": "The templates to process."
+              },
+              {
+                "type": "Object",
+                "name": "data",
+                "description": "Context for the templates"
+              },
+              {
+                "type": "Object",
+                "name": "settings",
+                "description": "Options to pass to Lo-Dash"
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -167,10 +377,26 @@
     "path": "lib/utils/adjust.js",
     "comments": [
       {
-        "comment": "/**\n * Adjust heading levels. Adds one heading\n * level next to all markdown headings to\n * make them correct within the scope of the\n * inheriting document. Headings in fenced\n * code blocks are skipped.\n *\n * @return {String}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Adjust heading levels. Adds one heading\nlevel next to all markdown headings to\nmake them correct within the scope of the\ninheriting document. Headings in fenced\ncode blocks are skipped.",
+            "return": "{String}",
+            "api": "public",
+            "description_html": "<p>Adjust heading levels. Adds one heading\nlevel next to all markdown headings to\nmake them correct within the scope of the\ninheriting document. Headings in fenced\ncode blocks are skipped.</p>",
+            "line": 1
+          }
+        ]
       },
       {
-        "comment": "/**\n * Unescapes delimiters\n *\n * @return {String}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Unescapes delimiters",
+            "return": "{String}",
+            "api": "public",
+            "description_html": "<p>Unescapes delimiters</p>",
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -179,7 +405,31 @@
     "path": "lib/utils/arrayify.js",
     "comments": [
       {
-        "comment": "/**\n * Coerce the value to an array\n *\n * @param {name} arrayify\n * @param {Array|String} arr\n *\n * @return {Array}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Coerce the value to an array",
+            "param": [
+              "{name} arrayify",
+              "{Array|String} arr"
+            ],
+            "return": "{Array}",
+            "api": "public",
+            "description_html": "<p>Coerce the value to an array</p>",
+            "params": [
+              {
+                "type": "name",
+                "name": "arrayify",
+                "description": ""
+              },
+              {
+                "type": "Array|String",
+                "name": "arr",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -193,7 +443,15 @@
     "path": "lib/utils/dir.js",
     "comments": [
       {
-        "comment": "/**\n * Get the relative path from process.cwd() to\n * the specifiied paths, from any other directory\n * in the project.\n *\n * @return {String}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Get the relative path from process.cwd() to\nthe specifiied paths, from any other directory\nin the project.",
+            "return": "{String}",
+            "api": "public",
+            "description_html": "<p>Get the relative path from process.cwd() to\nthe specifiied paths, from any other directory\nin the project.</p>",
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -202,13 +460,99 @@
     "path": "lib/utils/expand.js",
     "comments": [
       {
-        "comment": "/**\n * Expand files.\n *\n * @name expand\n * @param {String} src\n * @param {Object} options\n *\n * @return {Array}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Expand files.",
+            "name": "expand",
+            "param": [
+              "{String} src",
+              "{Object} options"
+            ],
+            "return": "{Array}",
+            "api": "public",
+            "description_html": "<p>Expand files.</p>",
+            "params": [
+              {
+                "type": "String",
+                "name": "src",
+                "description": ""
+              },
+              {
+                "type": "Object",
+                "name": "options",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       },
       {
-        "comment": "/**\n * Expand files and read in content.\n *\n * @name expand\n * @param {String} src\n * @param {Object} options\n *\n * @return {Array}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Expand files and read in content.",
+            "name": "expand",
+            "param": [
+              "{String} src",
+              "{Object} options"
+            ],
+            "return": "{Array}",
+            "api": "public",
+            "description_html": "<p>Expand files and read in content.</p>",
+            "params": [
+              {
+                "type": "String",
+                "name": "src",
+                "description": ""
+              },
+              {
+                "type": "Object",
+                "name": "options",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       },
       {
-        "comment": "/**\n * Expand mapping\n *\n * @param  {name} expandMapping\n * @param  {Array|String} patterns Accepts either comma separated\n *         globbing patterns or an array of globbing patterns.\n * @param  {String} dest The base path for dest files.\n * @param  {Object} options Options to pass in:\n *     @option {String} cwd: the current working directory for source files.\n *     @option {String} ext: the file extension to use on dest files.\n *\n * @return {Array} Returns an array of src-dest file mappings.\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Expand mapping",
+            "param": [
+              "{name} expandMapping",
+              "{Array|String} patterns Accepts either comma separated globbing patterns or an array of globbing patterns.",
+              "{String} dest The base path for dest files.",
+              "{Object} options Options to pass in: @option {String} cwd: the current working directory for source files. @option {String} ext: the file extension to use on dest files."
+            ],
+            "return": "{Array} Returns an array of src-dest file mappings.",
+            "api": "public",
+            "description_html": "<p>Expand mapping</p>",
+            "params": [
+              {
+                "type": "name",
+                "name": "expandMapping",
+                "description": ""
+              },
+              {
+                "type": "Array|String",
+                "name": "patterns",
+                "description": "Accepts either comma separated globbing patterns or an array of globbing patterns."
+              },
+              {
+                "type": "String",
+                "name": "dest",
+                "description": "The base path for dest files."
+              },
+              {
+                "type": "Object",
+                "name": "options",
+                "description": "Options to pass in: @option {String} cwd: the current working directory for source files. @option {String} ext: the file extension to use on dest files."
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -217,7 +561,32 @@
     "path": "lib/utils/expandData.js",
     "comments": [
       {
-        "comment": "/**\n * Read in data from a string, object or array\n *\n * @name expandData\n * @param  {String|Object|Array} data     String, object or array\n * @param  {Object}              options  Pass an object of options\n * @return {Object}                       Returns an object of metadata\n *\n * @api {Public}\n */"
+        "comment": [
+          {
+            "description": "Read in data from a string, object or array",
+            "name": "expandData",
+            "param": [
+              "{String|Object|Array} data     String, object or array",
+              "{Object}              options  Pass an object of options"
+            ],
+            "return": "{Object}                       Returns an object of metadata",
+            "api": "{Public}",
+            "description_html": "<p>Read in data from a string, object or array</p>",
+            "params": [
+              {
+                "type": "String|Object|Array",
+                "name": "data",
+                "description": "String, object or array"
+              },
+              {
+                "type": "Object",
+                "name": "options",
+                "description": "Pass an object of options"
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -226,7 +595,15 @@
     "path": "lib/utils/isType.js",
     "comments": [
       {
-        "comment": "/**\n * Returns the `typeOf` a JavaScript value\n *\n * @return {String}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Returns the `typeOf` a JavaScript value",
+            "return": "{String}",
+            "api": "public",
+            "description_html": "<p>Returns the <code>typeOf</code> a JavaScript value</p>",
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -235,7 +612,31 @@
     "path": "lib/utils/postProcess.js",
     "comments": [
       {
-        "comment": "/**\n * Post-process content with RegExp replacement patterns\n * @param  {String} str      The string with patterns to replace.\n * @param  {Object} options  The options to use\n *    @option {patterns} Replacement patterns to use\n *\n * @return {String}          The transformed string.\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Post-process content with RegExp replacement patterns",
+            "param": [
+              "{String} str      The string with patterns to replace.",
+              "{Object} options  The options to use @option {patterns} Replacement patterns to use"
+            ],
+            "return": "{String}          The transformed string.",
+            "api": "public",
+            "description_html": "<p>Post-process content with RegExp replacement patterns</p>",
+            "params": [
+              {
+                "type": "String",
+                "name": "str",
+                "description": "The string with patterns to replace."
+              },
+              {
+                "type": "Object",
+                "name": "options",
+                "description": "The options to use @option {patterns} Replacement patterns to use"
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   },
@@ -244,7 +645,22 @@
     "path": "lib/utils/username.js",
     "comments": [
       {
-        "comment": "/**\n * Extract a username/org from a\n * GitHub URL.\n *\n * @param  {String}\n * @return {String}\n * @api public\n */"
+        "comment": [
+          {
+            "description": "Extract a username/org from a\nGitHub URL.",
+            "param": "{String}",
+            "return": "{String}",
+            "api": "public",
+            "description_html": "<p>Extract a username/org from a\nGitHub URL.</p>",
+            "params": [
+              {
+                "name": "{String}",
+                "description": ""
+              }
+            ],
+            "line": 1
+          }
+        ]
       }
     ]
   }

@@ -14,7 +14,7 @@ var opts = {
   cwd: 'test/fixtures',
   ext: '.md',
   destBase: './test/actual/',
-  mixins: ['./lib/mixins/*.js']
+  filters: ['./lib/filters/*.js']
 };
 
 var dest = opts.destBase;

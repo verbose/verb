@@ -8,6 +8,8 @@
 'use strict';
 
 var phaser = require('../');
+var _ = require('lodash');
+
 
 var opts = {
   cwd: 'examples/templates',
@@ -16,5 +18,5 @@ var opts = {
   partials: ['./test/fixtures/partials/*.md']
 };
 
-// _.definePartial('tooltip', '<div class="tooltip">${ content }</div>');
+
 phaser.copy('examples/templates/README.tmpl.md', 'test/actual/partials.md', opts);

@@ -24,23 +24,16 @@ var version = pkg.version;
 program
   .version(version)
   .usage('[options] [dir]')
+  .option('-f, --file', 'build a specific file.')
+  .option('-d, --directory', 'build an entire directory, globbing patterns optional.')
   .option('-v, --verbose', 'verbose logging')
   .parse(process.argv);
-
 
 // Messages
 
 var success = chalk.green;
 var warn    = chalk.yellow;
 var error   = chalk.red;
-
-// Phaser
-
-// glob.find(process.argv[2] + '*', {filter: 'isFile'}).map(function(task) {
-//   require(path.resolve(task));
-//   console.log(success('Success\n'));
-// });
-
 
 // Defaults
 var config = {readme: 'README.tmpl.md'};
@@ -57,18 +50,42 @@ function render(filepath) {
 
   // Run phaser
   var content = file.readFileSync(template);
-  file.writeFileSync('README.md', phaser(content));
+
+  file.writeFileSync('README.md', phaser.process(content));
   console.log('\n>> README rendered.\n' + success('>> Completed successfully.'));
 };
 
+// Phaser
 
-// If no path is specified, ask for one.
-if (process.argv.length < 3) {
-  prompt.message = 'Please supply a source directory';
-  prompt.start();
-  prompt.get(['path'], function (err, result) {
-    render(result.path);
+if(program.directory) {
+  glob.find(program.rawArgs[3] + '/*', {filter: 'isFile'}).map(function(task) {
+    require(path.resolve(task));
+    console.log(success('Success\n'));
+  });
+} else if(program.file) {
+  glob.find(program.rawArgs[3], {filter: 'isFile'}).map(function(task) {
+    require(path.resolve(task));
+    console.log(success('Success\n'));
   });
 } else {
-  render(process.argv[2]);
+
+  // If no path is specified, ask for one.
+  if (process.argv.length < 3) {
+    try {
+      render('docs');
+    } catch(e) {
+      prompt.message = 'Please supply a source directory';
+      prompt.start();
+      prompt.get(['path'], function (err, result) {
+        render(result.path);
+      });
+    }
+  } else {
+    try {
+      render(process.argv[2]);
+    } catch(e) {
+      console.warn(error('Phaser cannot find a README template.', e));
+    }
+  }
 }
+

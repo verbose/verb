@@ -7,7 +7,6 @@
 
 'use strict';
 
-// Custom mixins
 module.exports = function(config, options) {
   options = options || {};
 

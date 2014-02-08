@@ -39,8 +39,8 @@ grunt.registerTask('default', ['readme']);
 ## Options
 {%= docs("docs-options") %}
 
-## Mixins
-{%= docs("docs-mixins") %}
+## filters
+{%= docs("docs-filters") %}
 
 ## Examples
 {%= docs("docs-examples") %}

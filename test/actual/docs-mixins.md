@@ -1,14 +1,14 @@
-Mixins use the following formats:
+filters use the following formats:
 
 * `_.mixin()`: when used in JavaScript
 * `{%= _.mixin() %}`: when used in templates
 
 
-## "include" mixins
+## "include" filters
 
-> Three different mixins are built into the task for including "external" content: `include`, `doc` and `resolve`. Each is used for a different purpose.
+> Three different filters are built into the task for including "external" content: `include`, `doc` and `resolve`. Each is used for a different purpose.
 
-Here is a summary of what they do (settings for the `include` and `doc` mixins can be customized in the task options):
+Here is a summary of what they do (settings for the `include` and `doc` filters can be customized in the task options):
 
 * `{%= _.include("file.md") %}`: include a file (or files using [minimatch][minimatch] patterns) from the `./templates/` directory of _the phaser task_.
 * `{%= _.doc("file.md") %}`:  include a file (or files using [minimatch][minimatch] patterns) from the `./docs/` directory of _your project_.
@@ -62,7 +62,7 @@ In the `package.json` of the project that will store your templates, you might d
 }
 ```
 
-## convenience mixins
+## convenience filters
 
 ### _.meta()
 

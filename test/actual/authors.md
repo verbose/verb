@@ -1,0 +1,4 @@
+# Authors
+
++ [Jon Schlinkert](http://github.com/jonschlinkert) 
++ [Brian Woodward](http://github.com/doowb) 

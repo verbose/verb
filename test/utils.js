@@ -1,24 +1,9 @@
-/**
- * phaser <https://github.com/jonschlinkert/phaser>
- *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
- * Licensed under the MIT license.
- */
-
-'use strict';
-
-// Node.js
-var path = require('path');
-
 // node_modules
 var expect = require('chai').expect;
-var file = require('fs-utils');
-var _ = require('lodash');
 
 // Local libs
 var phaser = require('../');
 var utils = require('../lib/utils');
-
 
 describe('utils.adjust.headings', function () {
 
@@ -114,6 +99,8 @@ describe('utils.arrayify:', function () {
   });
 });
 
+
+
 describe('utils.date:', function () {
   describe('when utils.date():', function () {
     it('should return the current year.', function () {
@@ -129,6 +116,21 @@ describe('utils.date:', function () {
 });
 
 
+
+describe('utils.strip:', function () {
+  it('should strip whitespace surrounding the string.', function () {
+    var actual = utils.strip('  abc   ');
+    expect(actual).to.eql('abc');
+  });
+
+  it('should strip whitespace surrounding the string.', function () {
+    var actual = utils.strip('\n abc \n abc ');
+    expect(actual).to.eql('abc abc');
+  });
+});
+
+
+
 describe('utils.reverse:', function () {
   it('should return the reversed string.', function () {
     var actual = utils.reverse('abc');
@@ -138,10 +140,10 @@ describe('utils.reverse:', function () {
 
 
 
-describe('mixins.lowercase:', function () {
+describe('filters.lowercase:', function () {
   it('should return the lowercased string.', function () {
     var actual = phaser('{%= _.lowercase("ABC") %}', {
-      mixins: 'test/mixins/*.js'
+      filters: 'test/filters/*.js'
     });
     expect(actual.content).to.eql('abc');
   });

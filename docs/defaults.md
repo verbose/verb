@@ -8,7 +8,7 @@
   namespace: '',
 
   // Extensions
-  mixins: 'test/mixins/*.js',
+  filters: 'test/filters/*.js',
   contributing: true,
 
   // Glob defaults
