@@ -1,7 +1,6 @@
 ---
 title: Options
 ---
-
 * defaults
 * options
 

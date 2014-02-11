@@ -35,7 +35,6 @@ phaser.process = function(src, options) {
   phaser.base       = cwd();
   phaser.utils      = utils;
   phaser.template   = lib.template;
-  // phaser.file       = lib.file;
   phaser.expand     = lib.expand;
   phaser.plugins    = lib.plugins;
   phaser.filters    = lib.filters;
@@ -48,13 +47,10 @@ phaser.process = function(src, options) {
   var config   = lib.config.init(opts.config);
   var data     = lib.data.init(opts);
 
-  // phaser.file    = phaser.file(context, opts, {phaser: phaser});
-
   // Extract and parse front matter
-  phaser.matter = phaser.matter.init(src, opts);
-  var content  = phaser.matter.content;
-  var metadata = phaser.matter.context;
-  // console.log(phaser.matter);
+  phaser.page = phaser.matter.init(src, opts);
+  var content  = phaser.page.content;
+  var metadata = phaser.page.context;
 
   // Build up the context
   var context  = _.extend({}, config, opts, opts.metadata || {}, data, metadata);
@@ -75,21 +71,26 @@ phaser.process = function(src, options) {
   phaser.log     = lib.log.init(config, opts, {phaser: phaser});
   phaser.verbose = phaser.log.verbose;
 
+  var ctx = _.defaults({}, metadata, context);
+
   // Initialize plugins
   var pContext = phaser.plugins.init(config, opts, {
     context: data,
     phaser: phaser
   });
 
+  ctx = _.defaults({}, ctx, pContext);
+
   // Initialize filters
   var fContext = phaser.filters.init(config, opts, {
-    context: context,
+    context: ctx,
     page: phaser.matter,
     phaser: phaser
   });
 
   // Extend context with custom filters and filters,
-  var ctx = _.defaults({}, metadata, pContext, fContext, context);
+  ctx = _.defaults({}, ctx, fContext);
+  file.writeJSONSync('./tmp/context/ctx.json', ctx);
 
   // Initialize Lo-Dash filters (mixins)
   phaser.mixins.init(config, opts, {

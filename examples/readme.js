@@ -7,4 +7,4 @@
 
 var phaser = require('../');
 
-phaser.copy('docs/README.tmpl.md', 'test/actual/FOO.md', {verbose: true});
+phaser.copy('docs/README.tmpl.md', 'test/actual/FOO.md', {verbose: false});
