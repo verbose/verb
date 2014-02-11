@@ -8,13 +8,13 @@ Example document:
 {%= toc %}
 
 ## Overview
-{%= doc("overview.md") %}
+{%= docs("overview.md") %}
 
 ## Options
-{%= doc("options.md") %}
+{%= docs("options.md") %}
 
 ## Examples
-{%= doc("examples.md") %}
+{%= docs("examples.md") %}
 
 ## License and Copyright
 {%= copyright %}

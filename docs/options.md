@@ -1,4 +1,6 @@
-# Options
+---
+title: Options
+---
 
 * defaults
 * options

@@ -49,10 +49,10 @@ describe('utils.adjust.headings', function () {
         '> [%= description %]',
         '',
         '## Overview',
-        '[%= doc("overview.md") %]',
+        '[%= docs("overview.md") %]',
         '',
         '## Options',
-        '[%= doc("options.md") %]',
+        '[%= docs("options.md") %]',
         '```'
       ].join('\n');
 
@@ -67,10 +67,10 @@ describe('utils.adjust.headings', function () {
         '> [%= description %]',
         '',
         '## Overview',
-        '[%= doc("overview.md") %]',
+        '[%= docs("overview.md") %]',
         '',
         '## Options',
-        '[%= doc("options.md") %]',
+        '[%= docs("options.md") %]',
         '```'
       ].join('\n');
 
@@ -130,22 +130,10 @@ describe('utils.strip:', function () {
 });
 
 
-
 describe('utils.reverse:', function () {
   it('should return the reversed string.', function () {
     var actual = utils.reverse('abc');
     expect(actual).to.eql('cba');
-  });
-});
-
-
-
-describe('filters.lowercase:', function () {
-  it('should return the lowercased string.', function () {
-    var actual = phaser('{%= _.lowercase("ABC") %}', {
-      filters: 'test/filters/*.js'
-    });
-    expect(actual.content).to.eql('abc');
   });
 });
 

@@ -1,5 +1,17 @@
 {
   "context": {
+    "authors": [
+      {
+        "name": "Jon Schlinkert",
+        "email": "",
+        "url": "https://github.com/jonschlinkert"
+      },
+      {
+        "name": "Brian Woodward",
+        "email": "",
+        "url": "https://github.com/doowb"
+      }
+    ],
     "toc": {},
     "user": "jonschlinkert"
   },

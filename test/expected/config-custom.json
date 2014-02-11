@@ -1,6 +1,18 @@
 {
   "context": {
     "name": "Custom Config",
+    "authors": [
+      {
+        "name": "Jon Schlinkert",
+        "email": "",
+        "url": "https://github.com/jonschlinkert"
+      },
+      {
+        "name": "Brian Woodward",
+        "email": "",
+        "url": "https://github.com/doowb"
+      }
+    ],
     "toc": {}
   },
   "content": "",

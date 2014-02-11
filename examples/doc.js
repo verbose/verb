@@ -11,11 +11,14 @@ var _ = require('lodash');
 var phaser = require('../');
 
 var opts = {
-  cwd: 'test/fixtures',
-  ext: '.md',
-  destBase: './test/actual/',
+  verbose: false,
+
+  glob: {
+    cwd: 'test/fixtures',
+    ext: '.md',
+  },
   filters: ['./lib/filters/*.js']
 };
 
-var dest = opts.destBase;
-phaser.expand(['*.md'], dest, _.extend({glob: {srcbase: opts.cwd}}, opts));
+var dest = './test/actual/';
+phaser.expand(['docs/*.md'], dest, opts);
