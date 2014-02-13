@@ -23,8 +23,8 @@ var lib   = require('./lib');
 var phaser = module.exports = {};
 
 // Extend `phaser`
-phaser.cwd        = cwd();
-phaser.base       = cwd();
+phaser.cwd        = file.normalizeSlash(cwd());
+phaser.base       = file.normalizeSlash(cwd());
 phaser.utils      = require('./lib/utils/index');
 phaser.template   = require('./lib/template');
 phaser.exclusions = require('./lib/exclusions');
