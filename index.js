@@ -15,6 +15,8 @@ var _     = require('lodash');
 // Internal libs
 var lib   = require('./lib');
 
+
+
 /**
  * Export Phaser
  */
@@ -106,7 +108,7 @@ phaser.process = function(src, options) {
   var ctx = _.extend(phaser.context, a, b, c);
   file.writeJSONSync('tmp/ctx/ctx.json', ctx);
 
-  var rendered = phaser.template(content, ctx, settings);
+  var rendered = phaser.template(content, phaser.context, settings);
   var result = phaser.utils.postProcess(rendered, opts);
 
   return {

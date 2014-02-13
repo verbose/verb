@@ -44,7 +44,8 @@
     "readme-templates": "~0.1.2",
     "relative": "~0.1.0",
     "remote-origin-url": "~0.2.1",
-    "template": "~0.1.3"
+    "template": "~0.1.3",
+    "strip-banner": "~0.1.1"
   },
   "devDependencies": {
     "chai": "~1.9.0",
