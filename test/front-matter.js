@@ -11,7 +11,7 @@ describe('front-matter', function () {
   describe('when "---json" is defined after the first front-matter delimiter', function () {
     it('should detect JSON as the language and correctly parse it as JSON.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect-json.md');
-      var actual = phaser(fixture);
+      var actual = phaser.process(fixture);
       expect(actual.content).to.deep.equal('JSON Front Matter');
       done();
     });
@@ -20,7 +20,7 @@ describe('front-matter', function () {
   describe('when "---json" is defined after the first custom front-matter delimiter', function () {
     it('should detect JSON as the language and correctly parse it as JSON.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect-json-delims.md');
-      var actual = phaser(fixture, {
+      var actual = phaser.process(fixture, {
         matter: {
           delims: [';;;', ';;;']
         }
@@ -33,7 +33,7 @@ describe('front-matter', function () {
   describe('when "---coffee" is defined after the first front-matter delimiter"', function () {
     it('should detect CoffeScript as the language, evaluate it, and extend the context with the result.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect.md');
-      var actual = phaser(fixture, {
+      var actual = phaser.process(fixture, {
         config: false
       });
       expect(actual.content).to.deep.equal('jonschlinkert');
@@ -51,10 +51,11 @@ describe('front-matter', function () {
   describe('when "---yaml" is defined after the first front-matter delimiter"', function () {
     it('should detect YAML as the language.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect-yaml.md');
-      var actual = phaser(fixture, {
+      var actual = phaser.process(fixture, {
         config: false
       });
       var expected = file.readJSONSync('test/expected/autodetect-yaml.json');
+      actual = JSON.parse(JSON.stringify(actual));
       expect(actual).to.deep.equal(expected);
       done();
     });
@@ -63,10 +64,11 @@ describe('front-matter', function () {
   describe('when no language is defined after the first fence', function () {
     it('should fall back YAML as the language.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect-no-lang.md');
-      var actual = phaser(fixture, {
+      var actual = phaser.process(fixture, {
         config: false
       });
       var expected = file.readJSONSync('test/expected/autodetect-no-lang.json');
+      actual = JSON.parse(JSON.stringify(actual));
       expect(actual).to.deep.equal(expected);
       done();
     });
@@ -81,16 +83,16 @@ describe('front-matter', function () {
 
     it('should be evaluated as CoffeeScript and extend the context with the result.', function (done) {
       var fixture = file.readFileSync('test/fixtures/coffee.md');
-      var actual = phaser(fixture, {
+      var actual = phaser.process(fixture, {
         lang: 'coffee'
-      }).content;
-      expect(actual).to.deep.equal('Coffee Front Matter');
+      });
+      expect(actual.content).to.deep.equal('Coffee Front Matter');
       done();
     });
 
     it('should evaluate functions and extend the context with the returned result.', function (done) {
       var fixture = file.readFileSync('test/fixtures/coffee-fn.md');
-      var actual = phaser(fixture);
+      var actual = phaser.process(fixture);
       expect(actual.content).to.equal('jonschlinkert\ntreknilhcsnoj');
       done();
     });

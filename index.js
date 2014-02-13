@@ -15,16 +15,12 @@ var _     = require('lodash');
 // Internal libs
 var lib   = require('./lib');
 
-
-
 /**
- * Export Phaser
+ * phaser
  */
-
 
 var phaser = module.exports = {};
 
-// Extend `phaser`
 phaser.cwd        = file.normalizeSlash(cwd());
 phaser.base       = file.normalizeSlash(cwd());
 phaser.utils      = require('./lib/utils/index');
@@ -38,7 +34,7 @@ phaser.mixins     = require('./lib/mixins');
 phaser.extensions = {};
 
 /**
- * phaser
+ * phaser.process
  */
 
 phaser.process = function(src, options) {
@@ -65,7 +61,7 @@ phaser.process = function(src, options) {
     throw new Error(phaser.log.error('phaser: no source files defined.'));
   }
 
-  phaser.log = lib.log.init(opts, {phaser: phaser});
+  phaser.log = lib.log.init(opts, phaser);
   phaser.verbose = phaser.log.verbose;
 
   // Extract and parse front matter
@@ -78,16 +74,16 @@ phaser.process = function(src, options) {
   // Add Table of Contents to templates with: {%= toc %}
   _.extend(phaser.context, {toc: phaser.utils.toc(content)});
 
-  // Exclude options from context
+  // Exclusion patterns, to omit certain options from context
   phaser.context = phaser.exclusions.init(phaser.context, opts);
-
-  // Initialize mixins
-  _.mixin(phaser.mixins.init(phaser));
 
   // Initialize Lo-Dash filters (mixins)
   _.extend(phaser.context, phaser.plugins.init(phaser));
-  _.extend(phaser.context, phaser.filters.init(phaser));
   _.extend(phaser.context, phaser.partials.init(phaser));
+  _.extend(phaser.context, phaser.filters.init(phaser));
+
+  // Initialize mixins
+  _.mixin(phaser.mixins.init(phaser));
 
   var rendered = phaser.template(content, phaser.context, settings);
   var result = phaser.utils.postProcess(rendered, opts);
@@ -99,7 +95,6 @@ phaser.process = function(src, options) {
   };
 };
 
-console.log(phaser.process('{%= name %}').content);
 
 // Read a file, then process with Phaser
 phaser.read = function(src, options) {
@@ -131,7 +126,6 @@ phaser.expandMapping = function(src, dest, options) {
     ext: opts.ext || '.md',
     destBase: dest
   };
-
   var concat = opts.concat || file.hasExt(dest) || false;
 
   var defer = [];

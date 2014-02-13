@@ -8,7 +8,6 @@
 'use strict';
 
 var phaser = require('../');
-var _ = require('lodash');
 
 var opts = {
   cwd: 'examples/templates',

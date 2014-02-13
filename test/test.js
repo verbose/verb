@@ -1,4 +1,5 @@
 // node_modules
+var util = require('util');
 var expect = require('chai').expect;
 var file = require('fs-utils');
 
@@ -11,13 +12,13 @@ describe('Phaser', function () {
 
   describe('phaser:', function () {
     it('should return the value of the name field in package.json', function () {
-      var actual = phaser('{%= name %}').content;
+      var actual = phaser.process('{%= name %}').content;
       var expected = 'phaser';
       expect(actual).to.eql(expected);
     });
 
     it('should change the name of the project to a custom value from the root context.', function () {
-      var actual = phaser('{%= name %}', {
+      var actual = phaser.process('{%= name %}', {
         name: "foo"
       }).content;
       var expected = 'foo';
@@ -25,7 +26,7 @@ describe('Phaser', function () {
     });
 
     it('should change the name of the project to a custom value from the data object.', function () {
-      var actual = phaser('{%= name %}', {
+      var actual = phaser.process('{%= name %}', {
         data: {
           name: "foo"
         }
@@ -35,7 +36,7 @@ describe('Phaser', function () {
     });
 
     it('should return the author name.', function () {
-      var actual = phaser('{%= author.name %}').content;
+      var actual = phaser.process('{%= author.name %}').content;
       var expected = 'Jon Schlinkert';
       expect(actual).to.eql(expected);
     });
@@ -48,13 +49,13 @@ describe('Phaser', function () {
     it('should return a variable from the default config object', function () {
       var actual = phaser.process('{%= name %}');
       var expected = 'phaser';
-      expect(actual).to.eql(expected);
+      expect(actual.content).to.eql(expected);
     });
 
     it('should return a nested variable from the default config object', function () {
       var actual = phaser.process('{%= author.name %}');
       var expected = 'Jon Schlinkert';
-      expect(actual).to.eql(expected);
+      expect(actual.content).to.eql(expected);
     });
 
     it('should update a variable on the root context.', function () {
@@ -62,7 +63,7 @@ describe('Phaser', function () {
         name: "foo"
       });
       var expected = 'foo';
-      expect(actual).to.eql(expected);
+      expect(actual.content).to.eql(expected);
     });
 
     it('should update a variable on the data object.', function () {
@@ -72,7 +73,7 @@ describe('Phaser', function () {
         }
       });
       var expected = 'bar';
-      expect(actual).to.eql(expected);
+      expect(actual.content).to.eql(expected);
     });
 
   });
@@ -160,24 +161,27 @@ describe('Phaser', function () {
         data: 'test/fixtures/**/author.json',
         namespace: false
       });
+
       var expected = 'Brian Woodward';
       expect(actual).to.eql(expected);
     });
 
     it('should extend the context with data from multiple globbed files.', function () {
       var fixture = file.readFileSync('test/fixtures/name.tmpl');
-      var actual = phaser(fixture, {
+      var actual = phaser.process(fixture, {
         data: 'test/fixtures/data/*.json'
       });
+      actual = JSON.parse(JSON.stringify(actual));
       var expected = file.readJSONSync('test/expected/globbed-basic.json');
       expect(actual).to.eql(expected);
     });
 
     it('should extend the context with data from an array of globbed files.', function () {
       var fixture = file.readFileSync('test/fixtures/name.tmpl');
-      var actual = phaser(fixture, {
+      var actual = phaser.process(fixture, {
         data: ['test/fixtures/**/foo.json', 'test/fixtures/data/{a,b}*.json']
       });
+      actual = JSON.parse(JSON.stringify(actual));
       var expected = file.readJSONSync('test/expected/globbed-array.json');
       expect(actual).to.eql(expected);
     });

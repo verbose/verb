@@ -54,6 +54,7 @@
       "readme-templates": "~0.1.2",
       "relative": "~0.1.0",
       "remote-origin-url": "~0.2.1",
+      "strip-banner": "~0.1.1",
       "template": "~0.1.3"
     },
     "devDependencies": {
@@ -63,8 +64,7 @@
     "bar": "bar",
     "baz": "baz",
     "foo": "foo",
-    "data": "test/fixtures/data/*.json",
-    "toc": {}
+    "data": "test/fixtures/data/*.json"
   },
   "content": "Brian Woodward",
   "original": "{%= name %}"

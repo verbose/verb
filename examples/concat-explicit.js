@@ -5,8 +5,5 @@
  * Licensed under the MIT license.
  */
 
-const file = require('fs-utils');
-const _ = require('lodash');
 const phaser = require('../');
-
 phaser.expandMapping(['*.md'], 'test/actual/concat-explicit.md', {concat: true});

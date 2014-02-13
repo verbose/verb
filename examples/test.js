@@ -4,9 +4,9 @@
  * Copyright (c) 2014 Jon Schlinkert, contributors.
  * Licensed under the MIT license.
  */
-var file = require('fs-utils');
-var phaser = require('../');
-var _ = require('lodash');
+
+const file = require('fs-utils');
+const phaser = require('../');
 
 // var opts = {destBase: 'test/actual', flatten: true};
 // file.expandMapping('docs/*.tmpl.md', opts).map(function(fp) {

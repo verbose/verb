@@ -7,7 +7,6 @@
 
 const path = require('path');
 const file = require('fs-utils');
-const _ = require('lodash');
 const phaser = require('../');
 
 var opts = {};
