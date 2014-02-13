@@ -6,14 +6,7 @@
  */
 
 const file = require('fs-utils');
+const _ = require('lodash');
 const phaser = require('../');
 
-var opts = {
-  cwd: 'docs',
-  ext: '.md',
-  destBase: './test/actual/'
-};
-
-file.expandMapping(['*.md'], opts).map(function(fp) {
-  file.writeFileSync(fp.dest, phaser.read(fp.src, {name: 'Phaser'}));
-});
+phaser.expandMapping(['*.md'], 'test/actual/');

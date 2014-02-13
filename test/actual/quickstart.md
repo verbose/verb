@@ -1,3 +1,3 @@
 ```bash
-npm install Phaser --save-dev
+npm install phaser --save-dev
 ```

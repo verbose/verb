@@ -1,8 +1,8 @@
-# Phaser
+# phaser
 
 > Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.
 
-Please [report any bugs or feature requests](https://github.com/jonschlinkert/Phaser/issues/new), thanks!
+Please [report any bugs or feature requests](https://github.com/jonschlinkert/phaser/issues/new), thanks!
 
 * [Quickstart](#quickstart)
 * [Examples](#examples)
@@ -16,7 +16,7 @@ Please [report any bugs or feature requests](https://github.com/jonschlinkert/Ph
 
 ## Quickstart
 ```bash
-npm install Phaser --save-dev
+npm install phaser --save-dev
 ```
 
 ## Examples

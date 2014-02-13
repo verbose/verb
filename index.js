@@ -141,14 +141,27 @@ phaser.expand = function(src, dest, options) {
   phaser.log.success('\n>> Completed successfully.');
 };
 
-// phaser.process = function(src, options) {
-//   return phaser(src, options).content;
-// };
+phaser.expandMapping = function(src, dest, options) {
+  var opts = _.extend({}, options);
+  var defaults = {
+    cwd: cwd(opts.cwd || 'docs'),
+    ext: opts.ext || '.md',
+    destBase: dest
+  };
+  console.log(file.hasExt('test/actual/*.md'));
+  var count = 0;
+  file.expandMapping(src, defaults).map(function(fp) {
+    count++;
+    file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
+    phaser.log.success('Saved to', fp.dest);
+  });
 
-// phaser.read = function(src, options) {
-//   var content = file.readFileSync(cwd(src));
-//   return phaser(content, options).content;
-// };
+  if(count > 0) {
+    phaser.log.success('\n>> Completed successfully');
+  } else {
+    phaser.log.error('\nFailed.');
+  }
+};
 
 // phaser.write = function(dest, str, options) {
 //   options = options || {};
@@ -157,9 +170,6 @@ phaser.expand = function(src, dest, options) {
 //   phaser.log.success('Saved to', dest);
 // };
 
-// phaser.expand = function(src) {
-//   return file.expand(src);
-// };
 
 // console.log(phaser.process('{%= name %}'));
 // console.log(phaser.process('{%= name %}', {name: 'Jon'}));
