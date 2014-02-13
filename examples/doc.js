@@ -5,30 +5,15 @@
  * Licensed under the MIT license.
  */
 
-const _ = require('lodash');
+const file = require('fs-utils');
 const phaser = require('../');
 
-// var opts = {
-//   verbose: false,
-
-//   glob: {
-//     cwd: 'test/fixtures',
-//     ext: '.md',
-//   },
-//   filters: ['./lib/filters/*.js']
-// };
-
-// var dest = './test/actual/';
-// phaser.expand(['docs/*.md'], dest, opts);
-
 var opts = {
-  glob: {
-    cwd: 'test/fixtures',
-    ext: '.md',
-    destBase: './test/actual/',
-    filters: ['./lib/filters/*.js']
-  }
+  cwd: 'docs',
+  ext: '.md',
+  destBase: './test/actual/'
 };
 
-var dest = opts.destBase;
-phaser.expandMapping(['*.md'], dest, opts);
+file.expandMapping(['*.md'], opts).map(function(fp) {
+  file.writeFileSync(fp.dest, phaser.read(fp.src, {name: 'Phaser'}));
+});
