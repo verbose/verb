@@ -1,4 +1,6 @@
-# Config
+---
+title: Config
+---
 
 * package.json | alt config object
 * metadata

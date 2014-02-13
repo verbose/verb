@@ -7,6 +7,8 @@ user: jonschlinkert
 
 Please [report any bugs or feature requests](https://github.com/{%= user %}/{%= name %}/issues/new), thanks!
 
+{%= toc() %}
+
 ## Quickstart
 {%= docs('quickstart') %}
 

@@ -4,6 +4,16 @@
 
 Please [report any bugs or feature requests](https://github.com/jonschlinkert/phaser/issues/new), thanks!
 
+* [Quickstart](#quickstart)
+* [Examples](#examples)
+* [Options](#options)
+* [Config](#config)
+* [Defaults](#defaults)
+* [Contributing](#contributing)
+* [Authors](#authors)
+* [License](#license)
+
+
 ## Quickstart
 ```bash
 npm install phaser --save-dev
@@ -61,7 +71,7 @@ When `namespace` defined, an object is created for each data file, where the top
 
 
 ## Config
-## Config
+
 
 * package.json | alt config object
 * metadata

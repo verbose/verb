@@ -5,20 +5,30 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
+const _ = require('lodash');
+const phaser = require('../');
 
-var _ = require('lodash');
-var phaser = require('../');
+// var opts = {
+//   verbose: false,
+
+//   glob: {
+//     cwd: 'test/fixtures',
+//     ext: '.md',
+//   },
+//   filters: ['./lib/filters/*.js']
+// };
+
+// var dest = './test/actual/';
+// phaser.expand(['docs/*.md'], dest, opts);
 
 var opts = {
-  verbose: false,
-
   glob: {
     cwd: 'test/fixtures',
     ext: '.md',
-  },
-  filters: ['./lib/filters/*.js']
+    destBase: './test/actual/',
+    filters: ['./lib/filters/*.js']
+  }
 };
 
-var dest = './test/actual/';
-phaser.expand(['docs/*.md'], dest, opts);
+var dest = opts.destBase;
+phaser.expandMapping(['*.md'], dest, opts);
