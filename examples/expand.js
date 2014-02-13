@@ -5,44 +5,24 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
+const path = require('path');
+const file = require('fs-utils');
+const _ = require('lodash');
+const phaser = require('../');
 
-var file = require('fs-utils');
-var phaser = require('../');
-// phaser.expandMapping('*.tmpl.md', 'test/actual/');
+var opts = {};
+var globOpts = {
+  cwd: 'docs',
+  prefixBase: true,
+  destBase: 'test/actual/',
+  ext: '.md',
+};
 
-// // Read a file, then process with Phaser
-// phaser.read = function(src, options) {
-//   var content = file.readFileSync(src);
-//   return phaser(content, _.extend({}, options)).content;
-// };
 
-// // Read a file, process it with Phaser, then write it.
-// phaser.copy = function(src, dest, options) {
-//   var opts = _.extend({}, options);
-//   file.writeFileSync(dest, phaser.read(src, opts));
-//   phaser.log.success('>> Saved to:', dest);
-// };
+file.expand(['*.md'], globOpts).map(function(filepath) {
+  var name = file.base(filepath);
+  var dest = path.join('test/actual/expand', name);
 
-// phaser.expandMapping = function(src, dest, options) {
-//   var opts = _.extend({}, options);
-//   var count = 0;
-//   file.expandMapping(src, dest, opts.glob || {}).map(function(fp) {
-//     count++;
-//     file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
-//     console.log('>> Saved to:', fp.dest);
-//   });
-//   if(count > 0) {
-//     // Log a success message if everything completed.
-//     console.log('\n>> Completed successfully.');
-//   } else {
-//     console.warn('Failed.');
-//   }
-// };
-
-var opts = {destBase: 'test/actual', flatten: true};
-
-file.expandMapping('docs/*.tmpl.md', opts).map(function(fp) {
-  var src = file.readFileSync(fp.src[0]);
-  file.writeFileSync(fp.dest, phaser(src));
+  file.writeFileSync(dest, phaser.read(filepath, opts));
+  phaser.log.success('Saved to', dest);
 });

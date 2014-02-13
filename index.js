@@ -30,9 +30,9 @@ phaser.base       = file.normalizeSlash(cwd());
 phaser.utils      = require('./lib/utils/index');
 phaser.template   = require('./lib/template');
 phaser.exclusions = require('./lib/exclusions');
+phaser.partials   = require('./lib/partials');
 phaser.plugins    = require('./lib/plugins');
 phaser.filters    = require('./lib/filters');
-phaser.partials   = require('./lib/partials');
 phaser.matter     = require('./lib/matter');
 phaser.mixins     = require('./lib/mixins');
 phaser.extensions = {};
@@ -43,6 +43,8 @@ phaser.extensions = {};
 
 phaser.process = function(src, options) {
   var opts = _.extend({verbose: false}, options);
+  phaser.options = opts;
+
   src = src || '';
 
   // Template settings
@@ -51,62 +53,41 @@ phaser.process = function(src, options) {
   // Extend `phaser`
   phaser.config = require('./lib/config').init(opts.config);
   phaser.context = _.extend({}, phaser.config);
-  file.writeJSONSync('tmp/ctx/context-0.json', phaser.context);
 
   _.extend(phaser.context, opts);
   _.extend(phaser.context, opts.metadata || {});
-
-  file.writeJSONSync('tmp/ctx/context-1.json', phaser.context);
-
-  var data     = lib.data.init(opts);
-  _.extend(phaser.context, data);
-  file.writeJSONSync('tmp/ctx/context-2.json', phaser.context);
+  _.extend(phaser.context, lib.data.init(opts));
 
   // Build up the context
   delete phaser.context.config;
 
-  if(!phaser.matter && !context) {
+  if(!phaser.matter && !phaser.context) {
     throw new Error(phaser.log.error('phaser: no source files defined.'));
   }
 
-  phaser.options = opts;
-  phaser.log     = lib.log.init(opts, {phaser: phaser});
+  phaser.log = lib.log.init(opts, {phaser: phaser});
   phaser.verbose = phaser.log.verbose;
 
   // Extract and parse front matter
   phaser.page = phaser.matter.init(src, opts);
-  var content  = phaser.page.content;
+  var content = phaser.page.content;
   var metadata = phaser.page.context;
 
   _.extend(phaser.context, metadata);
-  file.writeJSONSync('tmp/ctx/context-3.json', phaser.context);
 
   // Add Table of Contents to templates with: {%= toc %}
-  _.extend(phaser.context, {data: {toc: phaser.utils.toc(content)}});
-  file.writeJSONSync('tmp/ctx/context-4.json', phaser.context);
+  _.extend(phaser.context, {toc: phaser.utils.toc(content)});
 
   // Exclude options from context
   phaser.context = phaser.exclusions.init(phaser.context, opts);
-  file.writeJSONSync('tmp/ctx/context-5.json', phaser.context);
+
+  // Initialize mixins
+  _.mixin(phaser.mixins.init(phaser));
 
   // Initialize Lo-Dash filters (mixins)
-  _.mixin(phaser.mixins.init(phaser));
-  file.writeJSONSync('tmp/ctx/context-6.json', phaser.context);
-
-  // Initialize plugins
-  var a = phaser.plugins.init(phaser);
-  file.writeJSONSync('tmp/ctx/context-7.json', phaser.context);
-
-  // Initialize filters
-  var b = phaser.filters.init(phaser);
-  file.writeJSONSync('tmp/ctx/context-8.json', phaser.context);
-
-  // Initialize partials
-  var c = phaser.partials.init(phaser);
-  file.writeJSONSync('tmp/ctx/context-9.json', phaser.context);
-
-  var ctx = _.extend(phaser.context, a, b, c);
-  file.writeJSONSync('tmp/ctx/ctx.json', ctx);
+  _.extend(phaser.context, phaser.plugins.init(phaser));
+  _.extend(phaser.context, phaser.filters.init(phaser));
+  _.extend(phaser.context, phaser.partials.init(phaser));
 
   var rendered = phaser.template(content, phaser.context, settings);
   var result = phaser.utils.postProcess(rendered, opts);
@@ -117,6 +98,8 @@ phaser.process = function(src, options) {
     original: src
   };
 };
+
+console.log(phaser.process('{%= name %}').content);
 
 // Read a file, then process with Phaser
 phaser.read = function(src, options) {
@@ -142,23 +125,51 @@ phaser.expand = function(src, dest, options) {
 };
 
 phaser.expandMapping = function(src, dest, options) {
-  var opts = _.extend({}, options);
+  var opts = _.extend({concat: false}, options);
   var defaults = {
     cwd: cwd(opts.cwd || 'docs'),
     ext: opts.ext || '.md',
     destBase: dest
   };
-  console.log(file.hasExt('test/actual/*.md'));
+
+  var concat = opts.concat || file.hasExt(dest) || false;
+
+  var defer = [];
   var count = 0;
+
   file.expandMapping(src, defaults).map(function(fp) {
-    count++;
-    file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
-    phaser.log.success('Saved to', fp.dest);
+    fp.src.filter(function(filepath) {
+      if (!file.exists(filepath)) {
+        phaser.log.error('>> Source file "' + filepath + '" not found.');
+        return false;
+      } else {
+        return true;
+      }
+    }).map(function(filepath) {
+      if(!concat) {
+        count++;
+        file.writeFileSync(fp.dest, phaser.read(filepath, opts));
+        phaser.log.success('Saved to', fp.dest);
+      } else {
+        count = 1;
+        defer.push(filepath);
+      }
+    });
   });
 
-  if(count > 0) {
-    phaser.log.success('\n>> Completed successfully');
-  } else {
+  if(concat) {
+    var blob = defer.map(function(filepath) {
+      return phaser.read(filepath, opts);
+    }).join('\n');
+    file.writeFileSync(dest, blob);
+    phaser.log.success('Saved to', dest);
+  }
+
+  if(count > 1) {
+    phaser.log.success(count, 'files generated.');
+  }
+
+  if(count === 0) {
     phaser.log.error('\nFailed.');
   }
 };
@@ -171,11 +182,9 @@ phaser.expandMapping = function(src, dest, options) {
 // };
 
 
-// console.log(phaser.process('{%= name %}'));
-// console.log(phaser.process('{%= name %}', {name: 'Jon'}));
+// console.log(phaser.process('{%= name %}').content);
+// console.log(phaser.process('{%= name %}', {name: 'Jon'}).content);
 // console.log(phaser.read('AUTHORS'));
-// console.log(phaser.util.authors('AUTHORS'));
+// console.log(phaser.utils.authors('AUTHORS'));
 // console.log(phaser.write('name.txt', '{%= name %}'));
 // console.log(phaser.expand('lib/*.js'));
-// // console.log(phaser());
-// console.log(phaser.read('AUTHORS'));
