@@ -8,7 +8,7 @@
 ```js
 {%= name %}
 ```
-> BASIC
+> phaser
 
 
 ## Version
@@ -42,10 +42,10 @@ v{%= version %}
 {%= homepage ? " * " + homepage + "\n" : "" %}
 {%= homepage ? " * @docs " + homepage + "\\n" : "" %}
 ```
->  | https://github.com/assemble/BASIC
-> * https://github.com/assemble/BASIC
+>  | https://github.com/assemble/phaser
+> * https://github.com/assemble/phaser
 >
->  * @docs https://github.com/assemble/BASIC\n
+>  * @docs https://github.com/assemble/phaser\n
 
 
 
@@ -113,8 +113,8 @@ _This file was generated on {%= grunt.template.date("fullDate") %}._
 ```
 
 > /*!
- * BASIC v0.1.3,  2013-09-22
- * https://github.com/assemble/BASIC
+ * phaser v0.1.3,  2013-09-22
+ * https://github.com/assemble/phaser
  * Copyright (c) 2013 [object Object], contributors.
  * Released under the MIT license.
  */

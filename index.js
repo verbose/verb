@@ -39,6 +39,20 @@ phaser.init = function (options) {
   phaser.initalized = true;
 
   var opts = _.extend({verbose: false}, options);
+  phaser.log = require('./lib/log').init(opts, phaser);
+  phaser.verbose = phaser.log.verbose;
+
+};
+
+
+/**
+ * phaser.process
+ */
+
+phaser.process = function(src, options) {
+  var opts = _.extend({}, options);
+  phaser.init(opts);
+
   phaser.options = opts;
 
   // Extend `phaser`
@@ -53,19 +67,6 @@ phaser.init = function (options) {
 
   // Remove the `context.config` property
   delete phaser.context.config;
-
-  phaser.log = require('./lib/log').init(opts, phaser);
-  phaser.verbose = phaser.log.verbose;
-};
-
-
-/**
- * phaser.process
- */
-
-phaser.process = function(src, options) {
-  var opts = _.extend({}, options);
-  phaser.init(opts);
 
   src = src || '';
 
@@ -131,7 +132,6 @@ phaser.expand = function(src, dest, options) {
 };
 
 phaser.expandMapping = function(src, dest, options) {
-
   // Initialize Phaser
   phaser.init(options);
 

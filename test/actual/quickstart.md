@@ -1,3 +1,3 @@
 ```bash
-npm install BASIC --save-dev
+npm install phaser --save-dev
 ```
