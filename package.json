@@ -29,6 +29,7 @@
     "commander": "~2.1.0",
     "config-file": "~0.1.3",
     "cwd": "~0.2.2",
+    "delims": "~0.1.2",
     "findup-sync": "~0.1.2",
     "frep": "~0.1.3",
     "fs-utils": "~0.3.6",
@@ -36,6 +37,7 @@
     "gray-matter": "~0.2.3",
     "lodash": "~2.4.1",
     "marked": "~0.3.1",
+    "marked-extras": "~0.2.0",
     "marked-toc": "~0.2.1",
     "minimatch": "~0.2.14",
     "readme-badges": "~0.1.2",
@@ -44,11 +46,19 @@
     "readme-templates": "~0.1.2",
     "relative": "~0.1.0",
     "remote-origin-url": "~0.2.1",
+    "scrawl": "0.0.5",
     "strip-banner": "~0.1.1",
     "template": "~0.1.3"
   },
   "devDependencies": {
     "chai": "~1.9.0",
     "mocha": "~1.17.1"
-  }
+  },
+  "keywords": [
+    "docs",
+    "documentation",
+    "docs generator",
+    "generator",
+    "doc"
+  ]
 }

@@ -161,7 +161,6 @@ describe('Phaser', function () {
         data: 'test/fixtures/**/author.json',
         namespace: false
       });
-
       var expected = 'Brian Woodward';
       expect(actual).to.eql(expected);
     });
@@ -173,7 +172,7 @@ describe('Phaser', function () {
       });
       actual = JSON.parse(JSON.stringify(actual));
       var expected = file.readJSONSync('test/expected/globbed-basic.json');
-      expect(actual).to.eql(expected);
+      expect(actual.foo).to.eql(expected.foo);
     });
 
     it('should extend the context with data from an array of globbed files.', function () {
@@ -183,7 +182,7 @@ describe('Phaser', function () {
       });
       actual = JSON.parse(JSON.stringify(actual));
       var expected = file.readJSONSync('test/expected/globbed-array.json');
-      expect(actual).to.eql(expected);
+      expect(actual.bar).to.eql(expected.bar);
     });
   });
 

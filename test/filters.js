@@ -79,8 +79,8 @@ describe('Phaser filters', function () {
       expect(actual.content).to.eql(expected);
     });
   });
-  describe('contributors():', function () {
-    it('should return the name of the contributors using a mixin.', function () {
+  describe('contributors:', function () {
+    it('should return the name of the contributors using a filter.', function () {
       var actual = phaser.process('{%= contributors %}');
       var expected = '* Jon Schlinkert\n* Brian Woodward';
       expect(actual.content).to.eql(expected);
@@ -88,14 +88,29 @@ describe('Phaser filters', function () {
   });
 
   /**
-   * Homepages
+   * listify
    */
 
+  describe('listify:', function () {
+    it('should flatten authors array and convert it to a list.', function () {
+      var actual = phaser.process('{%= listify(keywords) %}', {
+        metadata: {
+          keywords: ["docs", "documentation", "docs generator", "generator", "doc"]
+        }
+      });
+      var expected = 'docs, documentation, docs generator, generator, doc';
+      expect(actual.content).to.eql(expected);
+    });
+  });
 
-  describe('homepage():', function () {
+
+  /**
+   * Homepage
+   */
+
+  describe('homepage:', function () {
     it('should return a normalized version of the homepage URL listed in package.json.', function () {
-      var actual = phaser.process('{%= homepage() %}');
-      console.log(phaser.process('{%= homepage() %}'));
+      var actual = phaser.process('{%= homepage %}');
       var expected = 'https://github.com/jonschlinkert/phaser';
       expect(actual.content).to.eql(expected);
     });
