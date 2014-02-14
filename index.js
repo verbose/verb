@@ -1,5 +1,5 @@
 /**
- * write <https://github.com/jonschlinkert/write>
+ * phaser <https://github.com/jonschlinkert/phaser>
  *
  * Copyright (c) 2014 Jon Schlinkert, contributors.
  * Licensed under the MIT license.
@@ -11,9 +11,6 @@
 var file  = require('fs-utils');
 var cwd   = require('cwd');
 var _     = require('lodash');
-
-// Internal libs
-var lib   = require('./lib');
 
 /**
  * phaser
@@ -32,6 +29,8 @@ phaser.filters    = require('./lib/filters');
 phaser.matter     = require('./lib/matter');
 phaser.mixins     = require('./lib/mixins');
 phaser.extensions = {};
+phaser.ext        = '.md';
+
 
 /**
  * phaser.process
@@ -49,19 +48,16 @@ phaser.process = function(src, options) {
   // Extend `phaser`
   phaser.config = require('./lib/config').init(opts.config);
   phaser.context = _.extend({}, phaser.config);
+  phaser.layout = require('./lib/layout')(phaser);
 
   _.extend(phaser.context, opts);
   _.extend(phaser.context, opts.metadata || {});
-  _.extend(phaser.context, lib.data.init(opts));
+  _.extend(phaser.context, require('./lib/data').init(opts));
 
   // Build up the context
   delete phaser.context.config;
 
-  if(!phaser.matter && !phaser.context) {
-    throw new Error(phaser.log.error('phaser: no source files defined.'));
-  }
-
-  phaser.log = lib.log.init(opts, phaser);
+  phaser.log = require('./lib/log').init(opts, phaser);
   phaser.verbose = phaser.log.verbose;
 
   // Extract and parse front matter
@@ -75,7 +71,7 @@ phaser.process = function(src, options) {
   _.extend(phaser.context, {toc: phaser.utils.toc(content)});
 
   // Exclusion patterns, to omit certain options from context
-  phaser.context = phaser.exclusions.init(phaser.context, opts);
+  phaser.context = phaser.exclusions(phaser.context, opts);
 
   // Initialize Lo-Dash filters (mixins)
   _.extend(phaser.context, phaser.plugins.init(phaser));
@@ -106,7 +102,7 @@ phaser.read = function(src, options) {
 phaser.copy = function(src, dest, options) {
   var opts = _.extend({}, options);
   file.writeFileSync(dest, phaser.read(src, opts));
-  phaser.log.success('>> Saved to:', dest);
+  phaser.log.success('Saved to:', dest);
 };
 
 phaser.expand = function(src, dest, options) {
@@ -122,12 +118,12 @@ phaser.expand = function(src, dest, options) {
 phaser.expandMapping = function(src, dest, options) {
   var opts = _.extend({concat: false}, options);
   var defaults = {
-    cwd: cwd(opts.cwd || 'docs'),
-    ext: opts.ext || '.md',
+    cwd: file.normalizeSlash(cwd(opts.cwd || 'docs')),
+    ext: phaser.ext || opts.ext,
     destBase: dest
   };
-  var concat = opts.concat || file.hasExt(dest) || false;
 
+  var concat = opts.concat || file.hasExt(dest) || false;
   var defer = [];
   var count = 0;
 

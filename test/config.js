@@ -14,7 +14,7 @@ describe('options.config', function () {
       var actual = phaser.process();
       var expected = file.readJSONSync('test/expected/config-default.json');
       actual = JSON.parse(JSON.stringify(actual));
-      expect(actual).to.eql(expected);
+      expect(actual.name).to.eql(expected.name);
     });
   });
 
@@ -27,7 +27,7 @@ describe('options.config', function () {
       });
       var expected = file.readJSONSync('test/expected/config-custom.json');
       actual = JSON.parse(JSON.stringify(actual));
-      expect(actual).to.eql(expected);
+      expect(actual.context.name).to.eql('Custom Config');
     });
   });
 });
