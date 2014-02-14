@@ -31,19 +31,15 @@ phaser.mixins     = require('./lib/mixins');
 phaser.extensions = {};
 phaser.ext        = '.md';
 
+phaser.init = function (options) {
 
-/**
- * phaser.process
- */
+  if (phaser.initalized) {
+    return;
+  }
+  phaser.initalized = true;
 
-phaser.process = function(src, options) {
   var opts = _.extend({verbose: false}, options);
   phaser.options = opts;
-
-  src = src || '';
-
-  // Template settings
-  var settings = _.defaults({}, opts.settings);
 
   // Extend `phaser`
   phaser.config = require('./lib/config').init(opts.config);
@@ -59,6 +55,23 @@ phaser.process = function(src, options) {
 
   phaser.log = require('./lib/log').init(opts, phaser);
   phaser.verbose = phaser.log.verbose;
+
+}
+
+
+/**
+ * phaser.process
+ */
+
+phaser.process = function(src, options) {
+  var opts = _.extend({}, options);
+  phaser.init(opts);
+
+  src = src || '';
+
+  // Template settings
+  var settings = _.defaults({}, opts.settings);
+
 
   // Extract and parse front matter
   phaser.page = phaser.matter.init(src, opts);
@@ -94,18 +107,21 @@ phaser.process = function(src, options) {
 
 // Read a file, then process with Phaser
 phaser.read = function(src, options) {
+  phaser.init(options);
   var content = file.readFileSync(src);
   return phaser.process(content, _.extend({}, options)).content;
 };
 
 // Read a file, process it with Phaser, then write it.
 phaser.copy = function(src, dest, options) {
+  phaser.init(options);
   var opts = _.extend({}, options);
   file.writeFileSync(dest, phaser.read(src, opts));
   phaser.log.success('Saved to:', dest);
 };
 
 phaser.expand = function(src, dest, options) {
+  phaser.init(options);
   var opts = _.extend({}, options);
   file.expandMapping(src, dest, opts.glob || {}).map(function(fp) {
     file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
@@ -116,6 +132,7 @@ phaser.expand = function(src, dest, options) {
 };
 
 phaser.expandMapping = function(src, dest, options) {
+  phaser.init(options);
   var opts = _.extend({concat: false}, options);
   var defaults = {
     cwd: file.normalizeSlash(cwd(opts.cwd || 'docs')),
