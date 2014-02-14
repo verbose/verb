@@ -53,14 +53,14 @@
         {
           "description": "Default exclusions",
           "description_html": "<p>Default exclusions</p>",
-          "line": 6
+          "line": 5
         },
         {
           "description": "Omit properties from the context",
           "return": "{Object}",
           "api": "private",
           "description_html": "<p>Omit properties from the context</p>",
-          "line": 23
+          "line": 21
         }
       ]
     ]
@@ -180,14 +180,14 @@
               "description": ""
             }
           ],
-          "line": 12
+          "line": 13
         }
       ]
     ]
   },
   "authors.js": {
     "name": "authors.js",
-    "path": "lib/utils/authors.js",
+    "path": "lib/plugins/authors.js",
     "comments": [
       []
     ]
@@ -219,7 +219,7 @@
               "description": ""
             }
           ],
-          "line": 17
+          "line": 18
         }
       ]
     ]
@@ -288,7 +288,7 @@
               "description": "Optional parameter to define the start year of the project."
             }
           ],
-          "line": 9
+          "line": 6
         }
       ]
     ]
@@ -303,7 +303,7 @@
           "name": "formatDate",
           "param": [
             "{Object} dateobj The date object to format.",
-            "{String} pattern The pattern to use, e.g. 'YYYY-MM-DD'."
+            "{String} structure The structure to use, e.g. 'YYYY-MM-DD'."
           ],
           "return": "{String} The formatted date.",
           "api": "public",
@@ -316,8 +316,8 @@
             },
             {
               "type": "String",
-              "name": "pattern",
-              "description": "The pattern to use, e.g. 'YYYY-MM-DD'."
+              "name": "structure",
+              "description": "The structure to use, e.g. 'YYYY-MM-DD'."
             }
           ],
           "line": 4
@@ -328,6 +328,13 @@
   "docs.js": {
     "name": "docs.js",
     "path": "lib/filters/docs.js",
+    "comments": [
+      []
+    ]
+  },
+  "html.js": {
+    "name": "html.js",
+    "path": "lib/filters/html.js",
     "comments": [
       []
     ]
@@ -346,6 +353,29 @@
       []
     ]
   },
+  "listify.js": {
+    "name": "listify.js",
+    "path": "lib/utils/listify.js",
+    "comments": [
+      [
+        {
+          "description": "Flatten an array and convert it\nto a comma-separated list.",
+          "title": "listify",
+          "param": "{Array} arr [description]",
+          "api": "Public",
+          "description_html": "<p>Flatten an array and convert it\nto a comma-separated list.</p>",
+          "params": [
+            {
+              "type": "Array",
+              "name": "arr",
+              "description": "[description]"
+            }
+          ],
+          "line": 6
+        }
+      ]
+    ]
+  },
   "log.js": {
     "name": "log.js",
     "path": "lib/log.js",
@@ -356,42 +386,42 @@
           "public": true,
           "return": "{string}",
           "description_html": "<p>General log</p>",
-          "line": 7
+          "line": 6
         },
         {
           "description": "Bold",
           "public": true,
           "return": "{string}",
           "description_html": "<p>Bold</p>",
-          "line": 24
+          "line": 23
         },
         {
           "description": "Error",
           "public": true,
           "return": "{string}",
           "description_html": "<p>Error</p>",
-          "line": 37
+          "line": 36
         },
         {
           "description": "Warn",
           "public": true,
           "return": "{string}",
           "description_html": "<p>Warn</p>",
-          "line": 50
+          "line": 49
         },
         {
           "description": "Info",
           "public": true,
           "return": "{string}",
           "description_html": "<p>Info</p>",
-          "line": 63
+          "line": 62
         },
         {
           "description": "Info",
           "public": true,
           "return": "{string}",
           "description_html": "<p>Info</p>",
-          "line": 76
+          "line": 75
         }
       ]
     ]
@@ -436,18 +466,19 @@
   },
   "safename.js": {
     "name": "safename.js",
-    "path": "lib/filters/safename.js",
+    "path": "lib/utils/safename.js",
     "comments": [
       [
         {
-          "description": "_.safename(\"helper-foo\")",
+          "description": "Safename",
           "param": "{[type]} name The name to be modified",
           "return": "{[type]}      The \"safe\" short version of the name",
           "example:": [
             "\"grunt-readme\" => \"readme\"",
             "\"helper-foo\" => \"foo\""
           ],
-          "description_html": "<p>_.safename(\"helper-foo\")</p>",
+          "api": "Public",
+          "description_html": "<p>Safename</p>",
           "params": [
             {
               "type": "[type]",
@@ -455,7 +486,7 @@
               "description": "The name to be modified"
             }
           ],
-          "line": 8
+          "line": 6
         }
       ]
     ]
@@ -464,27 +495,7 @@
     "name": "shortname.js",
     "path": "lib/filters/shortname.js",
     "comments": [
-      [
-        {
-          "description": "_.shortname(\"helper-foo\")",
-          "param": "{[type]} name The name to be modified",
-          "return": "{[type]}      The \"safe\" short version of the name",
-          "example:": [
-            "\"grunt-readme\" => \"readme\"",
-            "\"helper-foo\" => \"foo\""
-          ],
-          "api": "Public",
-          "description_html": "<p>_.shortname(\"helper-foo\")</p>",
-          "params": [
-            {
-              "type": "[type]",
-              "name": "name",
-              "description": "The name to be modified"
-            }
-          ],
-          "line": 8
-        }
-      ]
+      []
     ]
   },
   "strip.js": {
@@ -549,6 +560,28 @@
       []
     ]
   },
+  "layout.js": {
+    "name": "layout.js",
+    "path": "lib/layout.js",
+    "comments": [
+      [
+        {
+          "description": "Default layout to use when one isn't\ndefined in the options.",
+          "return": "{String}",
+          "api": "Public",
+          "description_html": "<p>Default layout to use when one isn't\ndefined in the options.</p>",
+          "line": 9
+        },
+        {
+          "description": "Load layouts",
+          "return": "{Object}",
+          "api": "Public",
+          "description_html": "<p>Load layouts</p>",
+          "line": 32
+        }
+      ]
+    ]
+  },
   "matter.js": {
     "name": "matter.js",
     "path": "lib/matter.js",
@@ -605,16 +638,17 @@
           "name": "partials",
           "return": "{Object}",
           "api": "public",
+          "example:": "true _.definePartial('tooltip', '<div class=\"tooltip\">${ content }</div>');",
           "description_html": "<p>Define individual partials.</p>",
           "line": 12
         },
         {
-          "description": "Cache partials with globbing patterns.\nUse `options.partials`",
+          "description": "Register partials as strings. Use `options.partials`\nto add partials. Globbing patterns may be used.",
           "name": "partials",
           "return": "{Object}",
           "api": "public",
-          "description_html": "<p>Cache partials with globbing patterns.\nUse <code>options.partials</code></p>",
-          "line": 25
+          "description_html": "<p>Register partials as strings. Use <code>options.partials</code>\nto add partials. Globbing patterns may be used.</p>",
+          "line": 36
         }
       ]
     ]
@@ -678,6 +712,13 @@
           "line": 8
         }
       ]
+    ]
+  },
+  "AUTHORS.js": {
+    "name": "AUTHORS.js",
+    "path": "lib/utils/AUTHORS.js",
+    "comments": [
+      []
     ]
   },
   "adjust.js": {

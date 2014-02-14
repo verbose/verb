@@ -1,8 +1,8 @@
-# phaser
+# BASIC
 
 > Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.
 
-Please [report any bugs or feature requests](https://github.com/jonschlinkert/phaser/issues/new), thanks!
+Please [report any bugs or feature requests](https://github.com/jonschlinkert/BASIC/issues/new), thanks!
 
 * [Quickstart](#quickstart)
 * [Examples](#examples)
@@ -16,7 +16,7 @@ Please [report any bugs or feature requests](https://github.com/jonschlinkert/ph
 
 ## Quickstart
 ```bash
-npm install phaser --save-dev
+npm install BASIC --save-dev
 ```
 
 ## Examples

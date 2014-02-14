@@ -5,13 +5,13 @@
   </head>
   <body>
     <div class="container bs-docs-container">
-      <h1 id="phaser">phaser</h1>
+      <h1 id="basic">BASIC</h1>
 <blockquote>
 <p>Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.</p>
 </blockquote>
-<p>Please <a href="https://github.com/jonschlinkert/phaser/issues/new">report any bugs or feature requests</a>, thanks!</p>
+<p>Please <a href="https://github.com/jonschlinkert/BASIC/issues/new">report any bugs or feature requests</a>, thanks!</p>
 <h2 id="quickstart">Quickstart</h2>
-<pre><code class="lang-bash">npm install phaser --save-dev
+<pre><code class="lang-bash">npm install BASIC --save-dev
 </code></pre>
 <h2 id="examples">Examples</h2>
 <p>Example document:</p>

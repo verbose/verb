@@ -31,8 +31,8 @@ phaser.mixins     = require('./lib/mixins');
 phaser.extensions = {};
 phaser.ext        = '.md';
 
-phaser.init = function (options) {
 
+phaser.init = function (options) {
   if (phaser.initalized) {
     return;
   }
@@ -46,17 +46,17 @@ phaser.init = function (options) {
   phaser.context = _.extend({}, phaser.config);
   phaser.layout = require('./lib/layout')(phaser);
 
+  // Build up the context
   _.extend(phaser.context, opts);
   _.extend(phaser.context, opts.metadata || {});
   _.extend(phaser.context, require('./lib/data').init(opts));
 
-  // Build up the context
+  // Remove the `context.config` property
   delete phaser.context.config;
 
   phaser.log = require('./lib/log').init(opts, phaser);
   phaser.verbose = phaser.log.verbose;
-
-}
+};
 
 
 /**
@@ -72,7 +72,6 @@ phaser.process = function(src, options) {
   // Template settings
   var settings = _.defaults({}, opts.settings);
 
-
   // Extract and parse front matter
   phaser.page = phaser.matter.init(src, opts);
   var content = phaser.page.content;
@@ -86,10 +85,10 @@ phaser.process = function(src, options) {
   // Exclusion patterns, to omit certain options from context
   phaser.context = phaser.exclusions(phaser.context, opts);
 
-  // Initialize Lo-Dash filters (mixins)
+  // Initialize Lo-Dash filters and plugins
   _.extend(phaser.context, phaser.plugins.init(phaser));
-  _.extend(phaser.context, phaser.partials.init(phaser));
   _.extend(phaser.context, phaser.filters.init(phaser));
+  _.extend(phaser.context, phaser.partials.init(phaser));
 
   // Initialize mixins
   _.mixin(phaser.mixins.init(phaser));
@@ -132,7 +131,10 @@ phaser.expand = function(src, dest, options) {
 };
 
 phaser.expandMapping = function(src, dest, options) {
+
+  // Initialize Phaser
   phaser.init(options);
+
   var opts = _.extend({concat: false}, options);
   var defaults = {
     cwd: file.normalizeSlash(cwd(opts.cwd || 'docs')),

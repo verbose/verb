@@ -55,7 +55,7 @@ Adds filters to the context
 
 * `options`: (Object):
 
-## [authors.js](lib/utils/authors.js)
+## [authors.js](lib/plugins/authors.js)
 
 ## [badge.js](lib/filters/badge.js)
 
@@ -90,13 +90,21 @@ Add a copyright statement, with author and year(s) in effect.
 Date functions used in _.date() filter
 
 * `dateobj`: (Object): The date object to format.
-* `pattern`: (String): The pattern to use, e.g. 'YYYY-MM-DD'.
+* `structure`: (String): The structure to use, e.g. 'YYYY-MM-DD'.
 
 ## [docs.js](lib/filters/docs.js)
+
+## [html.js](lib/filters/html.js)
 
 ## [include.js](lib/filters/include.js)
 
 ## [license.js](lib/filters/license.js)
+
+## [listify.js](lib/utils/listify.js)
+
+Flatten an array and convert it to a comma-separated list.
+
+* `arr`: (Array): [description]
 
 ## [log.js](lib/log.js)
 
@@ -119,17 +127,13 @@ Reverse a string
 
 * `str`: (String): The string to reverse
 
-## [safename.js](lib/filters/safename.js)
+## [safename.js](lib/utils/safename.js)
 
-_.safename("helper-foo")
+Safename
 
 * `name`: ([type]): The name to be modified
 
 ## [shortname.js](lib/filters/shortname.js)
-
-_.shortname("helper-foo")
-
-* `name`: ([type]): The name to be modified
 
 ## [strip.js](lib/utils/strip.js)
 
@@ -147,6 +151,11 @@ Generate a Table of Contents.
 * `options`: (Object):
 
 ## [index.js](lib/utils/index.js)
+
+## [layout.js](lib/layout.js)
+
+Default layout to use when one isn't defined in the options.
+Load layouts
 
 ## [matter.js](lib/matter.js)
 
@@ -170,7 +179,7 @@ Define individual partials.
 
 ### partials
 
-Cache partials with globbing patterns. Use `options.partials`
+Register partials as strings. Use `options.partials` to add partials. Globbing patterns may be used.
 
 ## [plugins.js](lib/plugins.js)
 
@@ -187,6 +196,8 @@ Compile Lo-Dash templates.
 * `str`: (String): The templates to process.
 * `data`: (Object): Context for the templates
 * `settings`: (Object): Options to pass to Lo-Dash
+
+## [AUTHORS.js](lib/utils/AUTHORS.js)
 
 ## [adjust.js](lib/utils/adjust.js)
 
