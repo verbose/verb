@@ -5,7 +5,5 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
 var phaser = require('../');
 phaser.copy('examples/templates/block.md', 'test/actual/block.md');

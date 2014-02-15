@@ -5,7 +5,5 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
 var phaser = require('../');
 phaser.copy('test/fixtures/authors.md', 'test/actual/authors.md');

@@ -5,10 +5,7 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
 var phaser = require('../');
-
 var opts = {
   cwd: 'examples/templates',
   ext: '.md',

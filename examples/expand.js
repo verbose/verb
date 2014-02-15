@@ -5,10 +5,10 @@
  * Licensed under the MIT license.
  */
 
-const path = require('path');
-const file = require('fs-utils');
-const relative = require('relative');
-const phaser = require('../');
+var path = require('path');
+var file = require('fs-utils');
+var relative = require('relative');
+var phaser = require('../');
 
 var opts = {
   cwd: 'docs',

@@ -5,8 +5,8 @@
  * Licensed under the MIT license.
  */
 
-const file = require('fs-utils');
-const phaser = require('../');
+var file = require('fs-utils');
+var phaser = require('../');
 
 // var opts = {destBase: 'test/actual', flatten: true};
 // file.expandMapping('docs/*.tmpl.md', opts).map(function(fp) {

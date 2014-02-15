@@ -5,8 +5,6 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
 var opts = {
   layouts: 'test/fixtures/html',
   includes: 'test/fixtures/html/includes/*.html',
