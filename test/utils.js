@@ -104,12 +104,12 @@ describe('utils.arrayify:', function () {
 describe('utils.date:', function () {
   describe('when utils.date():', function () {
     it('should return the current year.', function () {
-      var actual = utils.date(new Date(), 'YYYY');
+      var actual = utils.date('YYYY');
       expect(actual).to.eql(2014);
     });
 
     it('should return the full date.', function () {
-      var actual = utils.date(new Date(), 'full');
+      var actual = utils.date('full');
       expect(actual.indexOf(2014) !== -1).to.eql(true);
     });
   });

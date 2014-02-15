@@ -7,21 +7,22 @@
 
 const path = require('path');
 const file = require('fs-utils');
+const relative = require('relative');
 const phaser = require('../');
 
-var opts = {};
-var globOpts = {
+var opts = {
   cwd: 'docs',
   prefixBase: true,
   destBase: 'test/actual/',
   ext: '.md',
 };
 
+file.expand(['*.md'], opts).map(function(filepath) {
+  phaser.init(opts);
 
-file.expand(['*.md'], globOpts).map(function(filepath) {
-  var name = file.base(filepath);
-  var dest = path.join('test/actual/expand', name);
+  var name = file.base(filepath) + opts.ext;
+  var dest = phaser.cwd(opts.destBase, name);
 
   file.writeFileSync(dest, phaser.read(filepath, opts));
-  phaser.log.success('Saved to', dest);
+  phaser.log.success('Saved to', relative(phaser.cwd(), dest));
 });

@@ -8,4 +8,4 @@
 'use strict';
 
 var phaser = require('../');
-phaser.copy('examples/templates/comments.md', 'test/actual/comments.md');
+phaser.copy('examples/templates/comments.md', 'test/actual/comments.md', {});

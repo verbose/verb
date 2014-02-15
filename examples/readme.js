@@ -13,15 +13,15 @@ var _ = require('lodash');
 var copy = function(src, dest, options) {
   var opts = _.extend({}, options);
   var content = file.readFileSync(src);
-  file.writeFileSync(dest, phaser(content, opts).content);
+  file.writeFileSync(dest, phaser.process(content, opts).content);
   phaser.log.success('>> Saved to:', dest);
 };
 
 
-var opts = {destBase: 'test/actual', flatten: true};
-file.expandMapping('docs/*.tmpl.md', opts).map(function(fp) {
-  var src = file.readFileSync(fp.src[0]);
-  file.writeFileSync(fp.dest, phaser(src));
-});
+// var opts = {destBase: 'test/actual', flatten: true};
+// file.expandMapping('docs/*.tmpl.md', opts).map(function(fp) {
+//   var src = file.readFileSync(fp.src[0]);
+//   file.writeFileSync(fp.dest, phaser.process(src));
+// });
 
 copy('docs/README.tmpl.md', 'test/actual/FOO.md', {verbose: false});

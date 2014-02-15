@@ -8,9 +8,11 @@
 'use strict';
 
 // node_modules
-var file  = require('fs-utils');
-var cwd   = require('cwd');
-var _     = require('lodash');
+var path       = require('path');
+var configFile = require('config-file');
+var file       = require('fs-utils');
+var _          = require('lodash');
+var cwd        = require('cwd');
 
 /**
  * phaser
@@ -18,8 +20,8 @@ var _     = require('lodash');
 
 var phaser = module.exports = {};
 
-phaser.cwd        = file.normalizeSlash(cwd());
-phaser.base       = file.normalizeSlash(cwd());
+phaser.cwd        = cwd;
+phaser.base       = cwd;
 phaser.utils      = require('./lib/utils/index');
 phaser.template   = require('./lib/template');
 phaser.exclusions = require('./lib/exclusions');
@@ -32,11 +34,29 @@ phaser.extensions = {};
 phaser.ext        = '.md';
 
 
+/**
+ * runtime config
+ */
+
+if(file.exists(cwd('.phaserrc'))) {
+  phaser.phaserrc =  configFile.load(cwd('.phaserrc'));
+} else if(file.exists(cwd('.phaserrc.yml'))) {
+  phaser.phaserrc = configFile.load(cwd('.phaserrc.yml'))
+} else {
+  phaser.phaserrc = {};
+}
+
+
+/**
+ * phaser.init
+ */
+
 phaser.init = function (options) {
   if (phaser.initalized) {
     return;
   }
   phaser.initalized = true;
+
   var opts = _.extend({verbose: false}, options);
   phaser.log = require('./lib/log').init(opts, phaser);
   phaser.verbose = phaser.log.verbose;
@@ -53,24 +73,32 @@ phaser.init = function (options) {
 
 phaser.process = function(src, options) {
   var opts = _.extend({}, options);
-  phaser.init(opts);
 
+  // Add runtime config
+  var runtimeConfig;
+  if(opts.phaserrc) {
+    runtimeConfig = configFile.load(cwd(opts.phaserrc))
+  } else {
+    runtimeConfig = phaser.phaserrc;
+  }
+  _.extend(opts, runtimeConfig);
+
+  phaser.init(opts);
   phaser.options = opts;
 
-  // Extend `phaser`
   phaser.config = require('./lib/config').init(opts.config);
   phaser.context = _.extend({}, phaser.config);
+  delete phaser.context.config;
+
+  src = src || '';
+
+  // Extend `phaser`
   phaser.layout = require('./lib/layout')(phaser);
 
   // Build up the context
   _.extend(phaser.context, opts);
   _.extend(phaser.context, opts.metadata || {});
   _.extend(phaser.context, require('./lib/data').init(opts));
-
-  // Remove the `context.config` property
-  delete phaser.context.config;
-
-  src = src || '';
 
   // Template settings
   var settings = _.defaults({}, opts.settings);
@@ -81,9 +109,6 @@ phaser.process = function(src, options) {
   var metadata = phaser.page.context;
 
   _.extend(phaser.context, metadata);
-
-  // Add Table of Contents to templates with: {%= toc %}
-  _.extend(phaser.context, {toc: phaser.utils.toc(content)});
 
   // Initialize Lo-Dash filters and plugins
   _.extend(phaser.context, phaser.plugins.init(phaser));
@@ -107,37 +132,35 @@ phaser.process = function(src, options) {
 
 // Read a file, then process with Phaser
 phaser.read = function(src, options) {
-  phaser.init(options);
+  var opts = _.extend({}, options);
+  phaser.init(opts);
   var content = file.readFileSync(src);
-  return phaser.process(content, _.extend({}, options)).content;
+  return phaser.process(content, opts).content;
 };
 
 // Read a file, process it with Phaser, then write it.
 phaser.copy = function(src, dest, options) {
-  phaser.init(options);
   var opts = _.extend({}, options);
+
+  phaser.init(opts);
+  phaser.options = phaser.options || {};
+  phaser.options.dest = dest || phaser.cwd();
+
   file.writeFileSync(dest, phaser.read(src, opts));
   phaser.log.success('Saved to:', dest);
 };
 
-phaser.expand = function(src, dest, options) {
-  var opts = _.extend({}, options);
-  phaser.init(opts);
-
-  file.expandMapping(src, dest, opts.glob || {}).map(function(fp) {
-    file.writeFileSync(fp.dest, phaser.read(fp.src, opts));
-    phaser.log.success('>> Saved to:', fp.dest);
-  });
-  // Log a success message if everything completed.
-  phaser.log.success('\n>> Completed successfully.');
-};
-
+// Expand filepaths
 phaser.expandMapping = function(src, dest, options) {
   var opts = _.extend({concat: false}, options);
   phaser.init(opts);
 
+  dest = dest || phaser.cwd();
+  phaser.options = phaser.options || {};
+  phaser.options.dest = dest || phaser.cwd();
+
   var defaults = {
-    cwd: file.normalizeSlash(cwd(opts.cwd || 'docs')),
+    cwd: opts.cwd || phaser.cwd('docs'),
     ext: phaser.ext || opts.ext,
     destBase: dest
   };

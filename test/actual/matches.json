@@ -1,7 +1,7 @@
 {
   "config.js": {
     "name": "config.js",
-    "path": "lib/config.js",
+    "path": "../../lib/config.js",
     "comments": [
       [
         {
@@ -24,7 +24,7 @@
   },
   "data.js": {
     "name": "data.js",
-    "path": "lib/data.js",
+    "path": "../../lib/data.js",
     "comments": [
       [
         {
@@ -47,7 +47,7 @@
   },
   "exclusions.js": {
     "name": "exclusions.js",
-    "path": "lib/exclusions.js",
+    "path": "../../lib/exclusions.js",
     "comments": [
       [
         {
@@ -60,20 +60,20 @@
           "return": "{Object}",
           "api": "private",
           "description_html": "<p>Omit properties from the context</p>",
-          "line": 21
+          "line": 22
         }
       ]
     ]
   },
   "file.js": {
     "name": "file.js",
-    "path": "lib/file.js",
+    "path": "../../lib/file.js",
     "comments": [
       [
         {
           "description": "Export `phaser.file`",
           "description_html": "<p>Export <code>phaser.file</code></p>",
-          "line": 8
+          "line": 11
         },
         {
           "description": "Expand files.",
@@ -97,7 +97,7 @@
               "description": ""
             }
           ],
-          "line": 17
+          "line": 18
         },
         {
           "description": "Expand files and read in content.",
@@ -121,7 +121,7 @@
               "description": ""
             }
           ],
-          "line": 35
+          "line": 36
         },
         {
           "description": "Expand mapping",
@@ -156,14 +156,14 @@
               "description": "Options to pass in: @option {String} cwd: the current working directory for source files. @option {String} ext: the file extension to use on dest files."
             }
           ],
-          "line": 53
+          "line": 54
         }
       ]
     ]
   },
   "filters.js": {
     "name": "filters.js",
-    "path": "lib/filters.js",
+    "path": "../../lib/filters.js",
     "comments": [
       [
         {
@@ -180,21 +180,304 @@
               "description": ""
             }
           ],
-          "line": 13
+          "line": 6
+        },
+        {
+          "description": "Built-in filters",
+          "description_html": "<p>Built-in filters</p>",
+          "line": 22
+        },
+        {
+          "description": "User-defined",
+          "description_html": "<p>User-defined</p>",
+          "line": 28
+        }
+      ]
+    ]
+  },
+  "listify.js": {
+    "name": "listify.js",
+    "path": "../../lib/utils/listify.js",
+    "comments": [
+      [
+        {
+          "description": "Flatten an array and convert it\nto a comma-separated list.",
+          "title": "listify",
+          "param": "{Array} arr [description]",
+          "api": "Public",
+          "description_html": "<p>Flatten an array and convert it\nto a comma-separated list.</p>",
+          "params": [
+            {
+              "type": "Array",
+              "name": "arr",
+              "description": "[description]"
+            }
+          ],
+          "line": 3
+        }
+      ]
+    ]
+  },
+  "reverse.js": {
+    "name": "reverse.js",
+    "path": "../../lib/utils/reverse.js",
+    "comments": [
+      [
+        {
+          "description": "Reverse a string",
+          "name": "reverse",
+          "param": "{String} str The string to reverse",
+          "return": "{String}     The reversed string.",
+          "api": "public",
+          "description_html": "<p>Reverse a string</p>",
+          "params": [
+            {
+              "type": "String",
+              "name": "str",
+              "description": "The string to reverse"
+            }
+          ],
+          "line": 3
+        }
+      ]
+    ]
+  },
+  "safename.js": {
+    "name": "safename.js",
+    "path": "../../lib/utils/safename.js",
+    "comments": [
+      [
+        {
+          "description": "Safename",
+          "param": "{[type]} name The name to be modified",
+          "return": "{[type]}      The \"safe\" short version of the name",
+          "example:": [
+            "\"grunt-readme\" => \"readme\"",
+            "\"helper-foo\" => \"foo\""
+          ],
+          "api": "Public",
+          "description_html": "<p>Safename</p>",
+          "params": [
+            {
+              "type": "[type]",
+              "name": "name",
+              "description": "The name to be modified"
+            }
+          ],
+          "line": 6
+        }
+      ]
+    ]
+  },
+  "shortname.js": {
+    "name": "shortname.js",
+    "path": "../../lib/filters/shortname.js",
+    "comments": [
+      []
+    ]
+  },
+  "strip.js": {
+    "name": "strip.js",
+    "path": "../../lib/utils/strip.js",
+    "comments": [
+      [
+        {
+          "description": "Strip newlines and whitespace padding.",
+          "name": "reverse",
+          "param": "{String} str The string to reverse",
+          "return": "{String}     The reversed string.",
+          "api": "public",
+          "description_html": "<p>Strip newlines and whitespace padding.</p>",
+          "params": [
+            {
+              "type": "String",
+              "name": "str",
+              "description": "The string to reverse"
+            }
+          ],
+          "line": 3
+        }
+      ]
+    ]
+  },
+  "index.js": {
+    "name": "index.js",
+    "path": "../../lib/utils/index.js",
+    "comments": [
+      []
+    ]
+  },
+  "layout.js": {
+    "name": "layout.js",
+    "path": "../../lib/layout.js",
+    "comments": [
+      [
+        {
+          "description": "Default layout to use when one isn't\ndefined in the options.",
+          "return": "{String}",
+          "api": "Public",
+          "description_html": "<p>Default layout to use when one isn't\ndefined in the options.</p>",
+          "line": 7
+        },
+        {
+          "description": "Load layouts",
+          "return": "{Object}",
+          "api": "Public",
+          "description_html": "<p>Load layouts</p>",
+          "line": 30
+        }
+      ]
+    ]
+  },
+  "log.js": {
+    "name": "log.js",
+    "path": "../../lib/tags/log.js",
+    "comments": [
+      []
+    ]
+  },
+  "matter.js": {
+    "name": "matter.js",
+    "path": "../../lib/matter.js",
+    "comments": [
+      [
+        {
+          "description": "Parse and extract YAML, JSON or Coffee\nfront matter.",
+          "return": "{Object}",
+          "api": "public",
+          "description_html": "<p>Parse and extract YAML, JSON or Coffee\nfront matter.</p>",
+          "line": 7
+        }
+      ]
+    ]
+  },
+  "mixins.js": {
+    "name": "mixins.js",
+    "path": "../../lib/mixins.js",
+    "comments": [
+      [
+        {
+          "description": "Export mixins",
+          "name": "mixins",
+          "param": "{Object} options",
+          "return": "{Object}",
+          "api": "private",
+          "description_html": "<p>Export mixins</p>",
+          "params": [
+            {
+              "type": "Object",
+              "name": "options",
+              "description": ""
+            }
+          ],
+          "line": 4
+        }
+      ]
+    ]
+  },
+  "partials.js": {
+    "name": "partials.js",
+    "path": "../../lib/partials.js",
+    "comments": [
+      [
+        {
+          "description": "Define individual partials.",
+          "name": "partials",
+          "return": "{Object}",
+          "api": "public",
+          "example:": "true _.definePartial('tooltip', '<div class=\"tooltip\">${ content }</div>');",
+          "description_html": "<p>Define individual partials.</p>",
+          "line": 12
+        },
+        {
+          "description": "Register partials as strings. Use `options.partials`\nto add partials. Globbing patterns may be used.",
+          "name": "partials",
+          "return": "{Object}",
+          "api": "public",
+          "description_html": "<p>Register partials as strings. Use <code>options.partials</code>\nto add partials. Globbing patterns may be used.</p>",
+          "line": 36
+        }
+      ]
+    ]
+  },
+  "plugins.js": {
+    "name": "plugins.js",
+    "path": "../../lib/plugins.js",
+    "comments": [
+      [
+        {
+          "description": "Adds plugins to the context",
+          "name": "plugins",
+          "param": "{Object} options",
+          "return": "{Object}",
+          "api": "private",
+          "description_html": "<p>Adds plugins to the context</p>",
+          "params": [
+            {
+              "type": "Object",
+              "name": "options",
+              "description": ""
+            }
+          ],
+          "line": 7
+        },
+        {
+          "description": "Built-in plugins",
+          "description_html": "<p>Built-in plugins</p>",
+          "line": 23
+        },
+        {
+          "description": "User-defined",
+          "description_html": "<p>User-defined</p>",
+          "line": 29
+        }
+      ]
+    ]
+  },
+  "tags.js": {
+    "name": "tags.js",
+    "path": "../../lib/tags.js",
+    "comments": [
+      [
+        {
+          "description": "Adds tags to the context",
+          "name": "tags",
+          "param": "{Object} options",
+          "return": "{Object}",
+          "api": "private",
+          "description_html": "<p>Adds tags to the context</p>",
+          "params": [
+            {
+              "type": "Object",
+              "name": "options",
+              "description": ""
+            }
+          ],
+          "line": 6
+        },
+        {
+          "description": "Built-in tags",
+          "description_html": "<p>Built-in tags</p>",
+          "line": 22
+        },
+        {
+          "description": "User-defined",
+          "description_html": "<p>User-defined</p>",
+          "line": 28
         }
       ]
     ]
   },
   "authors.js": {
     "name": "authors.js",
-    "path": "lib/plugins/authors.js",
+    "path": "../../lib/utils/authors.js",
     "comments": [
       []
     ]
   },
   "badge.js": {
     "name": "badge.js",
-    "path": "lib/filters/badge.js",
+    "path": "../../lib/tags/badge.js",
     "comments": [
       [
         {
@@ -226,7 +509,7 @@
   },
   "boilerplates.js": {
     "name": "boilerplates.js",
-    "path": "lib/filters/boilerplates.js",
+    "path": "../../lib/tags/boilerplates.js",
     "comments": [
       [
         {
@@ -258,21 +541,21 @@
   },
   "comments.js": {
     "name": "comments.js",
-    "path": "lib/filters/comments.js",
+    "path": "../../lib/tags/comments.js",
     "comments": [
       []
     ]
   },
   "contrib.js": {
     "name": "contrib.js",
-    "path": "lib/filters/contrib.js",
+    "path": "../../lib/tags/contrib.js",
     "comments": [
       []
     ]
   },
   "copyright.js": {
     "name": "copyright.js",
-    "path": "lib/filters/copyright.js",
+    "path": "../../lib/tags/copyright.js",
     "comments": [
       [
         {
@@ -295,7 +578,7 @@
   },
   "date.js": {
     "name": "date.js",
-    "path": "lib/utils/date.js",
+    "path": "../../lib/utils/date.js",
     "comments": [
       [
         {
@@ -327,204 +610,70 @@
   },
   "docs.js": {
     "name": "docs.js",
-    "path": "lib/filters/docs.js",
+    "path": "../../lib/tags/docs.js",
+    "comments": [
+      []
+    ]
+  },
+  "getAuthors.js": {
+    "name": "getAuthors.js",
+    "path": "../../lib/tags/getAuthors.js",
+    "comments": [
+      []
+    ]
+  },
+  "homepage.js": {
+    "name": "homepage.js",
+    "path": "../../lib/tags/homepage.js",
     "comments": [
       []
     ]
   },
   "html.js": {
     "name": "html.js",
-    "path": "lib/filters/html.js",
+    "path": "../../lib/tags/html.js",
     "comments": [
       []
     ]
   },
   "include.js": {
     "name": "include.js",
-    "path": "lib/filters/include.js",
+    "path": "../../lib/tags/include.js",
     "comments": [
       []
     ]
   },
   "license.js": {
     "name": "license.js",
-    "path": "lib/filters/license.js",
+    "path": "../../lib/tags/license.js",
     "comments": [
       []
     ]
   },
-  "listify.js": {
-    "name": "listify.js",
-    "path": "lib/utils/listify.js",
+  "moment.js": {
+    "name": "moment.js",
+    "path": "../../lib/tags/moment.js",
     "comments": [
-      [
-        {
-          "description": "Flatten an array and convert it\nto a comma-separated list.",
-          "title": "listify",
-          "param": "{Array} arr [description]",
-          "api": "Public",
-          "description_html": "<p>Flatten an array and convert it\nto a comma-separated list.</p>",
-          "params": [
-            {
-              "type": "Array",
-              "name": "arr",
-              "description": "[description]"
-            }
-          ],
-          "line": 6
-        }
-      ]
-    ]
-  },
-  "log.js": {
-    "name": "log.js",
-    "path": "lib/log.js",
-    "comments": [
-      [
-        {
-          "description": "General log",
-          "public": true,
-          "return": "{string}",
-          "description_html": "<p>General log</p>",
-          "line": 6
-        },
-        {
-          "description": "Bold",
-          "public": true,
-          "return": "{string}",
-          "description_html": "<p>Bold</p>",
-          "line": 23
-        },
-        {
-          "description": "Error",
-          "public": true,
-          "return": "{string}",
-          "description_html": "<p>Error</p>",
-          "line": 36
-        },
-        {
-          "description": "Warn",
-          "public": true,
-          "return": "{string}",
-          "description_html": "<p>Warn</p>",
-          "line": 49
-        },
-        {
-          "description": "Info",
-          "public": true,
-          "return": "{string}",
-          "description_html": "<p>Info</p>",
-          "line": 62
-        },
-        {
-          "description": "Info",
-          "public": true,
-          "return": "{string}",
-          "description_html": "<p>Info</p>",
-          "line": 75
-        }
-      ]
+      []
     ]
   },
   "partial.js": {
     "name": "partial.js",
-    "path": "lib/filters/partial.js",
+    "path": "../../lib/tags/partial.js",
     "comments": [
       []
     ]
   },
   "pkg.js": {
     "name": "pkg.js",
-    "path": "lib/filters/pkg.js",
+    "path": "../../lib/tags/pkg.js",
     "comments": [
       []
-    ]
-  },
-  "reverse.js": {
-    "name": "reverse.js",
-    "path": "lib/utils/reverse.js",
-    "comments": [
-      [
-        {
-          "description": "Reverse a string",
-          "name": "reverse",
-          "param": "{String} str The string to reverse",
-          "return": "{String}     The reversed string.",
-          "api": "public",
-          "description_html": "<p>Reverse a string</p>",
-          "params": [
-            {
-              "type": "String",
-              "name": "str",
-              "description": "The string to reverse"
-            }
-          ],
-          "line": 3
-        }
-      ]
-    ]
-  },
-  "safename.js": {
-    "name": "safename.js",
-    "path": "lib/utils/safename.js",
-    "comments": [
-      [
-        {
-          "description": "Safename",
-          "param": "{[type]} name The name to be modified",
-          "return": "{[type]}      The \"safe\" short version of the name",
-          "example:": [
-            "\"grunt-readme\" => \"readme\"",
-            "\"helper-foo\" => \"foo\""
-          ],
-          "api": "Public",
-          "description_html": "<p>Safename</p>",
-          "params": [
-            {
-              "type": "[type]",
-              "name": "name",
-              "description": "The name to be modified"
-            }
-          ],
-          "line": 6
-        }
-      ]
-    ]
-  },
-  "shortname.js": {
-    "name": "shortname.js",
-    "path": "lib/filters/shortname.js",
-    "comments": [
-      []
-    ]
-  },
-  "strip.js": {
-    "name": "strip.js",
-    "path": "lib/utils/strip.js",
-    "comments": [
-      [
-        {
-          "description": "Strip newlines and whitespace padding.",
-          "name": "reverse",
-          "param": "{String} str The string to reverse",
-          "return": "{String}     The reversed string.",
-          "api": "public",
-          "description_html": "<p>Strip newlines and whitespace padding.</p>",
-          "params": [
-            {
-              "type": "String",
-              "name": "str",
-              "description": "The string to reverse"
-            }
-          ],
-          "line": 3
-        }
-      ]
     ]
   },
   "toc.js": {
     "name": "toc.js",
-    "path": "lib/utils/toc.js",
+    "path": "../../lib/utils/toc.js",
     "comments": [
       [
         {
@@ -553,133 +702,9 @@
       ]
     ]
   },
-  "index.js": {
-    "name": "index.js",
-    "path": "lib/utils/index.js",
-    "comments": [
-      []
-    ]
-  },
-  "layout.js": {
-    "name": "layout.js",
-    "path": "lib/layout.js",
-    "comments": [
-      [
-        {
-          "description": "Default layout to use when one isn't\ndefined in the options.",
-          "return": "{String}",
-          "api": "Public",
-          "description_html": "<p>Default layout to use when one isn't\ndefined in the options.</p>",
-          "line": 9
-        },
-        {
-          "description": "Load layouts",
-          "return": "{Object}",
-          "api": "Public",
-          "description_html": "<p>Load layouts</p>",
-          "line": 32
-        }
-      ]
-    ]
-  },
-  "matter.js": {
-    "name": "matter.js",
-    "path": "lib/matter.js",
-    "comments": [
-      [
-        {
-          "description": "Parse and extract YAML, JSON or Coffee\nfront matter.",
-          "return": "{Object}",
-          "api": "public",
-          "description_html": "<p>Parse and extract YAML, JSON or Coffee\nfront matter.</p>",
-          "line": 7
-        }
-      ]
-    ]
-  },
-  "mixins.js": {
-    "name": "mixins.js",
-    "path": "lib/mixins.js",
-    "comments": [
-      [
-        {
-          "description": "Adds mixins to the context",
-          "name": "mixins",
-          "param": "{Object} options",
-          "return": "{Object}",
-          "api": "private",
-          "description_html": "<p>Adds mixins to the context</p>",
-          "params": [
-            {
-              "type": "Object",
-              "name": "options",
-              "description": ""
-            }
-          ],
-          "line": 14
-        }
-      ]
-    ]
-  },
-  "homepage.js": {
-    "name": "homepage.js",
-    "path": "lib/plugins/homepage.js",
-    "comments": [
-      []
-    ]
-  },
-  "partials.js": {
-    "name": "partials.js",
-    "path": "lib/partials.js",
-    "comments": [
-      [
-        {
-          "description": "Define individual partials.",
-          "name": "partials",
-          "return": "{Object}",
-          "api": "public",
-          "example:": "true _.definePartial('tooltip', '<div class=\"tooltip\">${ content }</div>');",
-          "description_html": "<p>Define individual partials.</p>",
-          "line": 12
-        },
-        {
-          "description": "Register partials as strings. Use `options.partials`\nto add partials. Globbing patterns may be used.",
-          "name": "partials",
-          "return": "{Object}",
-          "api": "public",
-          "description_html": "<p>Register partials as strings. Use <code>options.partials</code>\nto add partials. Globbing patterns may be used.</p>",
-          "line": 36
-        }
-      ]
-    ]
-  },
-  "plugins.js": {
-    "name": "plugins.js",
-    "path": "lib/plugins.js",
-    "comments": [
-      [
-        {
-          "description": "Register plugins with Phaser",
-          "name": "plugins",
-          "param": "{Object} options",
-          "return": "{Object}",
-          "api": "private",
-          "description_html": "<p>Register plugins with Phaser</p>",
-          "params": [
-            {
-              "type": "Object",
-              "name": "options",
-              "description": ""
-            }
-          ],
-          "line": 12
-        }
-      ]
-    ]
-  },
   "template.js": {
     "name": "template.js",
-    "path": "lib/template.js",
+    "path": "../../lib/template.js",
     "comments": [
       [
         {
@@ -714,16 +739,9 @@
       ]
     ]
   },
-  "AUTHORS.js": {
-    "name": "AUTHORS.js",
-    "path": "lib/utils/AUTHORS.js",
-    "comments": [
-      []
-    ]
-  },
   "adjust.js": {
     "name": "adjust.js",
-    "path": "lib/utils/adjust.js",
+    "path": "../../lib/utils/adjust.js",
     "comments": [
       [
         {
@@ -745,7 +763,7 @@
   },
   "arrayify.js": {
     "name": "arrayify.js",
-    "path": "lib/utils/arrayify.js",
+    "path": "../../lib/utils/arrayify.js",
     "comments": [
       [
         {
@@ -776,7 +794,7 @@
   },
   "block.js": {
     "name": "block.js",
-    "path": "lib/utils/block.js",
+    "path": "../../lib/utils/block.js",
     "comments": [
       [
         {
@@ -791,7 +809,7 @@
   },
   "condense.js": {
     "name": "condense.js",
-    "path": "lib/utils/condense.js",
+    "path": "../../lib/utils/condense.js",
     "comments": [
       [
         {
@@ -815,21 +833,21 @@
   },
   "contributors.js": {
     "name": "contributors.js",
-    "path": "lib/utils/contributors.js",
+    "path": "../../lib/utils/contributors.js",
     "comments": [
       []
     ]
   },
   "convertUrl.js": {
     "name": "convertUrl.js",
-    "path": "lib/utils/convertUrl.js",
+    "path": "../../lib/utils/convertUrl.js",
     "comments": [
       []
     ]
   },
   "dir.js": {
     "name": "dir.js",
-    "path": "lib/utils/dir.js",
+    "path": "../../lib/utils/dir.js",
     "comments": [
       [
         {
@@ -844,7 +862,7 @@
   },
   "expandData.js": {
     "name": "expandData.js",
-    "path": "lib/utils/expandData.js",
+    "path": "../../lib/utils/expandData.js",
     "comments": [
       [
         {
@@ -874,9 +892,16 @@
       ]
     ]
   },
+  "extendContext.js": {
+    "name": "extendContext.js",
+    "path": "../../lib/utils/extendContext.js",
+    "comments": [
+      []
+    ]
+  },
   "isType.js": {
     "name": "isType.js",
-    "path": "lib/utils/isType.js",
+    "path": "../../lib/utils/isType.js",
     "comments": [
       [
         {
@@ -891,7 +916,7 @@
   },
   "md.js": {
     "name": "md.js",
-    "path": "lib/utils/md.js",
+    "path": "../../lib/utils/md.js",
     "comments": [
       [
         {
@@ -914,7 +939,7 @@
   },
   "postProcess.js": {
     "name": "postProcess.js",
-    "path": "lib/utils/postProcess.js",
+    "path": "../../lib/utils/postProcess.js",
     "comments": [
       [
         {
@@ -945,7 +970,7 @@
   },
   "time.js": {
     "name": "time.js",
-    "path": "lib/utils/time.js",
+    "path": "../../lib/utils/time.js",
     "comments": [
       [
         {
@@ -960,7 +985,7 @@
   },
   "timestamp.js": {
     "name": "timestamp.js",
-    "path": "lib/utils/timestamp.js",
+    "path": "../../lib/utils/timestamp.js",
     "comments": [
       [
         {
@@ -976,7 +1001,7 @@
   },
   "username.js": {
     "name": "username.js",
-    "path": "lib/utils/username.js",
+    "path": "../../lib/utils/username.js",
     "comments": [
       [
         {

@@ -9,12 +9,12 @@ describe('Phaser filters', function () {
 
   describe('filters.date:', function () {
     it('should return the current year.', function () {
-      var actual = phaser.process('{%= date("YYYY") %}');
+      var actual = phaser.process('{%= _.date("YYYY") %}');
       expect(actual.content).to.eql('2014');
     });
 
     it('should return the full date.', function () {
-      var actual = phaser.process('{%= date("full") %}');
+      var actual = phaser.process('{%= _.date("full") %}');
       expect(actual.content.indexOf(2014) !== -1).to.eql(true);
     });
   });
@@ -79,13 +79,6 @@ describe('Phaser filters', function () {
       expect(actual.content).to.eql(expected);
     });
   });
-  describe('contributors:', function () {
-    it('should return the name of the contributors using a filter.', function () {
-      var actual = phaser.process('{%= contributors %}');
-      var expected = '* Jon Schlinkert\n* Brian Woodward';
-      expect(actual.content).to.eql(expected);
-    });
-  });
 
   /**
    * listify
@@ -110,7 +103,7 @@ describe('Phaser filters', function () {
 
   describe('homepage:', function () {
     it('should return a normalized version of the homepage URL listed in package.json.', function () {
-      var actual = phaser.process('{%= homepage() %}');
+      var actual = phaser.process('{%= homepage %}');
       var expected = 'https://github.com/jonschlinkert/phaser';
       expect(actual.content).to.eql(expected);
     });
@@ -118,13 +111,13 @@ describe('Phaser filters', function () {
 
   describe('meta.homepage:', function () {
     it('should return a normalized version of the homepage URL listed in package.json.', function () {
-      var actual = phaser.process('{%= homepage() %}');
+      var actual = phaser.process('{%= homepage %}');
       var expected = 'https://github.com/jonschlinkert/phaser';
       expect(actual.content).to.eql(expected);
     });
 
     it('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
-      var actual = phaser.process('{%= homepage() %}', {
+      var actual = phaser.process('{%= homepage %}', {
         metadata: {
           homepage: 'git://github.com/foo/bar'
         }
@@ -134,7 +127,7 @@ describe('Phaser filters', function () {
     });
 
     it('should return the homepage URL passed as a second parameter.', function () {
-      var actual = phaser.process('{%= homepage() %}', {
+      var actual = phaser.process('{%= homepage %}', {
         homepage: 'git://github.com/baz/quux/'
       });
       var expected = 'git://github.com/baz/quux/';
