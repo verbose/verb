@@ -8,7 +8,7 @@
 const file = require('fs-utils');
 const phaser = require('../');
 
-var opts = {};
+var opts = {phaserrc: 'examples/.phaserrc'};
 var globOpts = {
   cwd: 'docs',
   ext: '.md',

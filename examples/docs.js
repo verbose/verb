@@ -6,4 +6,4 @@
  */
 
 const phaser = require('../');
-phaser.expandMapping(['*.md'], 'test/actual/');
+phaser.expandMapping(['*.md'], 'test/actual/', {phaserrc: 'examples/.phaserrc'});
