@@ -28,7 +28,6 @@ phaser.plugins    = require('./lib/plugins');
 phaser.filters    = require('./lib/filters');
 phaser.tags       = require('./lib/tags');
 phaser.matter     = require('./lib/matter');
-phaser.mixins     = require('./lib/mixins');
 phaser.extensions = {};
 phaser.ext        = '.md';
 
@@ -38,11 +37,13 @@ phaser.init = function (options) {
     return;
   }
   phaser.initalized = true;
-
   var opts = _.extend({verbose: false}, options);
   phaser.log = require('./lib/log').init(opts, phaser);
   phaser.verbose = phaser.log.verbose;
 
+  // Initialize mixins
+  _.fn = require('./lib/mixins.js');
+  _.mixin(_.fn);
 };
 
 
@@ -92,9 +93,6 @@ phaser.process = function(src, options) {
 
   // Exclusion patterns, to omit certain options from context
   phaser.context = phaser.exclusions(phaser.context, opts);
-
-  // Initialize mixins
-  _.mixin(phaser.mixins.init(phaser));
 
   var rendered = phaser.template(content, phaser.context, settings);
   var result = phaser.utils.postProcess(rendered, opts);

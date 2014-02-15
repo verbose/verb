@@ -49,7 +49,7 @@
     "remote-origin-url": "~0.2.1",
     "scrawl": "0.0.5",
     "strip-banner": "~0.1.1",
-    "template": "~0.1.3"
+    "template": "~0.1.5"
   },
   "devDependencies": {
     "chai": "~1.9.0",
