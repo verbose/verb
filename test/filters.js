@@ -110,7 +110,7 @@ describe('Phaser filters', function () {
 
   describe('homepage:', function () {
     it('should return a normalized version of the homepage URL listed in package.json.', function () {
-      var actual = phaser.process('{%= homepage %}');
+      var actual = phaser.process('{%= homepage() %}');
       var expected = 'https://github.com/jonschlinkert/phaser';
       expect(actual.content).to.eql(expected);
     });
@@ -118,13 +118,13 @@ describe('Phaser filters', function () {
 
   describe('meta.homepage:', function () {
     it('should return a normalized version of the homepage URL listed in package.json.', function () {
-      var actual = phaser.process('{%= homepage %}');
+      var actual = phaser.process('{%= homepage() %}');
       var expected = 'https://github.com/jonschlinkert/phaser';
       expect(actual.content).to.eql(expected);
     });
 
     it('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
-      var actual = phaser.process('{%= homepage %}', {
+      var actual = phaser.process('{%= homepage() %}', {
         metadata: {
           homepage: 'git://github.com/foo/bar'
         }
@@ -134,7 +134,7 @@ describe('Phaser filters', function () {
     });
 
     it('should return the homepage URL passed as a second parameter.', function () {
-      var actual = phaser.process('{%= homepage %}', {
+      var actual = phaser.process('{%= homepage() %}', {
         homepage: 'git://github.com/baz/quux/'
       });
       var expected = 'git://github.com/baz/quux/';

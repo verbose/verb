@@ -13,6 +13,7 @@
   "undef": true,
   "unused": true,
   "globals": {
+    "define": true,
     "before": true,
     "after": true,
     "describe": true,
