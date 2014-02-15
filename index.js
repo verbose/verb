@@ -23,6 +23,7 @@ var phaser = module.exports = {};
 phaser.cwd        = cwd;
 phaser.base       = cwd;
 phaser.utils      = require('./lib/utils/index');
+phaser.file       = require('./lib/file');
 phaser.template   = require('./lib/template');
 phaser.exclusions = require('./lib/exclusions');
 phaser.partials   = require('./lib/partials');
@@ -58,12 +59,14 @@ phaser.init = function (options) {
   phaser.initalized = true;
 
   var opts = _.extend({verbose: false}, options);
-  phaser.log = require('./lib/log').init(opts, phaser);
-  phaser.verbose = phaser.log.verbose;
 
   // Initialize mixins
   _.fn = require('./lib/mixins.js');
   _.mixin(_.fn);
+
+  // Initalize logging
+  phaser.log = require('./lib/log').init(opts, phaser);
+  phaser.verbose = phaser.log.verbose;
 };
 
 
