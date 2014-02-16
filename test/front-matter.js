@@ -93,7 +93,7 @@ describe('front-matter', function () {
     it('should evaluate functions and extend the context with the returned result.', function (done) {
       var fixture = file.readFileSync('test/fixtures/coffee-fn.md');
       var actual = phaser.process(fixture);
-      expect(actual.content).to.equal('jonschlinkert\ntreknilhcsnoj');
+      expect(actual.content).to.equal('jonschlinkert\ntreknilhcsnoj\n');
       done();
     });
   });
