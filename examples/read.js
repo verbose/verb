@@ -6,5 +6,4 @@
  */
 
 var phaser = require('../');
-console.log(phaser);
 phaser.file.read('README.tmpl.md');

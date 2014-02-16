@@ -1,34 +1,19 @@
----
-user: jonschlinkert
----
 # {%= name %}
 
 > {%= description %}
 
-Please [report any bugs or feature requests](https://github.com/{%= user %}/{%= name %}/issues/new), thanks!
+Exactly like the one on Star Trek. But instead of "stun" and "kill", this Phaser generates markdown documentation, making it the most deadly markdown documentation generator on the planet (and probably others ones too).
 
-{%= toc() %}
+Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 
-## Quickstart
-{%= docs('quickstart') %}
+## Install
+{%= docs('install') %}
 
-## Examples
-{%= docs("example") %}
-
-## Options
-{%= docs('options') %}
-
-## Config
-{%= docs('config') %}
-
-## Defaults
-{%= docs("defaults") %}
-
-## Contributing
-{%= contrib("contributing") %}
+## About
+{%= docs('about') %}
 
 ## Authors
-{%= contrib("jon") %}
+{%= contrib("authors") %}
 
 ## License
 {%= copyright() %}

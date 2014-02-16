@@ -14,18 +14,28 @@ var prompt = require('prompt');
 
 // Local libs
 var phaser = require('../index');
-var pkg = require('../package.json');
-var version = pkg.version;
 
-// CLI
 
-program
-  .version(version)
-  .usage('[options] [dir]')
-  .option('-f, --file', 'build a specific file.')
-  .option('-d, --directory', 'build an entire directory, globbing patterns optional.')
-  .option('-v, --verbose', 'verbose logging')
-  .parse(process.argv);
+/**
+ * Have not started working on options yet.
+ * I only put this here as a placeholder/
+ * reminder in case someone else wants to
+ * get to it before me :-)
+ */
+
+// var pkg = require('../package.json');
+// var version = pkg.version;
+
+// // CLI
+
+// program
+//   // .version(version)
+//   .usage('[options] [dir]')
+//   .option('-f, --file', 'build a specific file.')
+//   .option('-d, --directory', 'build an entire directory, globbing patterns optional.')
+//   .option('-v, --verbose', 'verbose logging')
+//   .parse(process.argv);
+
 
 // Messages
 
@@ -36,6 +46,11 @@ var error   = chalk.red;
 // Defaults
 var config = {readme: 'README.tmpl.md'};
 var supplied = {};
+
+/**
+ * Prepare to hit warp
+ */
+
 
 function render(filepath) {
   var template = path.join(filepath, config.readme);
@@ -48,12 +63,24 @@ function render(filepath) {
 
   // Run phaser
   var content = file.readFileSync(template);
+  var dest = './README.md';
+  // if(file.exists(dest)) {
+    // TODO: add prompt here, e.g.:
+    //
+    //  - README already exists, do you want to overwrite it? y/n
+    //    [n]: The line must be drawn here! This far, no farther!
+    //    [y]: Make it so.
+    //
+    //  Also add a flag to do this automatically.
+  // }
 
-  file.writeFileSync('README.md', phaser.process(content));
+  file.writeFileSync(dest, phaser.process(content).content);
   console.log('\n>> README rendered.\n' + success('>> Completed successfully.'));
 };
 
-// Phaser
+/**
+ * Engage!
+ */
 
 if(program.directory) {
   glob.find(program.rawArgs[3] + '/*', {filter: 'isFile'}).map(function(task) {
@@ -75,6 +102,10 @@ if(program.directory) {
       prompt.message = 'Please supply a source directory';
       prompt.start();
       prompt.get(['path'], function (err, result) {
+
+        /**
+         * Make it so
+         */
         render(result.path);
       });
     }

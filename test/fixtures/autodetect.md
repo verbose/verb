@@ -1,4 +1,4 @@
---- coffee
+---coffee
 data =
   user: 'jonschlinkert'
 ---

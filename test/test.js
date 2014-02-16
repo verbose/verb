@@ -7,6 +7,11 @@ var file = require('fs-utils');
 var phaser = require('../');
 
 
+/**
+ * "You may test that assumption at your convenience."
+ *   -- Picard
+ */
+
 
 describe('Phaser', function () {
 
@@ -41,7 +46,6 @@ describe('Phaser', function () {
       expect(actual).to.eql(expected);
     });
   });
-
 
 
 

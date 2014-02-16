@@ -489,7 +489,7 @@ grunt.initConfig({
 ```
 
 ## Contributing
-Find a bug? Have a feature request? Please [create an Issue](https://github.com/jonschlinkert/phaser/issues).
+Find a bug? Have a feature request? Please [create an Issue](https://github.com/assemble/phaser/issues).
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with [grunt-readme](https://github.com/assemble/grunt-readme).
 
