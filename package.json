@@ -1,0 +1,59 @@
+{
+  "name": "phaser",
+  "description": "The most deadly markdown documentation generator in the Alpha Quadrant.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/assemble/phaser",
+  "author": {
+    "name": "Jon Schlinkert",
+    "url": "https://github.com/assemble"
+  },
+  "contributors": [
+    {
+      "name": "Jon Schlinkert",
+      "url": "https://github.com/jonschlinkert"
+    },
+    {
+      "name": "Brian Woodward",
+      "url": "https://github.com/doowb"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/assemble/phaser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/assemble/phaser/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/assemble/phaser/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "keywords": [
+    "assemble",
+    "build",
+    "doc",
+    "docs generator",
+    "docs",
+    "documentation",
+    "generator",
+    "gh-pages",
+    "markdown docs",
+    "markdown",
+    "md docs",
+    "md",
+    "project docs",
+    "project documentation",
+    "readme generator",
+    "readme template",
+    "readme",
+    "repo docs",
+    "repo",
+    "repository"
+  ]
+}
