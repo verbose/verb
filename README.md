@@ -24,8 +24,8 @@ Phaser also loves developers, offering an extensive API and tools for building p
 * Mixins
 * Templates can be used directly, cached as JavaScript, and/or via `require` statements
 * Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter
-* Easily add a Table of Contents to any file
-* Generate a _multi-file Table of Contents_, along with relative links to each file AND section
+* Easily add a **Table of Contents** to any file
+* Generate a **multi-file Table of Contents**, along with relative links to each file AND section
 * Comment parsing (basic)
 * Extensive API
 * File-system Utilities
@@ -48,14 +48,14 @@ While both engines can be extended to accomplish most of the following features,
 **Summary** | Build HTML projects from modular components and data | Generate markdown documentation
 **Focus** | Power, granular access to context, components | Speed, ease-of-use, command-line
 **Template Engine** | Handlebars by default, any template engine can be added. | Lo-Dash
-**Extensions** | Plugins, Lo-Dash Mixins, Helpers, Filters, Tags<sup>1</sup> | Plugins, Lo-Dash Mixins, Filters, Tags
+**Extensions** | Plugins, Lo-Dash Mixins, Helpers, Filters, Tags <sup>[1](#1-depends-on-the-template-engine)</sup> | Plugins, Lo-Dash Mixins, Filters, Tags
 **Static Blogs** | Yes | No
 **Static Sites** | Yes | No
 **HTML Documentation** | Yes | Limited.
 **Markdown Documentation** | Limited | Yes
 **Markdown to HTML** | Yes | Limited
 
-<sup>1</sup>Depends on the template engine.
+###### <sup>1</sup> Depends on the template engine.
 
 [Assemble]: https://github.com/assemble/assemble
 [gray-matter]: https://github.com/assemble/gray-matter
