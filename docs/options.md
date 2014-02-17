@@ -24,3 +24,16 @@ Type: `boolean|string`
 Default: `undefined` (options: `true`|`"only"`)
 
 When `namespace` defined, an object is created for each data file, where the top level property on the object is the name of the file itself, and the data contained within the file is extended into that object. [See examples](#namespacing).
+
+## omit
+
+Omit properties from the context.
+
+Type: `Array`
+
+Defaults: `[]`
+
+Returns: `Object`
+
+Useful if properties are added via options, but should not be on the context.
+

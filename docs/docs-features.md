@@ -22,12 +22,12 @@ This is probably most useful when:
 
 
 ## Code Comments
-Code comments may be used in markdown templates, and they will be stripped from the rendered README as long as they adhere to the following syntax:
+Code comments used in markdown templates will be stripped from the rendered files as long as they adhere to the following syntax:
 
 ```handlebars
+// Whitespace inside comments is insignificant
 [[!-- foo --]]
 [[! foo ]]
-[[!foo]]
 ```
 
 ## Escaping

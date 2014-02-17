@@ -1,7 +1,8 @@
 /**
  * phaser <https://github.com/jonschlinkert/phaser>
+ * The most deadly markdown documentation generator in the Alpha Quadrant.
  *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
 
@@ -23,7 +24,7 @@ var phaser = module.exports = {};
 phaser.cwd        = cwd;
 phaser.base       = cwd;
 phaser.utils      = require('./lib/utils/index');
-phaser.file       = require('./lib/file');
+phaser.file       = _.defaults(require('./lib/file'), file);
 phaser.template   = require('./lib/template');
 phaser.exclusions = require('./lib/exclusions');
 phaser.partials   = require('./lib/partials');
@@ -33,7 +34,6 @@ phaser.tags       = require('./lib/tags');
 phaser.matter     = require('./lib/matter');
 phaser.extensions = {};
 phaser.ext        = '.md';
-
 
 /**
  * runtime config
@@ -76,6 +76,7 @@ phaser.init = function (options) {
 
 phaser.process = function(src, options) {
   var opts = _.extend({}, options);
+  phaser.init(opts);
 
   // Add runtime config
   var runtimeConfig;
@@ -86,7 +87,6 @@ phaser.process = function(src, options) {
   }
   _.extend(opts, runtimeConfig);
 
-  phaser.init(opts);
   phaser.options = opts;
 
   phaser.config = require('./lib/config').init(opts.config);

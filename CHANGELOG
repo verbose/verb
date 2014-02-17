@@ -1,0 +1,30 @@
+v0.3.5:
+  date: 2013-11-15
+  changes:
+    - Repos task is now a separate grunt plugin.
+    - Adds basic badge mixins and lots of new test fixtures to test templates and mixins.
+v0.3.0:
+  date: 2013-11-15
+  changes:
+    - Updates function that reads in metadata from options to accept mixed formats.
+v0.2.4:
+  date: 2013-11-08
+  changes:
+    - "Adds table of contents generation. Just use `[%= toc %]` where you want it to go."
+v0.2.2:
+  date: 2013-11-03
+  changes:
+    - Fixes the function for the `metadata` option.
+    - Externalizes advanced docs since no config is really needed for this task.
+v0.1.9:
+  date: 2013-10-11
+  changes:
+    - Adds ability to specify multiple metadata files in yaml or json format.
+v0.1.3:
+  date: 2013-09-21
+  changes:
+    - Completely refactored. Adds a lot of documentation.
+v0.1.0:
+  date: 2013-09-19
+  changes:
+    - First commmit.

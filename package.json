@@ -59,7 +59,8 @@
     "remote-origin-url": "~0.2.1",
     "scrawl": "0.0.5",
     "strip-banner": "~0.1.1",
-    "template": "~0.1.5"
+    "template": "~0.1.5",
+    "columnify": "~0.1.2"
   },
   "devDependencies": {
     "chai": "~1.9.0",

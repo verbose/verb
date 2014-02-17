@@ -1,10 +1,10 @@
 /**
  * phaser <https://github.com/jonschlinkert/phaser>
+ * The most deadly markdown documentation generator in the Alpha Quadrant.
  *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
-
 var chalk = require('chalk');
 var file = require('fs-utils');
 var phaser = require('../');
@@ -20,4 +20,3 @@ var content = phaser.file.read('README.tmpl.md');
 var rendered = phaser.process(content).content;
 
 file.writeFileSync('README.md', rendered);
-console.log();
