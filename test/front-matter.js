@@ -34,7 +34,11 @@ describe('front-matter', function () {
     it('should detect CoffeScript as the language, evaluate it, and extend the context with the result.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect.md');
       var actual = phaser.process(fixture, {
-        config: false
+        config: {},
+        repository: {
+          "type": "git",
+          "url": "https://github.com/assemble/phaser.git"
+        },
       });
       expect(actual.content).to.deep.equal('jonschlinkert');
       done();
@@ -52,11 +56,14 @@ describe('front-matter', function () {
     it('should detect YAML as the language.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect-yaml.md');
       var actual = phaser.process(fixture, {
-        config: false
+        config: {},
+        repository: {
+          "type": "git",
+          "url": "https://github.com/assemble/phaser.git"
+        },
       });
-      var expected = file.readJSONSync('test/expected/autodetect-yaml.json');
       actual = JSON.parse(JSON.stringify(actual));
-      expect(actual).to.deep.equal(expected);
+      expect(actual.content).to.deep.equal('jonschlinkert');
       done();
     });
   });
@@ -65,11 +72,14 @@ describe('front-matter', function () {
     it('should fall back YAML as the language.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect-no-lang.md');
       var actual = phaser.process(fixture, {
-        config: false
+        config: {},
+        repository: {
+          "type": "git",
+          "url": "https://github.com/assemble/phaser.git"
+        },
       });
-      var expected = file.readJSONSync('test/expected/autodetect-no-lang.json');
       actual = JSON.parse(JSON.stringify(actual));
-      expect(actual).to.deep.equal(expected);
+      expect(actual.content).to.deep.equal('jonschlinkert');
       done();
     });
   });

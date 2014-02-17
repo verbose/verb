@@ -1,0 +1,5 @@
+<div class="alert">
+  <% if(field.alert !== undefined) { %>
+    <%= _.usePartial('alert', {alert: {content: field.alert}}) %>
+  <% } %>
+</div>

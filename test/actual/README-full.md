@@ -1,4 +1,4 @@
-# phaser
+# phaser [![NPM version](https://badge.fury.io/js/phaser.png)](http://badge.fury.io/js/phaser) [![Build Status](https://travis-ci.org/assemble/phaser.png)](https://travis-ci.org/assemble/phaser)
 
 > The most deadly markdown documentation generator in the Alpha Quadrant.
 

@@ -82,43 +82,4 @@ describe('Phaser filters', function () {
       expect(actual.content).to.eql(expected);
     });
   });
-
-
-  /**
-   * Homepage
-   */
-
-  describe('homepage:', function () {
-    it('should return a normalized version of the homepage URL listed in package.json.', function () {
-      var actual = phaser.process('{%= homepage %}');
-      var expected = 'https://github.com/assemble/phaser';
-      expect(actual.content).to.eql(expected);
-    });
-  });
-
-  describe('meta.homepage:', function () {
-    it('should return a normalized version of the homepage URL listed in package.json.', function () {
-      var actual = phaser.process('{%= homepage %}');
-      var expected = 'https://github.com/assemble/phaser';
-      expect(actual.content).to.eql(expected);
-    });
-
-    it('should return a normalized version of the custom homepage URL passed in through the metadata property.', function () {
-      var actual = phaser.process('{%= homepage %}', {
-        metadata: {
-          homepage: 'git://github.com/foo/bar'
-        }
-      });
-      var expected = 'git://github.com/foo/bar';
-      expect(actual.content).to.eql(expected);
-    });
-
-    it('should return the homepage URL passed as a second parameter.', function () {
-      var actual = phaser.process('{%= homepage %}', {
-        homepage: 'git://github.com/baz/quux/'
-      });
-      var expected = 'git://github.com/baz/quux/';
-      expect(actual.content).to.eql(expected);
-    });
-  });
 });

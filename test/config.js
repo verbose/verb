@@ -22,7 +22,11 @@ describe('options.config', function () {
     it('should extend that data into the context, but not data from package.json', function () {
       var actual = phaser.process('', {
         config: {
-          name: 'Custom Config'
+          name: 'Custom Config',
+          repository: {
+            "type": "git",
+            "url": "https://github.com/assemble/phaser.git"
+          },
         }
       });
       var expected = file.readJSONSync('test/expected/config-custom.json');

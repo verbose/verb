@@ -9,6 +9,19 @@ describe('utils.adjust.headings', function () {
 
 
   /**
+   * Escaped templates
+   */
+
+  describe('when a template tag is escaped', function () {
+    it('should not be evaluated by Lo-Dash, and unescaped in the output.', function () {
+      var actual = phaser.process('[%= name %]');
+      var expected = '{%= name %}';
+      expect(actual.content).to.eql(expected);
+    });
+  });
+
+
+  /**
    * Utils:headings
    */
 
