@@ -112,6 +112,30 @@ describe('utils.arrayify:', function () {
   });
 });
 
+describe('utils.authors', function() {
+
+  describe('when utils.authors() is called', function() {
+  
+    it('should return an array of authors', function() {
+      var expected = [
+        {
+          name: 'Jon Schlinkert',
+          email: '',
+          url: 'https://github.com/jonschlinkert'
+        },
+        {
+          name: 'Brian Woodward',
+          email: '',
+          url: 'https://github.com/doowb'
+        }
+      ];
+      var actual = utils.authors();
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+});
 
 
 describe('utils.date:', function () {
