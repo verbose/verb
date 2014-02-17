@@ -41,6 +41,7 @@ var phaser = require('../index');
 
 var success = chalk.green;
 var warn    = chalk.yellow;
+var em      = chalk.italic;
 var error   = chalk.red;
 
 // Defaults
@@ -50,7 +51,6 @@ var supplied = {};
 /**
  * Prepare to hit warp
  */
-
 
 function render(filepath) {
   var template = path.join(filepath, config.readme);
@@ -63,19 +63,37 @@ function render(filepath) {
 
   // Run phaser
   var content = file.readFileSync(template);
-  var dest = './README.md';
-  // if(file.exists(dest)) {
-    // TODO: add prompt here, e.g.:
-    //
-    //  - README already exists, do you want to overwrite it? y/n
-    //    [n]: The line must be drawn here! This far, no farther!
-    //    [y]: Make it so.
-    //
-    //  Also add a flag to do this automatically.
-  // }
+  var dest = phaser.cwd('README.md');
 
-  file.writeFileSync(dest, phaser.process(content).content);
-  console.log('\n>> README rendered.\n' + success('>> Completed successfully.'));
+  if(file.exists(dest)) {
+    prompt.start();
+    prompt.get({
+      name: 'answer',
+      message: 'Are you sure you want to overwrite the README?',
+      validator: /y[es]*|n[o]?/,
+      warning: 'Must respond "yes" or "no"',
+      default: 'no'
+    }, function (err, result) {
+
+      /**
+       * Check for a README first.
+       */
+      if(!~(result.answer).search('y')) {
+
+        // Return to Alpha.
+        console.log(warn('\n  The line must be drawn here! This far, no farther!'), '--Picard');
+        console.log('  Your README was spared... This time.');
+        return;
+      } else {
+
+        // Make it so.
+        console.log(success('\n  Make it so.'), '--Picard\n');
+        file.writeFileSync(dest, phaser.process(content).content);
+        console.log('\n>> README rendered.\n' + success('>> Completed successfully.'));
+      }
+
+    });
+  }
 };
 
 /**
