@@ -25,10 +25,11 @@ phaser.cwd        = cwd;
 phaser.base       = cwd;
 phaser.utils      = require('./lib/utils/index');
 phaser.file       = _.defaults(require('./lib/file'), file);
+phaser.data       = require('./lib/data');
+phaser.plugins    = require('./lib/plugins');
 phaser.template   = require('./lib/template');
 phaser.exclusions = require('./lib/exclusions');
 phaser.partials   = require('./lib/partials');
-phaser.plugins    = require('./lib/plugins');
 phaser.filters    = require('./lib/filters');
 phaser.tags       = require('./lib/tags');
 phaser.matter     = require('./lib/matter');
@@ -39,10 +40,10 @@ phaser.ext        = '.md';
  * runtime config
  */
 
-if(file.exists(cwd('.phaserrc'))) {
-  phaser.phaserrc =  configFile.load(cwd('.phaserrc'));
-} else if(file.exists(cwd('.phaserrc.yml'))) {
-  phaser.phaserrc = configFile.load(cwd('.phaserrc.yml'))
+if(file.exists('.phaserrc')) {
+  phaser.phaserrc =  configFile.load('.phaserrc');
+} else if(file.exists('.phaserrc.yml')) {
+  phaser.phaserrc = configFile.load('.phaserrc.yml');
 } else {
   phaser.phaserrc = {};
 }
@@ -106,13 +107,6 @@ phaser.process = function(src, options) {
   // Template settings
   var settings = _.defaults({}, opts.settings);
 
-  // Extract and parse front matter
-  phaser.page  = phaser.matter.init(src, opts);
-  var content  = phaser.page.content;
-  var metadata = phaser.page.context;
-
-  _.extend(phaser.context, metadata);
-
   // Initialize plugins
   _.extend(phaser.context, phaser.plugins.init(phaser));
 
@@ -122,6 +116,16 @@ phaser.process = function(src, options) {
 
   // Initalize partials
   _.extend(phaser.context, phaser.partials.init(phaser));
+
+  // Initialize `options.data`
+  _.extend(phaser.context, phaser.data.init(opts));
+
+  // Extract and parse front matter
+  phaser.page  = phaser.matter.init(src, opts);
+  var content  = phaser.page.content;
+  var metadata = phaser.page.context;
+
+  _.extend(phaser.context, metadata);
 
   // Exclusion patterns, to omit certain options from context
   phaser.context = phaser.exclusions(phaser.context, opts);
@@ -166,7 +170,7 @@ phaser.expandMapping = function(src, dest, options) {
 
   dest = dest || phaser.cwd();
   phaser.options = phaser.options || {};
-  phaser.options.dest = dest || phaser.cwd();
+  phaser.options.dest = phaser.cwd(dest) || phaser.cwd();
 
   var defaults = {
     cwd: opts.cwd || phaser.cwd('docs'),
@@ -187,6 +191,7 @@ phaser.expandMapping = function(src, dest, options) {
         return true;
       }
     }).map(function(filepath) {
+      phaser.options.src = filepath;
       if(!concat) {
         count++;
         file.writeFileSync(fp.dest, phaser.read(filepath, opts));
