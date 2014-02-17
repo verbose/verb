@@ -61,7 +61,8 @@
     "strip-banner": "~0.1.1",
     "template": "~0.1.5",
     "async": "~0.2.10",
-    "columnify": "~0.1.2"
+    "columnify": "~0.1.2",
+    "repo-templates": "~0.1.0"
   },
   "devDependencies": {
     "chai": "~1.9.0",
