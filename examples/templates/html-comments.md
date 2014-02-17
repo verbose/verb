@@ -7,13 +7,10 @@ Exactly like the one on Star Trek. But instead of "stun" and "kill", this Phaser
 Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 
 ## Install
-{%= docs('install') %}
+<!-- docs('install') -->
 
 ## About
-{%= docs('about') %}
-
-## Authors
-{%= contrib("authors") %}
+<!-- docs('about') -->
 
 ## License
 {%= copyright() %}

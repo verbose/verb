@@ -11,4 +11,4 @@ var opts = {
 };
 
 var phaser = require('../');
-phaser.copy('docs/_html.md', 'test/actual/html.html', opts);
+phaser.copy('examples/templates/_html.md', 'test/actual/html.html', opts);
