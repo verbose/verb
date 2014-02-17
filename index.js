@@ -58,7 +58,6 @@ phaser.init = function (options) {
     return;
   }
   phaser.initalized = true;
-
   var opts = _.extend({verbose: false}, options);
 
   // Initialize mixins
@@ -76,7 +75,7 @@ phaser.init = function (options) {
  */
 
 phaser.process = function(src, options) {
-  var opts = _.extend({}, options);
+  var opts = _.extend({toc: {maxDepth: 2}}, options);
   phaser.init(opts);
 
   // Add runtime config
@@ -145,7 +144,7 @@ phaser.process = function(src, options) {
   var result = phaser.utils.postProcess(rendered, opts);
 
   // Generate a TOC from <!-- toc --> after all content is included.
-  result = require('marked-toc').insert(result, {maxDepth: 3});
+  result = require('marked-toc').insert(result, opts.toc);
 
   return {
     context: phaser.context,

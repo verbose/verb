@@ -34,3 +34,4 @@ Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 ***
 
 {%= include("footer") %}
+{%= log.success('README saved. OK!') %}

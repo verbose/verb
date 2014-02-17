@@ -2,11 +2,13 @@
 
 > {%= description %}
 
-Exactly like the one on Star Trek. But instead of "stun" and "kill", this Phaser generates markdown documentation, making it hands-down the most deadly markdown documentation generator on the planet (and probably others ones too).
+_Exactly_ like the one on Star Trek, except instead of "stun" and "kill", this Phaser generates markdown documentation. Making it hands-down the most deadly markdown documentation generator on the planet (and probably others ones too).
+
+<!-- toc -->
 
 Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 
-<!-- toc -->
+![image](https://f.cloud.github.com/assets/383994/2181984/e30dc88c-9774-11e3-9bef-511e91b019b9.png)
 
 ## Install
 {%= docs('install') %}
@@ -24,4 +26,3 @@ Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 ***
 
 {%= include("footer") %}
-{%= log.success(bold('Done!')) %}

@@ -1,12 +1,16 @@
 ## Ease of Use
 
-Phaser loves users, so its number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Phaser is installed, simply enter `phaser` in command line, and you're off and running.
+> Phaser loves users
+
+So its number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Phaser is installed, simply enter `phaser` in command line, and you're off and running.
 
 For more experienced users, Phaser offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
 
 ## API
 
-Phaser also loves developers, offering an extensive API and tools for building plugins or extending Phaser in other ways.
+> Phaser also loves developers
+
+Offering an extensive API and tools for building plugins or extending Phaser in other ways.
 
 # Features
 
@@ -53,3 +57,12 @@ While both engines can be extended to accomplish most of the following features,
 
 [Assemble]: https://github.com/assemble/assemble
 [gray-matter]: https://github.com/assemble/gray-matter
+
+
+## How Phaser Works
+
+Without getting into too much detail, Phaser disintegrates your templates, data, and front matter into a stream of molecules before being sent to the Pattern Buffer, which is a large cylindrical tank surrounded by superconducting electromagnetic coils. Here, the object to be generated is stored momentarily before actually beaming to its destination.
+
+From the Pattern Buffer, the molecular stream and the coded instructions pass through a number of subsystems before reaching the emitter. These include the Subspace, Doppler, and Heisenberg Compensators. Each works to ensure that the received stream is being transmitted or re-materializing in the correct phase, frequency, and so on.
+
+It's true. This is exactly how Phaser works. More or less.
