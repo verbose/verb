@@ -142,8 +142,10 @@ phaser.process = function(src, options) {
   while (!renderDone) {
     process.nextTick();
   }
-
   var result = phaser.utils.postProcess(rendered, opts);
+
+  // Generate a TOC from <!-- toc --> after all content is included.
+  result = require('marked-toc').insert(result, {maxDepth: 3});
 
   return {
     context: phaser.context,

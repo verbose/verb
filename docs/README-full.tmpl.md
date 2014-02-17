@@ -4,7 +4,7 @@
 
 Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 
-{%= toc() %}
+<!-- toc -->
 
 ## Install
 {%= docs('install') %}

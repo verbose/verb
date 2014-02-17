@@ -4,18 +4,32 @@
 
 Please [report any bugs or feature requests](https://github.com/assemble/phaser/issues/new), thanks!
 
+<!-- toc -->
 * [Install](#install)
+    * [Install with [npm](npmjs.org)](#install-with-npmnpmjsorg)
 * [Examples](#examples)
 * [Options](#options)
+  * [metadata](#metadata)
+  * [variable](#variable)
+  * [namespace](#namespace)
+  * [omit](#omit)
 * [Config](#config)
+  * [metadata](#metadata)
+* [Context](#context)
+  * [Overriding default config](#overriding-default-config)
+  * [Extending the Context](#extending-the-context)
+  * [options.config vs options.data](#optionsconfig-vs-optionsdata)
+    * [Raw](#raw)
+    * [Front Matter](#front-matter)
+    * [Data files](#data-files)
 * [Defaults](#defaults)
 * [Contributing](#contributing)
 * [Authors](#authors)
 * [License](#license)
 
-
+<!-- toc stop -->
 ## Install
-#### [npm](npmjs.org)
+#### Install with [npm](npmjs.org)
 
 ```bash
 npm i phaser --save-dev

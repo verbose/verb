@@ -6,8 +6,21 @@ Exactly like the one on Star Trek. But instead of "stun" and "kill", this Phaser
 
 Please [report any bugs or feature requests](https://github.com/assemble/phaser/issues/new), thanks!
 
+<!-- toc -->
+* [Install](#install)
+    * [Install with [npm](npmjs.org)](#install-with-npmnpmjsorg)
+* [About](#about)
+  * [Ease of Use](#ease-of-use)
+  * [API](#api)
+* [Features](#features)
+  * [How does Phaser differ from Assemble?](#how-does-phaser-differ-from-assemble)
+    * [Comparison](#comparison)
+* [Authors](#authors)
+* [License](#license)
+
+<!-- toc stop -->
 ## Install
-#### [npm](npmjs.org)
+#### Install with [npm](npmjs.org)
 
 ```bash
 npm i phaser --save-dev

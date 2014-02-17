@@ -6,6 +6,8 @@ Exactly like the one on Star Trek. But instead of "stun" and "kill", this Phaser
 
 Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 
+<!-- toc -->
+
 ## Install
 {%= docs('install') %}
 
