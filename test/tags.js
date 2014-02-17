@@ -30,4 +30,13 @@ describe('Tags', function () {
       expect(actual.content).to.eql(String(new Date().getFullYear()));
     });
   });
+
+
+  // no-op. this is a visual test for simplicity
+  describe('log:', function () {
+    it('should log a message in the console.', function () {
+      var actual = phaser.process('{%= log("Name:", name) %}');
+      expect().to.eql(phaser.log.warn("Name:", 'phaser'));
+    });
+  });
 });

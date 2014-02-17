@@ -22,3 +22,4 @@ Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 ***
 
 {%= include("footer") %}
+{%= log.success(bold('Done!')) %}
