@@ -10,9 +10,9 @@
 
 > and captcha protected spoilers:
 
-{{Simple spoiler|info}}
+\{{Simple spoiler|info}}
 
-!{{Write me at <john.doe@example.com>|info}}
+!\{{Write me at <john.doe@example.com>|info}}
 
 ## Progress bars
 

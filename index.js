@@ -123,6 +123,17 @@ phaser.process = function(src, options) {
   phaser.context = phaser.exclusions(phaser.context, opts);
 
   var rendered = phaser.template(content, phaser.context, settings);
+  var renderDone = false;
+
+  phaser.tags.resolve(phaser, rendered, function (err, results) {
+    rendered = results;
+    renderDone = true;
+  });
+
+  while (!renderDone) {
+    process.nextTick();
+  }
+
   var result = phaser.utils.postProcess(rendered, opts);
 
   return {
