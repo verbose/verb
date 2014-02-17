@@ -131,7 +131,18 @@ phaser.process = function(src, options) {
   phaser.context = phaser.exclusions(phaser.context, opts);
 
   // Process templates and render content
+  var renderDone = false;
   var rendered = phaser.template(phaser.page.content, phaser.context, settings);
+
+  phaser.tags.resolve(phaser, rendered, function (err, results) {
+    rendered = results;
+    renderDone = true;
+  });
+
+  while (!renderDone) {
+    process.nextTick();
+  }
+
   var result = phaser.utils.postProcess(rendered, opts);
 
   return {

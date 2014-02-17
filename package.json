@@ -60,8 +60,8 @@
     "scrawl": "0.0.5",
     "strip-banner": "~0.1.1",
     "template": "~0.1.5",
-    "columnify": "~0.1.2",
-    "repo-templates": "~0.1.0"
+    "async": "~0.2.10",
+    "columnify": "~0.1.2"
   },
   "devDependencies": {
     "chai": "~1.9.0",
