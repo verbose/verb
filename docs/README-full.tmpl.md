@@ -1,4 +1,4 @@
-# {%= name %}
+# {%= name %} {%= badge('fury') %} {%= badge('travis') %}
 
 > {%= description %}
 

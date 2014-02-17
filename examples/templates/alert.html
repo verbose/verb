@@ -1,0 +1,5 @@
+<div class="alert">
+  {% if(alert) { %}
+    {%= _.usePartial('alert', {alert: {content: alert}}) %}
+  {% } %}
+</div>

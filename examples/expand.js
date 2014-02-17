@@ -19,9 +19,13 @@ var opts = {
 
 file.expand(['*.md'], opts).map(function(filepath) {
   phaser.init(opts);
+  phaser.options = phaser.options || {};
 
   var name = file.base(filepath) + opts.ext;
   var dest = phaser.cwd(opts.destBase, name);
+
+  phaser.options.src = filepath;
+  phaser.options.dest = dest;
 
   file.writeFileSync(dest, phaser.read(filepath, opts));
   phaser.log.success('Saved to', relative(phaser.cwd(), dest));

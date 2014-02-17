@@ -15,3 +15,4 @@ var opts = {
 };
 
 phaser.copy('examples/templates/README.tmpl.md', 'test/actual/partials.md', opts);
+phaser.copy('examples/templates/alert.html', 'test/actual/alert.html', opts);

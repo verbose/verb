@@ -17,7 +17,6 @@ var history = 'examples/templates/release-history.md';
 var historyDest = 'test/actual/release-history.md';
 phaser.copy(history, historyDest);
 
-
 /**
  * Changelog example. All formatting
  * is handled by the changelog tag.

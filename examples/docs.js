@@ -6,4 +6,4 @@
  * Licensed under the MIT license.
  */
 var phaser = require('../');
-phaser.expandMapping(['*.md'], 'test/actual/', {phaserrc: 'examples/.phaserrc'});
+phaser.expandMapping(['*.md'], 'test/actual/', {phaserrc: 'examples/.phaserrc.yml'});
