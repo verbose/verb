@@ -104,7 +104,7 @@ describe('Phaser filters', function () {
   describe('homepage:', function () {
     it('should return a normalized version of the homepage URL listed in package.json.', function () {
       var actual = phaser.process('{%= homepage %}');
-      var expected = 'https://github.com/jonschlinkert/phaser';
+      var expected = 'https://github.com/assemble/phaser';
       expect(actual.content).to.eql(expected);
     });
   });
@@ -112,7 +112,7 @@ describe('Phaser filters', function () {
   describe('meta.homepage:', function () {
     it('should return a normalized version of the homepage URL listed in package.json.', function () {
       var actual = phaser.process('{%= homepage %}');
-      var expected = 'https://github.com/jonschlinkert/phaser';
+      var expected = 'https://github.com/assemble/phaser';
       expect(actual.content).to.eql(expected);
     });
 

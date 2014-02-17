@@ -150,13 +150,13 @@ describe('utils.username:', function () {
 
     it('should extract the username from a license URL.', function () {
       var actual = utils.username(pkg.licenses[0].url);
-      var expected = 'jonschlinkert';
+      var expected = 'assemble';
       expect(actual).to.eql(expected);
     });
 
     it('should extract the username from the repository URL with a `https` protocol.', function () {
       var actual = utils.username(pkg.repository.url);
-      var expected = 'jonschlinkert';
+      var expected = 'assemble';
       expect(actual).to.eql(expected);
     });
 
@@ -168,7 +168,7 @@ describe('utils.username:', function () {
 
     it('should extract the username.', function () {
       var actual = utils.username(pkg.homepage);
-      var expected = 'jonschlinkert';
+      var expected = 'assemble';
       expect(actual).to.eql(expected);
     });
   });

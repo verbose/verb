@@ -3,7 +3,7 @@
     "name": "phaser",
     "description": "Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.",
     "version": "0.1.0",
-    "homepage": "https://github.com/jonschlinkert/phaser",
+    "homepage": "https://github.com/assemble/phaser",
     "author": {
       "name": "Jon Schlinkert",
       "url": "https://github.com/jonschlinkert"
@@ -23,15 +23,15 @@
     "licenses": [
       {
         "type": "MIT",
-        "url": "https://github.com/jonschlinkert/phaser/blob/master/LICENSE-MIT"
+        "url": "https://github.com/assemble/phaser/blob/master/LICENSE-MIT"
       }
     ],
     "repository": {
       "type": "git",
-      "url": "https://github.com/jonschlinkert/phaser.git"
+      "url": "https://github.com/assemble/phaser.git"
     },
     "bugs": {
-      "url": "https://github.com/jonschlinkert/phaser/issues"
+      "url": "https://github.com/assemble/phaser/issues"
     },
     "main": "index.js",
     "dependencies": {
