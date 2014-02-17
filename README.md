@@ -1,6 +1,6 @@
 # phaser [![NPM version](https://badge.fury.io/js/phaser.png)](http://badge.fury.io/js/phaser)
 
-> The most deadly markdown documentation generator on the planet. And probably other ones too.
+> The most deadly markdown documentation generator in the Alpha Quadrant.
 
 ## Overview
 
