@@ -4,17 +4,17 @@
 
 ## Overview
 
-## Ease of Use
+### Ease of Use
 
 Phaser loves users, so its number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Phaser is installed, simply enter `phaser` in command line, and you're off and running.
 
 For more experienced users, Phaser offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
 
-## API
+### API
 
 Phaser also loves developers, offering an extensive API and tools for building plugins or extending Phaser in other ways.
 
-## Feature Highlights
+### Feature Highlights
 
 * Lo-Dash templates and mixins
 * The full power of JavaScript
@@ -32,14 +32,14 @@ Phaser also loves developers, offering an extensive API and tools for building p
 * Logging
 * Lots more!
 
-## How does Phaser differ from Assemble?
+### How does Phaser differ from Assemble?
 
 Phaser was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:
 
 * Use [Assemble][] to build components, sites, blogs and other projects where HTML is the end result.
 * Use Phaser to generate and maintain markdown documentation for your [Assemble][] (or non-Assemble) projects.
 
-### Comparison
+#### Comparison
 
 While both engines can be extended to accomplish most of the following features, this table describes what you should expect from each _out-of-the-box_:
 
