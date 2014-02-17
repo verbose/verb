@@ -113,16 +113,21 @@ phaser.process = function(src, options) {
 
   _.extend(phaser.context, metadata);
 
-  // Initialize Lo-Dash filters and plugins
+  // Initialize plugins
   _.extend(phaser.context, phaser.plugins.init(phaser));
+
+  // Initialize Lo-Dash tags and filters
   _.extend(phaser.context, phaser.tags.init(phaser));
   _.extend(phaser.context, phaser.filters.init(phaser));
+
+  // Initalize partials
   _.extend(phaser.context, phaser.partials.init(phaser));
 
   // Exclusion patterns, to omit certain options from context
   phaser.context = phaser.exclusions(phaser.context, opts);
 
-  var rendered = phaser.template(content, phaser.context, settings);
+  // Process templates and render content
+  var rendered = phaser.template(phaser.page.content, phaser.context, settings);
   var result = phaser.utils.postProcess(rendered, opts);
 
   return {
@@ -137,6 +142,7 @@ phaser.process = function(src, options) {
 phaser.read = function(src, options) {
   var opts = _.extend({}, options);
   phaser.init(opts);
+
   var content = file.readFileSync(src);
   return phaser.process(content, opts).content;
 };
