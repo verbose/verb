@@ -122,7 +122,7 @@ _This file was generated on [%= grunt.template.date("fullDate") %]._
 ## Changelog / Release History
 
 ```js
-[%= _.include("docs-changelog.md") %]
+[%= include("docs-changelog.md") %]
 ```
 
 > * 2013-09-21   **v0.1.3**   Completely refactored. Adds a lot of documentation.

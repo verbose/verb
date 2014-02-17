@@ -1,22 +1,3 @@
-## Options
-
-### omit
-
-Omit properties from the context.
-
-Type: `Array`
-
-Defaults: `[]`
-
-Returns: `Object`
-
-Useful if properties are added via options, but should not be on the context.
-
-
-## config
-
-See [config docs](./config.md)
-
 ## Tags, Filters and Variables
 
 Which is which?!
@@ -24,13 +5,13 @@ Which is which?!
 For the most part, **variables** look like this
 
 ```
-[%= foo %]
+{%= foo %}
 ```
 
 However, **tags** and **filters** both look like this:
 
 ```
-[%= bar() %]
+{%= bar() %}
 ```
 
 with the difference _(in Phaser)_ being that:
@@ -46,5 +27,5 @@ In this example:
 * `include` is a tag
 
 ```
-[%= condense(include('foo')) %]
+{%= condense(include('foo')) %}
 ```

@@ -1,7 +1,8 @@
 /**
  * phaser <https://github.com/jonschlinkert/phaser>
+ * The most deadly markdown documentation generator in the Alpha Quadrant.
  *
- * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
 
@@ -23,7 +24,7 @@ var phaser = module.exports = {};
 phaser.cwd        = cwd;
 phaser.base       = cwd;
 phaser.utils      = require('./lib/utils/index');
-phaser.file       = require('./lib/file');
+phaser.file       = _.defaults(require('./lib/file'), file);
 phaser.template   = require('./lib/template');
 phaser.exclusions = require('./lib/exclusions');
 phaser.partials   = require('./lib/partials');
@@ -33,7 +34,6 @@ phaser.tags       = require('./lib/tags');
 phaser.matter     = require('./lib/matter');
 phaser.extensions = {};
 phaser.ext        = '.md';
-
 
 /**
  * runtime config
@@ -76,6 +76,7 @@ phaser.init = function (options) {
 
 phaser.process = function(src, options) {
   var opts = _.extend({}, options);
+  phaser.init(opts);
 
   // Add runtime config
   var runtimeConfig;
@@ -86,7 +87,6 @@ phaser.process = function(src, options) {
   }
   _.extend(opts, runtimeConfig);
 
-  phaser.init(opts);
   phaser.options = opts;
 
   phaser.config = require('./lib/config').init(opts.config);
@@ -113,17 +113,22 @@ phaser.process = function(src, options) {
 
   _.extend(phaser.context, metadata);
 
-  // Initialize Lo-Dash filters and plugins
+  // Initialize plugins
   _.extend(phaser.context, phaser.plugins.init(phaser));
+
+  // Initialize Lo-Dash tags and filters
   _.extend(phaser.context, phaser.tags.init(phaser));
   _.extend(phaser.context, phaser.filters.init(phaser));
+
+  // Initalize partials
   _.extend(phaser.context, phaser.partials.init(phaser));
 
   // Exclusion patterns, to omit certain options from context
   phaser.context = phaser.exclusions(phaser.context, opts);
 
-  var rendered = phaser.template(content, phaser.context, settings);
+  // Process templates and render content
   var renderDone = false;
+  var rendered = phaser.template(phaser.page.content, phaser.context, settings);
 
   phaser.tags.resolve(phaser, rendered, function (err, results) {
     rendered = results;
@@ -148,6 +153,7 @@ phaser.process = function(src, options) {
 phaser.read = function(src, options) {
   var opts = _.extend({}, options);
   phaser.init(opts);
+
   var content = file.readFileSync(src);
   return phaser.process(content, opts).content;
 };

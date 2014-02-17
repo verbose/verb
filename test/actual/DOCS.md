@@ -18,8 +18,8 @@ In general, the conventions used by this task are as follows:
 **Templates**
 * Files with extension `.tmpl.md` are generally templates that will be compiled one-to-one into documents
 * Files with extension `.md` are generally intended to be used as includes.
-* `{%= _.doc("foo") %}` is used to included files from your project's `./docs` directory
-* `{%= _.include("foo") %}` is used to include boilerplate files from phaser
+* `{%= docs("foo") %}` is used to included files from your project's `./docs` directory
+* `{%= include("foo") %}` is used to include boilerplate files from phaser
 
 ## Advanced configuration
 To change the plugin's defaults, add a section to your project's Gruntfile named `function (name, options) {
@@ -70,12 +70,12 @@ This is probably most useful when:
 
 
 ### Code Comments
-Code comments may be used in markdown templates, and they will be stripped from the rendered README as long as they adhere to the following syntax:
+Code comments used in markdown templates will be stripped from the rendered files as long as they adhere to the following syntax:
 
 ```handlebars
+// Whitespace inside comments is insignificant
 {{!-- foo --}}
 {{! foo }}
-{{!foo}}
 ```
 
 ### Escaping
@@ -188,7 +188,7 @@ Since context is the value of "this", the `metadata` path is not required in tem
 Type: `String`
 Default: `./docs/`
 
-Override the default directory for files included using `{%= _.doc('foo.md') %}`. This defaults to the `./docs` directory in the root of your project.
+Override the default directory for files included using `{%= docs('foo.md') %}`. This defaults to the `./docs` directory in the root of your project.
 
 ```js
 readme: {
@@ -203,7 +203,7 @@ readme: {
 Type: `String`
 Default: `./node_modules/phaser/tasks/templates/` (relative to your project)
 
-Override the default `cwd` for files included by using `{%= _.include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
+Override the default `cwd` for files included by using `{%= include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
 
 ```js
 readme: {
@@ -273,8 +273,8 @@ readme: {
 
 or as a second parameter in the `include` or `doc` filters.
 
-* `{%= _.include("docs-*.md", "***") %}` (more below...)
-* `{%= _.doc("*.md", "\n***\n") %}` (more below...)
+* `{%= include("docs-*.md", "***") %}` (more below...)
+* `{%= docs("*.md", "\n***\n") %}` (more below...)
 
 [minimatch]: https://github.com/isaacs/minimatch
 
@@ -407,7 +407,7 @@ _This file was generated on {%= grunt.template.date("fullDate") %}._
 ### Changelog / Release History
 
 ```js
-{%= _.include("docs-changelog.md") %}
+{%= include("docs-changelog.md") %}
 ```
 
 > * 2013-09-21   **v0.1.3**   Completely refactored. Adds a lot of documentation.

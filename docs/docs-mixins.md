@@ -10,29 +10,29 @@ filters use the following formats:
 
 Here is a summary of what they do (settings for the `include` and `doc` filters can be customized in the task options):
 
-* `[%= _.include("file.md") %]`: include a file (or files using [minimatch][minimatch] patterns) from the `./templates/` directory of _the {%= name %} task_.
-* `[%= _.doc("file.md") %]`:  include a file (or files using [minimatch][minimatch] patterns) from the `./docs/` directory of _your project_.
+* `[%= include("file.md") %]`: include a file (or files using [minimatch][minimatch] patterns) from the `./templates/` directory of _the {%= name %} task_.
+* `[%= docs("file.md") %]`:  include a file (or files using [minimatch][minimatch] patterns) from the `./docs/` directory of _your project_.
 * `[%= _.resolve("file.md") %]`: include a **specific file** from *node_modules*`.
 * `[%= _.contrib("file.md") %]`: include a file (or files using [minimatch][minimatch] patterns) from the `./contrib/` directory of _the {%= name %} task_. This mixin is for the [Assemble](http://assemble.io).
 
 
-### _.include()
+### include()
 Use the `include` mixin in templates to pull in content from other files:
 
 ```js
-[%= _.include("examples.md") %]
+[%= include("examples.md") %]
 ```
 
 [Minimatch][minimatch] patterns may also be used:
 
 ```js
-[%= _.include("docs-*.md") %]
+[%= include("docs-*.md") %]
 ```
 
 Unless overridden in the `templates` option, the `include` mixin will use the `./node_modules/{%= name %}/tasks/templates/` directory (from the root of your project) as the `cwd` for templates.
 
 
-### _.doc()
+### docs()
 Same as the `include` mixin but is hard-coded to use the `docs/` folder of your project as the `cwd` for templates.
 
 

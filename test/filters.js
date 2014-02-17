@@ -6,19 +6,6 @@ var phaser = require('../');
 
 describe('Phaser filters', function () {
 
-
-  describe('filters.date:', function () {
-    it('should return the current year.', function () {
-      var actual = phaser.process('{%= _.date("YYYY") %}');
-      expect(actual.content).to.eql('2014');
-    });
-
-    it('should return the full date.', function () {
-      var actual = phaser.process('{%= _.date("full") %}');
-      expect(actual.content.indexOf(2014) !== -1).to.eql(true);
-    });
-  });
-
   describe('filters.reverse:', function () {
     it('should return the reversed string.', function () {
       var actual = phaser.process('{%= reverse("abc") %}');
