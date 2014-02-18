@@ -20,10 +20,10 @@ _Exactly_ like the one on Star Trek, except instead of "stun" and "kill", this P
 #### Install with [npm](npmjs.org)
 
 ```bash
-npm i phaser --save-dev
+npm i -g phaser --save-dev
 ```
 
-Now that Phaser is installed, run:
+Now that phaser is installed, run:
 
 ```
 phaser

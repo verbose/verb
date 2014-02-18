@@ -1,13 +1,11 @@
 ### Install with [npm](npmjs.org)
 
 ```bash
-npm i {%= name %} --save-dev
+npm i -g {%= name %} --save-dev
 ```
 
-Now that Phaser is installed, run:
+Now that {%= name %} is installed, run:
 
 ```
-phaser
+{%= name %}
 ```
-
-That wasn't so hard, was it? (It was? [Try downloading Phaser instead](https://github.com/assemble/phaser/archive/master.zip))

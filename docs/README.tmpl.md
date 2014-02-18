@@ -9,6 +9,8 @@ _Exactly_ like the one on Star Trek, except instead of "stun" and "kill", this P
 ## Install
 {%= docs('install') %}
 
+That wasn't so hard, was it? (It was? [Try downloading Phaser instead](https://github.com/assemble/phaser/archive/master.zip))
+
 **NOTE**: Actual usage instructions and documentation are on the way! In the meantime, please [let us know if you have questions]({%= bugs.url %}/new), we'd love to have help with the project too, let us know if you're interested!
 
 ![image](https://f.cloud.github.com/assets/383994/2181984/e30dc88c-9774-11e3-9bef-511e91b019b9.png)
