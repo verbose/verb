@@ -1,216 +1,3 @@
-# BASIC
-
-> Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.
-
-* [Example "README" template](#example-readme-template)
-
-
-## Example "README" template
-
-## Template Examples
-
-> Copy/paste any of these examples into your templates as a starting point.
-
-
-### Name
-
-```js
-{%= name %}
-```
-> BASIC
-
-
-### Version
-
-```js
-{%= version %}
-v{%= version %}
-{%= version ? " v" + version : "" %}
-{%= version ? " * @version " + version + "\\n" : "" %}
-```
-> 0.1.3
-> v0.1.3
-> v0.1.3
-> * @version 0.1.3\n
-
-### Description
-
-```js
-{%= description %}
-{%= description ? " * " + description + "\\n" : "" %}
-```
-> Generate your README from a template. If you already use Grunt, this is a no brainer.
-> * Generate your README from a template. If you already use Grunt, this is a no brainer.\n
-
-
-
-### Homepage
-
-```js
-{%= homepage ? " | " + homepage : "" %}
-{%= homepage ? " * " + homepage + "\n" : "" %}
-{%= homepage ? " * @docs " + homepage + "\\n" : "" %}
-```
->  | https://github.com/assemble/BASIC
-> * https://github.com/assemble/BASIC
->
->  * @docs https://github.com/assemble/BASIC\n
-
-
-
-### AUTHORS
-
-[AUTHORS](NPM https://npmjs.org/doc/json.html)
-
-> If there is an `AUTHORS` file in the root of your package, npm will treat each line as a `Name <email> (url)` format, where email and url are optional. Lines which start with a # or are blank, will be ignored. **[-- NPM]((NPM https://npmjs.org/doc/json.html)**
-
-To use `author` data from `package.json`:
-
-```js
-[{%= author.name %}]({%= author.url %})
-```
-> [Jon schlinkert](http://github.com/jonschlinkert)
-
-```js
-{%= author.name ? " * @author " + author.name + "\\n" : "" %}
-{%= author.url ? " * @link " + author.url + "\\n" : "" %}
-```
->  * @author Jon Schlinkert\n
->  * @link https://github.com/jonschlinkert\n
-
-Or, if you prefer to use an `AUTHORS` file in the root of the project:
-
-```js
-[{%= authors[0].name %}]({%= authors[0].url %})
-```
-> [Jon schlinkert](http://github.com/jonschlinkert)
-> [Brian Woodward](http://github.com/doowb)
-
-
-### Time and date
-
-```js
-{%= grunt.template.today() %}
-```
-> Tue Sep 17 2013 18:38:42
-
-```js
-{%= grunt.template.today("yyyy") %}
-```
-> 2013
-
-```js
-{%= grunt.template.today("yyyy-mm-dd") %}
-```
-> 2013-09-17
-
-```js
-_This file was generated on {%= grunt.template.date("fullDate") %}._
-```
-> _This file was generated on Monday, September 30, 2013._
-
-
-### Banner
-
-```js
-/*!
- * {%= name %} v{%= version %},  {%= grunt.template.today("yyyy-mm-dd") %}
- * {%= homepage %}
- * Copyright (c) {%= grunt.template.today("yyyy") %} {%= author %}, contributors.
- * {%= _.license() %}.
- */
-```
-
-> /*!
- * BASIC v0.1.3,  2013-09-22
- * https://github.com/assemble/BASIC
- * Copyright (c) 2013 [object Object], contributors.
- * Released under the MIT license.
- */
-
-### Changelog / Release History
-
-```js
-{%= _.include("docs-changelog.md") %}
-```
-
-> * 2013-09-21   **v0.1.3**   Completely refactored. Adds a lot of documentation.
- * 2013-09-19   **v0.1.0**   First commmit.
-
-
-Or:
-
-```js
- * {%= grunt.template.today('yyyy') %}   v0.1.0   First commit
-```
-> * 2013   v0.1.0   First commit
-
-
-
-### License
-
-```
-{%= _.license() %}
-```
-> Released under the [MIT license](./LICENSE-MIT).
-
-
-
-### Contributors
-
-```js
-{%= _.contributors() %}
-```
-> Jon Schlinkert
-> Brian Woodward
-
-
-### Metadata
-
-You can mix and match formats in the `metadata` option, all of the following shoulw work:
-
-```js
-grunt.initConfig({
-  pkg: 'package.json',
-  foo: 'package.json',
-  bar: grunt.file.readJSON('package.json'),
-  qux: grunt.file.readJSON('test/fixtures/data/one.json'),
-  baz: ['<%= bar %>'],
-
-  config: {
-    one: 'test/fixtures/data/one.json',
-    two: 'test/fixtures/data/two.yml',
-    three: 'test/fixtures/data/three.json',
-    pkg: grunt.file.readJSON('package.json'),
-    qux: grunt.file.readJSON('test/fixtures/data/one.json')
-  },
-
-
-  // Obviously you can't have duplicate properties on an
-  // object, so this is just for illustrative purposes
-  // The point is.. you can get just about as crazy as you want.
-  readme: {
-    options: {
-      metadata: ['<%= pkg %>', '<%= qux %>'],
-      metadata: ['<%= config.pkg %>', '<%= config.qux %>'],
-      metadata: ['<%= pkg %>', {foo: 'bar'}],
-      metadata: ['<%= pkg %>', 'test/fixtures/data/*.{json,yml}'],
-      metadata: '<%= config.one %>',
-      metadata: 'test/fixtures/data/one.json',
-      metadata: ['test/fixtures/data/one.json', 'test/fixtures/data/two.yml'],
-      metadata: ['test/fixtures/data/two.yml', {description: 'Foo', name: 'Bar'}, '<%= pkg %>', 'test/fixtures/data/*.json', {alpha: 1, beta: 2 }, {kappa: 3, gamma: 4 }, {zed: {orange: 5, apple: 6 } }, '<%= config.one %>', {name: 'New'}, {quux: '<%= qux %>'}, ['one', {pkg: '<%= config.pkg %>'}, 'three'], {arr: ['one', 'two', 'three']}],
-      metadata: ['<%= config.one %>', '<%= config.two %>'], metadata: 'test/fixtures/data/*.{json,yml}',
-      metadata: ['test/fixtures/data/*.{json,yml}'],
-      metadata: ['test/fixtures/data/*.json', 'test/fixtures/data/*.yml'],
-      metadata: ['test/fixtures/data/*.json', '<%= config.two %>'],
-      metadata: {
-        description: 'Foo',
-        name: 'Bar'
-      }
-    }
-  }
-}
-```
 # Documentation
 
 **Table of Contents**
@@ -231,8 +18,8 @@ In general, the conventions used by this task are as follows:
 **Templates**
 * Files with extension `.tmpl.md` are generally templates that will be compiled one-to-one into documents
 * Files with extension `.md` are generally intended to be used as includes.
-* `{%= _.doc("foo") %}` is used to included files from your project's `./docs` directory
-* `{%= _.include("foo") %}` is used to include boilerplate files from phaser
+* `{%= docs("foo") %}` is used to included files from your project's `./docs` directory
+* `{%= include("foo") %}` is used to include boilerplate files from phaser
 
 ## Advanced configuration
 To change the plugin's defaults, add a section to your project's Gruntfile named `function (name, options) {
@@ -283,12 +70,12 @@ This is probably most useful when:
 
 
 ### Code Comments
-Code comments may be used in markdown templates, and they will be stripped from the rendered README as long as they adhere to the following syntax:
+Code comments used in markdown templates will be stripped from the rendered files as long as they adhere to the following syntax:
 
 ```handlebars
+// Whitespace inside comments is insignificant
 {{!-- foo --}}
 {{! foo }}
-{{!foo}}
 ```
 
 ### Escaping
@@ -401,7 +188,7 @@ Since context is the value of "this", the `metadata` path is not required in tem
 Type: `String`
 Default: `./docs/`
 
-Override the default directory for files included using `{%= _.doc('foo.md') %}`. This defaults to the `./docs` directory in the root of your project.
+Override the default directory for files included using `{%= docs('foo.md') %}`. This defaults to the `./docs` directory in the root of your project.
 
 ```js
 readme: {
@@ -416,7 +203,7 @@ readme: {
 Type: `String`
 Default: `./node_modules/phaser/tasks/templates/` (relative to your project)
 
-Override the default `cwd` for files included by using `{%= _.include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
+Override the default `cwd` for files included by using `{%= include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
 
 ```js
 readme: {
@@ -486,8 +273,8 @@ readme: {
 
 or as a second parameter in the `include` or `doc` filters.
 
-* `{%= _.include("docs-*.md", "***") %}` (more below...)
-* `{%= _.doc("*.md", "\n***\n") %}` (more below...)
+* `{%= include("docs-*.md", "***") %}` (more below...)
+* `{%= docs("*.md", "\n***\n") %}` (more below...)
 
 [minimatch]: https://github.com/isaacs/minimatch
 
@@ -620,7 +407,7 @@ _This file was generated on {%= grunt.template.date("fullDate") %}._
 ### Changelog / Release History
 
 ```js
-{%= _.include("docs-changelog.md") %}
+{%= include("docs-changelog.md") %}
 ```
 
 > * 2013-09-21   **v0.1.3**   Completely refactored. Adds a lot of documentation.
@@ -702,7 +489,7 @@ grunt.initConfig({
 ```
 
 ## Contributing
-Find a bug? Have a feature request? Please [create an Issue](https://github.com/jonschlinkert/phaser/issues).
+Find a bug? Have a feature request? Please [create an Issue](https://github.com/assemble/phaser/issues).
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with [grunt-readme](https://github.com/assemble/grunt-readme).
 
@@ -727,26 +514,46 @@ Released under the MIT license
 ***
 
 
-# phaser
+# phaser [![NPM version](https://badge.fury.io/js/phaser.png)](http://badge.fury.io/js/phaser) [![Build Status](https://travis-ci.org/assemble/phaser.png)](https://travis-ci.org/assemble/phaser)
 
-> Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.
+> The most deadly markdown documentation generator in the Alpha Quadrant.
 
-Please [report any bugs or feature requests](https://github.com/jonschlinkert/phaser/issues/new), thanks!
+Please [report any bugs or feature requests](https://github.com/assemble/phaser/issues/new), thanks!
 
-* [Quickstart](#quickstart)
+<!-- toc -->
+* [Install](#install)
 * [Examples](#examples)
 * [Options](#options)
+  * [metadata](#metadata)
+  * [variable](#variable)
+  * [namespace](#namespace)
+  * [omit](#omit)
 * [Config](#config)
+  * [metadata](#metadata)
+* [Context](#context)
+  * [Overriding default config](#overriding-default-config)
+  * [Extending the Context](#extending-the-context)
+  * [options.config vs options.data](#optionsconfig-vs-optionsdata)
 * [Defaults](#defaults)
 * [Contributing](#contributing)
 * [Authors](#authors)
 * [License](#license)
 
+<!-- toc stop -->
+## Install
+#### Install with [npm](npmjs.org)
 
-## Quickstart
 ```bash
-npm install phaser --save-dev
+npm i phaser --save-dev
 ```
+
+Now that Phaser is installed, run:
+
+```
+phaser
+```
+
+That wasn't so hard, was it?
 
 ## Examples
 Example document:
@@ -797,6 +604,19 @@ Type: `boolean|string`
 Default: `undefined` (options: `true`|`"only"`)
 
 When `namespace` defined, an object is created for each data file, where the top level property on the object is the name of the file itself, and the data contained within the file is extended into that object. [See examples](#namespacing).
+
+### omit
+
+Omit properties from the context.
+
+Type: `Array`
+
+Defaults: `[]`
+
+Returns: `Object`
+
+Useful if properties are added via options, but should not be on the context.
+
 
 
 ## Config
@@ -961,7 +781,7 @@ The following object would be merged into the context:
 ```
 
 ## Contributing
-Find a bug? Have a feature request? Please [create an Issue](https://github.com/jonschlinkert/phaser/issues).
+Find a bug? Have a feature request? Please [create an Issue](https://github.com/assemble/phaser/issues).
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with [grunt-readme](https://github.com/assemble/grunt-readme).
 
@@ -980,280 +800,202 @@ Released under the MIT license
 
 ***
 
-_This file was generated by [grunt-readme](https://github.com/assemble/grunt-readme) on ._
-# [Examples](docs/docs-examples.md)
+_This file was generated by [grunt-readme](https://github.com/assemble/grunt-readme) on Tuesday, February 18, 2014._
 
-* [Template Examples](docs/docs-examples.md/#template-examples)
-  * [Name](docs/docs-examples.md/#name)
-  * [Version](docs/docs-examples.md/#version)
-  * [Description](docs/docs-examples.md/#description)
-  * [Homepage](docs/docs-examples.md/#homepage)
-  * [AUTHORS](docs/docs-examples.md/#authors)
-  * [Time and date](docs/docs-examples.md/#time-and-date)
-  * [Banner](docs/docs-examples.md/#banner)
-  * [Changelog / Release History](docs/docs-examples.md/#changelog-release-history)
-  * [License](docs/docs-examples.md/#license)
-  * [Contributors](docs/docs-examples.md/#contributors)
-  * [Metadata](docs/docs-examples.md/#metadata)
+# phaser [![NPM version](https://badge.fury.io/js/phaser.png)](http://badge.fury.io/js/phaser)  [![Build Status](https://travis-ci.org/assemble/phaser.png)](https://travis-ci.org/assemble/phaser)
 
-# [Features](docs/docs-features.md)
+> The most deadly markdown documentation generator in the Alpha Quadrant.
 
-* [templates](docs/docs-features.md/#templates)
-* [Readme template](docs/docs-features.md/#readme-template)
-* [YAML Front Matter](docs/docs-features.md/#yaml-front-matter)
-* [Code Comments](docs/docs-features.md/#code-comments)
-* [Escaping](docs/docs-features.md/#escaping)
-  * [Escaping hashes](docs/docs-features.md/#escaping-hashes)
-  * [Escaping Lo-Dash templates](docs/docs-features.md/#escaping-lo-dash-templates)
+_Exactly_ like the one on Star Trek, except instead of "stun" and "kill", this Phaser generates markdown documentation. Making it hands-down the most lethal markdown documentation generator on the planet (and probably others ones too).
 
-# [Front-Matter](docs/docs-front-matter.md)
+<!-- toc -->
+* [Install](#install)
+* [About](#about)
+  * [Ease of Use](#ease-of-use)
+  * [API](#api)
+* [Features](#features)
+  * [How does Phaser differ from Assemble?](#how-does-phaser-differ-from-assemble)
+  * [How Phaser Works](#how-phaser-works)
+* [Authors](#authors)
+* [License](#license)
 
-* [Front Matter](docs/docs-front-matter.md/#front-matter)
-  * [Examples](docs/docs-front-matter.md/#examples)
+<!-- toc stop -->
+Please [report any bugs or feature requests](https://github.com/assemble/phaser/issues/new), thanks!
 
-# [Mixins](docs/docs-mixins.md)
+![image](https://f.cloud.github.com/assets/383994/2181984/e30dc88c-9774-11e3-9bef-511e91b019b9.png)
 
-* ["include" filters](docs/docs-mixins.md/#include-filters)
-  * [_.include()](docs/docs-mixins.md/#include)
-  * [_.doc()](docs/docs-mixins.md/#doc)
-  * [_.resolve()](docs/docs-mixins.md/#resolve)
-* [convenience filters](docs/docs-mixins.md/#convenience-filters)
-  * [_.meta()](docs/docs-mixins.md/#meta)
-  * [_.jsdocs()](docs/docs-mixins.md/#jsdocs)
-  * [_.copyright()](docs/docs-mixins.md/#copyright)
-  * [_.license()](docs/docs-mixins.md/#license)
-  * [_.contributors()](docs/docs-mixins.md/#contributors)
-  * [_.username()](docs/docs-mixins.md/#username)
-  * [_.homepage()](docs/docs-mixins.md/#homepage)
+## Install
+#### Install with [npm](npmjs.org)
 
-# [Options](docs/docs-options.md)
+```bash
+npm i phaser --save-dev
+```
 
-* [Overview of available options](docs/docs-options.md/#overview-of-available-options)
-* [readme](docs/docs-options.md/#readme)
-* [metadata](docs/docs-options.md/#metadata)
-  * [data files](docs/docs-options.md/#data-files)
-  * [docs](docs/docs-options.md/#docs)
-  * [templates](docs/docs-options.md/#templates)
-* [remove](docs/docs-options.md/#remove)
-* [contributing](docs/docs-options.md/#contributing)
-* [sep](docs/docs-options.md/#sep)
+Now that Phaser is installed, run:
 
-<!doctype html>
-<html lang="en">
-  <head>
-    
-  </head>
-  <body>
-    <div class="container bs-docs-container">
-      <h1 id="phaser">phaser</h1>
-<blockquote>
-<p>Markdown documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.</p>
-</blockquote>
-<p>Please <a href="https://github.com/jonschlinkert/phaser/issues/new">report any bugs or feature requests</a>, thanks!</p>
-<h2 id="quickstart">Quickstart</h2>
-<pre><code class="lang-bash">npm install phaser --save-dev
-</code></pre>
-<h2 id="examples">Examples</h2>
-<p>Example document:</p>
-<pre><code class="lang-js"># {%= name %}
+```
+phaser
+```
 
-&gt; {%= description %}
+That wasn't so hard, was it?
 
-{%= toc %}
+## About
+### Ease of Use
 
-### Overview
-{%= doc(&quot;overview.md&quot;) %}
+> Phaser loves users
 
-### Options
-{%= doc(&quot;options.md&quot;) %}
+So its number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Phaser is installed, simply enter `phaser` in command line, and you're off and running.
 
-### Examples
-{%= doc(&quot;examples.md&quot;) %}
+For more experienced users, Phaser offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
 
-### License and Copyright
-{%= copyright %}
-{%= license %}
-</code></pre>
-<h2 id="options">Options</h2>
-<ul>
-<li>defaults</li>
-<li>options</li>
-</ul>
-<h3 id="metadata">metadata</h3>
-<p>Type: <code>object|array|string</code></p>
-<p>Default: <code>undefined</code></p>
-<ul>
-<li><code>string</code>: When defined as a string,</li>
-</ul>
-<h3 id="variable">variable</h3>
-<p>Type: <code>string</code></p>
-<p>Default: <code>undefined</code></p>
-<p>Lo-Dash opts...</p>
-<h3 id="namespace">namespace</h3>
-<p>Type: <code>boolean|string</code></p>
-<p>Default: <code>undefined</code> (options: <code>true</code>|<code>&quot;only&quot;</code>)</p>
-<p>When <code>namespace</code> defined, an object is created for each data file, where the top level property on the object is the name of the file itself, and the data contained within the file is extended into that object. <a href="#namespacing">See examples</a>.</p>
-<h2 id="config">Config</h2>
-<ul>
-<li>package.json | alt config object</li>
-<li>metadata</li>
-</ul>
-<h3 id="metadata">metadata</h3>
-<p>Unless overridden in the options, Phaser will attempt to process templates using only the data from your project&#39;s <a href="./package.json">package.json</a>. Thus, using only the default settings our context might look something like this:</p>
-<pre><code class="lang-js">{
-  &quot;name&quot;: &quot;phaser&quot;,
-  &quot;description&quot;: &quot;Documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.&quot;,
-  &quot;version&quot;: &quot;0.1.0&quot;,
-  &quot;homepge&quot;: &quot;https://github.com/jonschlinkert/phaser&quot;,
-  &quot;dependencies&quot;: {
-    &quot;fs-utils&quot;: &quot;~0.1.11&quot;,
-    &quot;gray-matter&quot;: &quot;~0.2.3&quot;,
-    &quot;findup-sync&quot;: &quot;~0.1.2&quot;,
-    &quot;frep&quot;: &quot;~0.1.3&quot;,
-    &quot;globule&quot;: &quot;~0.2.0&quot;,
-    &quot;lodash&quot;: &quot;~2.4.1&quot;,
-    &quot;marked-toc&quot;: &quot;~0.1.5&quot;,
-    &quot;template&quot;: &quot;~0.1.3&quot;
-  },
-  // continued...
-}
-</code></pre>
-<p>For the majority of projects, this will be enough. <em>But Phaser gives you as much flexibility as you need to extend the context.</em></p>
-<h2 id="context">Context</h2>
-<p>Your project&#39;s <a href="./package.json">package.json</a> will be used as the default config object, which is passed as context to templates. If no other config object is passed to the <code>config</code> option, and no metadata is passed in through other means, then this is the context that will be used to process your templates.</p>
-<h3 id="overriding-default-config">Overriding default config</h3>
-<p>As mentioned in the previous section, the default config object, <code>package.json</code>, can be explicitly overridden by passing an object to <code>options.config</code>. Example:</p>
-<pre><code class="lang-js">// Raw object
-phaser(str, {config: {name: &#39;foo&#39;}});
+### API
 
-// String (filepath)
-phaser(str, {config: &#39;path/to/*.json&#39;});
-</code></pre>
-<h3 id="extending-the-context">Extending the Context</h3>
-<p>From least specific to most specific, this is how the context is extended. In other words, the <strong>last wins</strong>:</p>
-<ul>
-<li><code>filters|functions</code>: <a href="">Lo-Dash filters</a> and custom functions may be used to build up the context when other more conventional means aren&#39;t available. For example, an <code>authors()</code> mixin/function might be used to read the <a href="./AUTHORS">AUTHORS</a> file, and then extend the context with the names of the authors therein.</li>
-<li><code>options</code>: Variables defined directly on the <code>options</code> object, e.g. <code>{name: &quot;phaser&quot;}</code>.</li>
-<li><code>options.data</code>: Variables from the <code>options.data</code> property. This is a very flexible property:<ul>
-<li><code>Object</code>: You may pass a raw object directly to the property, e.g. <code>{data: {name: &quot;phaser&quot;}}</code>.</li>
-<li><code>String</code>If you pass a string, Phaser will try to require it. If that doesn&#39;t work, Phaser will try to read it in.</li>
-<li>Minimatch (glob) patterns may be used, and with either JSON or YAML files, e.g. <code>{data: &#39;foo/bar/**/*.{json,yml}&#39;}</code></li>
-</ul>
-</li>
-<li><code>metadata</code>: Front matter</li>
-</ul>
-<p>For example, let&#39;s say we need to extend the context with some data that isn&#39;t in our example <code>package.json</code>, such as <code>author.name</code>. We have a few options:</p>
-<ul>
-<li><code>options.data</code>: Define a raw <code>object</code>|<code>array</code> directly on the <code>options.data</code> object.</li>
-<li>Front matter in the templates themselves</li>
-<li>JSON / YAML data files, e.g. <code>foo.json</code>, <code>foo.yml</code> etc.</li>
-</ul>
-<h3 id="options-config-vs-options-data">options.config vs options.data</h3>
-<p>Although the options are similar, they serve a different purpose:</p>
-<ul>
-<li><code>options.config</code>: overrides the default config object, so <strong>no data</strong> from <code>package.json</code> will be used as the context.</li>
-<li><code>options.data</code>: extend the config object, so <strong>both</strong> data from <code>package.json</code> and from <code>options.data</code> will be used to extend the context.</li>
-</ul>
-<h4 id="raw">Raw</h4>
-<p>Example:</p>
-<pre><code class="lang-js">options: {
-  author: {
-    name: &quot;Jon Schlinkert&quot;,
-    url: &quot;https://github.com/jonschlinkert&quot;
-  }
-}
-</code></pre>
-<h4 id="front-matter">Front Matter</h4>
-<p>Example:</p>
-<pre><code class="lang-markdown">---
-username: jonschlinkert
----
-Visit [some link](https://github.com/{%= username %}/foo) to learn more!
-</code></pre>
-<h4 id="data-files">Data files</h4>
-<p><code>foo.json, bar/baz/*.json</code></p>
-<pre><code class="lang-json">{
-  &quot;author&quot;: {
-    &quot;name&quot;: &quot;Jon Schlinkert&quot;,
-    &quot;url&quot;: &quot;https://github.com/jonschlinkert&quot;
-  }
-}
-</code></pre>
-<h5 id="namespacing">namespacing</h5>
-<p>Given we have a file named <code>author.json</code> with the following contents:</p>
-<p><strong>namespace: false</strong></p>
-<pre><code class="lang-json">{
-  &quot;author&quot;: {
-    &quot;name&quot;: &quot;Jon Schlinkert&quot;,
-    &quot;url&quot;: &quot;https://github.com/jonschlinkert&quot;
-  }
-}
-</code></pre>
-<p><strong>namespace: true</strong>
-The following object would be merged into the context:</p>
-<pre><code class="lang-json">{
-  &quot;author&quot;: {
-    &quot;name&quot;: &quot;Jon Schlinkert&quot;,
-    &quot;url&quot;: &quot;https://github.com/jonschlinkert&quot;
-  }
-}
-</code></pre>
-<h2 id="defaults">Defaults</h2>
-<pre><code class="lang-js">{
-  // Logging
-  verbose: true,
-  debug: &#39;tmp/ctx.json&#39;,
+> Phaser also loves developers
 
-  // Metadata
-  namespace: &#39;&#39;,
+Offering an extensive API and tools for building plugins or extending Phaser in other ways.
 
-  // Extensions
-  filters: &#39;test/filters/*.js&#39;,
-  contributing: true,
+## Features
 
-  // Glob defaults
-  matchBase: true,
+* Lo-Dash templates and mixins
+* The full power of JavaScript
+* Filters
+* Tags
+* Partial Caching
+* Mixins
+* Templates can be used directly, cached as JavaScript, and/or via `require` statements
+* Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter
+* Easily add a **Table of Contents** to any file
+* Generate a **multi-file Table of Contents**, along with relative links to each file AND section
+* Comment parsing (basic)
+* Extensive API
+* File-system Utilities
+* Logging
+* Lots more! So much more. Much much more. So much more that you don't even know how much more it's so much. I don't know where to start.
 
-  // Processing
-  delimiters: [&#39;{%&#39;, &#39;%}&#39;],
-  replacements: [],
-}
-</code></pre>
-<h2 id="contributing">Contributing</h2>
-<p>Find a bug? Have a feature request? Please <a href="https://github.com/jonschlinkert/phaser/issues">create an Issue</a>.</p>
-<p>In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with <a href="https://github.com/assemble/grunt-readme">grunt-readme</a>.</p>
-<p>Pull requests are also encouraged, and if you find this project useful please consider &quot;starring&quot; it to show your support! Thanks!</p>
-<h2 id="authors">Authors</h2>
-<p><strong>Jon Schlinkert</strong></p>
-<ul>
-<li><a href="https://github.com/jonschlinkert">github/jonschlinkert</a></li>
-<li><a href="http://twitter.com/jonschlinkert">twitter/jonschlinkert</a></li>
-</ul>
-<h2 id="license">License</h2>
-<p>Copyright (c) 2014 Jon Schlinkert, contributors.
-Released under the MIT license</p>
-<hr>
-<p><em>This file was generated by <a href="https://github.com/assemble/grunt-readme">grunt-readme</a> on .</em></p>
+### How does Phaser differ from Assemble?
 
-    </div>
-  </body>
-</html>
-## Options
+Phaser was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:
 
-### omit
+* Use [Assemble][] to build components, sites, blogs and other projects where HTML is the end result.
+* Use Phaser to generate and maintain markdown documentation for your [Assemble][] (or non-Assemble) projects.
 
-Type: `Array`
+#### Comparison
 
-Defaults: `[]`
+While both engines can be extended to accomplish most of the following features, this table describes what you should expect from each _out-of-the-box_:
 
-Returns: `Object`
+**Feature** | **[Assemble][]** | **Phaser**
+------- | -------- | ------
+**Summary** | Build HTML projects from modular components and data | Generate markdown documentation
+**Focus** | Power, granular access to context, components | Speed, ease-of-use, command-line
+**Template Engine** | Handlebars by default, any template engine can be added. | Lo-Dash
+**Extensions** | Plugins, Lo-Dash Mixins, Helpers, Filters, Tags <sup>[1](#1-depends-on-the-template-engine)</sup> | Plugins, Lo-Dash Mixins, Filters, Tags
+**Static Blogs** | Yes | No
+**Static Sites** | Yes | No
+**HTML Documentation** | Yes | Limited.
+**Markdown Documentation** | Limited | Yes
+**Markdown to HTML** | Yes | Limited
 
-Omit properties from the context. Useful if properties are added via options, but should not be on the context.
+###### <sup>1</sup> Depends on the template engine.
+
+[Assemble]: https://github.com/assemble/assemble
+[gray-matter]: https://github.com/assemble/gray-matter
 
 
-## config
+### How Phaser Works
 
-See [config docs](./config.md)
+Without getting into too much detail, Phaser disintegrates your templates, data, and front matter into a stream of molecules before being sent to the Pattern Buffer, which is a large cylindrical tank surrounded by superconducting electromagnetic coils. Here, the object to be generated is stored momentarily before actually beaming to its destination.
+
+From the Pattern Buffer, the molecular stream and the coded instructions pass through a number of subsystems before reaching the emitter. These include the Subspace, Doppler, and Heisenberg Compensators. Each works to ensure that the received stream is being transmitted or re-materializing in the correct phase, frequency, and so on.
+
+It's true. This is exactly how Phaser works. More or less.
+
+## Authors
+
+**Jon Schlinkert**
+
++ [github/jonschlinkert](https://github.com/jonschlinkert)
++ [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
+
+**Brian Woodward**
+
++ [github/doowb](https://github.com/doowb)
++ [twitter/doowb](http://twitter.com/jonschlinkert)
+
+## License
+Copyright (c) 2014 Jon Schlinkert, contributors.
+Released under the MIT license
+
+***
+
+_This file was generated by [grunt-readme](https://github.com/assemble/grunt-readme) on Tuesday, February 18, 2014._
+## Ease of Use
+
+> Phaser loves users
+
+So its number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Phaser is installed, simply enter `phaser` in command line, and you're off and running.
+
+For more experienced users, Phaser offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
+
+## API
+
+> Phaser also loves developers
+
+Offering an extensive API and tools for building plugins or extending Phaser in other ways.
+
+# Features
+
+* Lo-Dash templates and mixins
+* The full power of JavaScript
+* Filters
+* Tags
+* Partial Caching
+* Mixins
+* Templates can be used directly, cached as JavaScript, and/or via `require` statements
+* Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter
+* Easily add a **Table of Contents** to any file
+* Generate a **multi-file Table of Contents**, along with relative links to each file AND section
+* Comment parsing (basic)
+* Extensive API
+* File-system Utilities
+* Logging
+* Lots more! So much more. Much much more. So much more that you don't even know how much more it's so much. I don't know where to start.
+
+## How does Phaser differ from Assemble?
+
+Phaser was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:
+
+* Use [Assemble][] to build components, sites, blogs and other projects where HTML is the end result.
+* Use Phaser to generate and maintain markdown documentation for your [Assemble][] (or non-Assemble) projects.
+
+### Comparison
+
+While both engines can be extended to accomplish most of the following features, this table describes what you should expect from each _out-of-the-box_:
+
+**Feature** | **[Assemble][]** | **Phaser**
+------- | -------- | ------
+**Summary** | Build HTML projects from modular components and data | Generate markdown documentation
+**Focus** | Power, granular access to context, components | Speed, ease-of-use, command-line
+**Template Engine** | Handlebars by default, any template engine can be added. | Lo-Dash
+**Extensions** | Plugins, Lo-Dash Mixins, Helpers, Filters, Tags <sup>[1](#1-depends-on-the-template-engine)</sup> | Plugins, Lo-Dash Mixins, Filters, Tags
+**Static Blogs** | Yes | No
+**Static Sites** | Yes | No
+**HTML Documentation** | Yes | Limited.
+**Markdown Documentation** | Limited | Yes
+**Markdown to HTML** | Yes | Limited
+
+##### <sup>1</sup> Depends on the template engine.
+
+[Assemble]: https://github.com/assemble/assemble
+[gray-matter]: https://github.com/assemble/gray-matter
+
+
+## How Phaser Works
+
+Without getting into too much detail, Phaser disintegrates your templates, data, and front matter into a stream of molecules before being sent to the Pattern Buffer, which is a large cylindrical tank surrounded by superconducting electromagnetic coils. Here, the object to be generated is stored momentarily before actually beaming to its destination.
+
+From the Pattern Buffer, the molecular stream and the coded instructions pass through a number of subsystems before reaching the emitter. These include the Subspace, Doppler, and Heisenberg Compensators. Each works to ensure that the received stream is being transmitted or re-materializing in the correct phase, frequency, and so on.
+
+It's true. This is exactly how Phaser works. More or less.
 * package.json | alt config object
 * metadata
 
@@ -1533,7 +1275,7 @@ _This file was generated on {%= grunt.template.date("fullDate") %}._
 ## Changelog / Release History
 
 ```js
-{%= _.include("docs-changelog.md") %}
+{%= include("docs-changelog.md") %}
 ```
 
 > * 2013-09-21   **v0.1.3**   Completely refactored. Adds a lot of documentation.
@@ -1637,12 +1379,12 @@ This is probably most useful when:
 
 
 ## Code Comments
-Code comments may be used in markdown templates, and they will be stripped from the rendered README as long as they adhere to the following syntax:
+Code comments used in markdown templates will be stripped from the rendered files as long as they adhere to the following syntax:
 
 ```handlebars
+// Whitespace inside comments is insignificant
 {{!-- foo --}}
 {{! foo }}
-{{!foo}}
 ```
 
 ## Escaping
@@ -1709,29 +1451,29 @@ filters use the following formats:
 
 Here is a summary of what they do (settings for the `include` and `doc` filters can be customized in the task options):
 
-* `{%= _.include("file.md") %}`: include a file (or files using [minimatch][minimatch] patterns) from the `./templates/` directory of _the phaser task_.
-* `{%= _.doc("file.md") %}`:  include a file (or files using [minimatch][minimatch] patterns) from the `./docs/` directory of _your project_.
+* `{%= include("file.md") %}`: include a file (or files using [minimatch][minimatch] patterns) from the `./templates/` directory of _the phaser task_.
+* `{%= docs("file.md") %}`:  include a file (or files using [minimatch][minimatch] patterns) from the `./docs/` directory of _your project_.
 * `{%= _.resolve("file.md") %}`: include a **specific file** from *node_modules*`.
 * `{%= _.contrib("file.md") %}`: include a file (or files using [minimatch][minimatch] patterns) from the `./contrib/` directory of _the phaser task_. This mixin is for the [Assemble](http://assemble.io).
 
 
-### _.include()
+### include()
 Use the `include` mixin in templates to pull in content from other files:
 
 ```js
-{%= _.include("examples.md") %}
+{%= include("examples.md") %}
 ```
 
 [Minimatch][minimatch] patterns may also be used:
 
 ```js
-{%= _.include("docs-*.md") %}
+{%= include("docs-*.md") %}
 ```
 
 Unless overridden in the `templates` option, the `include` mixin will use the `./node_modules/phaser/tasks/templates/` directory (from the root of your project) as the `cwd` for templates.
 
 
-### _.doc()
+### docs()
 Same as the `include` mixin but is hard-coded to use the `docs/` folder of your project as the `cwd` for templates.
 
 
@@ -1934,7 +1676,7 @@ Since context is the value of "this", the `metadata` path is not required in tem
 Type: `String`
 Default: `./docs/`
 
-Override the default directory for files included using `{%= _.doc('foo.md') %}`. This defaults to the `./docs` directory in the root of your project.
+Override the default directory for files included using `{%= docs('foo.md') %}`. This defaults to the `./docs` directory in the root of your project.
 
 ```js
 readme: {
@@ -1949,7 +1691,7 @@ readme: {
 Type: `String`
 Default: `./node_modules/phaser/tasks/templates/` (relative to your project)
 
-Override the default `cwd` for files included by using `{%= _.include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
+Override the default `cwd` for files included by using `{%= include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
 
 ```js
 readme: {
@@ -2019,8 +1761,8 @@ readme: {
 
 or as a second parameter in the `include` or `doc` filters.
 
-* `{%= _.include("docs-*.md", "***") %}` (more below...)
-* `{%= _.doc("*.md", "\n***\n") %}` (more below...)
+* `{%= include("docs-*.md", "***") %}` (more below...)
+* `{%= docs("*.md", "\n***\n") %}` (more below...)
 
 [minimatch]: https://github.com/isaacs/minimatch
 
@@ -2046,6 +1788,50 @@ Example document:
 {%= copyright %}
 {%= license %}
 ```
+## Tags, Filters and Variables
+
+Which is which?!
+
+For the most part, **variables** look like this
+
+```
+{%= foo %}
+```
+
+However, **tags** and **filters** both look like this:
+
+```
+{%= bar() %}
+```
+
+with the difference _(in Phaser)_ being that:
+
+* **tags**: generate, include or otherwise "add" content of some kind
+* **filter**: modify, filter, transform or otherwise alter content in some way
+
+### Example: Tags vs. Filters
+
+In this example:
+
+* `condense` is a filter
+* `include` is a tag
+
+```
+{%= condense(include('foo')) %}
+```
+### Install with [npm](npmjs.org)
+
+```bash
+npm i phaser --save-dev
+```
+
+Now that Phaser is installed, run:
+
+```
+phaser
+```
+
+That wasn't so hard, was it?
 * defaults
 * options
 
@@ -2070,6 +1856,15 @@ Default: `undefined` (options: `true`|`"only"`)
 
 When `namespace` defined, an object is created for each data file, where the top level property on the object is the name of the file itself, and the data contained within the file is extended into that object. [See examples](#namespacing).
 
-```bash
-npm install phaser --save-dev
-```
+## omit
+
+Omit properties from the context.
+
+Type: `Array`
+
+Defaults: `[]`
+
+Returns: `Object`
+
+Useful if properties are added via options, but should not be on the context.
+

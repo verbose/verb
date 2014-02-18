@@ -8,12 +8,12 @@
 
 'use strict';
 
-// node_modules
-var path       = require('path');
+var fs = require('fs');
+var path = require("path");
+var file = require('fs-utils');
 var configFile = require('config-file');
-var file       = require('fs-utils');
-var _          = require('lodash');
-var cwd        = require('cwd');
+var cwd = require('cwd');
+var _ = require('lodash');
 
 /**
  * phaser
@@ -23,16 +23,16 @@ var phaser = module.exports = {};
 
 phaser.cwd        = cwd;
 phaser.base       = cwd;
-phaser.utils      = require('./lib/utils/index');
 phaser.file       = _.defaults(require('./lib/file'), file);
 phaser.data       = require('./lib/data');
+phaser.matter     = require('./lib/matter');
 phaser.plugins    = require('./lib/plugins');
-phaser.template   = require('./lib/template');
-phaser.exclusions = require('./lib/exclusions');
 phaser.partials   = require('./lib/partials');
 phaser.filters    = require('./lib/filters');
 phaser.tags       = require('./lib/tags');
-phaser.matter     = require('./lib/matter');
+phaser.template   = require('./lib/template');
+phaser.exclusions = require('./lib/exclusions');
+phaser.utils      = require('./lib/utils/index');
 phaser.extensions = {};
 phaser.ext        = '.md';
 
@@ -82,7 +82,7 @@ phaser.process = function(src, options) {
   // Add runtime config
   var runtimeConfig;
   if(opts.phaserrc) {
-    runtimeConfig = configFile.load(cwd(opts.phaserrc))
+    runtimeConfig = configFile.load(cwd(opts.phaserrc));
   } else {
     runtimeConfig = phaser.phaserrc;
   }
@@ -122,10 +122,7 @@ phaser.process = function(src, options) {
 
   // Extract and parse front matter
   phaser.page  = phaser.matter.init(src, opts);
-  var content  = phaser.page.content;
-  var metadata = phaser.page.context;
-
-  _.extend(phaser.context, metadata);
+  _.extend(phaser.context, phaser.page.context);
 
   // Exclusion patterns, to omit certain options from context
   phaser.context = phaser.exclusions(phaser.context, opts);
@@ -232,18 +229,3 @@ phaser.expandMapping = function(src, dest, options) {
     phaser.log.error('\nFailed.');
   }
 };
-
-// phaser.write = function(dest, str, options) {
-//   options = options || {};
-//   var content = phaser(str, options).content;
-//   file.writeFileSync(dest, content);
-//   phaser.log.success('Saved to', dest);
-// };
-
-
-// console.log(phaser.process('{%= name %}').content);
-// console.log(phaser.process('{%= name %}', {name: 'Jon'}).content);
-// console.log(phaser.read('AUTHORS'));
-// console.log(phaser.utils.authors('AUTHORS'));
-// console.log(phaser.write('name.txt', '{%= name %}'));
-// console.log(phaser.expand('lib/*.js'));

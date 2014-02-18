@@ -6,4 +6,11 @@
  * Licensed under the MIT license.
  */
 var phaser = require('../');
+
 phaser.expandMapping(['*.md'], 'test/actual/concat.md');
+
+/**
+ * Change the CWD
+ */
+
+phaser.expandMapping(['examples/content/*.md'], 'test/actual/concat-md.md', {cwd: process.cwd()});

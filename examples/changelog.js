@@ -13,9 +13,9 @@ var phaser = require('../');
  * templates.
  */
 
-var history = 'examples/templates/release-history.md';
-var historyDest = 'test/actual/release-history.md';
-phaser.copy(history, historyDest);
+// var history = 'examples/templates/release-history.md';
+// var historyDest = 'test/actual/release-history.md';
+// phaser.copy(history, historyDest);
 
 /**
  * Changelog example. All formatting

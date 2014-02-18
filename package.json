@@ -62,7 +62,9 @@
     "template": "~0.1.5",
     "async": "~0.2.10",
     "columnify": "~0.1.2",
-    "repo-templates": "~0.1.0"
+    "repo-templates": "~0.1.0",
+    "dateformat": "~1.0.7-1.2.3",
+    "repo-licenses": "~0.1.0"
   },
   "devDependencies": {
     "chai": "~1.9.0",

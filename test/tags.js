@@ -5,29 +5,29 @@ var phaser = require('../');
 
 
 describe('Tags', function () {
+  var year = new Date().getFullYear();
 
-
-  describe('moment:', function () {
+  describe('date:', function () {
     it('should return the current year with four digits.', function () {
-      var actual = phaser.process('{%= moment("YYYY") %}');
-      expect(actual.content).to.eql(String(new Date().getFullYear()));
+      var actual = phaser.process('{%= date("YYYY") %}');
+      expect(actual.content).to.eql(String(year));
     });
 
     it('should return the current year with two digits.', function () {
-      var actual = phaser.process('{%= moment("YY") %}');
-      expect(actual.content).to.eql(String(new Date().getFullYear()).substring(2));
+      var actual = phaser.process('{%= date("YY") %}');
+      expect(actual.content).to.eql(String(year).substring(2));
     });
 
     it('should validate the given arguments.', function () {
-      var actual = phaser.process('{%= moment(2014, "YYYY").isValid() %}');
-      expect(actual.content).to.eql('true');
+      var actual = phaser.process('{%= date() %}');
+      expect(actual.content.indexOf(year) !== -1).to.eql(true);
     });
   });
 
-  describe('date related (non-moment):', function () {
+  describe('year:', function () {
     it('should validate the given arguments.', function () {
       var actual = phaser.process('{%= year() %}');
-      expect(actual.content).to.eql(String(new Date().getFullYear()));
+      expect(actual.content).to.eql(String(year));
     });
   });
 
