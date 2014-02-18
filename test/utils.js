@@ -112,6 +112,120 @@ describe('utils.arrayify:', function () {
   });
 });
 
+describe('utils.authors', function() {
+
+  describe('when utils.authors() is called', function() {
+  
+    it('should return an array of authors', function() {
+      var expected = [
+        {
+          name: 'Jon Schlinkert',
+          email: '',
+          url: 'https://github.com/jonschlinkert'
+        },
+        {
+          name: 'Brian Woodward',
+          email: '',
+          url: 'https://github.com/doowb'
+        }
+      ];
+      var actual = utils.authors();
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+});
+
+
+describe('utils.block', function() {
+
+  describe('when utils.block() is called with a string', function() {
+  
+    it('should execute as a block template', function() {
+
+      var expected = "\n - Jon Schlinkert\n";
+
+      var tmpl = [
+        '{{block author}}',
+        ' - {%= name %}',
+        '{{/block}}'
+      ].join('\n');
+
+      var actual = utils.block(phaser).block(tmpl);
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+});
+
+describe('utils.condense', function() {
+
+  describe('when utils.condense() is called with a string and no seperator', function() {
+  
+    it('should condense the strings', function() {
+      var expected = [
+        '- foo',
+        '- bar',
+        '- baz'
+      ].join('\n');
+
+      var input = [
+        ' - foo',
+        ' - bar',
+        ' - baz'
+      ].join('\n\n');
+
+      var actual = utils.condense(input);
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+  describe('when utils.condense() is called with a string and a custom seperator', function() {
+  
+    it('should condense the strings on the seperator', function() {
+      var expected = [
+        'foo',
+        'bar',
+        'baz'
+      ].join(',');
+
+      var input = [
+        '\tfoo  ',
+        ' bar\t',
+        '  baz  '
+      ].join(' , ');
+      var actual = utils.condense(input, ',');
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+  describe('when utils.condense() is called with a string with \\r\\n line endings', function() {
+  
+    it('should condense the strings', function() {
+      var expected = [
+        '- foo',
+        '- bar',
+        '- baz'
+      ].join('\n');
+
+      var input = [
+        ' - foo',
+        ' - bar',
+        ' - baz'
+      ].join('\r\n');
+
+      var actual = utils.condense(input);
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+
+});
 
 
 describe('utils.date:', function () {
