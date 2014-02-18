@@ -227,6 +227,62 @@ describe('utils.condense', function() {
 
 });
 
+describe('utils.contributors', function() {
+
+  describe('when utils.contributors() is called with no configuration', function() {
+  
+    it('should return an empty string', function() {
+      var expected = '';
+      var actual = utils.contributors();
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+  describe('when utils.contributors() is called with a configuration and no prefix', function() {
+  
+    it('should return a markdown list of contributor names', function() {
+      var config = {
+        contributors: [
+          { name: 'Jon Schlinkert' },
+          { name: 'Brian Woodward' }        
+        ]
+      };
+
+      var expected = [
+        '* Jon Schlinkert',
+        '* Brian Woodward'
+      ].join('\n');
+
+      var actual = utils.contributors(config);
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+  describe('when utils.contributors() is called with a configuration and prefix', function() {
+  
+    it('should return a markdown list of contributor names with given prefix', function() {
+      var config = {
+        contributors: [
+          { name: 'Jon Schlinkert' },
+          { name: 'Brian Woodward' }        
+        ]
+      };
+
+      var expected = [
+        ' - Jon Schlinkert',
+        ' - Brian Woodward'
+      ].join('\n');
+
+      var actual = utils.contributors(config, ' - ');
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+});
+
 
 describe('utils.date:', function () {
   describe('when utils.date():', function () {
