@@ -160,6 +160,73 @@ describe('utils.block', function() {
 
 });
 
+describe('utils.condense', function() {
+
+  describe('when utils.condense() is called with a string and no seperator', function() {
+  
+    it('should condense the strings', function() {
+      var expected = [
+        '- foo',
+        '- bar',
+        '- baz'
+      ].join('\n');
+
+      var input = [
+        ' - foo',
+        ' - bar',
+        ' - baz'
+      ].join('\n\n');
+
+      var actual = utils.condense(input);
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+  describe('when utils.condense() is called with a string and a custom seperator', function() {
+  
+    it('should condense the strings on the seperator', function() {
+      var expected = [
+        'foo',
+        'bar',
+        'baz'
+      ].join(',');
+
+      var input = [
+        '\tfoo  ',
+        ' bar\t',
+        '  baz  '
+      ].join(' , ');
+      var actual = utils.condense(input, ',');
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+  describe('when utils.condense() is called with a string with \\r\\n line endings', function() {
+  
+    it('should condense the strings', function() {
+      var expected = [
+        '- foo',
+        '- bar',
+        '- baz'
+      ].join('\n');
+
+      var input = [
+        ' - foo',
+        ' - bar',
+        ' - baz'
+      ].join('\r\n');
+
+      var actual = utils.condense(input);
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+
+});
+
 
 describe('utils.date:', function () {
   describe('when utils.date():', function () {
