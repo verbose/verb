@@ -138,6 +138,29 @@ describe('utils.authors', function() {
 });
 
 
+describe('utils.block', function() {
+
+  describe('when utils.block() is called with a string', function() {
+  
+    it('should execute as a block template', function() {
+
+      var expected = "\n - Jon Schlinkert\n";
+
+      var tmpl = [
+        '{{block author}}',
+        ' - {%= name %}',
+        '{{/block}}'
+      ].join('\n');
+
+      var actual = utils.block(phaser).block(tmpl);
+      expect(actual).to.eql(expected);
+    });
+  
+  });
+
+});
+
+
 describe('utils.date:', function () {
   describe('when utils.date():', function () {
     it('should return the current year.', function () {
