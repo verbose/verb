@@ -10,4 +10,4 @@ Now that Phaser is installed, run:
 phaser
 ```
 
-That wasn't so hard, was it?
+That wasn't so hard, was it? (It was? [Try downloading Phaser instead](https://github.com/assemble/phaser/archive/master.zip))

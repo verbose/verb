@@ -4,9 +4,6 @@
 
 _Exactly_ like the one on Star Trek, except instead of "stun" and "kill", this Phaser generates markdown documentation. Making it hands-down the most lethal markdown documentation generator on the planet (and probably others ones too).
 
-
-**NOTE**: Usage instructions are on the way! For now, feel free to `npm i phaser` or [download Phaser](https://github.com/assemble/phaser/archive/master.zip) and play around with it. Be sure to let us know what you think!
-
 <!-- toc -->
 * [Install](#install)
 * [About](#about)
@@ -19,10 +16,6 @@ _Exactly_ like the one on Star Trek, except instead of "stun" and "kill", this P
 * [License](#license)
 
 <!-- toc stop -->
-Please [report any bugs or feature requests](https://github.com/assemble/phaser/issues/new), thanks!
-
-![image](https://f.cloud.github.com/assets/383994/2181984/e30dc88c-9774-11e3-9bef-511e91b019b9.png)
-
 ## Install
 #### Install with [npm](npmjs.org)
 
@@ -36,7 +29,11 @@ Now that Phaser is installed, run:
 phaser
 ```
 
-That wasn't so hard, was it?
+That wasn't so hard, was it? (It was? [Try downloading Phaser instead](https://github.com/assemble/phaser/archive/master.zip))
+
+**NOTE**: Actual usage instructions and documentation are on the way! In the meantime, please [let us know if you have questions](https://github.com/assemble/phaser/issues/new), we'd love to have help with the project too, let us know if you're interested!
+
+![image](https://f.cloud.github.com/assets/383994/2181984/e30dc88c-9774-11e3-9bef-511e91b019b9.png)
 
 ## About
 ### Ease of Use
