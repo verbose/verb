@@ -1,22 +1,16 @@
-Example document:
-
-```js
+```markdown
 # {%= name %}
 
 > {%= description %}
 
-{%= toc %}
+Install with [npm](npmjs.org) `npm i -g {%= name %} --save-dev`
 
-## Overview
-{%= doc("overview.md") %}
+Now that {%= name %} is installed, run: `{%= name %}`
 
-## Options
-{%= doc("options.md") %}
+## Author
+{%= author.name %}
 
-## Examples
-{%= doc("examples.md") %}
-
-## License and Copyright
-{%= copyright %}
-{%= license %}
+## License
+{%= copyright() %}
+{%= license() %}
 ```
