@@ -1,7 +1,7 @@
 {
   "name": "phaser",
   "description": "The most deadly markdown documentation generator in the Alpha Quadrant.",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "homepage": "https://github.com/assemble/phaser",
   "author": {
     "name": "Jon Schlinkert",
