@@ -1,6 +1,3 @@
-var file = require('fs-utils');
-var glob = require('globule');
-
 
 module.exports = function(phaser) {
   var content = phaser.page.content;

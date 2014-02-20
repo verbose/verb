@@ -1,4 +1,3 @@
-var util = require('util');
 var expect = require('chai').expect;
 var file = require('fs-utils');
 
@@ -29,7 +28,6 @@ describe('options.config', function () {
           },
         }
       });
-      var expected = file.readJSONSync('test/expected/config-custom.json');
       actual = JSON.parse(JSON.stringify(actual));
       expect(actual.context.name).to.eql('Custom Config');
     });

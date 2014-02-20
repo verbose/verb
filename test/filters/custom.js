@@ -4,17 +4,18 @@
  * Licensed under the MIT license.
  */
 
+'use strict';
+
 var _ = require('lodash');
 
-'use strict';
 
 // Custom mixins
 module.exports = function(options, config) {
   options = options || {};
   options.customProp = options.customProp || '';
-  var config = _.extend({}, config);
+  config = _.extend({}, config);
 
-  exports.grape = function(src, opts) {
+  exports.grape = function(src) {
     return src + ' worked!';
   };
 

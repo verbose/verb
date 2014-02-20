@@ -1,5 +1,4 @@
 // node_modules
-var util = require('util');
 var expect = require('chai').expect;
 var file = require('fs-utils');
 
