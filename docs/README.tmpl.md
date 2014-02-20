@@ -15,6 +15,14 @@ That wasn't so hard, was it? (It was? [Try downloading Phaser instead](https://g
 
 ![image](https://f.cloud.github.com/assets/383994/2181984/e30dc88c-9774-11e3-9bef-511e91b019b9.png)
 
+## Tests
+
+Run the tests with:
+
+```
+mocha -R spec
+```
+
 ## About
 {%= docs('about') %}
 

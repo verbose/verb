@@ -8,8 +8,6 @@
 
 'use strict';
 
-var fs = require('fs');
-var path = require("path");
 var file = require('fs-utils');
 var configFile = require('config-file');
 var cwd = require('cwd');
