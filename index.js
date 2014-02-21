@@ -19,20 +19,34 @@ var _ = require('lodash');
 
 var phaser = module.exports = {};
 
-phaser.cwd        = cwd;
-phaser.base       = cwd;
-phaser.file       = _.defaults(require('./lib/file'), file);
-phaser.data       = require('./lib/data');
-phaser.matter     = require('./lib/matter');
-phaser.plugins    = require('./lib/plugins');
-phaser.partials   = require('./lib/partials');
-phaser.filters    = require('./lib/filters');
-phaser.tags       = require('./lib/tags');
-phaser.template   = require('./lib/template');
-phaser.exclusions = require('./lib/exclusions');
-phaser.utils      = require('./lib/utils/index');
-phaser.extensions = {};
-phaser.ext        = '.md';
+phaser.cwd          = cwd;
+phaser.base         = cwd;
+phaser.file         = _.defaults(require('./lib/file'), file);
+
+// Logging and utils
+phaser.colors       = require('./lib/colors');
+phaser.log          = require('./lib/log');
+phaser.verbose      = phaser.log.verbose;
+phaser.mode         = {};
+phaser.mode.verbose = false;
+phaser.utils        = require('./lib/utils/index');
+
+// Extensions
+phaser.plugins      = require('./lib/plugins');
+phaser.filters      = require('./lib/filters');
+phaser.tags         = require('./lib/tags');
+
+// Data
+phaser.data         = require('./lib/data');
+phaser.matter       = require('./lib/matter');
+
+// Templates
+phaser.scaffolds    = require('./lib/scaffolds');
+phaser.partials     = require('./lib/partials');
+phaser.template     = require('./lib/template');
+
+phaser.exclusions   = require('./lib/exclusions');
+phaser.ext          = '.md';
 
 
 /**
@@ -58,14 +72,11 @@ phaser.init = function (options) {
   }
   phaser.initalized = true;
   var opts = _.extend({verbose: false}, options);
+  phaser.mode.verbose = opts.verbose;
 
   // Initialize mixins
   _.fn = require('./lib/mixins.js');
   _.mixin(_.fn);
-
-  // Initalize logging
-  phaser.log = require('./lib/log').init(opts, phaser);
-  phaser.verbose = phaser.log.verbose;
 };
 
 
@@ -92,6 +103,9 @@ phaser.process = function(src, options) {
   phaser.context = _.extend({}, phaser.config);
   delete phaser.context.config;
 
+  // Initialize plugins
+  _.extend(phaser.context, phaser.plugins.init(phaser));
+
   src = src || '';
 
   // Extend `phaser`
@@ -104,9 +118,6 @@ phaser.process = function(src, options) {
 
   // Template settings
   var settings = _.defaults({}, opts.settings);
-
-  // Initialize plugins
-  _.extend(phaser.context, phaser.plugins.init(phaser));
 
   // Initialize Lo-Dash tags and filters
   _.extend(phaser.context, phaser.tags.init(phaser));

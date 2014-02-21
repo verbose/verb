@@ -115,7 +115,7 @@ describe('utils.arrayify:', function () {
 describe('utils.authors', function() {
 
   describe('when utils.authors() is called', function() {
-  
+
     it('should return an array of authors', function() {
       var expected = [
         {
@@ -132,7 +132,7 @@ describe('utils.authors', function() {
       var actual = utils.authors();
       expect(actual).to.eql(expected);
     });
-  
+
   });
 
 });
@@ -141,7 +141,7 @@ describe('utils.authors', function() {
 describe('utils.block', function() {
 
   describe('when utils.block() is called with a string', function() {
-  
+
     it('should execute as a block template', function() {
 
       var expected = "\n - Jon Schlinkert\n";
@@ -155,7 +155,7 @@ describe('utils.block', function() {
       var actual = utils.block(phaser).block(tmpl);
       expect(actual).to.eql(expected);
     });
-  
+
   });
 
 });
@@ -163,7 +163,7 @@ describe('utils.block', function() {
 describe('utils.condense', function() {
 
   describe('when utils.condense() is called with a string and no seperator', function() {
-  
+
     it('should condense the strings', function() {
       var expected = [
         '- foo',
@@ -180,11 +180,11 @@ describe('utils.condense', function() {
       var actual = utils.condense(input);
       expect(actual).to.eql(expected);
     });
-  
+
   });
 
   describe('when utils.condense() is called with a string and a custom seperator', function() {
-  
+
     it('should condense the strings on the seperator', function() {
       var expected = [
         'foo',
@@ -200,11 +200,11 @@ describe('utils.condense', function() {
       var actual = utils.condense(input, ',');
       expect(actual).to.eql(expected);
     });
-  
+
   });
 
   describe('when utils.condense() is called with a string with \\r\\n line endings', function() {
-  
+
     it('should condense the strings', function() {
       var expected = [
         '- foo',
@@ -221,7 +221,7 @@ describe('utils.condense', function() {
       var actual = utils.condense(input);
       expect(actual).to.eql(expected);
     });
-  
+
   });
 
 
@@ -230,22 +230,22 @@ describe('utils.condense', function() {
 describe('utils.contributors', function() {
 
   describe('when utils.contributors() is called with no configuration', function() {
-  
+
     it('should return an empty string', function() {
       var expected = '';
       var actual = utils.contributors();
       expect(actual).to.eql(expected);
     });
-  
+
   });
 
   describe('when utils.contributors() is called with a configuration and no prefix', function() {
-  
+
     it('should return a markdown list of contributor names', function() {
       var config = {
         contributors: [
           { name: 'Jon Schlinkert' },
-          { name: 'Brian Woodward' }        
+          { name: 'Brian Woodward' }
         ]
       };
 
@@ -257,16 +257,16 @@ describe('utils.contributors', function() {
       var actual = utils.contributors(config);
       expect(actual).to.eql(expected);
     });
-  
+
   });
 
   describe('when utils.contributors() is called with a configuration and prefix', function() {
-  
+
     it('should return a markdown list of contributor names with given prefix', function() {
       var config = {
         contributors: [
           { name: 'Jon Schlinkert' },
-          { name: 'Brian Woodward' }        
+          { name: 'Brian Woodward' }
         ]
       };
 
@@ -278,7 +278,7 @@ describe('utils.contributors', function() {
       var actual = utils.contributors(config, ' - ');
       expect(actual).to.eql(expected);
     });
-  
+
   });
 
 });
@@ -326,7 +326,7 @@ describe('utils.username:', function () {
     var pkg = require('../package');
 
     it('should extract the username from the author URL`.', function () {
-      var actual = utils.username(pkg.author.url);
+      var actual = utils.username(phaser.context.author.url);
       var expected = 'jonschlinkert';
       expect(actual).to.eql(expected);
     });
