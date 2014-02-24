@@ -137,8 +137,8 @@ It's true. This is exactly how Phaser works. More or less.
 + [twitter/doowb](http://twitter.com/jonschlinkert)
 
 ## License
-Copyright (c) 2014 Jon Schlinkert, contributors.
-Released under the MIT license
+Copyright (c) 2014 [Jon Schlinkert](https://github.com/jonschlinkert), contributors.
+Released under the [MIT license](./LICENSE-MIT)
 
 ***
 

@@ -14,12 +14,15 @@ var chalk = require('chalk');
 var file = require('fs-utils');
 var pkg = file.readJSONSync(path.join(__dirname, '../..', 'package.json'));
 
-var warn = chalk.yellow;
-var stun = chalk.magenta.bold;
-var kill = chalk.red.bold;
+var warn  = chalk.yellow;
+var stun  = chalk.magenta.bold;
+var omega = chalk.bold;
+var kill  = chalk.red.bold;
 
 
 exports.header = function() {
-  console.log(stun('phaser-cli (v' + pkg.version + '): ') + pkg.description);
+  console.log(stun('phaser-cli (v' + pkg.version + '): ') + omega(pkg.description));
   console.log('');
 };
+
+console.log(exports.header());
