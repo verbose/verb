@@ -2,6 +2,8 @@
 
 > Developer documentation for Phaser
 
+## [colors.js](../../lib/colors.js)
+
 ## [config.js](../../lib/config.js)
 
 Initialize config object. This defaults to
@@ -24,18 +26,16 @@ Omit properties from the context
 
 ## [file.js](../../lib/file.js)
 
-Export `phaser.file`
-
-### expand
+### [expand](../../lib/file.js#L17)
 
 Expand files.
 
 * `src`: (String):
 * `options`: (Object):
 
-### expand
+### [read](../../lib/file.js#L41)
 
-Expand files and read in content.
+Read files.
 
 * `src`: (String):
 * `options`: (Object):
@@ -52,7 +52,7 @@ String): Accepts either comma separated globbing patterns or an array of globbin
 
 ## [filters.js](../../lib/filters.js)
 
-### filters
+### [filters](../../lib/filters.js#L15)
 
 Adds filters to the context
 
@@ -60,6 +60,8 @@ Adds filters to the context
 
 Built-in filters
 User-defined
+
+## [columnify.js](../../lib/filters/columnify.js)
 
 ## [listify.js](../../lib/utils/listify.js)
 
@@ -70,7 +72,7 @@ to a comma-separated list.
 
 ## [reverse.js](../../lib/utils/reverse.js)
 
-### reverse
+### [reverse](../../lib/utils/reverse.js#L11)
 
 Reverse a string
 
@@ -86,13 +88,11 @@ Safename
 
 ## [strip.js](../../lib/utils/strip.js)
 
-### reverse
+### [reverse](../../lib/utils/strip.js#L11)
 
 Strip newlines and whitespace padding.
 
 * `str`: (String): The string to reverse
-
-## [index.js](../../lib/utils/index.js)
 
 ## [layout.js](../../lib/layout.js)
 
@@ -109,7 +109,7 @@ front matter.
 
 ## [mixins.js](../../lib/mixins.js)
 
-### mixins
+### [mixins](../../lib/mixins.js#L11)
 
 Export mixins
 
@@ -117,33 +117,81 @@ Export mixins
 
 ## [partials.js](../../lib/partials.js)
 
-### partials
+### [partials](../../lib/partials.js#L20)
 
 Define individual partials.
 
-### partials
+### [partials](../../lib/partials.js#L50)
 
 Register partials as strings. Use `options.partials`
 to add partials. Globbing patterns may be used.
 
 ## [plugins.js](../../lib/plugins.js)
 
-### plugins
+### [plugins](../../lib/plugins.js#L15)
 
 Adds plugins to the context
 
 * `options`: (Object):
 
-Built-in plugins
-User-defined
+Run built-in plugins
+Run user-defined plugins
+
+## [contributors.js](../../lib/utils/contributors.js)
+
+## [example.js](../../lib/plugins/example.js)
+
+## [homepage.js](../../lib/plugins/homepage.js)
+
+## [ignore.js](../../lib/plugins/ignore.js)
+
+gitignore
+If `gitignore` does not exist, and `gitignore: true` is
+defined in the options, then add a `gitignore`
+file to the root of the project. This is a command
+line convenience.
+
+## [repo.js](../../lib/plugins/repo.js)
+
+## [travis.js](../../lib/plugins/travis.js)
+
+.travis.yml
+If `.travis.yml` does not exist, and
+`travis: true` is defined in the options,
+then add a `.travis.yml` file to the root
+of the project.
+If `.travis.yml` already exists, add
+a travis URL to the context for use
+in templates
+
+## [username.js](../../lib/utils/username.js)
+
+Extract a username/org from a
+GitHub URL.
+
+* `{String}`: ():
+
+## [scaffolds.js](../../lib/scaffolds.js)
+
+## [gitignore.js](../../lib/scaffolds/gitignore.js)
+
+## [html-layout.js](../../lib/scaffolds/html-layout.js)
+
+## [readme-basic.js](../../lib/scaffolds/readme-basic.js)
+
+## [readme-contrib.js](../../lib/scaffolds/readme-contrib.js)
 
 ## [tags.js](../../lib/tags.js)
 
-### tags
+### [tags](../../lib/tags.js#L16)
 
 Adds tags to the context
 
 * `options`: (Object):
+
+Initialize tags
+
+* `phaser`: (Object):
 
 Built-in tags
 User-defined
@@ -159,7 +207,7 @@ Status, analytics and version badges.
 
 ## [boilerplates.js](../../lib/tags/boilerplates.js)
 
-### boilerplate
+### [boilerplate](../../lib/tags/boilerplates.js#L19)
 
 Boilerplates are used to kickstart new projects.
 Using the API, you can pre-define a boilerplate
@@ -167,6 +215,8 @@ to use when a new project is initialized.
 
 * `config`: (Object):
 * `options`: (Object):
+
+## [changelog.js](../../lib/tags/changelog.js)
 
 ## [comments.js](../../lib/tags/comments.js)
 
@@ -180,7 +230,16 @@ Add a copyright statement, with author and year(s) in effect.
 
 ## [date.js](../../lib/utils/date.js)
 
-### formatDate
+### [formatDate](../../lib/utils/date.js#L10)
+
+Date functions used in _.date() filter
+
+* `dateobj`: (Object): The date object to format.
+* `structure`: (String): The structure to use, e.g. 'YYYY-MM-DD'.
+
+## [dates.js](../../lib/tags/dates.js)
+
+### [formatDate](../../lib/tags/dates.js#L11)
 
 Date functions used in _.date() filter
 
@@ -190,8 +249,6 @@ Date functions used in _.date() filter
 ## [docs.js](../../lib/tags/docs.js)
 
 ## [getAuthors.js](../../lib/tags/getAuthors.js)
-
-## [homepage.js](../../lib/tags/homepage.js)
 
 ## [html.js](../../lib/tags/html.js)
 
@@ -240,6 +297,8 @@ String):
 
 ## [block.js](../../lib/utils/block.js)
 
+TODO: This isn't used anywhere.
+Move it to example for delims!
 Create a block template
 
 ## [condense.js](../../lib/utils/condense.js)
@@ -247,8 +306,6 @@ Create a block template
 Remove all extraneous newlines.
 
 * `str`: (String):
-
-## [contributors.js](../../lib/utils/contributors.js)
 
 ## [convertUrl.js](../../lib/utils/convertUrl.js)
 
@@ -260,7 +317,7 @@ in the project.
 
 ## [expandData.js](../../lib/utils/expandData.js)
 
-### expandData
+### [expandData](../../lib/utils/expandData.js#L19)
 
 Read in data from a string, object or array
 
@@ -269,9 +326,15 @@ Read in data from a string, object or array
 
 ## [extendContext.js](../../lib/utils/extendContext.js)
 
+## [index.js](../../lib/utils/index.js)
+
+## [inspect.js](../../lib/utils/inspect.js)
+
 ## [isType.js](../../lib/utils/isType.js)
 
 Returns the `typeOf` a JavaScript value
+
+## [lookup.js](../../lib/utils/lookup.js)
 
 ## [md.js](../../lib/utils/md.js)
 
@@ -286,6 +349,8 @@ Post-process content with RegExp replacement patterns
 * `str`: (String): The string with patterns to replace.
 * `options`: (Object): The options to use @option {patterns} Replacement patterns to use
 
+## [rollcall.js](../../lib/utils/rollcall.js)
+
 ## [time.js](../../lib/utils/time.js)
 
 ## function time()
@@ -294,13 +359,6 @@ Get the current time using `.toLocaleTimeString()`.
 
 ## [timestamp.js](../../lib/utils/timestamp.js)
 
-### function timetamp()
+### [function timetamp()](../../lib/utils/timestamp.js#L9)
 
 Get the current time using `.toISOString()`
-
-## [username.js](../../lib/utils/username.js)
-
-Extract a username/org from a
-GitHub URL.
-
-* `{String}`: ():

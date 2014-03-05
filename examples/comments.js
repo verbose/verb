@@ -6,4 +6,7 @@
  * Licensed under the MIT license.
  */
 var phaser = require('../');
-phaser.copy('examples/templates/comments.md', 'test/actual/comments.md');
+
+var dest = 'test/actual/comments.md';
+
+phaser.copy('examples/templates/comments.md', dest, {dest: dest});

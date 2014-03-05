@@ -24,5 +24,3 @@ exports.header = function() {
   console.log(stun('phaser-cli (v' + pkg.version + '): ') + omega(pkg.description));
   console.log('');
 };
-
-console.log(exports.header());

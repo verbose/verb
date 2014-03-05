@@ -1,4 +1,11 @@
 {
+  "colors.js": {
+    "name": "colors.js",
+    "path": "../../lib/colors.js",
+    "comments": [
+      []
+    ]
+  },
   "config.js": {
     "name": "config.js",
     "path": "../../lib/config.js",
@@ -17,7 +24,7 @@
               "description": ""
             }
           ],
-          "line": 7
+          "line": 15
         }
       ]
     ]
@@ -40,7 +47,7 @@
               "description": ""
             }
           ],
-          "line": 8
+          "line": 16
         }
       ]
     ]
@@ -53,14 +60,14 @@
         {
           "description": "Default exclusions",
           "description_html": "<p>Default exclusions</p>",
-          "line": 5
+          "line": 13
         },
         {
           "description": "Omit properties from the context",
           "return": "{Object}",
           "api": "private",
           "description_html": "<p>Omit properties from the context</p>",
-          "line": 22
+          "line": 30
         }
       ]
     ]
@@ -70,11 +77,6 @@
     "path": "../../lib/file.js",
     "comments": [
       [
-        {
-          "description": "Export `phaser.file`",
-          "description_html": "<p>Export <code>phaser.file</code></p>",
-          "line": 11
-        },
         {
           "description": "Expand files.",
           "name": "expand",
@@ -97,18 +99,18 @@
               "description": ""
             }
           ],
-          "line": 18
+          "line": 17
         },
         {
-          "description": "Expand files and read in content.",
-          "name": "expand",
+          "description": "Read files.",
+          "name": "read",
           "param": [
             "{String} src",
             "{Object} options"
           ],
           "return": "{Array}",
           "api": "public",
-          "description_html": "<p>Expand files and read in content.</p>",
+          "description_html": "<p>Read files.</p>",
           "params": [
             {
               "type": "String",
@@ -121,7 +123,7 @@
               "description": ""
             }
           ],
-          "line": 36
+          "line": 41
         },
         {
           "description": "Expand mapping",
@@ -156,7 +158,7 @@
               "description": "Options to pass in: @option {String} cwd: the current working directory for source files. @option {String} ext: the file extension to use on dest files."
             }
           ],
-          "line": 54
+          "line": 68
         }
       ]
     ]
@@ -180,19 +182,26 @@
               "description": ""
             }
           ],
-          "line": 6
+          "line": 15
         },
         {
           "description": "Built-in filters",
           "description_html": "<p>Built-in filters</p>",
-          "line": 22
+          "line": 31
         },
         {
           "description": "User-defined",
           "description_html": "<p>User-defined</p>",
-          "line": 28
+          "line": 37
         }
       ]
+    ]
+  },
+  "columnify.js": {
+    "name": "columnify.js",
+    "path": "../../lib/filters/columnify.js",
+    "comments": [
+      []
     ]
   },
   "listify.js": {
@@ -213,7 +222,7 @@
               "description": "[description]"
             }
           ],
-          "line": 3
+          "line": 11
         }
       ]
     ]
@@ -237,7 +246,7 @@
               "description": "The string to reverse"
             }
           ],
-          "line": 3
+          "line": 11
         }
       ]
     ]
@@ -264,7 +273,7 @@
               "description": "The name to be modified"
             }
           ],
-          "line": 6
+          "line": 14
         }
       ]
     ]
@@ -295,16 +304,9 @@
               "description": "The string to reverse"
             }
           ],
-          "line": 3
+          "line": 11
         }
       ]
-    ]
-  },
-  "index.js": {
-    "name": "index.js",
-    "path": "../../lib/utils/index.js",
-    "comments": [
-      []
     ]
   },
   "layout.js": {
@@ -317,14 +319,14 @@
           "return": "{String}",
           "api": "Public",
           "description_html": "<p>Default layout to use when one isn't\ndefined in the options.</p>",
-          "line": 7
+          "line": 16
         },
         {
           "description": "Load layouts",
           "return": "{Object}",
           "api": "Public",
           "description_html": "<p>Load layouts</p>",
-          "line": 30
+          "line": 39
         }
       ]
     ]
@@ -346,7 +348,7 @@
           "return": "{Object}",
           "api": "public",
           "description_html": "<p>Parse and extract YAML, JSON or Coffee\nfront matter.</p>",
-          "line": 7
+          "line": 15
         }
       ]
     ]
@@ -370,7 +372,7 @@
               "description": ""
             }
           ],
-          "line": 4
+          "line": 11
         }
       ]
     ]
@@ -387,7 +389,7 @@
           "api": "public",
           "example:": "true _.definePartial('tooltip', '<div class=\"tooltip\">${ content }</div>');",
           "description_html": "<p>Define individual partials.</p>",
-          "line": 12
+          "line": 20
         },
         {
           "description": "Register partials as strings. Use `options.partials`\nto add partials. Globbing patterns may be used.",
@@ -395,7 +397,7 @@
           "return": "{Object}",
           "api": "public",
           "description_html": "<p>Register partials as strings. Use <code>options.partials</code>\nto add partials. Globbing patterns may be used.</p>",
-          "line": 36
+          "line": 50
         }
       ]
     ]
@@ -419,19 +421,148 @@
               "description": ""
             }
           ],
-          "line": 7
+          "line": 15
         },
         {
-          "description": "Built-in plugins",
-          "description_html": "<p>Built-in plugins</p>",
-          "line": 23
+          "description": "Run built-in plugins",
+          "description_html": "<p>Run built-in plugins</p>",
+          "line": 31
         },
         {
-          "description": "User-defined",
-          "description_html": "<p>User-defined</p>",
-          "line": 29
+          "description": "Run user-defined plugins",
+          "description_html": "<p>Run user-defined plugins</p>",
+          "line": 36
         }
       ]
+    ]
+  },
+  "contributors.js": {
+    "name": "contributors.js",
+    "path": "../../lib/utils/contributors.js",
+    "comments": [
+      []
+    ]
+  },
+  "example.js": {
+    "name": "example.js",
+    "path": "../../lib/plugins/example.js",
+    "comments": [
+      []
+    ]
+  },
+  "homepage.js": {
+    "name": "homepage.js",
+    "path": "../../lib/plugins/homepage.js",
+    "comments": [
+      []
+    ]
+  },
+  "ignore.js": {
+    "name": "ignore.js",
+    "path": "../../lib/plugins/ignore.js",
+    "comments": [
+      [
+        {
+          "description": "gitignore",
+          "description_html": "<p>gitignore</p>",
+          "line": 15
+        },
+        {
+          "description": "If `gitignore` does not exist, and `gitignore: true` is\ndefined in the options, then add a `gitignore`\nfile to the root of the project. This is a command\nline convenience.",
+          "title": "gitignore",
+          "description_html": "<p>If <code>gitignore</code> does not exist, and <code>gitignore: true</code> is\ndefined in the options, then add a <code>gitignore</code>\nfile to the root of the project. This is a command\nline convenience.</p>",
+          "line": 24
+        }
+      ]
+    ]
+  },
+  "repo.js": {
+    "name": "repo.js",
+    "path": "../../lib/plugins/repo.js",
+    "comments": [
+      []
+    ]
+  },
+  "travis.js": {
+    "name": "travis.js",
+    "path": "../../lib/plugins/travis.js",
+    "comments": [
+      [
+        {
+          "description": ".travis.yml",
+          "description_html": "<p>.travis.yml</p>",
+          "line": 14
+        },
+        {
+          "description": "If `.travis.yml` does not exist, and\n`travis: true` is defined in the options,\nthen add a `.travis.yml` file to the root\nof the project.",
+          "title": "Travis CI badge",
+          "description_html": "<p>If <code>.travis.yml</code> does not exist, and\n<code>travis: true</code> is defined in the options,\nthen add a <code>.travis.yml</code> file to the root\nof the project.</p>",
+          "line": 26
+        },
+        {
+          "description": "If `.travis.yml` already exists, add\na travis URL to the context for use\nin templates",
+          "title": "Travis CI badge",
+          "description_html": "<p>If <code>.travis.yml</code> already exists, add\na travis URL to the context for use\nin templates</p>",
+          "line": 45
+        }
+      ]
+    ]
+  },
+  "username.js": {
+    "name": "username.js",
+    "path": "../../lib/utils/username.js",
+    "comments": [
+      [
+        {
+          "description": "Extract a username/org from a\nGitHub URL.",
+          "param": "{String}",
+          "return": "{String}",
+          "api": "public",
+          "description_html": "<p>Extract a username/org from a\nGitHub URL.</p>",
+          "params": [
+            {
+              "name": "{String}",
+              "description": ""
+            }
+          ],
+          "line": 16
+        }
+      ]
+    ]
+  },
+  "scaffolds.js": {
+    "name": "scaffolds.js",
+    "path": "../../lib/scaffolds.js",
+    "comments": [
+      []
+    ]
+  },
+  "gitignore.js": {
+    "name": "gitignore.js",
+    "path": "../../lib/scaffolds/gitignore.js",
+    "comments": [
+      []
+    ]
+  },
+  "html-layout.js": {
+    "name": "html-layout.js",
+    "path": "../../lib/scaffolds/html-layout.js",
+    "comments": [
+      []
+    ]
+  },
+  "readme-basic.js": {
+    "name": "readme-basic.js",
+    "path": "../../lib/scaffolds/readme-basic.js",
+    "comments": [
+      []
+    ]
+  },
+  "readme-contrib.js": {
+    "name": "readme-contrib.js",
+    "path": "../../lib/scaffolds/readme-contrib.js",
+    "comments": [
+      []
     ]
   },
   "tags.js": {
@@ -453,17 +584,31 @@
               "description": ""
             }
           ],
-          "line": 6
+          "line": 16
+        },
+        {
+          "description": "Initialize tags",
+          "param": "{Object}  phaser",
+          "return": "{Object}",
+          "description_html": "<p>Initialize tags</p>",
+          "params": [
+            {
+              "type": "Object",
+              "name": "phaser",
+              "description": ""
+            }
+          ],
+          "line": 46
         },
         {
           "description": "Built-in tags",
           "description_html": "<p>Built-in tags</p>",
-          "line": 22
+          "line": 59
         },
         {
           "description": "User-defined",
           "description_html": "<p>User-defined</p>",
-          "line": 28
+          "line": 65
         }
       ]
     ]
@@ -502,7 +647,7 @@
               "description": ""
             }
           ],
-          "line": 18
+          "line": 23
         }
       ]
     ]
@@ -534,9 +679,16 @@
               "description": ""
             }
           ],
-          "line": 11
+          "line": 19
         }
       ]
+    ]
+  },
+  "changelog.js": {
+    "name": "changelog.js",
+    "path": "../../lib/tags/changelog.js",
+    "comments": [
+      []
     ]
   },
   "comments.js": {
@@ -571,7 +723,7 @@
               "description": "Optional parameter to define the start year of the project."
             }
           ],
-          "line": 6
+          "line": 15
         }
       ]
     ]
@@ -603,7 +755,39 @@
               "description": "The structure to use, e.g. 'YYYY-MM-DD'."
             }
           ],
-          "line": 4
+          "line": 10
+        }
+      ]
+    ]
+  },
+  "dates.js": {
+    "name": "dates.js",
+    "path": "../../lib/tags/dates.js",
+    "comments": [
+      [
+        {
+          "description": "Date functions used in _.date() filter",
+          "name": "formatDate",
+          "param": [
+            "{Object} dateobj The date object to format.",
+            "{String} structure The structure to use, e.g. 'YYYY-MM-DD'."
+          ],
+          "return": "{String} The formatted date.",
+          "api": "public",
+          "description_html": "<p>Date functions used in _.date() filter</p>",
+          "params": [
+            {
+              "type": "Object",
+              "name": "dateobj",
+              "description": "The date object to format."
+            },
+            {
+              "type": "String",
+              "name": "structure",
+              "description": "The structure to use, e.g. 'YYYY-MM-DD'."
+            }
+          ],
+          "line": 11
         }
       ]
     ]
@@ -618,13 +802,6 @@
   "getAuthors.js": {
     "name": "getAuthors.js",
     "path": "../../lib/tags/getAuthors.js",
-    "comments": [
-      []
-    ]
-  },
-  "homepage.js": {
-    "name": "homepage.js",
-    "path": "../../lib/tags/homepage.js",
     "comments": [
       []
     ]
@@ -697,7 +874,7 @@
               "description": ""
             }
           ],
-          "line": 7
+          "line": 15
         }
       ]
     ]
@@ -734,7 +911,7 @@
               "description": "Options to pass to Lo-Dash"
             }
           ],
-          "line": 8
+          "line": 16
         }
       ]
     ]
@@ -749,14 +926,14 @@
           "return": "{String}",
           "api": "public",
           "description_html": "<p>Adjust heading levels. Adds one heading\nlevel next to all markdown headings to\nmake them correct within the scope of the\ninheriting document. Headings in fenced\ncode blocks are skipped.</p>",
-          "line": 8
+          "line": 16
         },
         {
           "description": "Unescapes delimiters",
           "return": "{String}",
           "api": "public",
           "description_html": "<p>Unescapes delimiters</p>",
-          "line": 38
+          "line": 46
         }
       ]
     ]
@@ -787,7 +964,7 @@
               "description": ""
             }
           ],
-          "line": 4
+          "line": 12
         }
       ]
     ]
@@ -798,11 +975,16 @@
     "comments": [
       [
         {
+          "description": "TODO: This isn't used anywhere.\nMove it to example for delims!",
+          "description_html": "<p>TODO: This isn't used anywhere.\nMove it to example for delims!</p>",
+          "line": 16
+        },
+        {
           "description": "Create a block template",
           "return": "{String}",
           "api": "public",
           "description_html": "<p>Create a block template</p>",
-          "line": 23
+          "line": 36
         }
       ]
     ]
@@ -826,16 +1008,9 @@
               "description": ""
             }
           ],
-          "line": 5
+          "line": 13
         }
       ]
-    ]
-  },
-  "contributors.js": {
-    "name": "contributors.js",
-    "path": "../../lib/utils/contributors.js",
-    "comments": [
-      []
     ]
   },
   "convertUrl.js": {
@@ -855,7 +1030,7 @@
           "return": "{String}",
           "api": "public",
           "description_html": "<p>Get the relative path from process.cwd() to\nthe specifiied paths, from any other directory\nin the project.</p>",
-          "line": 9
+          "line": 17
         }
       ]
     ]
@@ -887,7 +1062,7 @@
               "description": "Pass an object of options"
             }
           ],
-          "line": 11
+          "line": 19
         }
       ]
     ]
@@ -895,6 +1070,20 @@
   "extendContext.js": {
     "name": "extendContext.js",
     "path": "../../lib/utils/extendContext.js",
+    "comments": [
+      []
+    ]
+  },
+  "index.js": {
+    "name": "index.js",
+    "path": "../../lib/utils/index.js",
+    "comments": [
+      []
+    ]
+  },
+  "inspect.js": {
+    "name": "inspect.js",
+    "path": "../../lib/utils/inspect.js",
     "comments": [
       []
     ]
@@ -909,9 +1098,16 @@
           "return": "{String}",
           "api": "public",
           "description_html": "<p>Returns the <code>typeOf</code> a JavaScript value</p>",
-          "line": 3
+          "line": 11
         }
       ]
+    ]
+  },
+  "lookup.js": {
+    "name": "lookup.js",
+    "path": "../../lib/utils/lookup.js",
+    "comments": [
+      []
     ]
   },
   "md.js": {
@@ -932,7 +1128,7 @@
               "description": ""
             }
           ],
-          "line": 35
+          "line": 43
         }
       ]
     ]
@@ -963,9 +1159,16 @@
               "description": "The options to use @option {patterns} Replacement patterns to use"
             }
           ],
-          "line": 10
+          "line": 18
         }
       ]
+    ]
+  },
+  "rollcall.js": {
+    "name": "rollcall.js",
+    "path": "../../lib/utils/rollcall.js",
+    "comments": [
+      []
     ]
   },
   "time.js": {
@@ -978,7 +1181,7 @@
           "return": "{String}",
           "api": "Public",
           "description_html": "<h2>function time()</h2>\n\n<p>Get the current time using <code>.toLocaleTimeString()</code>.</p>",
-          "line": 5
+          "line": 13
         }
       ]
     ]
@@ -994,29 +1197,7 @@
           "return": "{String}",
           "api": "Public",
           "description_html": "<p>Get the current time using <code>.toISOString()</code></p>",
-          "line": 1
-        }
-      ]
-    ]
-  },
-  "username.js": {
-    "name": "username.js",
-    "path": "../../lib/utils/username.js",
-    "comments": [
-      [
-        {
-          "description": "Extract a username/org from a\nGitHub URL.",
-          "param": "{String}",
-          "return": "{String}",
-          "api": "public",
-          "description_html": "<p>Extract a username/org from a\nGitHub URL.</p>",
-          "params": [
-            {
-              "name": "{String}",
-              "description": ""
-            }
-          ],
-          "line": 8
+          "line": 9
         }
       ]
     ]

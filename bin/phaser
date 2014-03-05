@@ -38,7 +38,6 @@ var version = pkg.version;
 
 
 // Messages
-
 var success = colors.green;
 var warn    = colors.yellow;
 var em      = colors.italic;
