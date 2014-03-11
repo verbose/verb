@@ -16,11 +16,13 @@ var prompt = require('prompt');
 var phaser = require('../index');
 
 
+
 /**
- * Have not started working on options yet.
- * I only put this here as a placeholder/
- * reminder in case someone else wants to
- * get to it before me :-)
+ * Have not started working on options yet. I only put this here
+ * as a placeholder/ reminder in case someone else wants to get
+ * to it before me :-)
+ *
+ * TODO: use phaser-cli and tkellen/liftoff
  */
 
 var pkg = require('../package.json');
@@ -44,11 +46,13 @@ var em      = colors.italic;
 var error   = colors.red;
 
 // Defaults
-var config = {readme: 'README.tmpl.md'};
+var config = {
+  readme: 'README.tmpl.md'
+};
 var supplied = {};
 
 /**
- * Prepare to hit warp
+ * Prepare to hit warp!
  */
 
 function render(filepath) {
