@@ -1,36 +1,87 @@
-# phaser
+# verb
 
-> The most deadly markdown documentation generator in the Alpha Quadrant.
+> Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.
 
-Exactly like the one on Star Trek. But instead of "stun" and "kill", this Phaser generates markdown documentation, making it hands-down the most deadly markdown documentation generator on the planet (and probably others ones too).
+Exactly like the one on Star Trek. But instead of "stun" and "kill", this Verb generates markdown documentation, making it hands-down the most deadly markdown documentation generator on the planet (and probably others ones too).
 
-Please [report any bugs or feature requests](https://github.com/assemble/phaser/issues/new), thanks!
+Please [report any bugs or feature requests](https://github.com/assemble/verb/issues/new), thanks!
 
 ## Install
-#### [npm](npmjs.org)
+#### Install with [npm](npmjs.org)
 
 ```bash
-npm i phaser --save-dev
+npm i -g verb --save-dev
 ```
 
-Now that Phaser is installed, run:
+Now that verb is installed, add `README.tmpl.md` to the `docs/` dir in your project (this is all customizable, but let's keep it simple here), and add this to the file:
 
-```
-phaser
+```markdown
+# {%= name %}
+
+> {%= description %}
+
+## Getting started
+Install with [npm](npmjs.org) `npm i -g {%= name %} --save-dev`
+
+## Options
+{%= docs("options") %}
+
+## Examples
+{%= docs("examples") %}
+
+## Author
++ {%= author.name %}
+
+## License
+{%= copyright() %}
+{%= license() %}
 ```
 
-That wasn't so hard, was it?
+Next, run:
+
+```bash
+verb
+```
+
+That wasn't so hard, was it? (It was? [Try downloading Verb instead](https://github.com/assemble/verb/archive/master.zip))
 
 ## About
+### How does Verb work?
+
+Upon running the `docs` command, unless instructed to do otherwise Verb will attempt to build any markdown templates found in the `docs/` directory of your project, using the data from project's package.json as context.
+
+For many users, Verb might only be used to [build the readme](#TODO: link to readme example) for projects, so that project metadata such as version, date, changelog and so on, are always current and consistent. See the [Verb generator](https://github.com/jonschlinkert/generator-docs) for examples.
+
+**Beyond the basics**
+
+For users who want more than the basics, Verb is also highly configurable via options and offers an [extensive API](#TODO: add link to API docs) for developers who want to add functionality in the form of plugins, middleware, custom tags, filters and so on.
+
+### Why use Verb?
+
+We all know that documenation can be one of the most challenging and time-consuming aspects of maintaining a project. Even for small projects, simply writing and organizing the content on a readme can take more time than it did to create the library itself.
+
+> Verb dramatically reduces the time and effort involved in maintaining markdown docs for code projects through the use of powerful utilities and tools, well-defined conventions, and sensible defaults that are specifically tuned to maintaining projects on GitHub.
+
+For starters, this is accomplished by:
+
+1. Using templates for any sections or text than can be generaralize, such as _badges_, _license_, _copyright_, _author_, _Table of Contents_ and so on.
+1. Allowing includes (partials) to be used, so that longer documents can be easily organized and broken down into logical topics or groupings.
+1. Pulling in data from package.json to pass as context to any templates. Custom data sources may be used as well.
+1. Using boilerplates to kickstart the documentation for new projects. The [Verb generator]() for Yeoman comes with a handful of boilerplates, but it's super easy to create and use your own.
+
 ### Ease of Use
 
-Phaser loves users, so its number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Phaser is installed, simply enter `phaser` in command line, and you're off and running.
+> Verb loves users
 
-For more experienced users, Phaser offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
+Verb's number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Verb is installed, simply enter `docs` in command line, and you're off and running.
+
+For more experienced users, Verb offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
 
 ### API
 
-Phaser also loves developers, offering an extensive API and tools for building plugins or extending Phaser in other ways.
+> Verb also loves developers
+
+Verb has an extensive API and tools for building plugins, custom tags and filters, or extending Verb in other ways.
 
 ## Features
 
@@ -50,34 +101,9 @@ Phaser also loves developers, offering an extensive API and tools for building p
 * Logging
 * Lots more! So much more. Much much more. So much more that you don't even know how much more it's so much. I don't know where to start.
 
-### How does Phaser differ from Assemble?
+### FAQ
 
-Phaser was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:
-
-* Use [Assemble][] to build components, sites, blogs and other projects where HTML is the end result.
-* Use Phaser to generate and maintain markdown documentation for your [Assemble][] (or non-Assemble) projects.
-
-#### Comparison
-
-While both engines can be extended to accomplish most of the following features, this table describes what you should expect from each _out-of-the-box_:
-
-**Feature** | **[Assemble][]** | **Phaser**
-------- | -------- | ------
-**Summary** | Build HTML projects from modular components and data | Generate markdown documentation
-**Focus** | Power, granular access to context, components | Speed, ease-of-use, command-line
-**Template Engine** | Handlebars by default, any template engine can be added. | Lo-Dash
-**Extensions** | Plugins, Lo-Dash Mixins, Helpers, Filters, Tags <sup>[1](#1-depends-on-the-template-engine)</sup> | Plugins, Lo-Dash Mixins, Filters, Tags
-**Static Blogs** | Yes | No
-**Static Sites** | Yes | No
-**HTML Documentation** | Yes | Limited.
-**Markdown Documentation** | Limited | Yes
-**Markdown to HTML** | Yes | Limited
-
-###### <sup>1</sup> Depends on the template engine.
-
-[Assemble]: https://github.com/assemble/assemble
-[gray-matter]: https://github.com/assemble/gray-matter
-
+* **Why does Verb use the `{%= foo %}` syntax for templates?**: We do this to avoid collision with the more common, default syntax for Lo-Dash templates, `<%= foo %>`. Of course, nothing if foolproof, so if the default delimiters don't work for your needs you can customize them in the options.
 
 ## License
 Copyright (c) 2014 Jon Schlinkert, contributors.
@@ -85,4 +111,4 @@ Released under the MIT license
 
 ***
 
-_This file was generated by [grunt-readme](https://github.com/assemble/grunt-readme) on Monday, February 17, 2014._
+_This file was generated by [Verb](https://github.com/assemble/verb) on March 14, 2014._

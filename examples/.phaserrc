@@ -1,5 +1,0 @@
-{
-  "title": "Phaser config file",
-  "layouts": "test/fixtures/html",
-  "includes": "test/fixtures/html/includes/*.html"
-}

@@ -16,9 +16,9 @@ readme: {
 
 ## readme
 Type: `String`
-Default: `./node_modules/phaser/tasks/templates/README.tmpl.md`
+Default: `./node_modules/verb/tasks/templates/README.tmpl.md`
 
-By default, if no options are specified the task will look for a `README.md.tmpl` template to use, if none is found the task will use the "starter" file supplied by `phaser` (more detail below). Example:
+By default, if no options are specified the task will look for a `README.md.tmpl` template to use, if none is found the task will use the "starter" file supplied by `verb` (more detail below). Example:
 
 ```js
 readme: {
@@ -32,7 +32,7 @@ readme: {
 1. If (1) is undefined, the task uses the directory defined by `options: { docs: ''}`
 1. If (2) is undefined, the task checks if `README.tmpl.md` exists in the `./docs` directory (without having to define it in the options)
 1. if (3) is undefined, `options: { resolve: { readme: ''}}` attempts to automagically use a `README.tmpl.md` template from `node_modules`. The module must must be defined in `devDependencies`. Note that for a README template to resolve properly from `node_modules`, the `main` property in the `package.json` of the module being referenced must specify the path to the template. This option is probably most useful when you plan to use the same README template on a number of projects.
-1. If (4) is undefined, the task uses the "starter" README template from `phaser`.
+1. If (4) is undefined, the task uses the "starter" README template from `verb`.
 
 
 ## metadata
@@ -109,9 +109,9 @@ readme: {
 
 ### templates
 Type: `String`
-Default: `./node_modules/phaser/tasks/templates/` (relative to your project)
+Default: `./node_modules/verb/tasks/templates/` (relative to your project)
 
-Override the default `cwd` for files included by using `{%= include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
+Override the default `cwd` for files included by using `{%= include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/verb/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
 
 ```js
 readme: {

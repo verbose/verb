@@ -1,16 +1,11 @@
 /**
- * phaser <https://github.com/jonschlinkert/phaser>
- * The most deadly markdown documentation generator in the Alpha Quadrant.
+ * Verb <https://github.com/assemble/verb>
+ * Generate markdown documentation for GitHub projects.
  *
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
-var phaser = require('../');
+var verb = require('../');
 
-phaser.expandMapping(['*.md'], 'test/actual/concat.md');
-
-/**
- * Change the CWD
- */
-
-phaser.expandMapping(['examples/content/*.md'], 'test/actual/concat-md.md', {cwd: process.cwd()});
+verb.expandMapping(['docs/*.md'], 'test/actual/concat.md');
+verb.expandMapping(['examples/templates/*.md'], 'test/actual/concat-md.md');

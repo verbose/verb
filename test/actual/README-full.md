@@ -1,8 +1,8 @@
-# phaser [![NPM version](https://badge.fury.io/js/phaser.png)](http://badge.fury.io/js/phaser) [![Build Status](https://travis-ci.org/assemble/phaser.png)](https://travis-ci.org/assemble/phaser)
+# verb [![NPM version](https://badge.fury.io/js/verb.png)](http://badge.fury.io/js/verb) [![Build Status](https://travis-ci.org/assemble/verb.png)](https://travis-ci.org/assemble/verb)
 
 > The most deadly markdown documentation generator in the Alpha Quadrant.
 
-Please [report any bugs or feature requests](https://github.com/assemble/phaser/issues/new), thanks!
+Please [report any bugs or feature requests](https://github.com/assemble/verb/issues/new), thanks!
 
 <!-- toc -->
 * [Install](#install)
@@ -28,13 +28,13 @@ Please [report any bugs or feature requests](https://github.com/assemble/phaser/
 #### Install with [npm](npmjs.org)
 
 ```bash
-npm i phaser --save-dev
+npm i verb --save-dev
 ```
 
-Now that Phaser is installed, run:
+Now that Verb is installed, run:
 
 ```
-phaser
+verb
 ```
 
 That wasn't so hard, was it?
@@ -111,14 +111,14 @@ Useful if properties are added via options, but should not be on the context.
 
 ### metadata
 
-Unless overridden in the options, Phaser will attempt to process templates using only the data from your project's [package.json](./package.json). Thus, using only the default settings our context might look something like this:
+Unless overridden in the options, Verb will attempt to process templates using only the data from your project's [package.json](./package.json). Thus, using only the default settings our context might look something like this:
 
 ```js
 {
-  "name": "phaser",
+  "name": "verb",
   "description": "Documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.",
   "version": "0.1.0",
-  "homepge": "https://github.com/jonschlinkert/phaser",
+  "homepge": "https://github.com/assemble/verb",
   "dependencies": {
     "fs-utils": "~0.1.11",
     "gray-matter": "~0.2.3",
@@ -133,7 +133,7 @@ Unless overridden in the options, Phaser will attempt to process templates using
 }
 ```
 
-For the majority of projects, this will be enough. _But Phaser gives you as much flexibility as you need to extend the context._
+For the majority of projects, this will be enough. _But Verb gives you as much flexibility as you need to extend the context._
 
 
 ## Context
@@ -145,20 +145,20 @@ As mentioned in the previous section, the default config object, `package.json`,
 
 ```js
 // Raw object
-phaser(str, {config: {name: 'foo'}});
+verb(str, {config: {name: 'foo'}});
 
 // String (filepath)
-phaser(str, {config: 'path/to/*.json'});
+verb(str, {config: 'path/to/*.json'});
 ```
 
 ### Extending the Context
 From least specific to most specific, this is how the context is extended. In other words, the **last wins**:
 
 * `filters|functions`: [Lo-Dash filters]() and custom functions may be used to build up the context when other more conventional means aren't available. For example, an `authors()` mixin/function might be used to read the [AUTHORS](./AUTHORS) file, and then extend the context with the names of the authors therein.
-* `options`: Variables defined directly on the `options` object, e.g. `{name: "phaser"}`.
+* `options`: Variables defined directly on the `options` object, e.g. `{name: "verb"}`.
 * `options.data`: Variables from the `options.data` property. This is a very flexible property:
-  - `Object`: You may pass a raw object directly to the property, e.g. `{data: {name: "phaser"}}`.
-  - `String`If you pass a string, Phaser will try to require it. If that doesn't work, Phaser will try to read it in.
+  - `Object`: You may pass a raw object directly to the property, e.g. `{data: {name: "verb"}}`.
+  - `String`If you pass a string, Verb will try to require it. If that doesn't work, Verb will try to read it in.
   - Minimatch (glob) patterns may be used, and with either JSON or YAML files, e.g. `{data: 'foo/bar/**/*.{json,yml}'}`
 * `metadata`: Front matter
 
@@ -265,7 +265,7 @@ The following object would be merged into the context:
 ```
 
 ## Contributing
-Find a bug? Have a feature request? Please [create an Issue](https://github.com/assemble/phaser/issues).
+Find a bug? Have a feature request? Please [create an Issue](https://github.com/assemble/verb/issues).
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with [grunt-readme](https://github.com/assemble/grunt-readme).
 

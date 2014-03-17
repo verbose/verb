@@ -1,10 +1,10 @@
 /**
- * phaser <https://github.com/jonschlinkert/phaser>
- * The most deadly markdown documentation generator in the Alpha Quadrant.
+ * Verb <https://github.com/assemble/verb>
+ * Generate markdown documentation for GitHub projects.
  *
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
 
-var phaser = require('../');
-phaser.copy('examples/templates/block.md', 'test/actual/block.md');
+var verb = require('../');
+verb.copy('examples/templates/block.md', 'test/actual/block.md');

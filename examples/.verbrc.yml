@@ -1,0 +1,6 @@
+title: "Verb config file"
+layouts: "test/fixtures/html"
+includes: "test/fixtures/html/includes/*.html"
+
+# Add a .travis.yml file if one doesn't exist?
+travis: true

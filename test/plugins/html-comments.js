@@ -1,6 +1,6 @@
 
-module.exports = function(phaser) {
-  var content = phaser.page.content;
+module.exports = function(verb) {
+  var content = verb.page.content;
 
   /**
    * Convert HTML comments to valid Lo-Dash
@@ -12,9 +12,8 @@ module.exports = function(phaser) {
    * @return  {String}
    */
 
-  var convert = function(str) {
+  function convert(str) {
     return str.replace(/<!--\s*([\S]+)\(([\S]+)\)\s*-->/g, '{%= $1($2) %}');
   };
-
-  phaser.page.content = convert(content);
+  verb.page.content = convert(content);
 };

@@ -1,3 +1,3 @@
 ```bash
-npm install phaser --save-dev
+npm install verb --save-dev
 ```

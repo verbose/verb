@@ -1,0 +1,1 @@
+{%= methods('index.js', {name: 'Verb'}) %}

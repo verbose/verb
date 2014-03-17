@@ -1,6 +1,5 @@
 /**
- * phaser <https://github.com/assemble/phaser>
- * The most deadly markdown documentation generator in the Alpha Quadrant.
+ * Verb <https://github.com/assemble/verb>
  *
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
@@ -12,15 +11,15 @@
 var path = require('path');
 var chalk = require('chalk');
 var file = require('fs-utils');
-var pkg = file.readJSONSync(path.join(__dirname, '../..', 'package.json'));
 
-var warn  = chalk.yellow;
-var stun  = chalk.magenta.bold;
-var omega = chalk.bold;
-var kill  = chalk.red.bold;
+var verb = require('../../');
+var meta = verb.verbMetadata;
 
+var warn = chalk.yellow;
+var info = chalk.cyan.bold;
+var bold = chalk.bold;
 
 exports.header = function() {
-  console.log(stun('phaser-cli (v' + pkg.version + '): ') + omega(pkg.description));
+  console.log(info('verb-cli (v' + meta.version + '): ') + bold(meta.description));
   console.log('');
 };

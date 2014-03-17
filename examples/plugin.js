@@ -1,11 +1,11 @@
 /**
- * phaser <https://github.com/jonschlinkert/phaser>
- * The most deadly markdown documentation generator in the Alpha Quadrant.
+ * Verb <https://github.com/assemble/verb>
+ * Generate markdown documentation for GitHub projects.
  *
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
-var phaser = require('../');
+var verb = require('../');
 
 /**
  * This example uses `html-comments.js`
@@ -22,4 +22,4 @@ var opts = {
 var src = 'examples/templates/html-comments.md';
 var dest = 'test/actual/html-comments.md';
 
-phaser.copy(src, dest, opts);
+verb.copy(src, dest, opts);

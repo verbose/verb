@@ -1,6 +1,6 @@
 # Front Matter
 
-> Phaser uses [gray-matter]() for parsing front-matter. So in addition to YAML, you can also use JSON, Coffee, or plan JavaScript.
+> Verb uses [gray-matter]() for parsing front-matter. So in addition to YAML, you can also use JSON, Coffee, or plan JavaScript.
 
 
 ## Examples

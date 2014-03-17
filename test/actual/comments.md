@@ -1,6 +1,6 @@
 # API
 
-> Developer documentation for Phaser
+> Developer documentation for Verb
 
 ## [colors.js](../../lib/colors.js)
 
@@ -94,11 +94,7 @@ Strip newlines and whitespace padding.
 
 * `str`: (String): The string to reverse
 
-## [layout.js](../../lib/layout.js)
-
-Default layout to use when one isn't
-defined in the options.
-Load layouts
+## [layout.js](../../lib/scaffolds/layout.js)
 
 ## [log.js](../../lib/tags/log.js)
 
@@ -115,20 +111,9 @@ Export mixins
 
 * `options`: (Object):
 
-## [partials.js](../../lib/partials.js)
-
-### [partials](../../lib/partials.js#L20)
-
-Define individual partials.
-
-### [partials](../../lib/partials.js#L50)
-
-Register partials as strings. Use `options.partials`
-to add partials. Globbing patterns may be used.
-
 ## [plugins.js](../../lib/plugins.js)
 
-### [plugins](../../lib/plugins.js#L15)
+### [plugins](../../lib/plugins.js#L17)
 
 Adds plugins to the context
 
@@ -139,17 +124,7 @@ Run user-defined plugins
 
 ## [contributors.js](../../lib/utils/contributors.js)
 
-## [example.js](../../lib/plugins/example.js)
-
 ## [homepage.js](../../lib/plugins/homepage.js)
-
-## [ignore.js](../../lib/plugins/ignore.js)
-
-gitignore
-If `gitignore` does not exist, and `gitignore: true` is
-defined in the options, then add a `gitignore`
-file to the root of the project. This is a command
-line convenience.
 
 ## [repo.js](../../lib/plugins/repo.js)
 
@@ -173,9 +148,13 @@ GitHub URL.
 
 ## [scaffolds.js](../../lib/scaffolds.js)
 
+## [comment.js](../../lib/scaffolds/comment.js)
+
 ## [gitignore.js](../../lib/scaffolds/gitignore.js)
 
 ## [html-layout.js](../../lib/scaffolds/html-layout.js)
+
+## [methods.js](../../lib/tags/methods.js)
 
 ## [readme-basic.js](../../lib/scaffolds/readme-basic.js)
 
@@ -191,7 +170,7 @@ Adds tags to the context
 
 Initialize tags
 
-* `phaser`: (Object):
+* `verb`: (Object):
 
 Built-in tags
 User-defined
@@ -201,17 +180,6 @@ User-defined
 ## [badge.js](../../lib/tags/badge.js)
 
 Status, analytics and version badges.
-
-* `config`: (Object):
-* `options`: (Object):
-
-## [boilerplates.js](../../lib/tags/boilerplates.js)
-
-### [boilerplate](../../lib/tags/boilerplates.js#L19)
-
-Boilerplates are used to kickstart new projects.
-Using the API, you can pre-define a boilerplate
-to use when a new project is initialized.
 
 * `config`: (Object):
 * `options`: (Object):
@@ -258,9 +226,9 @@ Date functions used in _.date() filter
 
 ## [moment.js](../../lib/tags/moment.js)
 
-## [partial.js](../../lib/tags/partial.js)
-
 ## [pkg.js](../../lib/tags/pkg.js)
+
+## [raw.js](../../lib/tags/raw.js)
 
 ## [toc.js](../../lib/utils/toc.js)
 
@@ -335,6 +303,13 @@ Read in data from a string, object or array
 Returns the `typeOf` a JavaScript value
 
 ## [lookup.js](../../lib/utils/lookup.js)
+
+Convenience wrapper around `glob.find` and `glob.match`.
+Expand the given glob patterns, then look for a match
+in the result set.
+
+* `patterns`: (String): The glob patterns to expand.
+* `name`: (String): The name to match in the result set.
 
 ## [md.js](../../lib/utils/md.js)
 

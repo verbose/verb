@@ -19,12 +19,12 @@ In general, the conventions used by this task are as follows:
 * Files with extension `.tmpl.md` are generally templates that will be compiled one-to-one into documents
 * Files with extension `.md` are generally intended to be used as includes.
 * `{%= docs("foo") %}` is used to included files from your project's `./docs` directory
-* `{%= include("foo") %}` is used to include boilerplate files from phaser
+* `{%= include("foo") %}` is used to include boilerplate files from verb
 
 ## Advanced configuration
 To change the plugin's defaults, add a section to your project's Gruntfile named `function (name, options) {
-    var opts = _.extend({}, phaserOpts, options);
-    return phaser.utils.safename(name, opts);
+    var opts = _.extend({}, verbOpts, options);
+    return verb.utils.safename(name, opts);
   }` to the data object passed into `grunt.initConfig()`:
 
 ```js
@@ -41,7 +41,7 @@ grunt.initConfig({
     }
   }
 });
-grunt.loadNpmTasks('phaser');
+grunt.loadNpmTasks('verb');
 grunt.registerTask('default', ['readme']);
 ```
 
@@ -83,7 +83,7 @@ Code comments used in markdown templates will be stripped from the rendered file
 #### Escaping hashes
 This task automatically adjusts heading levels in included templates. For example, `#` is adjusted to `##`, so that heading levels "line up" properly after the README is built.
 
-This can cause problems if you're using hashes for a reason other than headings, such as CSS Id's in code comments. So to prevent phaser from converting `#id {}` to `##id {}`, just add a  single backtick before the hash: <code>`#id {}</code>.
+This can cause problems if you're using hashes for a reason other than headings, such as CSS Id's in code comments. So to prevent verb from converting `#id {}` to `##id {}`, just add a  single backtick before the hash: <code>`#id {}</code>.
 
 #### Escaping Lo-Dash templates
 To prevent Lo-Dash from attempting to evaluat templates that shouldn't be (_as with code examples_), just use square brackets instead of curly braces in any templates that have similar patterns to these: `{%= .. %}`, `{%- .. %}`, and `{% .. %}`. The square brackets will be replaced with curly braces in the rendered output.
@@ -108,9 +108,9 @@ readme: {
 
 ### readme
 Type: `String`
-Default: `./node_modules/phaser/tasks/templates/README.tmpl.md`
+Default: `./node_modules/verb/tasks/templates/README.tmpl.md`
 
-By default, if no options are specified the task will look for a `README.md.tmpl` template to use, if none is found the task will use the "starter" file supplied by `phaser` (more detail below). Example:
+By default, if no options are specified the task will look for a `README.md.tmpl` template to use, if none is found the task will use the "starter" file supplied by `verb` (more detail below). Example:
 
 ```js
 readme: {
@@ -124,7 +124,7 @@ readme: {
 1. If (1) is undefined, the task uses the directory defined by `options: { docs: ''}`
 1. If (2) is undefined, the task checks if `README.tmpl.md` exists in the `./docs` directory (without having to define it in the options)
 1. if (3) is undefined, `options: { resolve: { readme: ''}}` attempts to automagically use a `README.tmpl.md` template from `node_modules`. The module must must be defined in `devDependencies`. Note that for a README template to resolve properly from `node_modules`, the `main` property in the `package.json` of the module being referenced must specify the path to the template. This option is probably most useful when you plan to use the same README template on a number of projects.
-1. If (4) is undefined, the task uses the "starter" README template from `phaser`.
+1. If (4) is undefined, the task uses the "starter" README template from `verb`.
 
 
 ### metadata
@@ -201,9 +201,9 @@ readme: {
 
 #### templates
 Type: `String`
-Default: `./node_modules/phaser/tasks/templates/` (relative to your project)
+Default: `./node_modules/verb/tasks/templates/` (relative to your project)
 
-Override the default `cwd` for files included by using `{%= include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/phaser/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
+Override the default `cwd` for files included by using `{%= include('foo.md') %}`. By default, the `include` mixin will look for files in `./node_modules/verb/tasks/templates` directory, where some starter templates are stored. ([Also see examples →](./DOCS.md#examples))
 
 ```js
 readme: {
@@ -293,7 +293,7 @@ or as a second parameter in the `include` or `doc` filters.
 ```js
 {%= name %}
 ```
-> phaser
+> verb
 
 
 ### Version
@@ -327,10 +327,10 @@ v{%= version %}
 {%= homepage ? " * " + homepage + "\n" : "" %}
 {%= homepage ? " * @docs " + homepage + "\\n" : "" %}
 ```
->  | https://github.com/assemble/phaser
-> * https://github.com/assemble/phaser
+>  | https://github.com/assemble/verb
+> * https://github.com/assemble/verb
 >
->  * @docs https://github.com/assemble/phaser\n
+>  * @docs https://github.com/assemble/verb\n
 
 
 
@@ -398,8 +398,8 @@ _This file was generated on {%= grunt.template.date("fullDate") %}._
 ```
 
 > /*!
- * phaser v0.1.3,  2013-09-22
- * https://github.com/assemble/phaser
+ * verb v0.1.3,  2013-09-22
+ * https://github.com/assemble/verb
  * Copyright (c) 2013 [object Object], contributors.
  * Released under the MIT license.
  */
@@ -489,7 +489,7 @@ grunt.initConfig({
 ```
 
 ## Contributing
-Find a bug? Have a feature request? Please [create an Issue](https://github.com/assemble/phaser/issues).
+Find a bug? Have a feature request? Please [create an Issue](https://github.com/assemble/verb/issues).
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][], and build the documentation with [grunt-readme](https://github.com/assemble/grunt-readme).
 

@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The most insanely useful markdown documentation generator on the planet. Phaser uses Lo-Dash as the template engine and comes complete with more than 50 tags and filters, helpful utilites, includes, comment parsing, YAML front matter, plugins, mixins and much more! Use Phaser to generate markdown docs, use Assemble to build HTML.">
+<meta name="description" content="The most insanely useful markdown documentation generator on the planet. Verb uses Lo-Dash as the template engine and comes complete with more than 50 tags and filters, helpful utilites, includes, comment parsing, YAML front matter, plugins, mixins and much more! Use Verb to generate markdown docs, use Assemble to build HTML.">
 <meta name="keywords" content="assemble, build, doc, docs generator, docs, documentation, generator, markdown, project docs, readme generator, readme template, readme, repo docs, repository">
 <meta name="author" content="Jon Schlinkert">
 
 <!-- Title -->
-<title>phaser</title>
+<title>verb</title>
 
 <!-- CSS -->
 <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
@@ -18,23 +18,23 @@
   </head>
   <body>
     <div class="container bs-docs-container">
-      <h1 id="phaser">phaser</h1>
+      <h1 id="verb">verb</h1>
 <blockquote>
-<p>The most insanely useful markdown documentation generator on the planet. Phaser uses Lo-Dash as the template engine and comes complete with more than 50 tags and filters, helpful utilites, includes, comment parsing, YAML front matter, plugins, mixins and much more! Use Phaser to generate markdown docs, use Assemble to build HTML.</p>
+<p>The most insanely useful markdown documentation generator on the planet. Verb uses Lo-Dash as the template engine and comes complete with more than 50 tags and filters, helpful utilites, includes, comment parsing, YAML front matter, plugins, mixins and much more! Use Verb to generate markdown docs, use Assemble to build HTML.</p>
 </blockquote>
-<p>Exactly like the one on Star Trek. But instead of &quot;stun&quot; and &quot;kill&quot;, this Phaser generates markdown documentation, making it the most deadly markdown documentation generator on the planet (and probably others ones too).</p>
-<p>Please <a href="https://github.com/assemble/phaser/issues/new">report any bugs or feature requests</a>, thanks!</p>
+<p>Exactly like the one on Star Trek. But instead of &quot;stun&quot; and &quot;kill&quot;, this Verb generates markdown documentation, making it the most deadly markdown documentation generator on the planet (and probably others ones too).</p>
+<p>Please <a href="https://github.com/assemble/verb/issues/new">report any bugs or feature requests</a>, thanks!</p>
 <h2 id="install">Install</h2>
 <h4 id="-npm-npmjs-org-"><a href="npmjs.org">npm</a></h4>
-<pre><code class="lang-bash">npm i phaser --save-dev
+<pre><code class="lang-bash">npm i verb --save-dev
 </code></pre>
-<p>Now that Phaser is installed, run:</p>
-<pre><code>phaser
+<p>Now that Verb is installed, run:</p>
+<pre><code>verb
 </code></pre><p>That wasn&#39;t so hard, was it?</p>
 <h2 id="about">About</h2>
-<h3 id="why-is-phaser-awesome-">Why is Phaser awesome?</h3>
+<h3 id="why-is-verb-awesome-">Why is Verb awesome?</h3>
 <p>Wait, which one? this one or the one on Star Trek?</p>
-<p>Assuming you mean this one, besides using Lo-Dash as the template engine, Phaser also:</p>
+<p>Assuming you mean this one, besides using Lo-Dash as the template engine, Verb also:</p>
 <ul>
 <li>Comes complete with more than 50 tags and filters,</li>
 <li>Offeres dozens of helpful utilites,</li>
@@ -47,7 +47,7 @@
 <li>So much more. Much much more. So much more that you don&#39;t even know how much more, it&#39;s so much. I don&#39;t know where to start.</li>
 </ul>
 <h3 id="wait-what-i-thought-assemble-did-this-">Wait. What? I thought Assemble did this?!</h3>
-<p>Use Phaser to generate markdown, use Assemble to build HTML. Of course, Assemble could be used for both, but Phaser is the right tool for this job, since it was specifically created to make GitHub projects and documentation easier to manage.</p>
+<p>Use Verb to generate markdown, use Assemble to build HTML. Of course, Assemble could be used for both, but Verb is the right tool for this job, since it was specifically created to make GitHub projects and documentation easier to manage.</p>
 <h2 id="authors">Authors</h2>
 <p><strong>Jon Schlinkert</strong></p>
 <ul>

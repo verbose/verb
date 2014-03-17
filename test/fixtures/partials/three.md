@@ -1,5 +1,0 @@
-# Three
-
-> Three
-
-{%= name %}

@@ -1,14 +1,14 @@
 {
   "colors.js": {
     "name": "colors.js",
-    "path": "../../lib/colors.js",
+    "path": "lib/colors.js",
     "comments": [
       []
     ]
   },
   "config.js": {
     "name": "config.js",
-    "path": "../../lib/config.js",
+    "path": "lib/config.js",
     "comments": [
       [
         {
@@ -31,7 +31,7 @@
   },
   "data.js": {
     "name": "data.js",
-    "path": "../../lib/data.js",
+    "path": "lib/data.js",
     "comments": [
       [
         {
@@ -54,7 +54,7 @@
   },
   "exclusions.js": {
     "name": "exclusions.js",
-    "path": "../../lib/exclusions.js",
+    "path": "lib/exclusions.js",
     "comments": [
       [
         {
@@ -74,7 +74,7 @@
   },
   "file.js": {
     "name": "file.js",
-    "path": "../../lib/file.js",
+    "path": "lib/file.js",
     "comments": [
       [
         {
@@ -165,7 +165,7 @@
   },
   "filters.js": {
     "name": "filters.js",
-    "path": "../../lib/filters.js",
+    "path": "lib/filters.js",
     "comments": [
       [
         {
@@ -199,14 +199,14 @@
   },
   "columnify.js": {
     "name": "columnify.js",
-    "path": "../../lib/filters/columnify.js",
+    "path": "lib/filters/columnify.js",
     "comments": [
       []
     ]
   },
   "listify.js": {
     "name": "listify.js",
-    "path": "../../lib/utils/listify.js",
+    "path": "lib/utils/listify.js",
     "comments": [
       [
         {
@@ -229,7 +229,7 @@
   },
   "reverse.js": {
     "name": "reverse.js",
-    "path": "../../lib/utils/reverse.js",
+    "path": "lib/utils/reverse.js",
     "comments": [
       [
         {
@@ -253,7 +253,7 @@
   },
   "safename.js": {
     "name": "safename.js",
-    "path": "../../lib/utils/safename.js",
+    "path": "lib/utils/safename.js",
     "comments": [
       [
         {
@@ -280,14 +280,14 @@
   },
   "shortname.js": {
     "name": "shortname.js",
-    "path": "../../lib/filters/shortname.js",
+    "path": "lib/filters/shortname.js",
     "comments": [
       []
     ]
   },
   "strip.js": {
     "name": "strip.js",
-    "path": "../../lib/utils/strip.js",
+    "path": "lib/utils/strip.js",
     "comments": [
       [
         {
@@ -311,36 +311,21 @@
   },
   "layout.js": {
     "name": "layout.js",
-    "path": "../../lib/layout.js",
+    "path": "lib/scaffolds/layout.js",
     "comments": [
-      [
-        {
-          "description": "Default layout to use when one isn't\ndefined in the options.",
-          "return": "{String}",
-          "api": "Public",
-          "description_html": "<p>Default layout to use when one isn't\ndefined in the options.</p>",
-          "line": 16
-        },
-        {
-          "description": "Load layouts",
-          "return": "{Object}",
-          "api": "Public",
-          "description_html": "<p>Load layouts</p>",
-          "line": 39
-        }
-      ]
+      []
     ]
   },
   "log.js": {
     "name": "log.js",
-    "path": "../../lib/tags/log.js",
+    "path": "lib/tags/log.js",
     "comments": [
       []
     ]
   },
   "matter.js": {
     "name": "matter.js",
-    "path": "../../lib/matter.js",
+    "path": "lib/matter.js",
     "comments": [
       [
         {
@@ -355,7 +340,7 @@
   },
   "mixins.js": {
     "name": "mixins.js",
-    "path": "../../lib/mixins.js",
+    "path": "lib/mixins.js",
     "comments": [
       [
         {
@@ -377,34 +362,9 @@
       ]
     ]
   },
-  "partials.js": {
-    "name": "partials.js",
-    "path": "../../lib/partials.js",
-    "comments": [
-      [
-        {
-          "description": "Define individual partials.",
-          "name": "partials",
-          "return": "{Object}",
-          "api": "public",
-          "example:": "true _.definePartial('tooltip', '<div class=\"tooltip\">${ content }</div>');",
-          "description_html": "<p>Define individual partials.</p>",
-          "line": 20
-        },
-        {
-          "description": "Register partials as strings. Use `options.partials`\nto add partials. Globbing patterns may be used.",
-          "name": "partials",
-          "return": "{Object}",
-          "api": "public",
-          "description_html": "<p>Register partials as strings. Use <code>options.partials</code>\nto add partials. Globbing patterns may be used.</p>",
-          "line": 50
-        }
-      ]
-    ]
-  },
   "plugins.js": {
     "name": "plugins.js",
-    "path": "../../lib/plugins.js",
+    "path": "lib/plugins.js",
     "comments": [
       [
         {
@@ -421,71 +381,45 @@
               "description": ""
             }
           ],
-          "line": 15
+          "line": 17
         },
         {
           "description": "Run built-in plugins",
           "description_html": "<p>Run built-in plugins</p>",
-          "line": 31
+          "line": 35
         },
         {
           "description": "Run user-defined plugins",
           "description_html": "<p>Run user-defined plugins</p>",
-          "line": 36
+          "line": 40
         }
       ]
     ]
   },
   "contributors.js": {
     "name": "contributors.js",
-    "path": "../../lib/utils/contributors.js",
-    "comments": [
-      []
-    ]
-  },
-  "example.js": {
-    "name": "example.js",
-    "path": "../../lib/plugins/example.js",
+    "path": "lib/utils/contributors.js",
     "comments": [
       []
     ]
   },
   "homepage.js": {
     "name": "homepage.js",
-    "path": "../../lib/plugins/homepage.js",
+    "path": "lib/plugins/homepage.js",
     "comments": [
       []
     ]
   },
-  "ignore.js": {
-    "name": "ignore.js",
-    "path": "../../lib/plugins/ignore.js",
-    "comments": [
-      [
-        {
-          "description": "gitignore",
-          "description_html": "<p>gitignore</p>",
-          "line": 15
-        },
-        {
-          "description": "If `gitignore` does not exist, and `gitignore: true` is\ndefined in the options, then add a `gitignore`\nfile to the root of the project. This is a command\nline convenience.",
-          "title": "gitignore",
-          "description_html": "<p>If <code>gitignore</code> does not exist, and <code>gitignore: true</code> is\ndefined in the options, then add a <code>gitignore</code>\nfile to the root of the project. This is a command\nline convenience.</p>",
-          "line": 24
-        }
-      ]
-    ]
-  },
   "repo.js": {
     "name": "repo.js",
-    "path": "../../lib/plugins/repo.js",
+    "path": "lib/plugins/repo.js",
     "comments": [
       []
     ]
   },
   "travis.js": {
     "name": "travis.js",
-    "path": "../../lib/plugins/travis.js",
+    "path": "lib/plugins/travis.js",
     "comments": [
       [
         {
@@ -510,7 +444,7 @@
   },
   "username.js": {
     "name": "username.js",
-    "path": "../../lib/utils/username.js",
+    "path": "lib/utils/username.js",
     "comments": [
       [
         {
@@ -532,42 +466,56 @@
   },
   "scaffolds.js": {
     "name": "scaffolds.js",
-    "path": "../../lib/scaffolds.js",
+    "path": "lib/scaffolds.js",
+    "comments": [
+      []
+    ]
+  },
+  "comment.js": {
+    "name": "comment.js",
+    "path": "lib/scaffolds/comment.js",
     "comments": [
       []
     ]
   },
   "gitignore.js": {
     "name": "gitignore.js",
-    "path": "../../lib/scaffolds/gitignore.js",
+    "path": "lib/scaffolds/gitignore.js",
     "comments": [
       []
     ]
   },
   "html-layout.js": {
     "name": "html-layout.js",
-    "path": "../../lib/scaffolds/html-layout.js",
+    "path": "lib/scaffolds/html-layout.js",
+    "comments": [
+      []
+    ]
+  },
+  "methods.js": {
+    "name": "methods.js",
+    "path": "lib/tags/methods.js",
     "comments": [
       []
     ]
   },
   "readme-basic.js": {
     "name": "readme-basic.js",
-    "path": "../../lib/scaffolds/readme-basic.js",
+    "path": "lib/scaffolds/readme-basic.js",
     "comments": [
       []
     ]
   },
   "readme-contrib.js": {
     "name": "readme-contrib.js",
-    "path": "../../lib/scaffolds/readme-contrib.js",
+    "path": "lib/scaffolds/readme-contrib.js",
     "comments": [
       []
     ]
   },
   "tags.js": {
     "name": "tags.js",
-    "path": "../../lib/tags.js",
+    "path": "lib/tags.js",
     "comments": [
       [
         {
@@ -588,13 +536,13 @@
         },
         {
           "description": "Initialize tags",
-          "param": "{Object}  phaser",
+          "param": "{Object}  verb",
           "return": "{Object}",
           "description_html": "<p>Initialize tags</p>",
           "params": [
             {
               "type": "Object",
-              "name": "phaser",
+              "name": "verb",
               "description": ""
             }
           ],
@@ -615,14 +563,14 @@
   },
   "authors.js": {
     "name": "authors.js",
-    "path": "../../lib/utils/authors.js",
+    "path": "lib/utils/authors.js",
     "comments": [
       []
     ]
   },
   "badge.js": {
     "name": "badge.js",
-    "path": "../../lib/tags/badge.js",
+    "path": "lib/tags/badge.js",
     "comments": [
       [
         {
@@ -647,67 +595,35 @@
               "description": ""
             }
           ],
-          "line": 23
-        }
-      ]
-    ]
-  },
-  "boilerplates.js": {
-    "name": "boilerplates.js",
-    "path": "../../lib/tags/boilerplates.js",
-    "comments": [
-      [
-        {
-          "description": "Boilerplates are used to kickstart new projects.\nUsing the API, you can pre-define a boilerplate\nto use when a new project is initialized.",
-          "name": "boilerplate",
-          "param": [
-            "{Object} config",
-            "{Object} options"
-          ],
-          "return": "{Object}",
-          "api": "private",
-          "description_html": "<p>Boilerplates are used to kickstart new projects.\nUsing the API, you can pre-define a boilerplate\nto use when a new project is initialized.</p>",
-          "params": [
-            {
-              "type": "Object",
-              "name": "config",
-              "description": ""
-            },
-            {
-              "type": "Object",
-              "name": "options",
-              "description": ""
-            }
-          ],
-          "line": 19
+          "line": 22
         }
       ]
     ]
   },
   "changelog.js": {
     "name": "changelog.js",
-    "path": "../../lib/tags/changelog.js",
+    "path": "lib/tags/changelog.js",
     "comments": [
       []
     ]
   },
   "comments.js": {
     "name": "comments.js",
-    "path": "../../lib/tags/comments.js",
+    "path": "lib/tags/comments.js",
     "comments": [
       []
     ]
   },
   "contrib.js": {
     "name": "contrib.js",
-    "path": "../../lib/tags/contrib.js",
+    "path": "lib/tags/contrib.js",
     "comments": [
       []
     ]
   },
   "copyright.js": {
     "name": "copyright.js",
-    "path": "../../lib/tags/copyright.js",
+    "path": "lib/tags/copyright.js",
     "comments": [
       [
         {
@@ -723,14 +639,14 @@
               "description": "Optional parameter to define the start year of the project."
             }
           ],
-          "line": 15
+          "line": 14
         }
       ]
     ]
   },
   "date.js": {
     "name": "date.js",
-    "path": "../../lib/utils/date.js",
+    "path": "lib/utils/date.js",
     "comments": [
       [
         {
@@ -762,7 +678,7 @@
   },
   "dates.js": {
     "name": "dates.js",
-    "path": "../../lib/tags/dates.js",
+    "path": "lib/tags/dates.js",
     "comments": [
       [
         {
@@ -794,63 +710,63 @@
   },
   "docs.js": {
     "name": "docs.js",
-    "path": "../../lib/tags/docs.js",
+    "path": "lib/tags/docs.js",
     "comments": [
       []
     ]
   },
   "getAuthors.js": {
     "name": "getAuthors.js",
-    "path": "../../lib/tags/getAuthors.js",
+    "path": "lib/tags/getAuthors.js",
     "comments": [
       []
     ]
   },
   "html.js": {
     "name": "html.js",
-    "path": "../../lib/tags/html.js",
+    "path": "lib/tags/html.js",
     "comments": [
       []
     ]
   },
   "include.js": {
     "name": "include.js",
-    "path": "../../lib/tags/include.js",
+    "path": "lib/tags/include.js",
     "comments": [
       []
     ]
   },
   "license.js": {
     "name": "license.js",
-    "path": "../../lib/tags/license.js",
+    "path": "lib/tags/license.js",
     "comments": [
       []
     ]
   },
   "moment.js": {
     "name": "moment.js",
-    "path": "../../lib/tags/moment.js",
-    "comments": [
-      []
-    ]
-  },
-  "partial.js": {
-    "name": "partial.js",
-    "path": "../../lib/tags/partial.js",
+    "path": "lib/tags/moment.js",
     "comments": [
       []
     ]
   },
   "pkg.js": {
     "name": "pkg.js",
-    "path": "../../lib/tags/pkg.js",
+    "path": "lib/tags/pkg.js",
+    "comments": [
+      []
+    ]
+  },
+  "raw.js": {
+    "name": "raw.js",
+    "path": "lib/tags/raw.js",
     "comments": [
       []
     ]
   },
   "toc.js": {
     "name": "toc.js",
-    "path": "../../lib/utils/toc.js",
+    "path": "lib/utils/toc.js",
     "comments": [
       [
         {
@@ -881,7 +797,7 @@
   },
   "template.js": {
     "name": "template.js",
-    "path": "../../lib/template.js",
+    "path": "lib/template.js",
     "comments": [
       [
         {
@@ -918,7 +834,7 @@
   },
   "adjust.js": {
     "name": "adjust.js",
-    "path": "../../lib/utils/adjust.js",
+    "path": "lib/utils/adjust.js",
     "comments": [
       [
         {
@@ -940,7 +856,7 @@
   },
   "arrayify.js": {
     "name": "arrayify.js",
-    "path": "../../lib/utils/arrayify.js",
+    "path": "lib/utils/arrayify.js",
     "comments": [
       [
         {
@@ -971,7 +887,7 @@
   },
   "block.js": {
     "name": "block.js",
-    "path": "../../lib/utils/block.js",
+    "path": "lib/utils/block.js",
     "comments": [
       [
         {
@@ -991,7 +907,7 @@
   },
   "condense.js": {
     "name": "condense.js",
-    "path": "../../lib/utils/condense.js",
+    "path": "lib/utils/condense.js",
     "comments": [
       [
         {
@@ -1015,14 +931,14 @@
   },
   "convertUrl.js": {
     "name": "convertUrl.js",
-    "path": "../../lib/utils/convertUrl.js",
+    "path": "lib/utils/convertUrl.js",
     "comments": [
       []
     ]
   },
   "dir.js": {
     "name": "dir.js",
-    "path": "../../lib/utils/dir.js",
+    "path": "lib/utils/dir.js",
     "comments": [
       [
         {
@@ -1037,7 +953,7 @@
   },
   "expandData.js": {
     "name": "expandData.js",
-    "path": "../../lib/utils/expandData.js",
+    "path": "lib/utils/expandData.js",
     "comments": [
       [
         {
@@ -1069,28 +985,28 @@
   },
   "extendContext.js": {
     "name": "extendContext.js",
-    "path": "../../lib/utils/extendContext.js",
+    "path": "lib/utils/extendContext.js",
     "comments": [
       []
     ]
   },
   "index.js": {
     "name": "index.js",
-    "path": "../../lib/utils/index.js",
+    "path": "lib/utils/index.js",
     "comments": [
       []
     ]
   },
   "inspect.js": {
     "name": "inspect.js",
-    "path": "../../lib/utils/inspect.js",
+    "path": "lib/utils/inspect.js",
     "comments": [
       []
     ]
   },
   "isType.js": {
     "name": "isType.js",
-    "path": "../../lib/utils/isType.js",
+    "path": "lib/utils/isType.js",
     "comments": [
       [
         {
@@ -1105,14 +1021,37 @@
   },
   "lookup.js": {
     "name": "lookup.js",
-    "path": "../../lib/utils/lookup.js",
+    "path": "lib/utils/lookup.js",
     "comments": [
-      []
+      [
+        {
+          "description": "Convenience wrapper around `glob.find` and `glob.match`.\nExpand the given glob patterns, then look for a match\nin the result set.",
+          "param": [
+            "{String}  patterns  The glob patterns to expand.",
+            "{String}  name      The name to match in the result set."
+          ],
+          "return": "{String}  Return matches.",
+          "description_html": "<p>Convenience wrapper around <code>glob.find</code> and <code>glob.match</code>.\nExpand the given glob patterns, then look for a match\nin the result set.</p>",
+          "params": [
+            {
+              "type": "String",
+              "name": "patterns",
+              "description": "The glob patterns to expand."
+            },
+            {
+              "type": "String",
+              "name": "name",
+              "description": "The name to match in the result set."
+            }
+          ],
+          "line": 28
+        }
+      ]
     ]
   },
   "md.js": {
     "name": "md.js",
-    "path": "../../lib/utils/md.js",
+    "path": "lib/utils/md.js",
     "comments": [
       [
         {
@@ -1135,7 +1074,7 @@
   },
   "postProcess.js": {
     "name": "postProcess.js",
-    "path": "../../lib/utils/postProcess.js",
+    "path": "lib/utils/postProcess.js",
     "comments": [
       [
         {
@@ -1166,14 +1105,14 @@
   },
   "rollcall.js": {
     "name": "rollcall.js",
-    "path": "../../lib/utils/rollcall.js",
+    "path": "lib/utils/rollcall.js",
     "comments": [
       []
     ]
   },
   "time.js": {
     "name": "time.js",
-    "path": "../../lib/utils/time.js",
+    "path": "lib/utils/time.js",
     "comments": [
       [
         {
@@ -1188,7 +1127,7 @@
   },
   "timestamp.js": {
     "name": "timestamp.js",
-    "path": "../../lib/utils/timestamp.js",
+    "path": "lib/utils/timestamp.js",
     "comments": [
       [
         {

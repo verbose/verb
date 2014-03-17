@@ -1,6 +1,6 @@
 /**
- * phaser <https://github.com/assemble/phaser>
- * The most deadly markdown documentation generator in the Alpha Quadrant.
+ * Verb <https://github.com/assemble/verb>
+ * Generate markdown documentation for GitHub projects.
  *
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
@@ -8,139 +8,184 @@
 
 'use strict';
 
+var path = require('path');
 var file = require('fs-utils');
 var configFile = require('config-file');
 var cwd = require('cwd');
+var pkg = require('./package.json');
 var _ = require('lodash');
 
 /**
- * phaser
+ * verb
  */
 
-var phaser = module.exports = {};
+var verb = module.exports = {};
 
-phaser.cwd          = cwd;
-phaser.base         = cwd;
-phaser.file         = _.defaults(require('./lib/file'), file);
+
+/**
+ * Expose metadata from Verb's package.json to
+ * the context. Use with `verbMetadata.foo`
+ *
+ * @api {Private}
+ */
+
+verb.verbMetadata = Object.preventExtensions(pkg);
+
+/**
+ * Prevent downstream variables from accidentally
+ * mutating Verb metadata.
+ *
+ * @api {Private}
+ */
+
+_.forOwn(verb.verbMetadata, function(num, key) {
+  Object.defineProperty(verb.verbMetadata, key, {
+    writable: false,
+    configurable: false
+  });
+});
+
+
+/**
+ * Initialize API
+ */
+
+verb.cwd          = cwd;
+verb.base         = cwd;
+verb.file         = _.defaults(require('./lib/file'), file);
 
 // Logging and utils
-phaser.colors       = require('./lib/colors');
-phaser.log          = require('./lib/log');
-phaser.verbose      = phaser.log.verbose;
-phaser.mode         = {};
-phaser.mode.verbose = false;
-phaser.utils        = require('./lib/utils/index');
+verb.colors       = require('./lib/colors');
+verb.utils        = require('./lib/utils/index');
+verb.log          = require('./lib/log');
+verb.verbose      = verb.log.verbose;
+verb.mode         = {};
+verb.mode.verbose = false;
 
 // Extensions
-phaser.plugins      = require('./lib/plugins');
-phaser.filters      = require('./lib/filters');
-phaser.tags         = require('./lib/tags');
-
-// Data
-phaser.data         = require('./lib/data');
-phaser.matter       = require('./lib/matter');
+verb.plugins      = require('./lib/plugins');
+verb.filters      = require('./lib/filters');
+verb.tags         = require('./lib/tags');
 
 // Templates
-phaser.scaffolds    = require('./lib/scaffolds');
-phaser.partials     = require('./lib/partials');
-phaser.template     = require('./lib/template');
+verb.scaffolds    = require('./lib/scaffolds');
+verb.template     = require('./lib/template');
 
-phaser.exclusions   = require('./lib/exclusions');
-phaser.ext          = '.md';
+// Data
+verb.data         = require('./lib/data');
+verb.matter       = require('./lib/matter');
 
-
-/**
- * runtime config
- */
-
-if(file.exists('.phaserrc')) {
-  phaser.phaserrc =  configFile.load('.phaserrc');
-} else if(file.exists('.phaserrc.yml')) {
-  phaser.phaserrc = configFile.load('.phaserrc.yml');
-} else {
-  phaser.phaserrc = {};
-}
+verb.exclusions   = require('./lib/exclusions');
+verb.ext          = '.md';
 
 
 /**
- * phaser.init
+ * Allow tools in the Verb ecosystem to specify their
+ * own name and url, so that any templates using
+ * `runner.name` and `runner.url` will render with
+ * that info.
  */
 
-phaser.init = function (options) {
-  if (phaser.initalized) {
-    return;
-  }
-  phaser.initalized = true;
-  var opts = _.extend({verbose: false}, options);
-  phaser.mode.verbose = opts.verbose;
-
-  // Initialize mixins
-  _.fn = require('./lib/mixins.js');
-  _.mixin(_.fn);
+verb.runner = {
+  name: 'Verb',
+  url: 'https://github.com/assemble/verb'
 };
 
 
 /**
- * phaser.process
+ * If one exists, automatically load the user's
+ * runtime config file.
+ *
+ * @api {private}
  */
 
-phaser.process = function(src, options) {
+verb.verbrc = {};
+
+if (file.exists('.verbrc')) {
+  verb.verbrc = configFile.load('.verbrc');
+} else if (file.exists('.verbrc.yml')) {
+  verb.verbrc = configFile.load('.verbrc.yml');
+}
+
+/**
+ * Initialize Verb and the Verb API
+ *
+ * @api {private}
+ */
+
+verb.init = function (options) {
+  if (verb.initalized) {
+    return;
+  }
+  verb.initalized = true;
+  var opts = _.extend({verbose: false}, options);
+  verb.mode.verbose = opts.verbose;
+
+  // Extend the config with core and user-defined mixins
+  _.fn = require('./lib/mixins.js');
+  _.mixin(_.fn);
+};
+
+/**
+ * Process Lo-Dash templates using metadata from the user's config as context.
+ * e.g. package.json and info from the local git repository.
+ */
+
+verb.process = function(src, options) {
   var opts = _.extend({toc: {maxDepth: 2}}, options);
-  phaser.init(opts);
+  verb.init(opts);
 
   // Add runtime config
   var runtimeConfig;
-  if(opts.phaserrc) {
-    runtimeConfig = configFile.load(cwd(opts.phaserrc));
+  if(opts.verbrc) {
+    runtimeConfig = configFile.load(cwd(opts.verbrc));
   } else {
-    runtimeConfig = phaser.phaserrc;
+    runtimeConfig = verb.verbrc;
   }
   _.extend(opts, runtimeConfig);
 
-  phaser.options = opts;
+  verb.options = opts;
 
-  phaser.config = require('./lib/config').init(opts.config);
-  phaser.context = _.extend({}, phaser.config);
-  delete phaser.context.config;
-
-  // Initialize plugins
-  _.extend(phaser.context, phaser.plugins.init(phaser));
+  verb.config = require('./lib/config').init(opts.config);
+  verb.context = _.extend({}, verb.config);
+  delete verb.context.config;
 
   src = src || '';
 
-  // Extend `phaser`
-  phaser.layout = require('./lib/layout')(phaser);
+  // Extend `verb`
+  verb.layout = require('./lib/layout')(verb);
 
   // Build up the context
-  _.extend(phaser.context, opts);
-  _.extend(phaser.context, opts.metadata || {});
-  _.extend(phaser.context, require('./lib/data').init(opts));
+  _.extend(verb.context, opts);
+  _.extend(verb.context, opts.metadata || {});
+  _.extend(verb.context, require('./lib/data').init(opts));
 
   // Template settings
   var settings = _.defaults({}, opts.settings);
 
   // Initialize Lo-Dash tags and filters
-  _.extend(phaser.context, phaser.tags.init(phaser));
-  _.extend(phaser.context, phaser.filters.init(phaser));
-
-  // Initalize partials
-  _.extend(phaser.context, phaser.partials.init(phaser));
+  _.extend(verb.context, verb.tags.init(verb));
+  _.extend(verb.context, verb.filters.init(verb));
 
   // Initialize `options.data`
-  _.extend(phaser.context, phaser.data.init(opts));
+  _.extend(verb.context, verb.data.init(opts));
 
   // Extract and parse front matter
-  phaser.page  = phaser.matter.init(src, opts);
-  _.extend(phaser.context, phaser.page.context);
+  verb.page  = verb.matter.init(src, opts);
+  _.extend(verb.context, verb.page.context);
 
   // Exclusion patterns, to omit certain options from context
-  phaser.context = phaser.exclusions(phaser.context, opts);
+  verb.context = verb.exclusions(verb.context, opts);
+  _.extend(verb.context, {runner: verb.runner});
+
+   // Initialize plugins
+  _.extend(verb.context, verb.plugins.init(verb));
 
   // Process templates and render content
   var renderDone = false;
-  var rendered = phaser.template(phaser.page.content, phaser.context, settings);
+  var rendered = verb.template(verb.page.content, verb.context, settings);
 
-  phaser.tags.resolve(phaser, rendered, function (err, results) {
+  verb.tags.resolve(verb, rendered, function (err, results) {
     rendered = results;
     renderDone = true;
   });
@@ -148,93 +193,136 @@ phaser.process = function(src, options) {
   while (!renderDone) {
     process.nextTick();
   }
-  var result = phaser.utils.postProcess(rendered, opts);
+  var result = verb.utils.postProcess(rendered, opts);
 
   // Generate a TOC from <!-- toc --> after all content is included.
   result = require('marked-toc').insert(result, opts.toc);
 
   return {
-    context: phaser.context,
+    verb: verb,
+    context: verb.context,
     content: result,
     original: src
   };
 };
 
 
-// Read a file, then process with Phaser
-phaser.read = function(src, options) {
-  var opts = _.extend({}, options);
-  phaser.init(opts);
+/**
+ * Read a source file and call `verb.process()`
+ *
+ * @param {String} src
+ * @param {Object} options
+ * @return {String} `content` from `verb.process()`
+ */
+
+verb.read = function(src, options) {
+  options = options || {};
+  verb.init(options);
+
+  verb.options = verb.options || {};
+  _.extend(verb.options, options)
 
   var content = file.readFileSync(src);
-  return phaser.process(content, opts).content;
+  return verb.process(content, options).content;
 };
 
-// Read a file, process it with Phaser, then write it.
-phaser.copy = function(src, dest, options) {
-  var opts = _.extend({}, options);
+/**
+ * Read a source file and call `verb.process()`,
+ * then write it to the specified `dest`.
+ *
+ * @param {String} src
+ * @param {String} dest
+ * @param {Object} options
+ * @return {String} `content` from `verb.process()`
+ */
 
-  phaser.init(opts);
-  phaser.options = phaser.options || {};
-  phaser.options.dest = dest || phaser.cwd();
+verb.copy = function(src, dest, options) {
+  options = options || {};
+  verb.init(options);
 
-  file.writeFileSync(dest, phaser.read(src, opts));
-  phaser.log.success('Saved to:', dest);
+  verb.options = _.extend(verb.options || {}, options);
+  verb.options.dest = dest || verb.cwd();
+
+  file.writeFileSync(dest, verb.read(src, options));
+  verb.log.success('Saved to:', dest);
 };
 
-// Expand filepaths
-phaser.expandMapping = function(src, dest, options) {
+
+/**
+ * Expand globbing patterns into a src-dest mapping calculated
+ * based on defaults and user-defined options. Read source files and
+ * call `verb.process()`, then write the processed files to the
+ * calculated `dest`.
+ *
+ * @param {String} src
+ * @param {String} dest
+ * @param {Object} [options] the options to use:
+ *        [concat] concatenate dest files. Default `false`
+ *        [sep] separator to use between files, if concatenated.
+ *        [cwd] current working directory. Default `verb.cwd()`
+ *        [ext] extension to use for dest files. Default `verb.ext` (`.md`)
+ *        [destBase] the base directory for dest files.
+ *        [glob] options to pass to [globule](https://github.com/cowboy/node-globule).
+ * @return {String} `content` from `verb.process()`
+ */
+
+verb.expandMapping = function(src, dest, options) {
   var opts = _.extend({concat: false}, options);
-  phaser.init(opts);
+  opts.glob = opts.glob || {};
 
-  dest = dest || phaser.cwd();
-  phaser.options = phaser.options || {};
-  phaser.options.dest = phaser.cwd(dest) || phaser.cwd();
+  verb.init(opts);
+
+  dest = dest || verb.cwd();
+  verb.options = _.extend(verb.options || {}, options);
+  verb.options.dest = verb.cwd(dest) || verb.cwd();
 
   var defaults = {
-    cwd: opts.cwd || phaser.cwd('docs'),
-    ext: phaser.ext || opts.ext,
+    sep: opts.sep || '\n',
+    cwd: opts.cwd || verb.cwd('.'),
+    ext: verb.ext || opts.ext,
     destBase: dest
   };
+  defaults.srcBase = defaults.cwd;
 
   var concat = opts.concat || file.hasExt(dest) || false;
   var defer = [];
   var count = 0;
 
+  // Pass users-defined options to globule
+  _.extend(defaults, opts.glob);
+
   file.expandMapping(src, defaults).map(function(fp) {
     fp.src.filter(function(filepath) {
       if (!file.exists(filepath)) {
-        phaser.log.error('>> Source file "' + filepath + '" not found.');
+        verb.log.error('>> Source file "' + filepath + '" not found.');
         return false;
       } else {
         return true;
       }
     }).map(function(filepath) {
-      phaser.options.src = filepath;
+      verb.options.src = filepath;
       if(!concat) {
         count++;
-        file.writeFileSync(fp.dest, phaser.read(filepath, opts));
-        phaser.log.success('Saved to', fp.dest);
+        file.writeFileSync(fp.dest, verb.read(filepath, opts));
+        verb.log.success('Saved to', fp.dest);
       } else {
-        count = 1;
         defer.push(filepath);
       }
     });
   });
 
   if(concat) {
-    var blob = defer.map(function(filepath) {
-      return phaser.read(filepath, opts);
-    }).join('\n');
+    count = 1;
+    var blob = _.flatten(defer).map(function(filepath) {
+      return verb.read(filepath, opts);
+    }).join(opts.sep);
     file.writeFileSync(dest, blob);
-    phaser.log.success('Saved to', dest);
+    verb.log.success('Saved to', dest);
   }
 
-  if(count > 1) {
-    phaser.log.success(count, 'files generated.');
-  }
-
-  if(count === 0) {
-    phaser.log.error('\nFailed.');
+  if(count >= 1) {
+    verb.log.success('Done\n');
+  } else {
+    verb.log.error('Failed.\n');
   }
 };

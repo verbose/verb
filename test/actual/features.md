@@ -14,7 +14,7 @@ However, **tags** and **filters** both look like this:
 {%= bar() %}
 ```
 
-with the difference _(in Phaser)_ being that:
+with the difference _(in Verb)_ being that:
 
 * **tags**: generate, include or otherwise "add" content of some kind
 * **filter**: modify, filter, transform or otherwise alter content in some way

@@ -3,14 +3,14 @@
 
 ## metadata
 
-Unless overridden in the options, Phaser will attempt to process templates using only the data from your project's [package.json](./package.json). Thus, using only the default settings our context might look something like this:
+Unless overridden in the options, Verb will attempt to process templates using only the data from your project's [package.json](./package.json). Thus, using only the default settings our context might look something like this:
 
 ```js
 {
-  "name": "phaser",
+  "name": "verb",
   "description": "Documentation generator. Build docs from markdown, Lo-Dash templates, includes, and YAML front matter.",
   "version": "0.1.0",
-  "homepge": "https://github.com/jonschlinkert/phaser",
+  "homepge": "https://github.com/assemble/verb",
   "dependencies": {
     "fs-utils": "~0.1.11",
     "gray-matter": "~0.2.3",
@@ -25,7 +25,7 @@ Unless overridden in the options, Phaser will attempt to process templates using
 }
 ```
 
-For the majority of projects, this will be enough. _But Phaser gives you as much flexibility as you need to extend the context._
+For the majority of projects, this will be enough. _But Verb gives you as much flexibility as you need to extend the context._
 
 
 # Context
@@ -37,20 +37,20 @@ As mentioned in the previous section, the default config object, `package.json`,
 
 ```js
 // Raw object
-phaser(str, {config: {name: 'foo'}});
+verb(str, {config: {name: 'foo'}});
 
 // String (filepath)
-phaser(str, {config: 'path/to/*.json'});
+verb(str, {config: 'path/to/*.json'});
 ```
 
 ## Extending the Context
 From least specific to most specific, this is how the context is extended. In other words, the **last wins**:
 
 * `filters|functions`: [Lo-Dash filters]() and custom functions may be used to build up the context when other more conventional means aren't available. For example, an `authors()` mixin/function might be used to read the [AUTHORS](./AUTHORS) file, and then extend the context with the names of the authors therein.
-* `options`: Variables defined directly on the `options` object, e.g. `{name: "phaser"}`.
+* `options`: Variables defined directly on the `options` object, e.g. `{name: "verb"}`.
 * `options.data`: Variables from the `options.data` property. This is a very flexible property:
-  - `Object`: You may pass a raw object directly to the property, e.g. `{data: {name: "phaser"}}`.
-  - `String`If you pass a string, Phaser will try to require it. If that doesn't work, Phaser will try to read it in.
+  - `Object`: You may pass a raw object directly to the property, e.g. `{data: {name: "verb"}}`.
+  - `String`If you pass a string, Verb will try to require it. If that doesn't work, Verb will try to read it in.
   - Minimatch (glob) patterns may be used, and with either JSON or YAML files, e.g. `{data: 'foo/bar/**/*.{json,yml}'}`
 * `metadata`: Front matter
 

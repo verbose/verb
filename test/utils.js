@@ -2,7 +2,7 @@
 var expect = require('chai').expect;
 
 // Local libs
-var phaser = require('../');
+var verb = require('../');
 var utils = require('../lib/utils');
 
 describe('utils.adjust.headings', function () {
@@ -14,7 +14,7 @@ describe('utils.adjust.headings', function () {
 
   describe('when a template tag is escaped', function () {
     it('should not be evaluated by Lo-Dash, and unescaped in the output.', function () {
-      var actual = phaser.process('[%= name %]');
+      var actual = verb.process('[%= name %]');
       var expected = '{%= name %}';
       expect(actual.content).to.eql(expected);
     });
@@ -152,7 +152,7 @@ describe('utils.block', function() {
         '{{/block}}'
       ].join('\n');
 
-      var actual = utils.block(phaser).block(tmpl);
+      var actual = utils.block(verb).block(tmpl);
       expect(actual).to.eql(expected);
     });
 
@@ -326,7 +326,7 @@ describe('utils.username:', function () {
     var pkg = require('../package');
 
     it('should extract the username from the author URL`.', function () {
-      var actual = utils.username(phaser.context.author.url);
+      var actual = utils.username(verb.context.author.url);
       var expected = 'jonschlinkert';
       expect(actual).to.eql(expected);
     });
@@ -344,7 +344,7 @@ describe('utils.username:', function () {
     });
 
     it('should extract the username from the repository URL with a `git` protocol.', function () {
-      var actual = utils.username('git://github.com/jonschlinkert/phaser.git');
+      var actual = utils.username('git://github.com/jonschlinkert/verb.git');
       var expected = 'jonschlinkert';
       expect(actual).to.eql(expected);
     });

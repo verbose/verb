@@ -1,11 +1,11 @@
 /**
- * phaser <https://github.com/jonschlinkert/phaser>
- * The most deadly markdown documentation generator in the Alpha Quadrant.
+ * Verb <https://github.com/assemble/verb>
+ * Generate markdown documentation for GitHub projects.
  *
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
-var phaser = require('../');
+var verb = require('../');
 
 /**
  * Release history example.
@@ -15,7 +15,7 @@ var phaser = require('../');
 
 // var history = 'examples/templates/release-history.md';
 // var historyDest = 'test/actual/release-history.md';
-// phaser.copy(history, historyDest);
+// verb.copy(history, historyDest);
 
 /**
  * Changelog example. All formatting
@@ -24,4 +24,4 @@ var phaser = require('../');
 
 var changelog = 'examples/templates/changelog.md';
 var changelogDest = 'test/actual/changelog.md';
-phaser.copy(changelog, changelogDest);
+verb.copy(changelog, changelogDest);

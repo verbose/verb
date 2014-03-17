@@ -1,6 +1,6 @@
 /**
- * phaser <https://github.com/jonschlinkert/phaser>
- * The most deadly markdown documentation generator in the Alpha Quadrant.
+ * Verb <https://github.com/assemble/verb>
+ * Generate markdown documentation for GitHub projects.
  *
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
@@ -8,7 +8,7 @@
 var path = require('path');
 var file = require('fs-utils');
 var relative = require('relative');
-var phaser = require('../');
+var verb = require('../');
 
 var opts = {
   cwd: 'docs',
@@ -18,15 +18,15 @@ var opts = {
 };
 
 file.expand(['*.md'], opts).map(function(filepath) {
-  phaser.init(opts);
-  phaser.options = phaser.options || {};
+  verb.init(opts);
+  verb.options = verb.options || {};
 
   var name = file.base(filepath) + opts.ext;
-  var dest = phaser.cwd(opts.destBase, name);
+  var dest = verb.cwd(opts.destBase, name);
 
-  phaser.options.src = filepath;
-  phaser.options.dest = dest;
+  verb.options.src = filepath;
+  verb.options.dest = dest;
 
-  file.writeFileSync(dest, phaser.read(filepath, opts));
-  phaser.log.success('Saved to', relative(phaser.cwd(), dest));
+  file.writeFileSync(dest, verb.read(filepath, opts));
+  verb.log.success('Saved to', relative(verb.cwd(), dest));
 });

@@ -1,9 +1,9 @@
 ## Release History
-{% if (changelog) {
-  changelog.forEach(function(details, version) {
-    var detailsDate = details.detailsDate;
+{% if (history) {
+  _.each(history, function(details, version) {
+    var detailsDate = details.date;
     if (detailsDate instanceof Date) {
-      detailsDate = moment(detailsDate).format('YYYY-MM-DD');
+      detailsDate = moment(detailsDate, 'YYYY-MM-DD').format('YYYY-MM-DD');
     }
     print('\n * ' + [
       detailsDate,

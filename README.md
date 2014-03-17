@@ -1,145 +1,91 @@
-# phaser [![NPM version](https://badge.fury.io/js/phaser.png)](http://badge.fury.io/js/phaser)  [![Build Status](https://travis-ci.org/assemble/phaser.png)](https://travis-ci.org/assemble/phaser)
+# verb [![NPM version](https://badge.fury.io/js/verb.png)](http://badge.fury.io/js/verb)
 
-> The most deadly markdown documentation generator in the Alpha Quadrant.
+> Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.
 
-_Exactly_ like the one on Star Trek, except instead of "stun" and "kill", this Phaser generates markdown documentation. Making it hands-down the most lethal markdown documentation generator on the planet (and probably others ones too).
+## Meet Verb
+Verb uses your project's package.json to supply data to markdown templates.
 
-<!-- toc -->
-* [Install](#install)
-* [About](#about)
-  * [Ease of Use](#ease-of-use)
-  * [API](#api)
-* [Features](#features)
-  * [How does Phaser differ from Assemble?](#how-does-phaser-differ-from-assemble)
-  * [How Phaser Works](#how-phaser-works)
-* [Authors](#authors)
-* [License](#license)
+will automatically gather information from your project's package.json and git repository, then
 
-<!-- toc stop -->
+Use the CLI for to build, or required as a node lib.
+
+
+Verb keeps things simple by using well-defined conventions
+
+Verbs advantage is that it comes with
+
 ## Install
-#### Install with [npm](npmjs.org)
+Install globally with [npm](npmjs.org) by running:
 
 ```bash
-npm i -g phaser --save-dev
+npm i -g verb --save-dev
 ```
 
-Now that phaser is installed, add `README.tmpl.md` to the `docs/` dir in your project (this is all customizable, but let's keep it simple here), and add this to the file:
+## Run
+Now that verb is installed, add a `README.tmpl.md` to a `docs/` dir in your project with this content:
 
 ```markdown
 # {%= name %}
 
 > {%= description %}
 
+## Getting started
 Install with [npm](npmjs.org) `npm i -g {%= name %} --save-dev`
 
-Now that {%= name %} is installed, run: `{%= name %}`
+## Options
+{%= docs("options") %}
+
+## Examples
+{%= docs("examples") %}
 
 ## Author
-{%= author.name %}
++ {%= author.name %}
 
 ## License
 {%= copyright() %}
 {%= license() %}
 ```
 
-Next, run:
+Next, in the command line run:
 
 ```bash
-phaser
+verb
 ```
 
-That wasn't so hard, was it? (It was? [Try downloading Phaser instead](https://github.com/assemble/phaser/archive/master.zip))
+That wasn't so hard, was it? (It was? Tell us about it, we'd love to know. Please [report any bugs or feature requests](https://github.com/assemble/verb/issues/new), thanks!).
 
-**NOTE**: Actual usage instructions and documentation are on the way! In the meantime, please [let us know if you have questions](https://github.com/assemble/phaser/issues/new), we'd love to have help with the project too, let us know if you're interested!
+## Use
+> Use Verb from the command line.
 
-![image](https://f.cloud.github.com/assets/383994/2181984/e30dc88c-9774-11e3-9bef-511e91b019b9.png)
+## Test
+Run Verb's 75+ unit tests:
 
-## About
-### Ease of Use
+```
+mocha -R spec
+```
 
-> Phaser loves users
+## Contribute
+All contributions are welcome! If you like the project, _stars and tweets_ are a great way to show your support. If you want to take a more active role and help with documentation, writing unit tests, addressing issues or whatever seems interesting, please let us know, we'd be happy to help you get started!
 
-So its number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Phaser is installed, simply enter `phaser` in command line, and you're off and running.
+This project builds its our own documentation, so don't edit the readme or other docs directly. First, make sure Verb is installed globally, then just follow these simple steps:
 
-For more experienced users, Phaser offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
+* Make changes to the docs by editing the necessary templates in the [docs directory](./docs)
+* Run `verb` to re-build the docs
+* Do a pull request!
 
-### API
+Thanks!
 
-> Phaser also loves developers
-
-Offering an extensive API and tools for building plugins or extending Phaser in other ways.
-
-## Features
-
-* Lo-Dash templates and mixins
-* The full power of JavaScript
-* Filters
-* Tags
-* Partial Caching
-* Mixins
-* Templates can be used directly, cached as JavaScript, and/or via `require` statements
-* Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter
-* Easily add a **Table of Contents** to any file
-* Generate a **multi-file Table of Contents**, along with relative links to each file AND section
-* Comment parsing (basic)
-* Extensive API
-* File-system Utilities
-* Logging
-* Lots more! So much more. Much much more. So much more that you don't even know how much more it's so much. I don't know where to start.
-
-### How does Phaser differ from Assemble?
-
-Phaser was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:
-
-* Use [Assemble][] to build components, sites, blogs and other projects where HTML is the end result.
-* Use Phaser to generate and maintain markdown documentation for your [Assemble][] (or non-Assemble) projects.
-
-#### Comparison
-
-While both engines can be extended to accomplish most of the following features, this table describes what you should expect from each _out-of-the-box_:
-
-**Feature** | **[Assemble][]** | **Phaser**
-------- | -------- | ------
-**Summary** | Build HTML projects from modular components and data | Generate markdown documentation
-**Focus** | Power, granular access to context, components | Speed, ease-of-use, command-line
-**Template Engine** | Handlebars by default, any template engine can be added. | Lo-Dash
-**Extensions** | Plugins, Lo-Dash Mixins, Helpers, Filters, Tags <sup>[1](#1-depends-on-the-template-engine)</sup> | Plugins, Lo-Dash Mixins, Filters, Tags
-**Static Blogs** | Yes | No
-**Static Sites** | Yes | No
-**HTML Documentation** | Yes | Limited.
-**Markdown Documentation** | Limited | Yes
-**Markdown to HTML** | Yes | Limited
-
-###### <sup>1</sup> Depends on the template engine.
-
-[Assemble]: https://github.com/assemble/assemble
-[gray-matter]: https://github.com/assemble/gray-matter
-
-
-### How Phaser Works
-
-Without getting into too much detail, Phaser disintegrates your templates, data, and front matter into a stream of molecules before being sent to the Pattern Buffer, which is a large cylindrical tank surrounded by superconducting electromagnetic coils. Here, the object to be generated is stored momentarily before actually beaming to its destination.
-
-From the Pattern Buffer, the molecular stream and the coded instructions pass through a number of subsystems before reaching the emitter. These include the Subspace, Doppler, and Heisenberg Compensators. Each works to ensure that the received stream is being transmitted or re-materializing in the correct phase, frequency, and so on.
-
-It's true. This is exactly how Phaser works. More or less.
-
-## Authors
+## Author
 
 **Jon Schlinkert**
 
 + [github/jonschlinkert](https://github.com/jonschlinkert)
 + [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
 
-**Brian Woodward**
-
-+ [github/doowb](https://github.com/doowb)
-+ [twitter/doowb](http://twitter.com/jonschlinkert)
-
 ## License
-Copyright (c) 2014 [Jon Schlinkert](https://github.com/jonschlinkert), contributors.
-Released under the [MIT license](./LICENSE-MIT)
+Copyright (c) 2014 Jon Schlinkert, contributors.
+Released under the MIT license
 
 ***
 
-_This file was generated by [grunt-readme](https://github.com/assemble/grunt-readme) on Wendesday, February 19, 2014._
+_This file was generated by [verb-cli](https://github.com/assemble/verb-cli) on March 15, 2014._

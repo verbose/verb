@@ -1,5 +1,5 @@
 /**
- * phaser <https://github.com/jonschlinkert/phaser>
+ * Verb <https://github.com/assemble/verb>
  *
  * Copyright (c) 2014 Jon Schlinkert, contributors.
  * Licensed under the MIT license.

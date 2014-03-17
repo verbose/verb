@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The most deadly markdown documentation generator in the Alpha Quadrant.">
-<meta name="keywords" content="assemble, build, doc, docs generator, docs, documentation, generator, markdown, project docs, readme generator, readme template, readme, repo docs, repository">
+<meta name="description" content="Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.">
+<meta name="keywords" content="assemble, build, doc, docs generator, docs, documentation, generator, gh-pages, markdown docs, markdown, md docs, md, project docs, project documentation, readme generator, readme template, readme, repo docs, repo, repository, verb">
 <meta name="author" content="Jon Schlinkert">
 
 <!-- Title -->
-<title>phaser</title>
+<title>verb</title>
 
 <!-- CSS -->
 <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
@@ -18,35 +18,73 @@
   </head>
   <body>
     <div class="container bs-docs-container">
-      <h1 id="phaser-npm-version-https-badge-fury-io-js-phaser-png-http-badge-fury-io-js-phaser-build-status-https-travis-ci-org-assemble-phaser-png-https-travis-ci-org-assemble-phaser-">phaser <a href="http://badge.fury.io/js/phaser"><img src="https://badge.fury.io/js/phaser.png" alt="NPM version"></a>  <a href="https://travis-ci.org/assemble/phaser"><img src="https://travis-ci.org/assemble/phaser.png" alt="Build Status"></a></h1>
+      <h1 id="verb-npm-version-https-badge-fury-io-js-verb-png-http-badge-fury-io-js-verb-build-status-https-travis-ci-org-assemble-verb-png-https-travis-ci-org-assemble-verb-">verb <a href="http://badge.fury.io/js/verb"><img src="https://badge.fury.io/js/verb.png" alt="NPM version"></a>  <a href="https://travis-ci.org/assemble/verb"><img src="https://travis-ci.org/assemble/verb.png" alt="Build Status"></a></h1>
 <blockquote>
-<p>The most deadly markdown documentation generator in the Alpha Quadrant.</p>
+<p>Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.</p>
 </blockquote>
-<p><em>Exactly</em> like the one on Star Trek, except instead of &quot;stun&quot; and &quot;kill&quot;, this Phaser generates markdown documentation. Making it hands-down the most lethal markdown documentation generator on the planet (and probably others ones too).</p>
+<p>Wondering what happened to Phaser? <a href="#renamed-from-verb">Get the story</a>.</p>
 <!-- toc -->
 
 <!-- toc stop -->
-<p>Please <a href="https://github.com/assemble/phaser/issues/new">report any bugs or feature requests</a>, thanks!</p>
-<p><img src="https://f.cloud.github.com/assets/383994/2181984/e30dc88c-9774-11e3-9bef-511e91b019b9.png" alt="image"></p>
 <h2 id="install">Install</h2>
 <h4 id="install-with-npm-npmjs-org-">Install with <a href="npmjs.org">npm</a></h4>
-<pre><code class="lang-bash">npm i phaser --save-dev
+<pre><code class="lang-bash">npm i -g verb --save-dev
 </code></pre>
-<p>Now that Phaser is installed, run:</p>
-<pre><code>phaser
-</code></pre><p>That wasn&#39;t so hard, was it?</p>
+<p>Now that verb is installed, add <code>README.tmpl.md</code> to the <code>docs/</code> dir in your project (this is all customizable, but let&#39;s keep it simple here), and add this to the file:</p>
+<pre><code class="lang-markdown"># {%= name %}
+
+&gt; {%= description %}
+
+### Getting started
+Install with [npm](npmjs.org) `npm i -g {%= name %} --save-dev`
+
+### Options
+{%= docs(&quot;options&quot;) %}
+
+### Examples
+{%= docs(&quot;examples&quot;) %}
+
+### Author
++ {%= author.name %}
+
+### License
+{%= copyright() %}
+{%= license() %}
+</code></pre>
+<p>Next, run:</p>
+<pre><code class="lang-bash">verb
+</code></pre>
+<p>That wasn&#39;t so hard, was it? (It was? <a href="https://github.com/assemble/verb/archive/master.zip">Try downloading Verb instead</a>)
+Please <a href="https://github.com/assemble/verb/issues/new">report any bugs or feature requests</a>, thanks!</p>
 <h2 id="about">About</h2>
+<h3 id="how-does-verb-work-">How does Verb work?</h3>
+<p>Upon running the <code>docs</code> command, unless instructed to do otherwise Verb will attempt to build any markdown templates found in the <code>docs/</code> directory of your project, using the data from project&#39;s package.json as context.</p>
+<p>For many users, Verb might only be used to <a href="#TODO: link to readme example">build the readme</a> for projects, so that project metadata such as version, date, changelog and so on, are always current and consistent. See the <a href="https://github.com/jonschlinkert/generator-docs">Verb generator</a> for examples.</p>
+<p><strong>Beyond the basics</strong></p>
+<p>For users who want more than the basics, Verb is also highly configurable via options and offers an <a href="#TODO: add link to API docs">extensive API</a> for developers who want to add functionality in the form of plugins, middleware, custom tags, filters and so on.</p>
+<h3 id="why-use-verb-">Why use Verb?</h3>
+<p>We all know that documenation can be one of the most challenging and time-consuming aspects of maintaining a project. Even for small projects, simply writing and organizing the content on a readme can take more time than it did to create the library itself.</p>
+<blockquote>
+<p>Verb dramatically reduces the time and effort involved in maintaining markdown docs for code projects through the use of powerful utilities and tools, well-defined conventions, and sensible defaults that are specifically tuned to maintaining projects on GitHub.</p>
+</blockquote>
+<p>For starters, this is accomplished by:</p>
+<ol>
+<li>Using templates for any sections or text than can be generaralize, such as <em>badges</em>, <em>license</em>, <em>copyright</em>, <em>author</em>, <em>Table of Contents</em> and so on.</li>
+<li>Allowing includes (partials) to be used, so that longer documents can be easily organized and broken down into logical topics or groupings.</li>
+<li>Pulling in data from package.json to pass as context to any templates. Custom data sources may be used as well.</li>
+<li>Using boilerplates to kickstart the documentation for new projects. The <a href="">Verb generator</a> for Yeoman comes with a handful of boilerplates, but it&#39;s super easy to create and use your own.</li>
+</ol>
 <h3 id="ease-of-use">Ease of Use</h3>
 <blockquote>
-<p>Phaser loves users</p>
+<p>Verb loves users</p>
 </blockquote>
-<p>So its number one priorty is ease-of use. For new users <strong>zero configuration</strong> is required to get started. Once Phaser is installed, simply enter <code>phaser</code> in command line, and you&#39;re off and running.</p>
-<p>For more experienced users, Phaser offers <em>more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites</em>, and lots more.</p>
+<p>Verb&#39;s number one priorty is ease-of use. For new users <strong>zero configuration</strong> is required to get started. Once Verb is installed, simply enter <code>docs</code> in command line, and you&#39;re off and running.</p>
+<p>For more experienced users, Verb offers <em>more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites</em>, and lots more.</p>
 <h3 id="api">API</h3>
 <blockquote>
-<p>Phaser also loves developers</p>
+<p>Verb also loves developers</p>
 </blockquote>
-<p>Offering an extensive API and tools for building plugins or extending Phaser in other ways.</p>
+<p>Verb has an extensive API and tools for building plugins, custom tags and filters, or extending Verb in other ways.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>Lo-Dash templates and mixins</li>
@@ -56,7 +94,7 @@
 <li>Partial Caching</li>
 <li>Mixins</li>
 <li>Templates can be used directly, cached as JavaScript, and/or via <code>require</code> statements</li>
-<li>Uses <a href="https://github.com/assemble/gray-matter">gray-matter</a> to support both YAML Front Matter and Coffee Front Matter</li>
+<li>Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter</li>
 <li>Easily add a <strong>Table of Contents</strong> to any file</li>
 <li>Generate a <strong>multi-file Table of Contents</strong>, along with relative links to each file AND section</li>
 <li>Comment parsing (basic)</li>
@@ -65,75 +103,14 @@
 <li>Logging</li>
 <li>Lots more! So much more. Much much more. So much more that you don&#39;t even know how much more it&#39;s so much. I don&#39;t know where to start.</li>
 </ul>
-<h3 id="how-does-phaser-differ-from-assemble-">How does Phaser differ from Assemble?</h3>
-<p>Phaser was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:</p>
+<h3 id="faq">FAQ</h3>
 <ul>
-<li>Use <a href="https://github.com/assemble/assemble">Assemble</a> to build components, sites, blogs and other projects where HTML is the end result.</li>
-<li>Use Phaser to generate and maintain markdown documentation for your <a href="https://github.com/assemble/assemble">Assemble</a> (or non-Assemble) projects.</li>
+<li><strong>Why does Verb use the <code>{%= foo %}</code> syntax for templates?</strong>: We do this to avoid collision with the more common, default syntax for Lo-Dash templates, <code>&lt;%= foo %&gt;</code>. Of course, nothing if foolproof, so if the default delimiters don&#39;t work for your needs you can customize them in the options.</li>
 </ul>
-<h4 id="comparison">Comparison</h4>
-<p>While both engines can be extended to accomplish most of the following features, this table describes what you should expect from each <em>out-of-the-box</em>:</p>
-<table>
-<thead>
-<tr>
-<th><strong>Feature</strong></th>
-<th><strong><a href="https://github.com/assemble/assemble">Assemble</a></strong></th>
-<th><strong>Phaser</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Summary</strong></td>
-<td>Build HTML projects from modular components and data</td>
-<td>Generate markdown documentation</td>
-</tr>
-<tr>
-<td><strong>Focus</strong></td>
-<td>Power, granular access to context, components</td>
-<td>Speed, ease-of-use, command-line</td>
-</tr>
-<tr>
-<td><strong>Template Engine</strong></td>
-<td>Handlebars by default, any template engine can be added.</td>
-<td>Lo-Dash</td>
-</tr>
-<tr>
-<td><strong>Extensions</strong></td>
-<td>Plugins, Lo-Dash Mixins, Helpers, Filters, Tags <sup><a href="#1-depends-on-the-template-engine">1</a></sup></td>
-<td>Plugins, Lo-Dash Mixins, Filters, Tags</td>
-</tr>
-<tr>
-<td><strong>Static Blogs</strong></td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td><strong>Static Sites</strong></td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr>
-<td><strong>HTML Documentation</strong></td>
-<td>Yes</td>
-<td>Limited.</td>
-</tr>
-<tr>
-<td><strong>Markdown Documentation</strong></td>
-<td>Limited</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td><strong>Markdown to HTML</strong></td>
-<td>Yes</td>
-<td>Limited</td>
-</tr>
-</tbody>
-</table>
-<h6 id="-sup-1-sup-depends-on-the-template-engine-"><sup>1</sup> Depends on the template engine.</h6>
-<h3 id="how-phaser-works">How Phaser Works</h3>
-<p>Without getting into too much detail, Phaser disintegrates your templates, data, and front matter into a stream of molecules before being sent to the Pattern Buffer, which is a large cylindrical tank surrounded by superconducting electromagnetic coils. Here, the object to be generated is stored momentarily before actually beaming to its destination.</p>
-<p>From the Pattern Buffer, the molecular stream and the coded instructions pass through a number of subsystems before reaching the emitter. These include the Subspace, Doppler, and Heisenberg Compensators. Each works to ensure that the received stream is being transmitted or re-materializing in the correct phase, frequency, and so on.</p>
-<p>It&#39;s true. This is exactly how Phaser works. More or less.</p>
+<h2 id="tests">Tests</h2>
+<p>Run the tests with:</p>
+<pre><code>mocha -R spec
+</code></pre><h2 id="renamed-from-phaser">Renamed from Phaser</h2>
 <h2 id="authors">Authors</h2>
 <p><strong>Jon Schlinkert</strong></p>
 <ul>
@@ -149,7 +126,7 @@
 <p>Copyright (c) 2014 Jon Schlinkert, contributors.
 Released under the MIT license</p>
 <hr>
-<p><em>This file was generated by <a href="https://github.com/assemble/grunt-readme">grunt-readme</a> on Tuesday, February 18, 2014.</em></p>
+<p><em>This file was generated by <a href="https://github.com/assemble/verb">Verb</a> on March 14, 2014.</em></p>
 
     </div>
   </body>

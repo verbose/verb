@@ -1,5 +1,5 @@
 # API
-> Developer documentation for Phaser
+> Developer documentation for Verb
 
 {% _.each(files, function(file) { %}
 ## [{%= file.name %}]({%= file.path %})

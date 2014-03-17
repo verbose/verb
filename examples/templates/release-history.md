@@ -4,7 +4,7 @@
   _.each(history, function(change) {
     change.version = _.keys(history)[i];
     if (change.date instanceof Date) {
-      change.date = moment(change.date).format('YYYY-MM-DD');
+      change.date = moment(change.date, 'YYYY-MM-DD').format('YYYY-MM-DD');
     }
     // Print out the columns
     print('\n * ' + [

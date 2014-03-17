@@ -1,9 +1,9 @@
 /**
- * phaser <https://github.com/jonschlinkert/phaser>
- * The most deadly markdown documentation generator in the Alpha Quadrant.
+ * Verb <https://github.com/assemble/verb>
+ * Generate markdown documentation for GitHub projects.
  *
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
-var phaser = require('../');
-phaser.expandMapping(['*.md'], 'test/actual/concat-explicit.md', {concat: true});
+var verb = require('../');
+verb.expandMapping(['docs/*.md'], 'test/actual/concat-explicit.md', {concat: true});
