@@ -107,6 +107,7 @@ if (file.exists('.verbrc')) {
   verb.verbrc = configFile.load('.verbrc.yml');
 }
 
+
 /**
  * Initialize Verb and the Verb API
  *
@@ -136,12 +137,13 @@ verb.process = function(src, options) {
   verb.init(opts);
 
   // Add runtime config
-  var runtimeConfig;
+  var runtimeConfig = {};
   if(opts.verbrc) {
     runtimeConfig = configFile.load(cwd(opts.verbrc));
   } else {
     runtimeConfig = verb.verbrc;
   }
+
   _.extend(opts, runtimeConfig);
 
   verb.options = opts;
@@ -241,7 +243,7 @@ verb.copy = function(src, dest, options) {
   verb.init(options);
 
   verb.options = _.extend(verb.options || {}, options);
-  verb.options.dest = dest || verb.cwd();
+  verb.options.dest = dest;
 
   file.writeFileSync(dest, verb.read(src, options));
   verb.log.success('Saved to:', dest);
@@ -272,9 +274,8 @@ verb.expandMapping = function(src, dest, options) {
 
   verb.init(opts);
 
-  dest = dest || verb.cwd();
   verb.options = _.extend(verb.options || {}, options);
-  verb.options.dest = verb.cwd(dest) || verb.cwd();
+  verb.options.dest = verb.cwd(dest);
 
   var defaults = {
     sep: opts.sep || '\n',

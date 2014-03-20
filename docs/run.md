@@ -10,4 +10,4 @@ Next, in the command line run:
 verb
 ```
 
-That wasn't so hard, was it? (It was? Tell us about it, we'd love to know. {%= include('report-bugs') %}).
+That wasn't so hard, was it? (It was? Tell us about it. {%= include('report-bugs') %}).

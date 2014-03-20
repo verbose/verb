@@ -1,10 +1,36 @@
-Verb uses your project's package.json to supply data to markdown templates.
+Verb's CLI makes kickstarting new documentation a breeze. Here is how you would keep your documentation up-to-date using any variables from your [project's package.json](#TODO: add link to 'data'):
 
-will automatically gather information from your project's package.json and git repository, then
+```markdown
+# [%= name %]
 
-Use the CLI for to build, or required as a node lib.
+> [%= description %]
+
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+accusantium doloremque laudantium, totam rem aperiam.
+```
+Now put this in `docs/README.tmpl.md` and run `verb` to build it! It's that easy!
+
+Need more than simple variables? Use one of Verb's [built-in tags](#TODO: add link), like `date()`:
+
+```markdown
+## License
+Copyright (c) [%= date('YYYY') %] [%= author.name %], contributors.
+Released under the [%= license.type %] license
+```
+
+Include other documents, allowing them to be reused across multiple projects, or just to organize:
+
+```markdown
+## Contribute
+{%= docs("contributing") %}
+```
 
 
-Verb keeps things simple by using well-defined conventions
 
-Verbs advantage is that it comes with
+
+Just run `verb` to build any templates in the `docs/` directory of your project with the `.tmpl.md` extension, or specify a custom directory as a second parameter.
+
+
+But Verb is much more than a documentation generator!
+
+, and most of the logic is handled by plugins Verb can be extended to do whatever you need.

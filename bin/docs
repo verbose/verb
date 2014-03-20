@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * TODO: all of this. make it real good like.
+ * TODO: all of this... make it real good-like.
  */
 
 // What's my name?
@@ -12,15 +12,15 @@ var fs = require('fs');
 var path = require('path');
 var file = require('fs-utils');
 var inquirer = require('inquirer');
-var colors = require('../lib/colors');
+var Liftoff = require('liftoff');
 
 // Get your Verb on.
 var verb = require('../index');
+var colors = verb.colors;
+
 var meta = verb.verbMetadata;
 
 /**
- * Allow myself to introduce... myself.
- *
  * Update Verb's `runner` metadata with info about the
  * current tool, e.g. `verb-cli`. Use in templates with
  * the `runner.name` and `runner.url` variables.
@@ -37,6 +37,68 @@ verb.runner = {
   url: 'https://github.com/assemble/verb-cli'
 };
 
+
+var cli = new Liftoff({
+  name: 'verb',
+  configName: 'docs/{verbfile,.verb}',
+  addExtensions: ['rc', 'rc.yml', 'js'],
+  processTitle: 'verb',
+  configPathFlag: 'verb',
+  preloadFlag: 'require',
+  completionFlag: 'completion',
+  completions: function (type) {
+    verb.log('Completions not implemented.');
+  }
+});
+
+
+cli.on('require', function (name, module) {
+  if (name === 'coffee-script') {
+    module.register();
+  }
+  verb.log('Requiring external module:', name);
+});
+
+
+cli.on('requireFail', function (name, err) {
+  verb.log('Unable to require external module:', name, err);
+});
+
+cli.launch(handler);
+
+
+function handler (env) {
+  var argv = env.argv;
+  var tasks = argv._;
+
+  if (!env.modulePath) {
+    verb.log.error('No local Verb found in', verb.colors.yellow(env.cwd));
+    verb.log.error('Verb must be installed locally, please run: `npm install Verb`');
+    process.exit(1);
+  }
+
+  if (!env.configPath) {
+    verb.log.error('No verbfile found');
+    process.exit(1);
+  }
+
+  var verbfile = require(env.configPath);
+  verb.log.info('Using verbfile', verb.log.em(env.configPath));
+
+  var verbModule = require(env.modulePath);
+
+  if(env.configPath) {
+    process.chdir(env.configBase);
+    require(env.configPath)(verb);
+  } else {
+    verb.log('No Verbfile found.');
+    process.exit(1);
+  }
+
+  // verb.log(env);
+  // verb.log(verb.verbModule('_temp.md'))
+  // verb.log(verb.cwd());
+}
 
 /**
  * Logging messages
@@ -60,34 +122,32 @@ var msg = {
  * stuff based on other stuff.
  */
 
-var files = function(dir) {
-  dir = dir + '/**/*.tmpl.md';
-  var templates = file.expand(dir, {filter: 'isFile'});
+// var files = function(dir) {
+//   dir = dir + '/**/*.tmpl.md';
+//   var templates = file.expand(dir, {filter: 'isFile'});
 
-  // Return if no templates are found.
-  if (!templates.length) {
-    verb.log.error(msg.noTemplates(dir));
-    return;
-  }
-  return templates;
-};
-console.log(files());
-
-
-var destination = './';
+//   // Return if no templates are found.
+//   if (!templates.length) {
+//     verb.log.error(msg.noTemplates(dir));
+//     return;
+//   }
+//   return templates;
+// };
 
 
-function render(dirpath) {
-  files(dirpath).map(function(filepath) {
-    var name = file.name(filepath).replace(/^_/, '');
+// var destination = './';
 
-    // Run verb
-    var content = file.readFileSync(filepath);
-    var dest = path.join(destination || verb.cwd('./'), name + '.md');
-  });
-};
+// function render(dirpath) {
+//   files(dirpath).map(function(filepath) {
+//     var name = file.name(filepath).replace(/^_/, '');
 
-render('docs');
+//     // Run verb
+//     var content = file.readFileSync(filepath);
+//     var dest = path.join(destination || verb.cwd('./'), name + '.md');
+//   });
+// };
+
+// verb.log(render('docs'));
 
 
 // /**

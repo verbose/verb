@@ -1,9 +1,19 @@
-All contributions are welcome! If you like the project, _stars and tweets_ are a great way to show your support. If you want to take a more active role and help with documentation, writing unit tests, addressing issues or whatever seems interesting, please let us know, we'd be happy to help you get started!
+All contributions are welcome! _Stars and tweets_ are always a great way to show your support! But we can definitely use some help with:
 
-This project builds its our own documentation, so don't edit the readme or other docs directly. First, make sure Verb is installed globally, then just follow these simple steps:
+* documentation
+* writing unit tests
+* addressing issues
 
-* Make changes to the docs by editing the necessary templates in the [docs directory](./docs)
-* Run `verb` to re-build the docs
-* Do a pull request!
+_Or whatever value you'd like to add to the project! If you'd like to take a more active role, get in touch! We'd be happy to help you get started!_
+
+### Pull requests
+
+This project builds its our own documentation, so don't edit the readme or other docs directly, edit their respective templates instead.
+
+To build the docs, first make sure Verb is installed globally (`npm i -g verb`), then just follow these simple steps:
+
+* Edit the templates in the ['docs/' directory](./docs)
+* Run `verb`
+* Pull request!
 
 Thanks!
