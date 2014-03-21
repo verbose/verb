@@ -102,13 +102,6 @@ verb.runner = {
 
 verb.verbrc = {};
 
-if (file.exists('.verbrc')) {
-  verb.verbrc = configFile.load('.verbrc');
-} else if (file.exists('.verbrc.yml')) {
-  verb.verbrc = configFile.load('.verbrc.yml');
-}
-
-
 /**
  * Initialize Verb and the Verb API
  *
@@ -116,12 +109,14 @@ if (file.exists('.verbrc')) {
  */
 
 verb.init = function (options) {
+  options = options || {};
+
   if (verb.initalized) {
     return;
   }
+
   verb.initalized = true;
-  var opts = _.extend({verbose: false}, options);
-  verb.mode.verbose = opts.verbose;
+  verb.mode.verbose = options.verbose || verb.mode.verbose;
 
   // Extend the config with core and user-defined mixins
   _.fn = require('./lib/mixins.js');
@@ -275,6 +270,7 @@ verb.expandMapping = function(src, dest, options) {
 
   verb.init(opts);
 
+
   verb.options = _.extend(verb.options || {}, options);
   verb.options.dest = verb.cwd(dest);
 
@@ -288,7 +284,6 @@ verb.expandMapping = function(src, dest, options) {
 
   var concat = opts.concat || file.hasExt(dest) || false;
   var defer = [];
-  var count = 0;
 
   // Pass users-defined options to globule
   _.extend(defaults, opts.glob);
@@ -304,7 +299,6 @@ verb.expandMapping = function(src, dest, options) {
     }).map(function(filepath) {
       verb.options.src = filepath;
       if(!concat) {
-        count++;
         file.writeFileSync(fp.dest, verb.read(filepath, opts));
         verb.log.success('Saved to', fp.dest);
       } else {
@@ -314,17 +308,10 @@ verb.expandMapping = function(src, dest, options) {
   });
 
   if(concat) {
-    count = 1;
     var blob = _.flatten(defer).map(function(filepath) {
       return verb.read(filepath, opts);
     }).join(opts.sep);
     file.writeFileSync(dest, blob);
     verb.log.success('Saved to', dest);
-  }
-
-  if(count >= 1) {
-    verb.log.success('Done\n');
-  } else {
-    verb.log.error('Failed.\n');
   }
 };

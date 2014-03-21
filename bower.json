@@ -1,6 +1,6 @@
 {
   "name": "verb",
-  "version": "0.1.2",
+  "version": "0.1.8",
   "main": [
     "index.js"
   ]

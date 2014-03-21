@@ -43,3 +43,16 @@ Use the following syntax wherever you want the TOC:
 * Each section of the generated TOC begins with a heading that is created from the name of each file
 * Adds relative links to each file
 * Adds relative links to each section of each file.
+
+
+## TOC Options
+
+Verb uses [marked-toc](https://github.com/jonschlinkert/marked-toc) for generating tables of contents. Only options that have been changed from the marked-toc defaults are listed here. _Please visit [marked-toc](https://github.com/jonschlinkert/marked-toc) for additional documentation and to see the complist list of available options.
+
+### maxDepth
+
+Type: `number`
+
+Default: `2`
+
+The number of levels of list items to generate.
