@@ -52,6 +52,8 @@ _.forOwn(verb.verbMetadata, function(num, key) {
 
 verb.cwd          = cwd;
 verb.base         = cwd;
+verb.docs         = verb.cwd('docs');
+verb.ext          = '.md';
 verb.file         = _.defaults(require('./lib/file'), file);
 
 // Logging and utils
@@ -76,7 +78,6 @@ verb.data         = require('./lib/data');
 verb.matter       = require('./lib/matter');
 
 verb.exclusions   = require('./lib/exclusions');
-verb.ext          = '.md';
 
 
 /**

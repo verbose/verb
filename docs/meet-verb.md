@@ -1,4 +1,4 @@
-Verb's CLI makes kickstarting new documentation a breeze. Here is how you would keep your documentation up-to-date using any variables from your [project's package.json](#TODO: add link to 'data'):
+Verb's CLI makes kickstarting new documentation a breeze. Here is how Verb can keep your documentation up-to-date using variables from your [project's package.json](#TODO: add link to 'data'):
 
 ```markdown
 # [%= name %]
