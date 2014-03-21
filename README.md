@@ -34,6 +34,14 @@ Include other documents, allowing them to be reused across multiple projects, or
 
 That's it! _(More docs are on the way.)_
 
+## Customize Verb
+
+Verb is easy to extend, here are some examples ([verb-cli](https://github.com/assemble/verb-cli) will automatically use these):
+
+* [example verbfile](https://gist.github.com/jonschlinkert/9685280), with custom `src`, `dest` and metadata.
+* [example verbfile with logging](https://gist.github.com/jonschlinkert/9685144)
+* [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
+
 ## Install
 Install globally with [npm](npmjs.org):
 
