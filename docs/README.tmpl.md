@@ -2,7 +2,8 @@
 
 > {%= description %}
 
-First, get [verb-cli](https://github.com/assemble/verb-cli), the command line tool for [Verb](https://github.com/assemble/verb), and if you use Grunt also get [grunt-verb](https://github.com/jonschlinkert/grunt-verb).
+* Get [verb-cli](https://github.com/assemble/verb-cli) to use Verb globally from the command line
+* Get [generator-verb](https://github.com/assemble/generator-verb) to add documentation templates, or initialize docs for new projects
 
 ## Meet Verb
 {%= docs('meet-verb') %}
@@ -16,7 +17,14 @@ Verb is easy to extend, here are some examples ([verb-cli](https://github.com/as
 * [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
 
 ## Install
-{%= docs('install') %}
+{%= include('install') %}
+
+Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
+
+## Other tools
+
+* Get [grunt-verb](https://github.com/assemble/grunt-verb) to automate Verb in your Grunt tool-chains
+* Get [gulp-verb](https://github.com/assemble/gulp-verb) to automate Verb in your gulp tool-chains
 
 ## Author
 {%= contrib("jon") %}

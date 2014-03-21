@@ -2,7 +2,8 @@
 
 > Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.
 
-First, get [verb-cli](https://github.com/assemble/verb-cli), the command line tool for [Verb](https://github.com/assemble/verb), and if you use Grunt also get [grunt-verb](https://github.com/jonschlinkert/grunt-verb).
+* Get [verb-cli](https://github.com/assemble/verb-cli) to use Verb globally from the command line
+* Get [generator-verb](https://github.com/assemble/generator-verb) to add documentation templates, or initialize docs for new projects
 
 ## Meet Verb
 Verb's CLI makes kickstarting new documentation a breeze. Here is how Verb can keep your documentation up-to-date using variables from your [project's package.json](#TODO: add link to 'data'):
@@ -43,11 +44,14 @@ Verb is easy to extend, here are some examples ([verb-cli](https://github.com/as
 * [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
 
 ## Install
-Install globally with [npm](npmjs.org):
 
-```bash
-npm i -g verb --save-dev
-```
+
+Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
+
+## Other tools
+
+* Get [grunt-verb](https://github.com/assemble/grunt-verb) to automate Verb in your Grunt tool-chains
+* Get [gulp-verb](https://github.com/assemble/gulp-verb) to automate Verb in your gulp tool-chains
 
 ## Author
 
