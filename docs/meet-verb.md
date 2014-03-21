@@ -22,15 +22,7 @@ Include other documents, allowing them to be reused across multiple projects, or
 
 ```markdown
 ## Contribute
-{%= docs("contributing") %}
+[%= docs("contributing") %]
 ```
 
-
-
-
-Just run `verb` to build any templates in the `docs/` directory of your project with the `.tmpl.md` extension, or specify a custom directory as a second parameter.
-
-
-But Verb is much more than a documentation generator!
-
-, and most of the logic is handled by plugins Verb can be extended to do whatever you need.
+That's it! _(More docs are on the way.)_
