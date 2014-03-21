@@ -1,3 +1,5 @@
+Install globally with [npm](npmjs.org):
+
 ```bash
-npm i -g verb --save-dev
+npm i  verb --save-dev
 ```

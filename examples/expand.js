@@ -1,10 +1,3 @@
-/**
- * Verb <https://github.com/assemble/verb>
- * Generate markdown documentation for GitHub projects.
- *
- * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
- * Licensed under the MIT license.
- */
 var path = require('path');
 var file = require('fs-utils');
 var relative = require('relative');
