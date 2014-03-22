@@ -10,10 +10,11 @@
 
 var path = require('path');
 var file = require('fs-utils');
-var configFile = require('config-file');
 var cwd = require('cwd');
-var pkg = require('./package.json');
 var _ = require('lodash');
+var configFile = require('config-file');
+var pkg = require('./package.json');
+
 
 /**
  * verb
@@ -23,13 +24,16 @@ var verb = module.exports = {};
 
 
 /**
- * Expose metadata from Verb's package.json to
- * the context. Use with `verbMetadata.foo`
+ * Below we weill expose the `verb` object to the context,
+ * so that metadata from Verb's package.json can be used
+ * in templates.
+ *
+ * @usage {%= verb.version %} => 0.1.15
  *
  * @api {Private}
  */
 
-verb.verbMetadata = Object.preventExtensions(pkg);
+pkg = Object.preventExtensions(pkg);
 
 /**
  * Prevent downstream variables from accidentally
@@ -38,8 +42,8 @@ verb.verbMetadata = Object.preventExtensions(pkg);
  * @api {Private}
  */
 
-_.forOwn(verb.verbMetadata, function(num, key) {
-  Object.defineProperty(verb.verbMetadata, key, {
+_.forOwn(pkg, function(num, key) {
+  Object.defineProperty(pkg, key, {
     writable: false,
     configurable: false
   });
@@ -132,6 +136,8 @@ verb.process = function(src, options) {
   var opts = _.extend({toc: {maxDepth: 2}}, options);
   verb.init(opts);
 
+  src = src || '';
+
   // Add runtime config
   var runtimeConfig = {};
   if(opts.verbrc) {
@@ -145,10 +151,11 @@ verb.process = function(src, options) {
   verb.options = opts;
 
   verb.config = require('./lib/config').init(opts.config);
-  verb.context = _.extend({}, verb.config);
+  verb.context = verb.config || {};
   delete verb.context.config;
 
-  src = src || '';
+  // Extend the context with `verb.verb`, metadata from package.json
+  _.extend(verb.context, {verb: pkg});
 
   // Extend `verb`
   verb.layout = require('./lib/layout')(verb);
@@ -159,7 +166,7 @@ verb.process = function(src, options) {
   _.extend(verb.context, require('./lib/data').init(opts));
 
   // Template settings
-  var settings = _.defaults({}, opts.settings);
+  var settings = opts.settings || {};
 
   // Initialize Lo-Dash tags and filters
   _.extend(verb.context, verb.tags.init(verb));

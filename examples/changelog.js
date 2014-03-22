@@ -2,7 +2,7 @@ var verb = require('../');
 
 /**
  * Changelog example.
- * Formatting is handled _by the changelog tag_.
+ * Formatting is handled by the changelog tag
  */
 
 var src = 'examples/templates/changelog.md';
