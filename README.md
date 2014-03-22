@@ -44,7 +44,11 @@ Verb is easy to extend, here are some examples ([verb-cli](https://github.com/as
 * [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
 
 ## Install
+Install with [npm](npmjs.org):
 
+```bash
+npm i verb --save-dev
+```
 
 Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
 
