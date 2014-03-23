@@ -1,8 +1,3 @@
-A few things to know about Verb:
-
-- [x] If verb-cli finds a `.verbrc.yml` file it will be used to extend the context, set options, etc. See [this example](https://gist.github.com/jonschlinkert/9686195)
-- [x] If a `verbfile.js` is found, verb-cli will try to run it. See [this example](https://gist.github.com/jonschlinkert/9685280)
-
 Fields like `{%= name %}` and `{%= description %}` will be processed using data from your project's package.json. But sometimes you need more that that.
 
 Here are some things you can do with Verb:
@@ -21,3 +16,9 @@ For example, if `author` if formatted as a string, like this:
 }
 ```
 then use `{%= author %}`, not `{%= author.name %}`.
+
+
+A few things to know about Verb:
+
+- [x] If verb-cli finds a `.verbrc.yml` file it will be used to extend the context, set options, etc. See [this example](https://gist.github.com/jonschlinkert/9686195)
+- [x] If a `verbfile.js` is found, verb-cli will try to run it. See [this example](https://gist.github.com/jonschlinkert/9685280)

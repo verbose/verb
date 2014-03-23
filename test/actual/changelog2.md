@@ -2,8 +2,8 @@
 
 > Changelog using default 'CHANGELOG' file
 
-**DATE**       **VERSION**   **CHANGES**   
-* 2014-03-10   v0.1.0        First commmit.
+**DATE**       **VERSION**   **CHANGES**         
+* 2020-03-11   v0.2.0        9 billionth commmit.
 
 > Changelog using custom data source
 
