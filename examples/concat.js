@@ -7,5 +7,5 @@
  */
 var verb = require('../');
 
-verb.expandMapping(['docs/*.md'], 'test/actual/concat.md');
-verb.expandMapping(['examples/templates/*.md'], 'test/actual/concat-md.md');
+verb.expand(['docs/*.md'], 'test/actual/concat.md');
+verb.expand(['examples/templates/*.md'], 'test/actual/concat-md.md');

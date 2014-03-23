@@ -5,6 +5,6 @@
  * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
  * Licensed under the MIT license.
  */
-var verb = require('../');
 
-verb.expandMapping(['docs/*.md'], 'test/actual/', {verbrc: 'examples/.verbrc'});
+var verb = require('../');
+verb.expand(['docs/*.md'], 'test/actual/');

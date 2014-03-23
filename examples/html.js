@@ -1,7 +1,5 @@
-var opts = {
-  layouts: 'test/fixtures/html',
-  includes: 'test/fixtures/html/includes/*.html',
-};
-
 var verb = require('../');
-verb.copy('examples/templates/_html.md', 'test/actual/html.html', opts);
+verb.copy('examples/templates/html.md', 'test/actual/html.html', {
+  layouts: 'examples/html/',
+  includes: 'examples/html/includes/',
+});

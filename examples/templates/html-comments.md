@@ -9,8 +9,8 @@ Please [report any bugs or feature requests]({%= bugs.url %}/new), thanks!
 ## Install
 <!-- docs('install') -->
 
-## About
-<!-- docs('about') -->
+## Contribute
+<!-- docs('contribute') -->
 
 ## License
 {%= copyright() %}

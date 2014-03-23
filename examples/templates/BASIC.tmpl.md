@@ -1,13 +1,13 @@
 ---
 name: BASIC
-dest: '*-example'
+dest: 'example'
 ---
 # {%= name %}
 
 > {%= description %}
 
-{%= toc(dest) %}
+{%= toc() %}
 
 ## Example "README" template
 
-{%= docs(dest) %}
+{%= docs('example-readme') %}

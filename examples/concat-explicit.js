@@ -6,4 +6,4 @@
  * Licensed under the MIT license.
  */
 var verb = require('../');
-verb.expandMapping(['docs/*.md'], 'test/actual/concat-explicit.md', {concat: true});
+verb.expand(['docs/*.md'], 'test/actual/concat-explicit.md', {concat: true});
