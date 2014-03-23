@@ -1,31 +1,19 @@
-## Tags, Filters and Variables
+## Features
 
-Which is which?!
+* Lo-Dash templates and mixins
+* The full power of JavaScript
+* Filters
+* Tags
+* Partial Caching
+* Mixins
+* Templates can be used directly, cached as JavaScript, and/or via `require` statements
+* Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter
+* Easily add a **Table of Contents** to any file
+* Generate a **multi-file Table of Contents**, along with relative links to each file AND section
+* Comment parsing (basic)
+* Extensive API
+* File-system Utilities
+* Logging
+* Lots more! So much more. Much much more. So much more that you don't even know how much more it's so much. I don't know where to start.
 
-For the most part, **variables** look like this
-
-```
-{%= foo %}
-```
-
-However, **tags** and **filters** both look like this:
-
-```
-{%= bar() %}
-```
-
-with the difference _(in Verb)_ being that:
-
-* **tags**: generate, include or otherwise "add" content of some kind
-* **filter**: modify, filter, transform or otherwise alter content in some way
-
-### Example: Tags vs. Filters
-
-In this example:
-
-* `condense` is a filter
-* `include` is a tag
-
-```
-{%= condense(include('foo')) %}
-```
+[gray-matter]: https://github.com/assemble/gray-matter

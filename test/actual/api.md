@@ -1,5 +1,3 @@
-## API
-
 ### base
 Type: `undefined`
 
@@ -16,16 +14,6 @@ Type: `undefined`
 Default: `undefined`
 
 ### exclusions
-Type: `undefined`
-
-Default: `undefined`
-
-### expandMapping
-Type: `undefined`
-
-Default: `undefined`
-
-### init
 Type: `undefined`
 
 Default: `undefined`

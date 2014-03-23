@@ -1,40 +1,43 @@
-### base
-Type: `undefined`
+* defaults
+* options
+
+## metadata
+Type: `object|array|string`
 
 Default: `undefined`
 
-### copy
-Type: `undefined`
+* `string`: When defined as a string,
+
+## variable
+Type: `string`
 
 Default: `undefined`
 
-### cwd
-Type: `undefined`
+Lo-Dash opts...
 
-Default: `undefined`
+## namespace
+Type: `boolean|string`
 
-### exclusions
-Type: `undefined`
+Default: `undefined` (options: `true`|`"only"`)
 
-Default: `undefined`
+When `namespace` defined, an object is created for each data file, where the top level property on the object is the name of the file itself, and the data contained within the file is extended into that object. [See examples](#namespacing).
 
-### log
-Type: `undefined`
+## omit
 
-Default: `undefined`
+Omit properties from the context.
 
-### process
-Type: `undefined`
+Type: `Array`
 
-Default: `undefined`
+Default: `[]`
 
-### read
-Type: `undefined`
+Returns: `Object`
 
-Default: `undefined`
+Useful if properties are added via options, but should not be on the context.
 
-### template
-Type: `undefined`
+## ext
 
-Default: `undefined`
+Type: `String`
 
+Default: `.md`
+
+The file extension to use for all includes. In other words, `{%= docs() %}`, `{%= include() %}`, `{%= raw() %}`, etc. all expect source files to have a `.md` extension.

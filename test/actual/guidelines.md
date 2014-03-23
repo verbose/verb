@@ -32,6 +32,8 @@ Best of all, **Verb knows how to compromise!**
 
 Verb trieds to give users an easy way to get started, using hard-coded conventions that guide new users to a specific result. Verb doesn't bog newcomers down with lots of questions, or force users to make decisions before they see some kind of result.
 
+### First Experience
+
 Here is how Verb makes decisions, we suggest you do the same with your Verb-related projects (and probably other ones too!):
 
 * Choose a specific "first experience" for your users.

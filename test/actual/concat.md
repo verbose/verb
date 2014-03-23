@@ -1,317 +1,137 @@
-# verb [![NPM version](https://badge.fury.io/js/verb.png)](http://badge.fury.io/js/verb)  [![Build Status](https://travis-ci.org/assemble/verb.png)](https://travis-ci.org/assemble/verb) 
+# verb [![NPM version](https://badge.fury.io/js/verb.png)](http://badge.fury.io/js/verb)
 
 > Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.
 
-Wondering what happened to Phaser? [Get the story](#renamed-from-verb).
+* Get [verb-cli](https://github.com/assemble/verb-cli) to use Verb globally from the command line
+* Get [generator-verb](https://github.com/assemble/generator-verb) to add documentation templates, or initialize docs for new projects
 
-<!-- toc -->
-* [Install](#install)
-* [About](#about)
-  * [How does Verb work?](#how-does-verb-work)
-  * [Why use Verb?](#why-use-verb)
-  * [Ease of Use](#ease-of-use)
-  * [API](#api)
-* [Features](#features)
-  * [FAQ](#faq)
-* [Tests](#tests)
-* [Renamed from Phaser](#renamed-from-phaser)
-* [Authors](#authors)
-* [License](#license)
+## Meet Verb
+Verb's CLI makes kickstarting new markdown documentation a breeze.
 
-<!-- toc stop -->
-## Install
-#### Install with [npm](npmjs.org)
+For example, to generate a readme for your project just create a template, `docs/README.tmpl.md`, and add the following:
 
-```bash
-npm i -g verb --save-dev
 ```
-
-Now that verb is installed, add `README.tmpl.md` to the `docs/` dir in your project (this is all customizable, but let's keep it simple here), and add this to the file:
-
-```markdown
 # {%= name %}
 
 > {%= description %}
 
-## Getting started
-Install with [npm](npmjs.org) `npm i -g {%= name %} --save-dev`
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+accusantium doloremque laudantium, totam rem aperiam.
+```
+And Verb will build this into `README.md` **using data from your project's package.json**.
 
-## Options
-{%= docs("options") %}
+**Built-in tags**
 
-## Examples
-{%= docs("examples") %}
+Need more than simple variables? Use one of Verb's [built-in tags](#TODO: add link), like `date()`:
 
-## Author
-+ {%= author.name %}
-
+```
 ## License
-{%= copyright() %}
-{%= license() %}
+Copyright (c) {%= date('YYYY') %} {%= author.name %}, contributors.
+Released under the {%= license.type %} license
 ```
 
-Next, run:
+**Includes**
+
+Include other documents, allowing them to be reused across multiple projects, or just to organize:
+
+```
+## Contribute
+{%= docs("contributing") %}
+```
+
+That's it! _(More docs are on the way.)_ [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example.
+
+## Customize Verb
+
+Verb is easy to extend, here are some examples ([verb-cli](https://github.com/assemble/verb-cli) will automatically use these):
+
+* [example verbfile](https://gist.github.com/jonschlinkert/9685280), with custom `src`, `dest` and metadata.
+* [example verbfile with logging](https://gist.github.com/jonschlinkert/9685144)
+* [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
+
+## Install
+Install with [npm](npmjs.org):
 
 ```bash
-verb
+npm i verb --save-dev
 ```
 
-That wasn't so hard, was it? (It was? [Try downloading Verb instead](https://github.com/assemble/verb/archive/master.zip))
-Please [report any bugs or feature requests](https://github.com/assemble/verb/issues/new), thanks!
+Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
 
-## About
-### How does Verb work?
+## Other tools
 
-Upon running the `docs` command, unless instructed to do otherwise Verb will attempt to build any markdown templates found in the `docs/` directory of your project, using the data from project's package.json as context.
+* Get [grunt-verb](https://github.com/assemble/grunt-verb) to automate Verb in your Grunt tool-chains
+* Get [gulp-verb](https://github.com/assemble/gulp-verb) to automate Verb in your gulp tool-chains
 
-For many users, Verb might only be used to [build the readme](#TODO: link to readme example) for projects, so that project metadata such as version, date, changelog and so on, are always current and consistent. See the [Verb generator](https://github.com/jonschlinkert/generator-docs) for examples.
-
-**Beyond the basics**
-
-For users who want more than the basics, Verb is also highly configurable via options and offers an [extensive API](#TODO: add link to API docs) for developers who want to add functionality in the form of plugins, middleware, custom tags, filters and so on.
-
-### Why use Verb?
-
-We all know that documenation can be one of the most challenging and time-consuming aspects of maintaining a project. Even for small projects, simply writing and organizing the content on a readme can take more time than it did to create the library itself.
-
-> Verb dramatically reduces the time and effort involved in maintaining markdown docs for code projects through the use of powerful utilities and tools, well-defined conventions, and sensible defaults that are specifically tuned to maintaining projects on GitHub.
-
-For starters, this is accomplished by:
-
-1. Using templates for any sections or text than can be generaralize, such as _badges_, _license_, _copyright_, _author_, _Table of Contents_ and so on.
-1. Allowing includes (partials) to be used, so that longer documents can be easily organized and broken down into logical topics or groupings.
-1. Pulling in data from package.json to pass as context to any templates. Custom data sources may be used as well.
-1. Using boilerplates to kickstart the documentation for new projects. The [Verb generator]() for Yeoman comes with a handful of boilerplates, but it's super easy to create and use your own.
-
-### Ease of Use
-
-> Verb loves users
-
-Verb's number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Verb is installed, simply enter `docs` in command line, and you're off and running.
-
-For more experienced users, Verb offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
-
-### API
-
-> Verb also loves developers
-
-Verb has an extensive API and tools for building plugins, custom tags and filters, or extending Verb in other ways.
-
-## Features
-
-* Lo-Dash templates and mixins
-* The full power of JavaScript
-* Filters
-* Tags
-* Partial Caching
-* Mixins
-* Templates can be used directly, cached as JavaScript, and/or via `require` statements
-* Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter
-* Easily add a **Table of Contents** to any file
-* Generate a **multi-file Table of Contents**, along with relative links to each file AND section
-* Comment parsing (basic)
-* Extensive API
-* File-system Utilities
-* Logging
-* Lots more! So much more. Much much more. So much more that you don't even know how much more it's so much. I don't know where to start.
-
-### FAQ
-
-* **Why does Verb use the `{%= foo %}` syntax for templates?**: We do this to avoid collision with the more common, default syntax for Lo-Dash templates, `<%= foo %>`. Of course, nothing if foolproof, so if the default delimiters don't work for your needs you can customize them in the options.
-
-## Tests
-Run the tests with:
-
-```
-mocha -R spec
-```
-
-## Renamed from Phaser
-
-
-## Authors
+## Author
 
 **Jon Schlinkert**
 
 + [github/jonschlinkert](https://github.com/jonschlinkert)
 + [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
 
-**Brian Woodward**
-
-+ [github/doowb](https://github.com/doowb)
-+ [twitter/doowb](http://twitter.com/jonschlinkert)
-
 ## License
-Copyright (c) 2014 Jon Schlinkert, contributors.
+Copyright (c) 2014 Jon Schlinkert, contributors.  
 Released under the MIT license
 
 ***
 
-_This file was generated by [Verb](https://github.com/assemble/verb) on March 14, 2014._
-## How does Verb work?
+_This file was generated by [Verb](https://github.com/assemble/verb) on March 23, 2014._,All contributions are welcome! _Stars and tweets_ are always a great way to show your support! But we can definitely use some help with:
 
-Upon running the `docs` command, unless instructed to do otherwise Verb will attempt to build any markdown templates found in the `docs/` directory of your project, using the data from project's package.json as context.
+* documentation
+* writing unit tests
+* addressing issues
 
-For many users, Verb might only be used to [build the readme](#TODO: link to readme example) for projects, so that project metadata such as version, date, changelog and so on, are always current and consistent. See the [Verb generator](https://github.com/jonschlinkert/generator-docs) for examples.
+_Or whatever value you'd like to add to the project! If you'd like to take a more active role, get in touch! We'd be happy to help you get started!_
 
-**Beyond the basics**
+### Pull requests
 
-For users who want more than the basics, Verb is also highly configurable via options and offers an [extensive API](#TODO: add link to API docs) for developers who want to add functionality in the form of plugins, middleware, custom tags, filters and so on.
+This project builds its our own documentation, so don't edit the readme or other docs directly, edit their respective templates instead.
 
-## Why use Verb?
+To build the docs, first make sure Verb is installed globally (`npm i -g verb`), then just follow these simple steps:
 
-We all know that documenation can be one of the most challenging and time-consuming aspects of maintaining a project. Even for small projects, simply writing and organizing the content on a readme can take more time than it did to create the library itself.
+* Edit the templates in the ['docs/' directory](./docs)
+* Run `verb`
+* Pull request!
 
-> Verb dramatically reduces the time and effort involved in maintaining markdown docs for code projects through the use of powerful utilities and tools, well-defined conventions, and sensible defaults that are specifically tuned to maintaining projects on GitHub.
+Thanks!,Install globally with [npm](npmjs.org):
 
-For starters, this is accomplished by:
+```bash
+npm i  verb --save-dev
+```,Verb's CLI makes kickstarting new markdown documentation a breeze.
 
-1. Using templates for any sections or text than can be generaralize, such as _badges_, _license_, _copyright_, _author_, _Table of Contents_ and so on.
-1. Allowing includes (partials) to be used, so that longer documents can be easily organized and broken down into logical topics or groupings.
-1. Pulling in data from package.json to pass as context to any templates. Custom data sources may be used as well.
-1. Using boilerplates to kickstart the documentation for new projects. The [Verb generator]() for Yeoman comes with a handful of boilerplates, but it's super easy to create and use your own.
+For example, to generate a readme for your project just create a template, `docs/README.tmpl.md`, and add the following:
 
-## Ease of Use
-
-> Verb loves users
-
-Verb's number one priorty is ease-of use. For new users **zero configuration** is required to get started. Once Verb is installed, simply enter `docs` in command line, and you're off and running.
-
-For more experienced users, Verb offers _more than 50 template tags and filters, includes and partial caching, comment parsing, YAML Front Matter (or Coffee Front Matter!), plugins, mixins, tons of helpful JavaScript and Node.js utilites_, and lots more.
-
-## API
-
-> Verb also loves developers
-
-Verb has an extensive API and tools for building plugins, custom tags and filters, or extending Verb in other ways.
-
-# Features
-
-* Lo-Dash templates and mixins
-* The full power of JavaScript
-* Filters
-* Tags
-* Partial Caching
-* Mixins
-* Templates can be used directly, cached as JavaScript, and/or via `require` statements
-* Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter
-* Easily add a **Table of Contents** to any file
-* Generate a **multi-file Table of Contents**, along with relative links to each file AND section
-* Comment parsing (basic)
-* Extensive API
-* File-system Utilities
-* Logging
-* Lots more! So much more. Much much more. So much more that you don't even know how much more it's so much. I don't know where to start.
-
-## FAQ
-
-* **Why does Verb use the `{%= foo %}` syntax for templates?**: We do this to avoid collision with the more common, default syntax for Lo-Dash templates, `<%= foo %>`. Of course, nothing if foolproof, so if the default delimiters don't work for your needs you can customize them in the options.
-## API
-
-### base
-Type: `undefined`
-
-Default: `undefined`
-
-### copy
-Type: `undefined`
-
-Default: `undefined`
-
-### cwd
-Type: `undefined`
-
-Default: `undefined`
-
-### exclusions
-Type: `undefined`
-
-Default: `undefined`
-
-### expandMapping
-Type: `undefined`
-
-Default: `undefined`
-
-### init
-Type: `undefined`
-
-Default: `undefined`
-
-### log
-Type: `undefined`
-
-Default: `undefined`
-
-### process
-Type: `undefined`
-
-Default: `undefined`
-
-### read
-Type: `undefined`
-
-Default: `undefined`
-
-### template
-Type: `undefined`
-
-Default: `undefined`
-
-
-## How does Verb differ from Assemble?
-
-Verb was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:
-
-* Use [Assemble][] to build components, sites, blogs and other projects where HTML is the end result.
-* Use Verb to generate and maintain markdown documentation for your [Assemble][] (or non-Assemble) projects.
-
-### Comparison
-
-While both engines can be extended to accomplish most of the following features, this table describes what you should expect from each _out-of-the-box_:
-
-**Feature** | **[Assemble][]** | **Verb**
-------- | -------- | ------
-**Summary** | Build HTML projects from modular components and data | Generate markdown documentation
-**Focus** | Power, granular access to context, components | Speed, ease-of-use, command-line
-**Template Engine** | Handlebars by default, any template engine can be added. | Lo-Dash
-**Extensions** | Plugins, Lo-Dash Mixins, Helpers, Filters, Tags <sup>[1](#1-depends-on-the-template-engine)</sup> | Plugins, Lo-Dash Mixins, Filters, Tags
-**Static Blogs** | Yes | No
-**Static Sites** | Yes | No
-**HTML Documentation** | Yes | Limited.
-**Markdown Documentation** | Limited | Yes
-**Markdown to HTML** | Yes | Limited
-
-##### <sup>1</sup> Depends on the template engine.
-
-[Assemble]: https://github.com/assemble/assemble
-[gray-matter]: https://github.com/assemble/gray-matter
+```
 # {%= name %}
 
 > {%= description %}
 
-## Getting started
-Install with [npm](npmjs.org) `npm i -g {%= name %} --save-dev`
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+accusantium doloremque laudantium, totam rem aperiam.
+```
+And Verb will build this into `README.md` **using data from your project's package.json**.
 
-## Options
-{%= docs("options") %}
+**Built-in tags**
 
-## Examples
-{%= docs("examples") %}
+Need more than simple variables? Use one of Verb's [built-in tags](#TODO: add link), like `date()`:
 
-## Author
-+ {%= author.name %}
-
+```
 ## License
-{%= copyright() %}
-{%= license() %}
-### Install with [npm](npmjs.org)
-
-```bash
-npm i -g verb --save-dev
+Copyright (c) {%= date('YYYY') %} {%= author.name %}, contributors.
+Released under the {%= license.type %} license
 ```
 
-Now that verb is installed, add `README.tmpl.md` to the `docs/` dir in your project (this is all customizable, but let's keep it simple here), and add this to the file:
+**Includes**
+
+Include other documents, allowing them to be reused across multiple projects, or just to organize:
+
+```
+## Contribute
+{%= docs("contributing") %}
+```
+
+That's it! _(More docs are on the way.)_ [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example.,Now that verb is installed, add a `README.tmpl.md` to a `docs/` dir in your project with this content:
 
 ```markdown
 # {%= name %}
@@ -335,140 +155,37 @@ Install with [npm](npmjs.org) `npm i -g {%= name %} --save-dev`
 {%= license() %}
 ```
 
-Next, run:
+Next, in the command line run:
 
 ```bash
 verb
 ```
 
-That wasn't so hard, was it? (It was? [Try downloading Verb instead](https://github.com/assemble/verb/archive/master.zip))
-You may be wondering, "Wasn't this project named 'Phaser' before?". Indeed, this is true.
-
-You may also be wondering, "Did you change the name of this project to Verb because you only researched NPM before choosing the name Phaser, and then only after publishing the project on GitHub and promoting it on a popular podcast did you realize that a (also very popular) JavaScript project with the same name already existed on GitHub?"...
-
-Whaaat? No, that's absurd. Only an idiot would do something that like. I don't even know where you heard that. Where did you hear that?
-
-Anyway, the _real_ reason I changed the name to Verb is that Phaser wasn't nerdy enough and I wanted the name to be more familiar and easier to remember. Besides, Phasers shoot lame neon light at people, but Verb is the matter from which starships are made. Period. The other stuff you heard is lies spread by my enemies.
-
-But this is all behind us now, so let's move on, shall we?
-Run the tests with:
+That wasn't so hard, was it? (It was? Tell us about it. Please [report any bugs or feature requests](https://github.com/assemble/verb/issues/new), thanks!).,Run Verb's 75+ unit tests:
 
 ```
 mocha -R spec
-```
-# Introduction to verb
+```,Fields like `{%= name %}` and `{%= description %}` will be processed using data from your project's package.json. But sometimes you need more that that.
 
-> Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.
+Here are some things you can do with Verb:
 
+* Verb uses moment.js for `{%= date() %}`
+* `{%= docs() %}` will include a file from the `docs` directory of your project (must have a `.md` extension)
+* `{%= include() %}` like `docs`, but includes a "generic" file from [verb-readme-includes](https://github.com/assemble/verb-readme-includes)
 
+#### Last, make sure you **use the correct variables** for your project!!
 
+For example, if `author` if formatted as a string, like this:
 
-This project's goal is simple:
-
-* Anything that can be generalized should be. Re-writing sections such as _license_, _copyright_, _author_ every time you create a new project is a big time sink.
-
-Verb takes some of the burden out of this process by
-
-* _templatizing_ certain elements of your documentation.
-*
-
-
-
-
-For example:
-
-```markdown
-## {%= name %}
-
-> {%= description %}
-
-### Getting started
-Install with [npm](npmjs.org) `npm i -g {%= name %} --save-dev`
-
-### Options
-{%= docs("options") %}
-
-### Examples
-{%= docs("examples") %}
-
-### Author
-+ {%= author.name %}
-
-### License
-{%= copyright() %}
-{%= license() %}
-```
-
-
-
-Add some markdown files to the `./docs` directory of your project and run `verb` to [generate your documentation](#core-concepts).
-
-
-
-_(TODO: add screen shots showing how the `docs` folder is used by the `{%= docs() %}` tag, and how includes come from node modules, etc)_
-
-Examples:
-
-* Add a
-
-
-## Why use Verb?
-
-* It's dead simple
-* Configuration is optional, but not necessary
-* Sensible defaults
-* Super fast
-
-_Zero configuration is required, but Verb has a robust [API](#TODO) and is highly configurable via options._
-
-
-## Getting Started
-
-Verb uses your project's package.json to supply data to markdown templates.
-
-### Core Concepts
-
-#### The Basics
-
-* Templates: `README.tmpl.md`
-* Includes: `about.md`
-* Data: `package.json`
-
-#### Advanced
-
-* Tags
-* Filters
-* Mixins
-* Data: Custom data sources
-
-
-## Templates
-
-## Includes
-
-## Data
-
-## Extending verb
-
-_TODO_
-
-* Plugins
-* Helpers
-* API
-
-
-## Options
-
-### Custom delimiters
-
-You can customize delimiters to be anything you want, but make sure you choose your delimiter syntax wisely to avoid collision with code that is used in examples and so on. Also keep in mind that you'll be breaking compatibility with Verb's boilerplates, curated templates and probably templates hosted by other community members as well.
-
-Enable custom delimiters with the `delims` option:
-
-```js
-options: {
-  delims: ['<<', '}}']
+```json
+{
+  "author": "Jon Schlinkert"
 }
 ```
+then use `{%= author %}`, not `{%= author.name %}`.
 
-Verb uses the [delims](https://github.com/jonschlinkert/delims) library to enable custom delimiters, please visit that project to see all available options and documentation.
+
+A few things to know about Verb:
+
+- [x] If verb-cli finds a `.verbrc.yml` file it will be used to extend the context, set options, etc. See [this example](https://gist.github.com/jonschlinkert/9686195)
+- [x] If a `verbfile.js` is found, verb-cli will try to run it. See [this example](https://gist.github.com/jonschlinkert/9685280)

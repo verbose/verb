@@ -12,11 +12,11 @@
     "comments": [
       [
         {
-          "description": "Initialize config object. This defaults to\npackage.json, unless overridden by passing\nan object to `options.config`",
+          "description": "Initialize user-config object. Unless overridden by passing\nan object to `options.config`, this defaults to the\npackage.json of the user's current, local project,",
           "param": "{Object} config",
           "return": "{Object}",
           "api": "private",
-          "description_html": "<p>Initialize config object. This defaults to\npackage.json, unless overridden by passing\nan object to <code>options.config</code></p>",
+          "description_html": "<p>Initialize user-config object. Unless overridden by passing\nan object to <code>options.config</code>, this defaults to the\npackage.json of the user's current, local project,</p>",
           "params": [
             {
               "type": "Object",
@@ -182,17 +182,17 @@
               "description": ""
             }
           ],
-          "line": 15
+          "line": 14
         },
         {
           "description": "Built-in filters",
           "description_html": "<p>Built-in filters</p>",
-          "line": 31
+          "line": 33
         },
         {
           "description": "User-defined",
           "description_html": "<p>User-defined</p>",
-          "line": 37
+          "line": 39
         }
       ]
     ]
@@ -257,6 +257,11 @@
     "comments": [
       [
         {
+          "description": "Strings to strip from the return value.",
+          "description_html": "<p>Strings to strip from the return value.</p>",
+          "line": 15
+        },
+        {
           "description": "Safename",
           "param": "{[type]} name The name to be modified",
           "return": "{[type]}      The \"safe\" short version of the name",
@@ -273,7 +278,7 @@
               "description": "The name to be modified"
             }
           ],
-          "line": 14
+          "line": 31
         }
       ]
     ]
@@ -381,17 +386,17 @@
               "description": ""
             }
           ],
-          "line": 17
+          "line": 13
         },
         {
           "description": "Run built-in plugins",
           "description_html": "<p>Run built-in plugins</p>",
-          "line": 35
+          "line": 30
         },
         {
-          "description": "Run user-defined plugins",
-          "description_html": "<p>Run user-defined plugins</p>",
-          "line": 40
+          "description": "Run user-defined",
+          "description_html": "<p>Run user-defined</p>",
+          "line": 36
         }
       ]
     ]
@@ -532,7 +537,7 @@
               "description": ""
             }
           ],
-          "line": 16
+          "line": 15
         },
         {
           "description": "Initialize tags",
@@ -546,17 +551,17 @@
               "description": ""
             }
           ],
-          "line": 46
+          "line": 45
         },
         {
           "description": "Built-in tags",
           "description_html": "<p>Built-in tags</p>",
-          "line": 59
+          "line": 61
         },
         {
           "description": "User-defined",
           "description_html": "<p>User-defined</p>",
-          "line": 65
+          "line": 67
         }
       ]
     ]
@@ -577,7 +582,7 @@
           "description": "Status, analytics and version badges.",
           "title": "badge",
           "param": [
-            "{Object} config",
+            "{Object} context",
             "{Object} options"
           ],
           "return": "{Object}",
@@ -586,7 +591,7 @@
           "params": [
             {
               "type": "Object",
-              "name": "config",
+              "name": "context",
               "description": ""
             },
             {
@@ -746,20 +751,6 @@
   "moment.js": {
     "name": "moment.js",
     "path": "lib/tags/moment.js",
-    "comments": [
-      []
-    ]
-  },
-  "pkg.js": {
-    "name": "pkg.js",
-    "path": "lib/tags/pkg.js",
-    "comments": [
-      []
-    ]
-  },
-  "raw.js": {
-    "name": "raw.js",
-    "path": "lib/tags/raw.js",
     "comments": [
       []
     ]
@@ -1044,9 +1035,16 @@
               "description": "The name to match in the result set."
             }
           ],
-          "line": 28
+          "line": 29
         }
       ]
+    ]
+  },
+  "matchname.js": {
+    "name": "matchname.js",
+    "path": "lib/utils/matchname.js",
+    "comments": [
+      []
     ]
   },
   "md.js": {
@@ -1099,6 +1097,36 @@
             }
           ],
           "line": 18
+        }
+      ]
+    ]
+  },
+  "resolveMatches.js": {
+    "name": "resolveMatches.js",
+    "path": "lib/utils/resolveMatches.js",
+    "comments": [
+      [
+        {
+          "description": "Resolve matches.",
+          "param": [
+            "{[type]}  name      [description]",
+            "{[type]}  filepath  [description]"
+          ],
+          "return": "{[type]}            [description]",
+          "description_html": "<p>Resolve matches.</p>",
+          "params": [
+            {
+              "type": "[type]",
+              "name": "name",
+              "description": "[description]"
+            },
+            {
+              "type": "[type]",
+              "name": "filepath",
+              "description": "[description]"
+            }
+          ],
+          "line": 5
         }
       ]
     ]
