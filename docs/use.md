@@ -1,4 +1,4 @@
-Fields like `[%= name %]` and `[%= description %]` will be processed using data from your project's package.json. But sometimes you need more that that.
+Fields like `[%= name %]` and `[%= description %]` will be processed using data from your project's package.json. But sometimes you need more than that.
 
 Here are some things you can do with Verb:
 

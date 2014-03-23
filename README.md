@@ -8,7 +8,7 @@
 ## Meet Verb
 Verb's CLI makes kickstarting new markdown documentation a breeze.
 
-For example, to generate a readme for your project just create a template, `docs/README.tmpl.md`, and add the following:
+For example, to [generate a readme](https://github.com/assemble/generator-verb) for your project just add `docs/README.tmpl.md` with the following:
 
 ```
 # {%= name %}
@@ -20,9 +20,9 @@ accusantium doloremque laudantium, totam rem aperiam.
 ```
 And Verb will build this into `README.md` **using data from your project's package.json**.
 
-**Built-in tags**
+**[Built-in tags](./docs/tags.md)**
 
-Need more than simple variables? Use one of Verb's [built-in tags](#TODO: add link), like `date()`:
+Need more than simple variables? Use one of Verb's [built-in tags](./docs/tags.md), like `date()`:
 
 ```
 ## License
@@ -30,25 +30,18 @@ Copyright (c) {%= date('YYYY') %} {%= author.name %}, contributors.
 Released under the {%= license.type %} license
 ```
 
-**Includes**
+**[Includes](./docs/tags.md#include)**
 
-Include other documents, allowing them to be reused across multiple projects, or just to organize.
-To use any markdown file in the `docs/` directory, just use the `{%= docs() %}` tag:
+Easily include other documents. To use any markdown file in the `docs/` directory just use [`{%= docs() %}`](./docs/tags.md#docs):
 
 ```
 ## Contribute
 {%= docs("contributing") %}
 ```
 
-That's it! [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example _(More docs are on the way)_.
+That's it! [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example.
 
-## Customize Verb
-
-Verb is easy to extend, here are some examples ([verb-cli](https://github.com/assemble/verb-cli) will automatically use these):
-
-* [example verbfile](https://gist.github.com/jonschlinkert/9685280), with custom `src`, `dest` and metadata.
-* [example verbfile with logging](https://gist.github.com/jonschlinkert/9685144)
-* [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
+_(More docs are on the way! In the meantime, check progress in the [docs directory](./docs))_.
 
 ## Install
 Install with [npm](npmjs.org):
@@ -59,10 +52,39 @@ npm i verb --save-dev
 
 Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
 
-## Other tools
+## Customize Verb
 
-* Get [grunt-verb](https://github.com/assemble/grunt-verb) to automate Verb in your Grunt tool-chains
-* Get [gulp-verb](https://github.com/assemble/gulp-verb) to automate Verb in your gulp tool-chains
+Verb is easy to extend, here are some examples ([verb-cli](https://github.com/assemble/verb-cli) will automatically use these):
+
+* [example verbfile](https://gist.github.com/jonschlinkert/9685280), with custom `src`, `dest` and metadata.
+* [example verbfile with logging](https://gist.github.com/jonschlinkert/9685144)
+* [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
+
+## Get some verb in your toolchain
+
+* Use [grunt-verb](https://github.com/assemble/grunt-verb) with your favorite JavaScript task runner.
+* Use [gulp-verb](https://github.com/assemble/gulp-verb) with your streaming build systems.
+
+## Contributing
+All contributions are welcome! _Stars and tweets_ are always a great way to show your support! But we can definitely use some help with:
+
+* documentation
+* writing unit tests
+* addressing issues
+
+_Or whatever value you'd like to add to the project! If you'd like to take a more active role, get in touch! We'd be happy to help you get started!_
+
+#### Pull requests
+
+This project builds its our own documentation, so don't edit the readme or other docs directly, edit their respective templates instead.
+
+To build the docs, first make sure Verb is installed globally (`npm i -g verb`), then just follow these simple steps:
+
+* Edit the templates in the ['docs/' directory](./docs)
+* Run `verb`
+* Pull request!
+
+Thanks!
 
 ## Author
 

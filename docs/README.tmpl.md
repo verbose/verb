@@ -8,6 +8,11 @@
 ## Meet Verb
 {%= docs('meet-verb') %}
 
+## Install
+{%= include('install') %}
+
+Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
+
 ## Customize Verb
 
 Verb is easy to extend, here are some examples ([verb-cli](https://github.com/assemble/verb-cli) will automatically use these):
@@ -16,15 +21,13 @@ Verb is easy to extend, here are some examples ([verb-cli](https://github.com/as
 * [example verbfile with logging](https://gist.github.com/jonschlinkert/9685144)
 * [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
 
-## Install
-{%= include('install') %}
+## Get some verb in your toolchain
 
-Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
+* Use [grunt-verb](https://github.com/assemble/grunt-verb) with your favorite JavaScript task runner.
+* Use [gulp-verb](https://github.com/assemble/gulp-verb) with your streaming build systems.
 
-## Other tools
-
-* Get [grunt-verb](https://github.com/assemble/grunt-verb) to automate Verb in your Grunt tool-chains
-* Get [gulp-verb](https://github.com/assemble/gulp-verb) to automate Verb in your gulp tool-chains
+## Contributing
+{%= docs("contribute") %}
 
 ## Author
 {%= contrib("jon") %}
