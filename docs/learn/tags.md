@@ -142,11 +142,26 @@ Consult the [moment.js documentation](momentjs.com/docs/) for the full list of a
 
 ### docs
 
-Example:
+Include a template from the `docs/` directory of your project.
+
+Usage:
 
 ```
-[%= docs() %]
+[%= docs('install') %]
 ```
+
+Adds the contents of `docs/install.md`, which might look like:
+
+<pre>
+Install globally with [npm](npmjs.org):
+
+```bash
+npm i  [%= name %] --save-dev
+```
+</pre>
+
+[Resulting in this](../../#install).
+
 
 ### getAuthors
 
