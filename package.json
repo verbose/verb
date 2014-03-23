@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "homepage": "https://github.com/assemble/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -51,7 +51,8 @@
     "template": "~0.1.5",
     "verb-contrib-templates": ">= 0.0.1",
     "verb-readme-badges": ">= 0.0.1",
-    "verb-readme-includes": ">= 0.0.1"
+    "verb-readme-includes": ">= 0.0.1",
+    "find": "~0.1.5"
   },
   "devDependencies": {
     "chai": "~1.9.0",
