@@ -9,10 +9,11 @@
 'use strict';
 
 var path = require('path');
-var file = require('fs-utils');
-var cwd = require('cwd');
-var _ = require('lodash');
 var configFile = require('config-file');
+var cwd = require('cwd');
+var file = require('fs-utils');
+var relative = require('relative');
+var _ = require('lodash');
 var pkg = require('./package.json');
 
 
@@ -21,34 +22,6 @@ var pkg = require('./package.json');
  */
 
 var verb = module.exports = {};
-
-
-/**
- * Below we weill expose the `verb` object to the context,
- * so that metadata from Verb's package.json can be used
- * in templates.
- *
- * @usage {%= verb.version %} => 0.1.15
- *
- * @api {Private}
- */
-
-pkg = Object.preventExtensions(pkg);
-
-/**
- * Prevent downstream variables from accidentally
- * mutating Verb metadata.
- *
- * @api {Private}
- */
-
-_.forOwn(pkg, function(num, key) {
-  Object.defineProperty(pkg, key, {
-    writable: false,
-    configurable: false
-  });
-});
-
 
 /**
  * Initialize API
@@ -154,9 +127,6 @@ verb.process = function(src, options) {
   verb.context = verb.config || {};
   delete verb.context.config;
 
-  // Extend the context with `verb.verb`, metadata from package.json
-  _.extend(verb.context, {verb: pkg});
-
   // Extend `verb`
   verb.layout = require('./lib/layout')(verb);
 
@@ -225,7 +195,13 @@ verb.read = function(src, options) {
   verb.init(options);
 
   verb.options = verb.options || {};
-  _.extend(verb.options, options)
+  verb.options.src = verb.cwd(src);
+
+  _.extend(verb.options, options);
+
+  // Log the start.
+  verb.verbose.write();
+  verb.verbose.run('processing', relative(process.cwd(), src));
 
   var content = file.readFileSync(src);
   return verb.process(content, options).content;
@@ -245,11 +221,24 @@ verb.copy = function(src, dest, options) {
   options = options || {};
   verb.init(options);
 
-  verb.options = _.extend(verb.options || {}, options);
-  verb.options.dest = dest;
+  verb.options = verb.options || {};
+  verb.options.src = verb.cwd(src);
+  verb.options.dest = verb.cwd(dest);
 
+  _.extend(options, verb.options);
+
+  // Log the start.
+  verb.log.write();
+  verb.log.subhead('reading', file.normalizeSlash(src));
+
+  // Write the actual files.
   file.writeFileSync(dest, verb.read(src, options));
-  verb.log.success('Saved to:', dest);
+  verb.log.run('writing', relative(process.cwd(), dest));
+
+  // Log a success message.
+  verb.log.write();
+  verb.log.success('  ' + verb.runner.name + ' [done]');
+  return;
 };
 
 
@@ -271,15 +260,16 @@ verb.copy = function(src, dest, options) {
  * @return {String} `content` from `verb.process()`
  */
 
-verb.expandMapping = function(src, dest, options) {
+verb.expand = function(src, dest, options) {
   var opts = _.extend({concat: false}, options);
   opts.glob = opts.glob || {};
 
   verb.init(opts);
 
-
-  verb.options = _.extend(verb.options || {}, options);
+  verb.options = verb.options || {};
   verb.options.dest = verb.cwd(dest);
+
+  _.extend(options, verb.options);
 
   var defaults = {
     sep: opts.sep || '\n',
@@ -295,6 +285,10 @@ verb.expandMapping = function(src, dest, options) {
   // Pass users-defined options to globule
   _.extend(defaults, opts.glob);
 
+  // Log the start.
+  verb.log.write();
+  verb.log('\n  Expanding files:', src);
+
   file.expandMapping(src, defaults).map(function(fp) {
     fp.src.filter(function(filepath) {
       if (!file.exists(filepath)) {
@@ -305,9 +299,11 @@ verb.expandMapping = function(src, dest, options) {
       }
     }).map(function(filepath) {
       verb.options.src = filepath;
+      verb.log.run('reading', relative(process.cwd(), verb.options.src));
+
       if(!concat) {
         file.writeFileSync(fp.dest, verb.read(filepath, opts));
-        verb.log.success('Saved to', fp.dest);
+        verb.log.subhead('writing', relative(process.cwd(), fp.dest));
       } else {
         defer.push(filepath);
       }
@@ -316,9 +312,21 @@ verb.expandMapping = function(src, dest, options) {
 
   if(concat) {
     var blob = _.flatten(defer).map(function(filepath) {
+      verb.options.src = filepath;
+
+      // Log the start.
+      verb.log.run('reading', relative(process.cwd(), verb.options.src));
+
       return verb.read(filepath, opts);
     }).join(opts.sep);
+
+
     file.writeFileSync(dest, blob);
-    verb.log.success('Saved to', dest);
+    verb.log.subhead('writing', relative(process.cwd(), dest));
   }
+
+  // Log a success message.
+  verb.log.write();
+  verb.log.success('  ' + verb.runner.name + ' [done]');
+  return;
 };

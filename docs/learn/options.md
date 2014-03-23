@@ -28,8 +28,16 @@ Omit properties from the context.
 
 Type: `Array`
 
-Defaults: `[]`
+Default: `[]`
 
 Returns: `Object`
 
 Useful if properties are added via options, but should not be on the context.
+
+## ext
+
+Type: `String`
+
+Default: `.md`
+
+The file extension to use for all includes. In other words, `[%= docs() %]`, `[%= include() %]`, `[%= raw() %]`, etc. all expect source files to have a `.md` extension.

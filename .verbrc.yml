@@ -1,1 +1,1 @@
-readme: true
+plugins: examples/plugins/*.js

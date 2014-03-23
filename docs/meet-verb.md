@@ -24,11 +24,12 @@ Released under the [%= license.type %] license
 
 **Includes**
 
-Include other documents, allowing them to be reused across multiple projects, or just to organize:
+Include other documents, allowing them to be reused across multiple projects, or just to organize.
+To use any markdown file in the `docs/` directory, just use the `[%= docs() %]` tag:
 
 ```
 ## Contribute
 [%= docs("contributing") %]
 ```
 
-That's it! _(More docs are on the way.)_ [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example.
+That's it! [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example _(More docs are on the way)_.

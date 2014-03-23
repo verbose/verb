@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "Verb makes it easy to build project documentation using simple markdown templates, with zero configuration required.",
-  "version": "0.1.18",
+  "version": "0.1.20",
   "homepage": "https://github.com/assemble/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -37,7 +37,7 @@
     "gray-matter": "~0.2.8",
     "list-methods": "~0.2.5",
     "lodash": "~2.4.1",
-    "marked": "~0.3.1",
+    "marked": "0.3.1",
     "marked-extras": "~0.2.2",
     "marked-toc": "~0.2.2",
     "minimatch": "~0.2.14",

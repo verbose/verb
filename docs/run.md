@@ -1,7 +1,7 @@
 Now that {%= name %} is installed, add a `README.tmpl.md` to a `docs/` dir in your project with this content:
 
 ```markdown
-{%= raw("example-readme") %}
+{%= docs("extras/example-readme", {raw: true}) %}
 ```
 
 Next, in the command line run:

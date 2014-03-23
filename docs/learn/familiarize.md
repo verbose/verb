@@ -59,7 +59,7 @@ Verb takes some of the burden out of this process by
 For example:
 
 ```markdown
-{%= raw('example-readme') %}
+{%= docs("extras/example-readme", {raw: true}) %}
 ```
 
 Add some markdown files to the `./docs` directory of your project and run `verb` to [generate your documentation](#core-concepts).
