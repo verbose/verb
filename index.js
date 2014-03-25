@@ -328,5 +328,4 @@ verb.expand = function(src, dest, options) {
   // Log a success message.
   verb.log.write();
   verb.log.success('  ' + verb.runner.name + ' [done]');
-  return;
 };
