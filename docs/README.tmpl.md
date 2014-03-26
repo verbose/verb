@@ -13,7 +13,7 @@
 
 Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
 
-## Customize Verb
+## Customize
 
 Verb is easy to extend, here are some examples ([verb-cli](https://github.com/assemble/verb-cli) will automatically use these):
 
@@ -26,7 +26,10 @@ Verb is easy to extend, here are some examples ([verb-cli](https://github.com/as
 * Use [grunt-verb](https://github.com/assemble/grunt-verb) with your favorite JavaScript task runner.
 * Use [gulp-verb](https://github.com/assemble/gulp-verb) with your streaming build systems.
 
-## Contributing
+## Test
+{%= docs("test") %}
+
+## Contribute
 {%= docs("contribute") %}
 
 ## Author

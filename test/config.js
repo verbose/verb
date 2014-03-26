@@ -10,7 +10,6 @@ describe('options.config', function () {
     it('should extend the context with data from package.json', function () {
       var actual = verb.process();
       var expected = file.readJSONSync('test/expected/config-default.json');
-      actual = JSON.parse(JSON.stringify(actual));
       expect(actual.name).to.eql(expected.name);
     });
   });
@@ -26,7 +25,6 @@ describe('options.config', function () {
           },
         }
       });
-      actual = JSON.parse(JSON.stringify(actual));
       expect(actual.context.name).to.eql('Custom Config');
     });
   });

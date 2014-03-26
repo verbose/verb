@@ -9,10 +9,11 @@
 'use strict';
 
 var path = require('path');
-var configFile = require('config-file');
 var cwd = require('cwd');
 var file = require('fs-utils');
+var configFile = require('config-file');
 var relative = require('relative');
+var toc = require('marked-toc');
 var _ = require('lodash');
 var pkg = require('./package.json');
 
@@ -85,7 +86,7 @@ verb.verbrc = {};
  * @api {private}
  */
 
-verb.init = function (options) {
+verb._init = function (options) {
   options = options || {};
 
   if (verb.initalized) {
@@ -107,7 +108,7 @@ verb.init = function (options) {
 
 verb.process = function(src, options) {
   var opts = _.extend({toc: {maxDepth: 2}}, options);
-  verb.init(opts);
+  verb._init(opts);
 
   src = src || '';
 
@@ -171,7 +172,7 @@ verb.process = function(src, options) {
   var result = verb.utils.postProcess(rendered, opts);
 
   // Generate a TOC from <!-- toc --> after all content is included.
-  result = require('marked-toc').insert(result, opts.toc);
+  result = toc.insert(result, opts.toc);
 
   return {
     verb: verb,
@@ -192,7 +193,7 @@ verb.process = function(src, options) {
 
 verb.read = function(src, options) {
   options = options || {};
-  verb.init(options);
+  verb._init(options);
 
   verb.options = verb.options || {};
   verb.options.src = verb.cwd(src);
@@ -219,7 +220,7 @@ verb.read = function(src, options) {
 
 verb.copy = function(src, dest, options) {
   options = options || {};
-  verb.init(options);
+  verb._init(options);
 
   verb.options = verb.options || {};
   verb.options.src = verb.cwd(src);
@@ -264,7 +265,7 @@ verb.expand = function(src, dest, options) {
   var opts = _.extend({concat: false}, options);
   opts.glob = opts.glob || {};
 
-  verb.init(opts);
+  verb._init(opts);
 
   verb.options = verb.options || {};
   verb.options.dest = verb.cwd(dest);

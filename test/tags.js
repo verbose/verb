@@ -28,13 +28,4 @@ describe('Tags', function () {
       expect(actual.content).to.eql(String(year));
     });
   });
-
-
-  // no-op. this is a visual test for simplicity
-  describe('log:', function () {
-    it('should log a message in the console.', function () {
-      var actual = verb.process('{%= log("Name:", name) %}');
-      expect().to.eql(verb.log.warn("Name:", 'verb'));
-    });
-  });
 });

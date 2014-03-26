@@ -19,7 +19,6 @@ var opts = {
 };
 
 file.expand(['**/*.md'], opts).map(function(filepath) {
-  verb.init(opts);
   verb.options = verb.options || {};
 
   var name = file.base(filepath) + opts.ext;
