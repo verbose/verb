@@ -86,7 +86,7 @@ verb.verbrc = {};
  * @api {private}
  */
 
-verb._init = function (options) {
+verb.init = function (options) {
   options = options || {};
 
   if (verb.initalized) {
@@ -108,7 +108,7 @@ verb._init = function (options) {
 
 verb.process = function(src, options) {
   var opts = _.extend({toc: {maxDepth: 2}}, options);
-  verb._init(opts);
+  verb.init(opts);
 
   src = src || '';
 
@@ -193,7 +193,7 @@ verb.process = function(src, options) {
 
 verb.read = function(src, options) {
   options = options || {};
-  verb._init(options);
+  verb.init(options);
 
   verb.options = verb.options || {};
   verb.options.src = verb.cwd(src);
@@ -220,7 +220,7 @@ verb.read = function(src, options) {
 
 verb.copy = function(src, dest, options) {
   options = options || {};
-  verb._init(options);
+  verb.init(options);
 
   verb.options = verb.options || {};
   verb.options.src = verb.cwd(src);
@@ -265,7 +265,7 @@ verb.expand = function(src, dest, options) {
   var opts = _.extend({concat: false}, options);
   opts.glob = opts.glob || {};
 
-  verb._init(opts);
+  verb.init(opts);
 
   verb.options = verb.options || {};
   verb.options.dest = verb.cwd(dest);
