@@ -96,6 +96,9 @@ verb.init = function (options) {
   verb.initalized = true;
   verb.mode.verbose = options.verbose || verb.mode.verbose;
 
+  // Mixin methods from `change-case`
+  _.mixin(require('change-case'));
+
   // Extend the config with core and user-defined mixins
   _.fn = require('./lib/mixins.js');
   _.mixin(_.fn);
