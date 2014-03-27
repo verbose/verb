@@ -147,7 +147,7 @@ verb.process = function(src, options) {
   _.extend(verb.context, verb.data.init(opts));
 
   // Extract and parse front matter
-  verb.page  = verb.matter.init(src, opts);
+  verb.page  = verb.matter(src, opts);
   _.extend(verb.context, verb.page.context);
 
   // Exclusion patterns, to omit certain options from context
