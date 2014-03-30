@@ -3,9 +3,9 @@ Verb's CLI makes kickstarting new markdown documentation a breeze.
 For example, to [generate a readme](https://github.com/assemble/generator-verb) for your project just add `docs/README.tmpl.md` with the following:
 
 ```
-# [%= name %]
+# {%%= name %}
 
-> [%= description %]
+> {%%= description %}
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem
 accusantium doloremque laudantium, totam rem aperiam.
@@ -18,17 +18,17 @@ Need more than simple variables, like `date()`? Use one of Verb's [built-in tags
 
 ```
 ## License
-Copyright (c) [%= date('YYYY') %] [%= author.name %], contributors.
-Released under the [%= license.type %] license
+Copyright (c) {%%= date('YYYY') %} {%%= author.name %}, contributors.
+Released under the {%%= license.type %} license
 ```
 
 **[Includes](./docs/learn/tags.md#include)**
 
-Easily include other documents. To use any markdown file in the `docs/` directory just use [`[%= docs() %]`](./docs/learn/tags.md#docs):
+Easily include other documents. To use any markdown file in the `docs/` directory just use [`{%%= docs() %}`](./docs/learn/tags.md#docs):
 
 ```
 ## Contribute
-[%= docs("contributing") %]
+{%%= docs("contributing") %}
 ```
 
 That's it! [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example.

@@ -26,13 +26,13 @@ describe('Verb filters', function () {
 
   describe('meta.authors:', function () {
     it('should return the name of the first author from the AUTHORS file.', function () {
-      var actual = verb.process('{%= authors[0].name %}');
+      var actual = verb.process('{%= authors[0].name %}', {authors: 'test/fixtures/AUTHORS'});
       var expected = 'Jon Schlinkert';
       expect(actual.content).to.eql(expected);
     });
 
     it('should return the name of the second author from the AUTHORS file.', function () {
-      var actual = verb.process('{%= authors[1].name %}');
+      var actual = verb.process('{%= authors[1].name %}', {authors: 'test/fixtures/AUTHORS'});
       var expected = 'Brian Woodward';
       expect(actual.content).to.eql(expected);
     });
@@ -41,13 +41,13 @@ describe('Verb filters', function () {
   describe('process template filters:', function () {
     it('should return the authors from the config or the "AUTHORS" file.', function () {
       var tmpl = '{% _.each(authors, function(author) { %} + [{%= author.name %}]({%= author.url %})\n {% }); %}';
-      var actual = verb.process(tmpl);
+      var actual = verb.process(tmpl, {authors: 'test/fixtures/AUTHORS'});
       var expected = '+ [Jon Schlinkert](https://github.com/jonschlinkert)\n  + [Brian Woodward](https://github.com/doowb)\n ';
       expect(actual.content).to.eql(expected);
     });
 
     it('should pluck the names of the authors from the config or the "AUTHORS" file.', function () {
-      var actual = verb.process('{%= _.pluck(authors, "name") %}');
+      var actual = verb.process('{%= _.pluck(authors, "name") %}', {authors: 'test/fixtures/AUTHORS'});
       var expected = 'Jon Schlinkert,Brian Woodward';
       expect(actual.content).to.eql(expected);
     });

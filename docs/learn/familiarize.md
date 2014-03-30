@@ -17,8 +17,6 @@ Verb has an extensive API and tools for building plugins, custom tags and filter
 Once installed globally, running `verb` at the command line will read  any files in the `./docs` directory of your project. This is easily customized
 
 
-
-
 ## How does Verb work?
 
 Upon running the `docs` command, unless instructed to do otherwise Verb will attempt to build any markdown templates found in the `docs/` directory of your project, using the data from project's package.json as context.
@@ -65,7 +63,7 @@ For example:
 Add some markdown files to the `./docs` directory of your project and run `verb` to [generate your documentation](#core-concepts).
 
 
-_(TODO: add screen shots showing how the `docs` folder is used by the `[%= docs() %]` tag, and how includes come from node modules, etc)_
+_(TODO: add screen shots showing how the `docs` folder is used by the `{%%= docs() %}` tag, and how includes come from node modules, etc)_
 
 Examples:
 

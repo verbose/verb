@@ -40,4 +40,4 @@ Type: `String`
 
 Default: `.md`
 
-The file extension to use for all includes. In other words, `[%= docs() %]`, `[%= include() %]`, `[%= raw() %]`, etc. all expect source files to have a `.md` extension.
+The file extension to use for all includes. In other words, `{%%= docs() %}`, `{%%= include() %}`, `{%%= raw() %}`, etc. all expect source files to have a `.md` extension.

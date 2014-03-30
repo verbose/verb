@@ -21,7 +21,7 @@ Use the following syntax wherever you want the TOC:
 Use the following syntax wherever you want the TOC:
 
 ```
-[%= toc() %]
+{%%= toc() %}
 ```
 
 * When no arguments are passed a TOC is generated for the current page only
@@ -34,11 +34,11 @@ Use the following syntax wherever you want the TOC:
 Use the following syntax wherever you want the TOC:
 
 ```
-[%= toc("*.md") %]
+{%%= toc("*.md") %}
 ```
 
 * Multiple pages
-* Same syntax as `[%= toc() %]` but with a filepath or globbing patterns defined.
+* Same syntax as `{%%= toc() %}` but with a filepath or globbing patterns defined.
 * Generates a complete table of contents that includes every section of every page defined
 * Each section of the generated TOC begins with a heading that is created from the name of each file
 * Adds relative links to each file

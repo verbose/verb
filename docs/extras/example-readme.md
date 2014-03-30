@@ -1,19 +1,19 @@
-# [%= name %]
+# {%%= name %}
 
-> [%= description %]
+> {%%= description %}
 
 ## Getting started
-Install with [npm](npmjs.org) `npm i -g [%= name %] --save-dev`
+Install with [npm](npmjs.org) `npm i -g {%%= name %} --save-dev`
 
 ## Options
-[%= docs("options") %]
+{%%= docs("options") %}
 
 ## Examples
-[%= docs("examples") %]
+{%%= docs("examples") %}
 
 ## Author
-+ [%= author.name %]
++ {%%= author.name %}
 
 ## License
-[%= copyright() %]
-[%= license() %]
+{%%= copyright() %}
+{%%= license() %}

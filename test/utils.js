@@ -14,7 +14,7 @@ describe('utils.adjust.headings', function () {
 
   describe('when a template tag is escaped', function () {
     it('should not be evaluated by Lo-Dash, and unescaped in the output.', function () {
-      var actual = verb.process('[%= name %]');
+      var actual = verb.process('{%%= name %}');
       var expected = '{%= name %}';
       expect(actual.content).to.eql(expected);
     });
@@ -57,15 +57,15 @@ describe('utils.adjust.headings', function () {
         '## Document',
         '',
         '```js',
-        '# [%= name %]',
+        '# {%%= name %}',
         '',
-        '> [%= description %]',
+        '> {%%= description %}',
         '',
         '## Overview',
-        '[%= docs("overview.md") %]',
+        '{%%= docs("overview.md") %}',
         '',
         '## Options',
-        '[%= docs("options.md") %]',
+        '{%%= docs("options.md") %}',
         '```'
       ].join('\n');
 
@@ -75,15 +75,15 @@ describe('utils.adjust.headings', function () {
         '### Document',
         '',
         '```js',
-        '# [%= name %]',
+        '# {%%= name %}',
         '',
-        '> [%= description %]',
+        '> {%%= description %}',
         '',
         '## Overview',
-        '[%= docs("overview.md") %]',
+        '{%%= docs("overview.md") %}',
         '',
         '## Options',
-        '[%= docs("options.md") %]',
+        '{%%= docs("options.md") %}',
         '```'
       ].join('\n');
 
@@ -129,7 +129,7 @@ describe('utils.authors', function() {
           url: 'https://github.com/doowb'
         }
       ];
-      var actual = utils.authors();
+      var actual = utils.authors('test/fixtures/AUTHORS');
       expect(actual).to.eql(expected);
     });
 

@@ -5,13 +5,11 @@
 * Get [verb-cli](https://github.com/assemble/verb-cli) to use Verb globally from the command line
 * Get [generator-verb](https://github.com/assemble/generator-verb) to add documentation templates, or initialize docs for new projects
 
+## Install
+{%= include('install', {save: '--save-dev'}) %}
+
 ## Meet Verb
 {%= docs('meet-verb') %}
-
-## Install
-{%= include('install') %}
-
-Be sure to install [Verb](https://github.com/assemble/verb) locally in projects that use Verb.
 
 ## Customize
 
@@ -28,6 +26,9 @@ Verb is easy to extend, here are some examples ([verb-cli](https://github.com/as
 
 ## Test
 {%= docs("test") %}
+
+## Release history
+{%= changelog() %}
 
 ## Contribute
 {%= docs("contribute") %}

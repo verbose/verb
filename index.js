@@ -6,23 +6,19 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
-var path = require('path');
-var cwd = require('cwd');
-var file = require('fs-utils');
-var configFile = require('config-file');
-var relative = require('relative');
-var toc = require('marked-toc');
-var _ = require('lodash');
-var pkg = require('./package.json');
+const cwd = require('cwd');
+const file = require('fs-utils');
+const configFile = require('config-file');
+const relative = require('relative');
+const toc = require('marked-toc');
+const _ = require('lodash');
 
 
 /**
  * verb
  */
 
-var verb = module.exports = {};
+const verb = module.exports = {};
 
 /**
  * Initialize API
@@ -31,6 +27,7 @@ var verb = module.exports = {};
 verb.cwd          = cwd;
 verb.base         = cwd;
 verb.docs         = verb.cwd('docs');
+console.log(verb.docs);
 verb.ext          = '.md';
 verb.file         = _.defaults(require('./lib/file'), file);
 
@@ -110,51 +107,53 @@ verb.init = function (options) {
  */
 
 verb.process = function(src, options) {
-  var opts = _.extend({toc: {maxDepth: 2}}, options);
-  verb.init(opts);
+  options = _.extend({toc: {maxDepth: 2}}, options);
+  _.extend(verb.options, options);
 
-  src = src || '';
+  var delims = verb.utils.delims;
+  src = delims.escape(src || '');
+
+  verb.init(options);
 
   // Add runtime config
   var runtimeConfig = {};
-  if(opts.verbrc) {
-    runtimeConfig = configFile.load(cwd(opts.verbrc));
+  if(options.verbrc) {
+    runtimeConfig = configFile.load(cwd(options.verbrc));
   } else {
     runtimeConfig = verb.verbrc;
   }
+  _.extend(options, runtimeConfig);
 
-  _.extend(opts, runtimeConfig);
-
-  verb.options = opts;
-
-  verb.config = require('./lib/config').init(opts.config);
+  verb.config = require('./lib/config').init(options.config);
+  // Copy the `config` object
   verb.context = verb.config || {};
+  // Delete the `context.config` property
   delete verb.context.config;
 
   // Extend `verb`
   verb.layout = require('./lib/layout')(verb);
 
   // Build up the context
-  _.extend(verb.context, opts);
-  _.extend(verb.context, opts.metadata || {});
-  _.extend(verb.context, require('./lib/data').init(opts));
+  _.extend(verb.context, options);
+  _.extend(verb.context, options.metadata || {});
+  _.extend(verb.context, require('./lib/data').init(options));
 
   // Template settings
-  var settings = opts.settings || {};
+  var settings = options.settings || {};
 
   // Initialize Lo-Dash tags and filters
   _.extend(verb.context, verb.tags.init(verb));
   _.extend(verb.context, verb.filters.init(verb));
 
   // Initialize `options.data`
-  _.extend(verb.context, verb.data.init(opts));
+  _.extend(verb.context, verb.data.init(options));
 
   // Extract and parse front matter
-  verb.page  = verb.matter(src, opts);
+  verb.page  = verb.matter(src, options);
   _.extend(verb.context, verb.page.context);
 
   // Exclusion patterns, to omit certain options from context
-  verb.context = verb.exclusions(verb.context, opts);
+  verb.context = verb.exclusions(verb.context, options);
   _.extend(verb.context, {runner: verb.runner});
 
    // Initialize plugins
@@ -172,10 +171,10 @@ verb.process = function(src, options) {
   while (!renderDone) {
     process.nextTick();
   }
-  var result = verb.utils.postProcess(rendered, opts);
+  var result = verb.utils.postProcess(rendered, options);
 
   // Generate a TOC from <!-- toc --> after all content is included.
-  result = toc.insert(result, opts.toc);
+  result = toc.insert(result, options.toc);
 
   return {
     verb: verb,

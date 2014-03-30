@@ -1,10 +1,10 @@
-Fields like `[%= name %]` and `[%= description %]` will be processed using data from your project's package.json. But sometimes you need more than that.
+Fields like `{%%= name %}` and `{%%= description %}` will be processed using data from your project's package.json. But sometimes you need more than that.
 
 Here are some things you can do with Verb:
 
-* Verb uses moment.js for `[%= date() %]`
-* `[%= docs() %]` will include a file from the `docs` directory of your project (must have a `.md` extension)
-* `[%= include() %]` like `docs`, but includes a "generic" file from [verb-readme-includes](https://github.com/assemble/verb-readme-includes)
+* Verb uses moment.js for `{%%= date() %}`
+* `{%%= docs() %}` will include a file from the `docs` directory of your project (must have a `.md` extension)
+* `{%%= include() %}` like `docs`, but includes a "generic" file from [verb-readme-includes](https://github.com/assemble/verb-readme-includes)
 
 #### Last, make sure you **use the correct variables** for your project!!
 
@@ -15,7 +15,7 @@ For example, if `author` if formatted as a string, like this:
   "author": "Jon Schlinkert"
 }
 ```
-then use `[%= author %]`, not `[%= author.name %]`.
+then use `{%%= author %}`, not `{%%= author.name %}`.
 
 
 A few things to know about Verb:

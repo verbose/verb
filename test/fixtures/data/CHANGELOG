@@ -10,7 +10,7 @@ v0.3.0:
 v0.2.4:
   date: 2013-11-08
   changes:
-    - "Adds table of contents generation. Just use `[%= toc %]` where you want it to go."
+    - "Adds table of contents generation. Just use `{%%= toc %}` where you want it to go."
 v0.2.2:
   date: 2013-11-03
   changes:
