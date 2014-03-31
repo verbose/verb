@@ -2,8 +2,8 @@
 
 Verb was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:
 
-* Use [Assemble][] to build components, sites, blogs and other projects where HTML is the end result.
 * Use Verb to generate and maintain markdown documentation for your [Assemble][] (or non-Assemble) projects.
+* Use [Assemble][] to generate a website from your Verb docs! Assemble is great for building components, sites, blogs and other projects where HTML is the end result.
 
 ### Comparison
 

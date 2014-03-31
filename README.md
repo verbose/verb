@@ -2,6 +2,7 @@
 
 > A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate project documentation, using simple markdown templates, with zero configuration required.
 
+* Use Verb to generate and maintain markdown documentation for your projects. Use [Assemble](https://github.com/assemble/assemble) to generate a website from your Verb docs!
 * Get [verb-cli](https://github.com/assemble/verb-cli) to use Verb globally from the command line
 * Get [generator-verb](https://github.com/assemble/generator-verb) to add documentation templates, or initialize docs for new projects
 * Read [the documentation](./DOCS.md) to learn more about Verb.
@@ -56,7 +57,6 @@ _(Verb builds its own docs (WIP) too, check progress in the [docs directory](./d
 
 
 ## Customize
-
 Verb is easy to extend, here are some examples ([verb-cli](https://github.com/assemble/verb-cli) will automatically use these):
 
 * [example verbfile](https://gist.github.com/jonschlinkert/9685280), with custom `src`, `dest` and metadata.
@@ -64,7 +64,6 @@ Verb is easy to extend, here are some examples ([verb-cli](https://github.com/as
 * [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
 
 ## Get some Verb in your toolchain
-
 * Use [grunt-verb](https://github.com/assemble/grunt-verb) with your favorite JavaScript task runner.
 * Use [gulp-verb](https://github.com/assemble/gulp-verb) with your streaming build systems.
 
