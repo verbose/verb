@@ -1,6 +1,6 @@
 # verb [![NPM version](https://badge.fury.io/js/verb.png)](http://badge.fury.io/js/verb)
 
-> A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate project documentation, using simple markdown templates, with zero configuration required.
+> A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate docs, using simple markdown templates, with zero configuration required.
 
 * Use Verb to generate and maintain markdown documentation for your projects. Use [Assemble](https://github.com/assemble/assemble) to generate a website from your Verb docs!
 * Get [verb-cli](https://github.com/assemble/verb-cli) to use Verb globally from the command line
