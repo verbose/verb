@@ -37,4 +37,6 @@ Verb trieds to give users an easy way to get started, using hard-coded conventio
 Here is how Verb makes decisions, we suggest you do the same with your Verb-related projects (and probably other ones too!):
 
 * Choose a specific "first experience" for your users.
-*
+* Make it basic, opinionated and approachable
+
+_(TODO)_

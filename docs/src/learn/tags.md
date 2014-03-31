@@ -400,7 +400,7 @@ Results in something like:
 
 Also see [Generating a TOC](#generating-a-toc).
 
-### Experimental tags
+## Experimental tags
 
 These tags can be used, but they require more testing in different scenarios before they can be considered stable:
 

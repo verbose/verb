@@ -27,7 +27,7 @@
     * [moment](#moment)
     * [raw](#raw)
     * [toc](#toc)
-    * [Experimental tags](#experimental-tags)
+  * [Experimental tags](#experimental-tags)
     * [comments](#comments)
     * [authors](#authors)
     * [Custom tags](#custom-tags)
@@ -534,7 +534,7 @@ Results in something like:
 
 Also see [Generating a TOC](#generating-a-toc).
 
-#### Experimental tags
+### Experimental tags
 
 These tags can be used, but they require more testing in different scenarios before they can be considered stable:
 

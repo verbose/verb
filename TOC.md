@@ -110,7 +110,7 @@
   * [moment](docs/src/learn/tags.md/#moment)
   * [raw](docs/src/learn/tags.md/#raw)
   * [toc](docs/src/learn/tags.md/#toc)
-  * [Experimental tags](docs/src/learn/tags.md/#experimental-tags)
+* [Experimental tags](docs/src/learn/tags.md/#experimental-tags)
   * [comments](docs/src/learn/tags.md/#comments)
   * [authors](docs/src/learn/tags.md/#authors)
   * [Custom tags](docs/src/learn/tags.md/#custom-tags)
