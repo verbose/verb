@@ -9,6 +9,9 @@ toc:
 ## Install
 {%= include('install', {save: '--save-dev'}) %}
 
+## Config files
+{%= docs('config-files') %}
+
 ## Features
 {%= docs('features') %}
 

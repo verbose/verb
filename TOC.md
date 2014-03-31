@@ -36,6 +36,10 @@
     * [First Experience](docs/src/develop/guidelines.md/#first-experience)
 
 
+## [Config-Files](docs/src/learn/config-files.md)
+
+
+
 ## [Familiarize](docs/src/learn/familiarize.md)
 
 * [Get to know Verb](docs/src/learn/familiarize.md/#get-to-know-verb)
