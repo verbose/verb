@@ -62,7 +62,7 @@ Verb is easy to extend, here are some examples ([verb-cli](https://github.com/as
 * [example verbfile with logging](https://gist.github.com/jonschlinkert/9685144)
 * [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
 
-## Get some verb in your toolchain
+## Get some Verb in your toolchain
 
 * Use [grunt-verb](https://github.com/assemble/grunt-verb) with your favorite JavaScript task runner.
 * Use [gulp-verb](https://github.com/assemble/gulp-verb) with your streaming build systems.

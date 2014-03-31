@@ -1,4 +1,10 @@
+---
+toc:
+  maxDepth: 3
+---
 # Documentation for {%= name %}
+
+<!-- toc -->
 
 ## Install
 {%= include('install', {save: '--save-dev'}) %}

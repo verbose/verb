@@ -1,5 +1,33 @@
 # Documentation for verb
 
+<!-- toc -->
+* [Install](#install)
+* [Tags](#tags)
+  * [Built-in tags](#built-in-tags)
+    * [badge](#badge)
+    * [changelog()](#changelog)
+    * [contrib( filepath )](#contrib-filepath)
+    * [copyright()](#copyright)
+    * [date( format )](#date-format)
+    * [docs( filepath, options )](#docs-filepath-options)
+    * [getAuthors()](#getauthors)
+    * [html( filepath )](#html-filepath)
+    * [include( filepath, options )](#include-filepath-options)
+    * [license()](#license)
+    * [log( string )](#log-string)
+    * [methods( filepath, options )](#methods-filepath-options)
+    * [moment](#moment)
+    * [raw( filepath )](#raw-filepath)
+    * [toc( filepath )](#toc-filepath)
+    * [Experimental tags](#experimental-tags)
+    * [comments( filepath )](#comments-filepath)
+    * [authors](#authors)
+  * [Custom tags](#custom-tags)
+    * [Single page: code comment](#single-page-code-comment)
+    * [Single page: `toc()` tag](#single-page-toc-tag)
+    * [Multiple pages: `toc()` tag](#multiple-pages-toc-tag)
+
+<!-- toc stop -->
 ## Install
 Install with [npm](npmjs.org):
 
@@ -445,12 +473,7 @@ Use the following syntax wherever you want the TOC:
 
 ```
 <!-- toc -->
-* [Install](#install)
-* [Tags](#tags)
-  * [Built-in tags](#built-in-tags)
-  * [Custom tags](#custom-tags)
-
-<!-- toc stop -->```
+```
 
 * Current page only
 * Generate the TOC after everything is rendered.

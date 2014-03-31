@@ -27,7 +27,6 @@ const verb = module.exports = {};
 verb.cwd          = cwd;
 verb.base         = cwd;
 verb.docs         = verb.cwd('docs');
-console.log(verb.docs);
 verb.ext          = '.md';
 verb.file         = _.defaults(require('./lib/file'), file);
 
@@ -175,7 +174,7 @@ verb.process = function(src, options) {
   var result = verb.utils.postProcess(rendered, options);
 
   // Generate a TOC from <!-- toc --> after all content is included.
-  result = toc.insert(result, options.toc);
+  result = toc.insert(result, _.extend(options.toc, verb.context.toc));
 
   return {
     verb: verb,
