@@ -1,5 +1,5 @@
 
-Install globally with [npm](npmjs.org):
+Install with [npm](npmjs.org):
 
 ```bash
 npm i  {%= name %} --save-dev
