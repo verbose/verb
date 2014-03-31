@@ -2,31 +2,55 @@
 
 <!-- toc -->
 * [Install](#install)
+* [Features](#features)
+* [Options](#options)
+  * [metadata](#metadata)
+  * [variable](#variable)
+  * [namespace](#namespace)
+  * [omit](#omit)
+  * [ext](#ext)
 * [Tags](#tags)
   * [Built-in tags](#built-in-tags)
     * [badge](#badge)
-    * [changelog()](#changelog)
-    * [contrib( filepath )](#contrib-filepath)
-    * [copyright()](#copyright)
-    * [date( format )](#date-format)
-    * [docs( filepath, options )](#docs-filepath-options)
-    * [getAuthors()](#getauthors)
-    * [html( filepath )](#html-filepath)
-    * [include( filepath, options )](#include-filepath-options)
-    * [license()](#license)
-    * [log( string )](#log-string)
-    * [methods( filepath, options )](#methods-filepath-options)
+    * [changelog](#changelog)
+    * [contrib](#contrib)
+    * [copyright](#copyright)
+    * [date](#date)
+    * [docs](#docs)
+    * [getAuthors](#getauthors)
+    * [html](#html)
+    * [include](#include)
+    * [license](#license)
+    * [log](#log)
+    * [methods](#methods)
     * [moment](#moment)
-    * [raw( filepath )](#raw-filepath)
-    * [toc( filepath )](#toc-filepath)
+    * [raw](#raw)
+    * [toc](#toc)
     * [Experimental tags](#experimental-tags)
-    * [comments( filepath )](#comments-filepath)
+    * [comments](#comments)
     * [authors](#authors)
-  * [Custom tags](#custom-tags)
+    * [Custom tags](#custom-tags)
+  * [Single page: code comment](#single-page-code-comment)
+  * [Single page: `toc()` tag](#single-page-toc-tag)
+  * [Multiple pages: `toc()` tag](#multiple-pages-toc-tag)
+    * [maxDepth](#maxdepth)
+* [Front matter](#front-matter)
+  * [Valid Languages](#valid-languages)
+* [API](#api)
+    * [base](#base)
+    * [copy](#copy)
+    * [cwd](#cwd)
+    * [exclusions](#exclusions)
+    * [log](#log)
+    * [process](#process)
+    * [read](#read)
+    * [template](#template)
 * [verb.runner](#verbrunner)
-    * [Single page: code comment](#single-page-code-comment)
-    * [Single page: `toc()` tag](#single-page-toc-tag)
-    * [Multiple pages: `toc()` tag](#multiple-pages-toc-tag)
+* [FAQ](#faq)
+  * [FAQ](#faq)
+* [Comparison to Assemble](#comparison-to-assemble)
+  * [How does Verb differ from Assemble?](#how-does-verb-differ-from-assemble)
+    * [Comparison](#comparison)
 
 <!-- toc stop -->
 ## Install
@@ -35,6 +59,67 @@ Install with [npm](npmjs.org):
 ```bash
 npm i verb --save
 ```
+
+## Features
+Some of the things Verb has to offer:
+
+* Lo-Dash templates
+* Built-in and cust mixins can be used in templates
+* The full power of JavaScript
+* > 25 Tags and filters
+* Uses [gray-matter][gray-matter] to support front matter formatted as YAML Coffee-Script, JSON or TOML.
+* Easily add a **Table of Contents** to any file
+* Generate a **multi-file Table of Contents**, along with relative links to each file AND section
+* Comment parsing (basic)
+* Extensive API
+* Logging _in your templates!!!_. You can add `{%= log('FOO!') %}` to help with debugging templates.
+* Lots more!
+
+[gray-matter]: https://github.com/assemble/gray-matter
+
+## Options
+### metadata
+Type: `object|array|string`
+
+Default: `undefined`
+
+* `string`: When defined as a string,
+
+### variable
+Type: `string`
+
+Default: `undefined`
+
+Lo-Dash opts...
+
+### namespace
+Type: `boolean|string`
+
+Default: `undefined` (options: `true`|`"only"`)
+
+When `namespace` defined, an object is created for each data file, where the top level property on the object is the name of the file itself, and the data contained within the file is extended into that object.
+
+<!-- [See examples](#namespacing). -->
+
+### omit
+
+Omit properties from the context.
+
+Type: `Array`
+
+Default: `[]`
+
+Returns: `Object`
+
+Useful if properties are added via options, but should not be on the context.
+
+### ext
+
+Type: `String`
+
+Default: `.md`
+
+The file extension to use for all includes. In other words, `{%= docs() %}`, `{%= include() %}`, `{%= raw() %}`, etc. all expect source files to have a `.md` extension.
 
 ## Tags
 > Built-in tags provided by Verb
@@ -55,7 +140,11 @@ Example:
 {%= badge() %}
 ```
 
-#### changelog()
+#### changelog
+
+```
+changelog()
+```
 
 Automatically use data from a valid, YAML-formatted [CHANGELOG](./CHANGELOG) file in the root of a project to generate a markdown changelog.
 
@@ -114,7 +203,11 @@ JSON format:
 }
 ```
 
-#### contrib( filepath )
+#### contrib
+
+```
+contrib( filepath )
+```
 
 Used by the Assemble core team, includes a template from [verb-contrib-templates](https://github.com/assemble/verb-contrib-templates).
 
@@ -138,7 +231,11 @@ Results in:
 + [twitter/doowb](http://twitter.com/jonschlinkert)
 ```
 
-#### copyright()
+#### copyright
+
+```
+copyright()
+```
 
 Return a copyright statement, automatically populated with data from package.json.
 
@@ -174,7 +271,11 @@ Results in:
 Copyright (c) 2010-2014 Jon Schlinkert, contributors.
 ```
 
-#### date( format )
+#### date
+
+```
+date( format )
+```
 
 Format a date using [moment.js](momentjs.com/docs/)
 
@@ -194,7 +295,11 @@ Returns
 
 Consult the [moment.js documentation](momentjs.com/docs/) for the full list of available options.
 
-#### docs( filepath, options )
+#### docs
+
+```
+docs( filepath, options )
+```
 
 **filepath**
 
@@ -224,7 +329,11 @@ npm i  {%= name %} --save-dev
 [Resulting in this](./README.md/#install).
 
 
-#### getAuthors()
+#### getAuthors
+
+```
+getAuthors()
+```
 
 _(TODO)_
 
@@ -234,7 +343,11 @@ Example:
 {%= getAuthors() %}
 ```
 
-#### html( filepath )
+#### html
+
+```
+html( filepath )
+```
 
 _(TODO)_
 
@@ -244,7 +357,11 @@ Example:
 {%= html() %}
 ```
 
-#### include( filepath, options )
+#### include
+
+```
+include( filepath, options )
+```
 
 Include a _generic_ template from [verb-readme-includes](https://github.com/assemble/verb-readme-includes). The `include` tag is great for allowing docs to be reused across multiple projects, or just to organize.
 
@@ -260,7 +377,11 @@ _This file was generated by [verb](https://github.com/assemble/verb) on March 22
 ```
 _(Note that the name and url can be automatically updated by the [current runner](#verb-runner))._
 
-#### license()
+#### license
+
+```
+license()
+```
 
 Return a "license" statement, populated with data from package.json.
 
@@ -276,7 +397,11 @@ Returns:
 Released under the MIT license
 ```
 
-#### log( string )
+#### log
+
+```
+log( string )
+```
 
 _(TODO)_
 
@@ -286,7 +411,11 @@ Usage:
 {%= log() %}
 ```
 
-#### methods( filepath, options )
+#### methods
+
+```
+methods( filepath, options )
+```
 
 Params:
 
@@ -330,6 +459,10 @@ Visit [list-methods](https://github.com/jonschlinkert/list-methods) to see all a
 
 #### moment
 
+```
+moment()
+```
+
 _(TODO)_
 
 Usage:
@@ -338,7 +471,11 @@ Usage:
 {%= moment() %}
 ```
 
-#### raw( filepath )
+#### raw
+
+```
+raw( filepath )
+```
 
 _(TODO)_
 
@@ -352,7 +489,11 @@ Usage:
 {%= raw() %}
 ```
 
-#### toc( filepath )
+#### toc
+
+```
+toc( filepath )
+```
 
 Params:
 
@@ -388,7 +529,11 @@ Also see [Generating a TOC](#generating-a-toc).
 These tags can be used, but they require more testing in different scenarios before they can be considered stable:
 
 
-#### comments( filepath )
+#### comments
+
+```
+comments( filepath )
+```
 
 _(TODO)_
 
@@ -424,7 +569,7 @@ Results in:
 ]
 ```
 
-### Custom tags
+#### Custom tags
 
 Verb "tags" are just JavaScript functions processed by lodash.template. So you have the power of straight JavaScript in your templates, with the ease-of-use and metadata supplied by Verb. This example shows how easy it is to create a custom tag for Verb.
 
@@ -464,30 +609,10 @@ resulting in:
 Bar
 ```
 
-## verb.runner
-
-The name of the tool currently running Verb. Used in certain templates to inform the user of which tool was used to build their documentation, for example:
-
-```markdown
-_This file was generated by [verb-cli](https://github.com/assemble/verb-cli) on March 31, 2014._
-```
-
-Usage:
-
-```js
-var verb = require('verb');
-verb.runner = {
-  name: 'Verb',
-  url: 'https://github.com/assemble/verb'
-};
-```
-
-
-
 ## Generating a TOC
 > A few different options are available for creating a Table of Contents with Verb.
 
-#### Single page: code comment
+### Single page: code comment
 
 Use the following syntax wherever you want the TOC:
 
@@ -501,7 +626,7 @@ Use the following syntax wherever you want the TOC:
 * Leaves code comments behind marking the beginning and end of the TOC, but they won't be visible to viewers.
 
 
-#### Single page: `toc()` tag
+### Single page: `toc()` tag
 
 Use the following syntax wherever you want the TOC:
 
@@ -514,7 +639,7 @@ Use the following syntax wherever you want the TOC:
 * Unlike code comments, this doesn't "leave anything behind" after the build.
 * But, it _does not recurse into includes_, so only the _current, top-level page_ will be used to generate the TOC.
 
-#### Multiple pages: `toc()` tag
+### Multiple pages: `toc()` tag
 
 Use the following syntax wherever you want the TOC:
 
@@ -530,17 +655,154 @@ Use the following syntax wherever you want the TOC:
 * Adds relative links to each section of each file.
 
 
-#### TOC Options
+### TOC Options
 
 Verb uses [marked-toc](https://github.com/jonschlinkert/marked-toc) for generating tables of contents. Only options that have been changed from the marked-toc defaults are listed here. _Please visit [marked-toc](https://github.com/jonschlinkert/marked-toc) for additional documentation and to see the complist list of available options.
 
-##### maxDepth
+#### maxDepth
 
 Type: `number`
 
 Default: `2`
 
 The number of levels of list items to generate.
+
+## Front matter
+> Verb will make any data from valid front matter available to your templates
+
+### Valid Languages
+
+Verb uses [gray-matter](https://github.com/assemble/gray-matter) for parsing front matter, so any format allowed by that library should work, including:
+
+* JSON
+* YAML
+* TOML
+* Coffee-script
+
+Please see the [gray-matter](https://github.com/assemble/gray-matter) project for documentation and to see all available options.
+
+## API
+_(TODO)_
+
+#### base
+Type: `undefined`
+
+Default: `undefined`
+
+#### copy
+Type: `undefined`
+
+Default: `undefined`
+
+#### cwd
+Type: `undefined`
+
+Default: `undefined`
+
+#### exclusions
+Type: `undefined`
+
+Default: `undefined`
+
+#### log
+Type: `undefined`
+
+Default: `undefined`
+
+#### process
+Type: `undefined`
+
+Default: `undefined`
+
+#### read
+Type: `undefined`
+
+Default: `undefined`
+
+#### template
+Type: `undefined`
+
+Default: `undefined`
+
+
+
+## verb.runner
+Allows metadata about tool currently running Verb to be used in templates (such as [grunt-verb][grunt], [gulp-verb][gulp], [verb-cli][cli], or a custom runner).
+
+Type: `object`
+
+Default:
+
+```js
+verb.runner = {
+  name: 'Verb',
+  url: 'https://github.com/assemble/verb'
+};
+```
+
+For example, here is [verb-cli][cli]'s metadata for' `runner.name` and `runner.url`:
+
+```js
+verb.runner = {
+  name: "verb-cli",
+  url: 'https://github.com/assemble/verb-cli'
+};
+```
+
+Used like this:
+
+
+```markdown
+_This file was generated by [{%= runner.name %}]({%= runner.url %}) on {%= date() %}._
+```
+
+It would render to:
+
+<!-- don't escape these templates! -->
+
+```markdown
+_This file was generated by [verb-cli](https://github.com/assemble/verb-cli) on March 31, 2014._
+```
+
+[cli]: https://github.com/assemble/verb-cli "verb-cli: the command line interface for Verb."
+[grunt]: https://github.com/assemble/grunt-verb "grunt-verb: the Grunt plugin for Verb."
+[gulp]: https://github.com/assemble/gulp-verb "gulp-verb: the gulp plugin for Verb."
+
+## FAQ
+### FAQ
+
+* When Lo-dash templates shouldn't be evaluated they be escaped by using square brackets, `{%= foo %}`, (like for code examples). Verb converts these to the actual delimiters in the result.
+* Verb's goal is to _simply work_ without custom programming, but you can fully extend Verb's core with plugins, add custom tags, or use a Verbfile for advanced configuration needs.
+* **Why does Verb use the `{%= foo %}` syntax for templates?**: We do this to avoid collision with the more common, default syntax for Lo-Dash templates, `<%= foo %>`. Of course, nothing if foolproof, so if the default delimiters don't work for your needs you can customize them in the options.
+
+## Comparison to Assemble
+### How does Verb differ from Assemble?
+
+Verb was specifically created to make it easier to manage documentation for GitHub projects. In a nutshell:
+
+* Use [Assemble][] to build components, sites, blogs and other projects where HTML is the end result.
+* Use Verb to generate and maintain markdown documentation for your [Assemble][] (or non-Assemble) projects.
+
+#### Comparison
+
+While both engines can be extended to accomplish most of the following features, this table describes what you should expect from each _out-of-the-box_:
+
+**Feature** | **[Assemble][]** | **Verb**
+------- | -------- | ------
+**Summary** | Build HTML projects from modular components and data | Generate markdown documentation
+**Focus** | Power, granular access to context, components | Speed, ease-of-use, command-line
+**Template Engine** | Handlebars by default, any template engine can be added. | Lo-Dash
+**Extensions** | Plugins, Lo-Dash Mixins, Helpers, Filters, Tags <sup>[1](#1-depends-on-the-template-engine)</sup> | Plugins, Lo-Dash Mixins, Filters, Tags
+**Static Blogs** | Yes | No
+**Static Sites** | Yes | No
+**HTML Documentation** | Yes | Limited.
+**Markdown Documentation** | Limited | Yes
+**Markdown to HTML** | Yes | Limited
+
+###### <sup>1</sup> Depends on the template engine.
+
+[Assemble]: https://github.com/assemble/assemble
+[gray-matter]: https://github.com/assemble/gray-matter
 
 ***
 

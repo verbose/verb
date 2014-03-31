@@ -1,19 +1,15 @@
-## Features
+Some of the things Verb has to offer:
 
-* Lo-Dash templates and mixins
+* Lo-Dash templates
+* Built-in and cust mixins can be used in templates
 * The full power of JavaScript
-* Filters
-* Tags
-* Partial Caching
-* Mixins
-* Templates can be used directly, cached as JavaScript, and/or via `require` statements
-* Uses [gray-matter][] to support both YAML Front Matter and Coffee Front Matter
+* > 25 Tags and filters
+* Uses [gray-matter][gray-matter] to support front matter formatted as YAML Coffee-Script, JSON or TOML.
 * Easily add a **Table of Contents** to any file
 * Generate a **multi-file Table of Contents**, along with relative links to each file AND section
 * Comment parsing (basic)
 * Extensive API
-* File-system Utilities
-* Logging
-* Lots more! So much more. Much much more. So much more that you don't even know how much more it's so much. I don't know where to start.
+* Logging _in your templates!!!_. You can add `{%%= log('FOO!') %}` to help with debugging templates.
+* Lots more!
 
 [gray-matter]: https://github.com/assemble/gray-matter

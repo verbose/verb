@@ -4,6 +4,7 @@
 
 * Get [verb-cli](https://github.com/assemble/verb-cli) to use Verb globally from the command line
 * Get [generator-verb](https://github.com/assemble/generator-verb) to add documentation templates, or initialize docs for new projects
+* Read [the documentation](./DOCS.md) to learn more about Verb.
 
 ## Install
 Install with [npm](npmjs.org):
@@ -27,9 +28,9 @@ accusantium doloremque laudantium, totam rem aperiam.
 ```
 Then run `verb` in the command line and it will generate `README.md`, _automatically using data from your project's package.json to process templates_.
 
-**[Built-in tags](./DOCS.md#tags.md)**
+**[Built-in tags](./DOCS.md#tags)**
 
-Need more than simple variables, like `date()`? Use one of Verb's [built-in tags](./DOCS.md#date-format):
+Need more than simple variables, like `date()`? Use one of Verb's [built-in tags](./DOCS.md#date):
 
 ```
 ## License
@@ -39,7 +40,7 @@ Released under the {%= license.type %} license
 
 **[Includes](./DOCS.md#include)**
 
-Easily include other documents. To use any markdown file in the `docs/` directory just use [`{%= docs() %}`](./DOCS.md/#tags.md#docs):
+Easily include other documents. To use any markdown file in the `docs/` directory just use [`{%= docs() %}`](./DOCS.md#docs):
 
 ```
 ## Contribute
@@ -48,7 +49,7 @@ Easily include other documents. To use any markdown file in the `docs/` director
 
 That's it! [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example.
 
-This is just a simple example though, Verb can easily build multi-page markdown documentation, with a fully-linked [multi-page TOC](./DOCS.md#toc.md), or even build a book!
+This is just a simple example though, Verb can easily build multi-page markdown documentation, with a fully-linked [multi-page TOC](./DOCS.md#toc), or even build a book!
 
 _(Verb builds its own docs (WIP) too, check progress in the [docs directory](./docs)!)_.
 

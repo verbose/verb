@@ -1,6 +1,6 @@
 > A few different options are available for creating a Table of Contents with Verb.
 
-### Single page: code comment
+## Single page: code comment
 
 Use the following syntax wherever you want the TOC:
 
@@ -14,7 +14,7 @@ Use the following syntax wherever you want the TOC:
 * Leaves code comments behind marking the beginning and end of the TOC, but they won't be visible to viewers.
 
 
-### Single page: `toc()` tag
+## Single page: `toc()` tag
 
 Use the following syntax wherever you want the TOC:
 
@@ -27,7 +27,7 @@ Use the following syntax wherever you want the TOC:
 * Unlike code comments, this doesn't "leave anything behind" after the build.
 * But, it _does not recurse into includes_, so only the _current, top-level page_ will be used to generate the TOC.
 
-### Multiple pages: `toc()` tag
+## Multiple pages: `toc()` tag
 
 Use the following syntax wherever you want the TOC:
 
@@ -43,11 +43,11 @@ Use the following syntax wherever you want the TOC:
 * Adds relative links to each section of each file.
 
 
-### TOC Options
+## TOC Options
 
 Verb uses [marked-toc](https://github.com/jonschlinkert/marked-toc) for generating tables of contents. Only options that have been changed from the marked-toc defaults are listed here. _Please visit [marked-toc](https://github.com/jonschlinkert/marked-toc) for additional documentation and to see the complist list of available options.
 
-#### maxDepth
+### maxDepth
 
 Type: `number`
 

@@ -13,4 +13,4 @@ By default, Verb will read in your project's package.json and attempt to gather 
 
 ## Related
 
-* [Front matter](#TODO: link to front-matter)
+* [Front matter](#font-matter)
