@@ -171,6 +171,7 @@ verb.process = function(src, options) {
   while (!renderDone) {
     process.nextTick();
   }
+
   var result = verb.utils.postProcess(rendered, options);
 
   // Generate a TOC from <!-- toc --> after all content is included.
@@ -179,7 +180,7 @@ verb.process = function(src, options) {
   return {
     verb: verb,
     context: verb.context,
-    content: result,
+    content: verb.utils.postProcess(result, options),
     original: src
   };
 };
@@ -322,7 +323,6 @@ verb.expand = function(src, dest, options) {
 
       return verb.read(filepath, opts);
     }).join(opts.sep);
-
 
     file.writeFileSync(dest, blob);
     verb.log.subhead('writing', relative(process.cwd(), dest));

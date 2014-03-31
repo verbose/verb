@@ -1,5 +1,3 @@
-## Generate a Table of Contents
-
 > A few different options are available for creating a Table of Contents with Verb.
 
 ### Single page: code comment
@@ -45,11 +43,11 @@ Use the following syntax wherever you want the TOC:
 * Adds relative links to each section of each file.
 
 
-## TOC Options
+### TOC Options
 
 Verb uses [marked-toc](https://github.com/jonschlinkert/marked-toc) for generating tables of contents. Only options that have been changed from the marked-toc defaults are listed here. _Please visit [marked-toc](https://github.com/jonschlinkert/marked-toc) for additional documentation and to see the complist list of available options.
 
-### maxDepth
+#### maxDepth
 
 Type: `number`
 
