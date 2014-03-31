@@ -83,9 +83,9 @@ mocha -R spec
 ## Contribute
 All contributions are welcome! _Stars and tweets_ are always a great way to show your support! But we can definitely use some help with:
 
-* documentation
-* writing unit tests
-* addressing issues
+* [documentation](./docs)
+* [writing unit tests](./test)
+* [addressing issues](https://github.com/assemble/verb/issues)
 
 _Or whatever value you'd like to add to the project! If you'd like to take a more active role, get in touch! We'd be happy to help you get started!_
 

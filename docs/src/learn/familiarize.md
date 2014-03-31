@@ -1,3 +1,5 @@
+# Get to know Verb
+
 ## Ease of Use
 
 > Verb loves users
@@ -41,7 +43,7 @@ For starters, this is accomplished by:
 1. Using boilerplates to kickstart the documentation for new projects. The [Verb generator]() for Yeoman comes with a handful of boilerplates, but it's super easy to create and use your own.
 
 
-# Introduction to {%= name %}
+## Introduction to {%= name %}
 
 > {%= description %}
 
