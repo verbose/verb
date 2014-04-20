@@ -16,33 +16,31 @@ describe('Verb', function () {
 
   describe('verb:', function () {
     it('should return the value of the name field in package.json', function () {
-      var actual = verb.process('{%= name %}').content;
+      var actual = verb.process('{%= name %}');
       var expected = 'verb';
-      expect(actual).to.eql(expected);
+      expect(actual.content).to.eql(expected);
     });
 
     it('should change the name of the project to a custom value from the root context.', function () {
       var actual = verb.process('{%= name %}', {
         name: "foo"
-      }).content;
+      });
       var expected = 'foo';
-      expect(actual).to.eql(expected);
+      expect(actual.content).to.eql(expected);
     });
 
     it('should change the name of the project to a custom value from the data object.', function () {
       var actual = verb.process('{%= name %}', {
-        data: {
-          name: "foo"
-        }
-      }).content;
+        data: {name: "foo"}
+      });
       var expected = 'foo';
-      expect(actual).to.eql(expected);
+      expect(actual.content).to.eql(expected);
     });
 
     it('should return the author name.', function () {
-      var actual = verb.process('{%= author.name %}').content;
+      var actual = verb.process('{%= author.name %}');
       var expected = 'Jon Schlinkert';
-      expect(actual).to.eql(expected);
+      expect(actual.content).to.eql(expected);
     });
   });
 
@@ -71,9 +69,7 @@ describe('Verb', function () {
 
     it('should update a variable on the data object.', function () {
       var actual = verb.process('{%= name %}', {
-        data: {
-          name: "bar"
-        }
+        data: {name: "bar"}
       });
       var expected = 'bar';
       expect(actual.content).to.eql(expected);

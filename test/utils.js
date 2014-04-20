@@ -327,7 +327,6 @@ describe('utils.username:', function () {
 
     it('should extract the username from the author URL`.', function () {
       var actual = utils.username(verb.context.author.url);
-      console.log(verb.context)
       var expected = 'jonschlinkert';
       expect(actual).to.eql(expected);
     });

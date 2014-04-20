@@ -29,9 +29,11 @@ verb.docs         = verb.cwd('docs');
 verb.ext          = '.md';
 verb.file         = _.defaults(require('./lib/file'), file);
 
-// Logging and utils
-verb.colors       = require('./lib/colors');
+// Utils
 verb.utils        = require('./lib/utils/index');
+
+// Logging
+verb.colors       = require('./lib/colors');
 verb.log          = require('./lib/log');
 verb.verbose      = verb.log.verbose;
 verb.mode         = {};
@@ -47,6 +49,7 @@ verb.scaffolds    = require('./lib/scaffolds');
 verb.template     = require('./lib/template');
 
 // Data
+verb.config       = require('./lib/config');
 verb.data         = require('./lib/data');
 verb.matter       = require('./lib/matter');
 
@@ -105,39 +108,41 @@ verb.init = function (options) {
  */
 
 verb.process = function(src, options) {
-  options = _.extend({toc: {maxDepth: 2}}, options);
-  _.extend(verb.options, options);
+  options = _.extend({}, {toc: {maxDepth: 2}}, options);
+  verb.options = _.extend({}, verb.options, options);
 
   var delims = verb.utils.delims;
   src = delims.escape(src || '');
 
-  verb.init(options);
+  verb.init(verb.options);
 
-  verb.config = require('./lib/config').init(options.config);
   // Copy the `config` object
-  verb.context = verb.config || {};
+  verb.context = _.extend(verb.config(options.config));
+
   // Delete the `context.config` property
   delete verb.context.config;
 
   // Extend `verb`
   verb.layout = require('./lib/layout')(verb);
 
-  // Initialize `options.data`
-  _.extend(verb.context, verb.data(verb));
-
   // Build up the context
   _.extend(verb.context, options);
   _.extend(verb.context, options.metadata || {});
 
-  // Template settings
+  // Expose Lo-dash template settings to options
   var settings = options.settings || {};
 
   // Initialize Lo-Dash tags and filters
   _.extend(verb.context, verb.tags.init(verb));
   _.extend(verb.context, verb.filters.init(verb));
 
+  // Initialize `options.data`
+  _.extend(verb.context, verb.data(verb));
+
   // Extract and parse front matter
   verb.page  = verb.matter(src, options);
+
+  // Extend the context with YAML front matter
   _.extend(verb.context, verb.page.context);
 
   // Exclusion patterns, to omit certain options from context
@@ -148,18 +153,9 @@ verb.process = function(src, options) {
   _.extend(verb.context, verb.plugins.init(verb));
 
   // Process templates and render content
-  var renderDone = false;
   var rendered = verb.template(verb.page.content, verb.context, settings);
 
-  verb.tags.resolve(verb, rendered, function (err, results) {
-    rendered = results;
-    renderDone = true;
-  });
-
-  while (!renderDone) {
-    process.nextTick();
-  }
-
+  // Post-process
   var result = verb.utils.postProcess(rendered, options);
 
   // Generate a TOC from <!-- toc --> after all content is included.
@@ -168,7 +164,7 @@ verb.process = function(src, options) {
   return {
     verb: verb,
     context: verb.context,
-    content: verb.utils.postProcess(result, options),
+    content: result,
     original: src
   };
 };
