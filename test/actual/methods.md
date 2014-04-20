@@ -1,58 +1,59 @@
-## API
-
-> Verb methods
-
-### base
+## base
 Type: `undefined`
 
 Default: `undefined`
 
-### copy
+## copy
 Type: `undefined`
 
 Default: `undefined`
 
-### cwd
+## cwd
 Type: `undefined`
 
 Default: `undefined`
 
-### exclusions
+## exclusions
 Type: `undefined`
 
 Default: `undefined`
 
-### expandMapping
+## expand
 Type: `undefined`
 
 Default: `undefined`
 
-### init
+## init
 Type: `undefined`
 
 Default: `undefined`
 
-### layout
+## layout
 Type: `undefined`
 
 Default: `undefined`
 
-### log
+## log
 Type: `undefined`
 
 Default: `undefined`
 
-### process
+## matter
 Type: `undefined`
 
 Default: `undefined`
 
-### read
+## process
 Type: `undefined`
 
 Default: `undefined`
 
-### template
+## read
+Type: `undefined`
+
+Default: `undefined`
+
+## template
 Type: `undefined`
 
 Default: `undefined`

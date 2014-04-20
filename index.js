@@ -8,7 +8,6 @@
 
 const cwd = require('cwd');
 const file = require('fs-utils');
-const configFile = require('config-file');
 const relative = require('relative');
 const toc = require('marked-toc');
 const _ = require('lodash');
@@ -114,15 +113,6 @@ verb.process = function(src, options) {
 
   verb.init(options);
 
-  // Add runtime config
-  var runtimeConfig = {};
-  if(options.verbrc) {
-    runtimeConfig = configFile.load(cwd(options.verbrc));
-  } else {
-    runtimeConfig = verb.verbrc;
-  }
-  _.extend(options, runtimeConfig);
-
   verb.config = require('./lib/config').init(options.config);
   // Copy the `config` object
   verb.context = verb.config || {};
@@ -132,10 +122,12 @@ verb.process = function(src, options) {
   // Extend `verb`
   verb.layout = require('./lib/layout')(verb);
 
+  // Initialize `options.data`
+  _.extend(verb.context, verb.data(verb));
+
   // Build up the context
   _.extend(verb.context, options);
   _.extend(verb.context, options.metadata || {});
-  _.extend(verb.context, require('./lib/data').init(options));
 
   // Template settings
   var settings = options.settings || {};
@@ -143,9 +135,6 @@ verb.process = function(src, options) {
   // Initialize Lo-Dash tags and filters
   _.extend(verb.context, verb.tags.init(verb));
   _.extend(verb.context, verb.filters.init(verb));
-
-  // Initialize `options.data`
-  _.extend(verb.context, verb.data.init(options));
 
   // Extract and parse front matter
   verb.page  = verb.matter(src, options);
@@ -184,6 +173,31 @@ verb.process = function(src, options) {
   };
 };
 
+/**
+ * Read a source file and call `verb.process()`
+ *
+ * @param {String} src
+ * @param {Object} options
+ * @return {String} `content` from `verb.process()`
+ */
+
+verb.parse = function(src, options) {
+  options = options || {};
+  verb.init(options);
+
+  verb.options = verb.options || {};
+  verb.options.src = verb.cwd(src);
+
+  _.extend(verb.options, options);
+
+  // Log the start.
+  verb.verbose.write();
+  verb.verbose.run('processing', relative(process.cwd(), src));
+
+  var content = file.readFileSync(src);
+  return verb.matter(content, options);
+};
+
 
 /**
  * Read a source file and call `verb.process()`
@@ -210,6 +224,8 @@ verb.read = function(src, options) {
   return verb.process(content, options).content;
 };
 
+
+
 /**
  * Read a source file and call `verb.process()`,
  * then write it to the specified `dest`.
@@ -231,18 +247,19 @@ verb.copy = function(src, dest, options) {
   _.extend(options, verb.options);
 
   // Log the start.
-  verb.log.write();
-  verb.log.subhead('reading', file.normalizeSlash(src));
+  verb.verbose.write();
+  verb.verbose.subhead('reading', file.normalizeSlash(src));
 
   // Write the actual files.
   file.writeFileSync(dest, verb.read(src, options));
-  verb.log.run('writing', relative(process.cwd(), dest));
+  verb.verbose.run('writing', relative(dest));
 
   // Log a success message.
-  verb.log.write();
-  verb.log.success('  ' + verb.runner.name + ' [done]');
+  verb.verbose.write();
+  verb.verbose.success('  ' + verb.runner.name + ' [done]');
   return;
 };
+
 
 
 /**
@@ -290,12 +307,12 @@ verb.expand = function(src, dest, options) {
 
   // Log the start.
   verb.log.write();
-  verb.log('\n  Expanding files:', src);
+  verb.log.subhead('expanding', src);
 
   file.expandMapping(src, defaults).map(function(fp) {
     fp.src.filter(function(filepath) {
       if (!file.exists(filepath)) {
-        verb.log.error('>> Source file "' + filepath + '" not found.');
+        verb.log.error('  Source file "' + filepath + '" not found.');
         return false;
       } else {
         return true;
@@ -329,5 +346,5 @@ verb.expand = function(src, dest, options) {
 
   // Log a success message.
   verb.log.write();
-  verb.log.success('  ' + verb.runner.name + ' [done]');
+  verb.log.done('done');
 };

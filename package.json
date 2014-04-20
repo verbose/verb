@@ -57,7 +57,8 @@
     "verb-readme-badges": "~0.0.5",
     "verb-readme-includes": "~0.1.1",
     "parse-authors": "~0.1.0",
-    "repeat-string": "~0.1.0"
+    "repeat-string": "~0.1.0",
+    "plasma": "~0.2.4"
   },
   "devDependencies": {
     "chai": "~1.9.0",
