@@ -109,7 +109,7 @@ verb.init = function (options) {
 
 verb.process = function(src, options) {
   options = _.extend({}, {toc: {maxDepth: 2}}, options);
-  verb.options = _.extend({}, verb.options, options);
+  _.extend(verb.options, options);
 
   var delims = verb.utils.delims;
   src = delims.escape(src || '');
@@ -117,7 +117,7 @@ verb.process = function(src, options) {
   verb.init(verb.options);
 
   // Copy the `config` object
-  verb.context = _.extend(verb.config(options.config));
+  verb.context = _.extend({}, verb.config(options.config));
 
   // Delete the `context.config` property
   delete verb.context.config;
@@ -136,7 +136,7 @@ verb.process = function(src, options) {
   _.extend(verb.context, verb.tags.init(verb));
   _.extend(verb.context, verb.filters.init(verb));
 
-  // Initialize `options.data`
+  // Merge in `options.data`
   _.extend(verb.context, verb.data(verb));
 
   // Extract and parse front matter
@@ -151,6 +151,7 @@ verb.process = function(src, options) {
 
    // Initialize plugins
   _.extend(verb.context, verb.plugins.init(verb));
+  file.writeJSONSync('context.json', verb.context);
 
   // Process templates and render content
   var rendered = verb.template(verb.page.content, verb.context, settings);
@@ -178,20 +179,20 @@ verb.process = function(src, options) {
  */
 
 verb.parse = function(src, options) {
-  options = options || {};
+  options = _.extend({}, verb.options, options || {});
+  options.src = verb.cwd(src);
+
   verb.init(options);
-
-  verb.options = verb.options || {};
-  verb.options.src = verb.cwd(src);
-
-  _.extend(verb.options, options);
 
   // Log the start.
   verb.verbose.write();
-  verb.verbose.run('processing', relative(process.cwd(), src));
+  verb.verbose.run('processing', relative(src));
 
   var content = file.readFileSync(src);
-  return verb.matter(content, options);
+  var result = verb.matter(content, options);
+  _.extend(verb.options, options);
+
+  return result;
 };
 
 
@@ -204,20 +205,20 @@ verb.parse = function(src, options) {
  */
 
 verb.read = function(src, options) {
-  options = options || {};
+  options = _.extend({}, verb.options, options || {});
+  options.src = verb.cwd(src);
+
   verb.init(options);
-
-  verb.options = verb.options || {};
-  verb.options.src = verb.cwd(src);
-
-  _.extend(verb.options, options);
 
   // Log the start.
   verb.verbose.write();
-  verb.verbose.run('processing', relative(process.cwd(), src));
+  verb.verbose.run('processing', relative(src));
 
   var content = file.readFileSync(src);
-  return verb.process(content, options).content;
+  var result = verb.process(content, options).content;
+  _.extend(verb.options, options);
+
+  return result;
 };
 
 
@@ -233,14 +234,11 @@ verb.read = function(src, options) {
  */
 
 verb.copy = function(src, dest, options) {
-  options = options || {};
+  options = _.extend({}, verb.options, options || {});
   verb.init(options);
 
-  verb.options = verb.options || {};
-  verb.options.src = verb.cwd(src);
-  verb.options.dest = verb.cwd(dest);
-
-  _.extend(options, verb.options);
+  options.src = verb.cwd(src);
+  options.dest = verb.cwd(dest);
 
   // Log the start.
   verb.verbose.write();
@@ -248,6 +246,8 @@ verb.copy = function(src, dest, options) {
 
   // Write the actual files.
   file.writeFileSync(dest, verb.read(src, options));
+
+  _.extend(verb.options, options);
   verb.verbose.run('writing', relative(dest));
 
   // Log a success message.
