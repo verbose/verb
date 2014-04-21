@@ -33,7 +33,7 @@ verb.utils        = require('./lib/utils/index');
 
 // Logging
 verb.colors       = require('./lib/colors');
-verb.log          = require('./lib/log');
+verb.log          = require('verbalize');
 verb.verbose      = verb.log.verbose;
 verb.mode         = {};
 verb.mode.verbose = false;

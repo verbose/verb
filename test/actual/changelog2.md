@@ -1,6 +1,6 @@
 ## Release History
 
-> Changelog using default 'CHANGELOG' file
+> Changelog using default 'CHANGELOG' file. See 'examples/changelog.js'
 
 **DATE**       **VERSION**   **CHANGES**         
 * 2020-03-11   v0.2.0        9 billionth commmit.

@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate docs, using simple markdown templates, with zero configuration required.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "https://github.com/assemble/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -55,7 +55,8 @@
     "toml": "~2.0.4",
     "verb-contrib-templates": "~0.0.5",
     "verb-readme-badges": "~0.0.5",
-    "verb-readme-includes": "~0.1.1"
+    "verb-readme-includes": "~0.1.1",
+    "verbalize": "~0.1.2"
   },
   "devDependencies": {
     "chai": "~1.9.0",
