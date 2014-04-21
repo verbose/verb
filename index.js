@@ -27,7 +27,6 @@ verb.cwd          = cwd;
 verb.base         = cwd;
 verb.docs         = verb.cwd('docs');
 verb.ext          = '.md';
-verb.file         = _.defaults(require('./lib/file'), file);
 
 // Utils
 verb.utils        = require('./lib/utils/index');
@@ -53,6 +52,7 @@ verb.config       = require('./lib/config');
 verb.data         = require('./lib/data');
 verb.matter       = require('./lib/matter');
 
+// Omitted properties
 verb.exclusions   = require('./lib/exclusions');
 
 
@@ -78,6 +78,7 @@ verb.runner = {
 
 verb.verbrc = {};
 
+
 /**
  * Initialize Verb and the Verb API
  *
@@ -102,6 +103,7 @@ verb.init = function (options) {
   _.mixin(_.fn);
 };
 
+
 /**
  * Process Lo-Dash templates using metadata from the user's config as context.
  * e.g. package.json and info from the local git repository.
@@ -109,7 +111,7 @@ verb.init = function (options) {
 
 verb.process = function(src, options) {
   options = _.extend({}, {toc: {maxDepth: 2}}, options);
-  _.extend(verb.options, options);
+  verb.options = _.extend({}, verb.options, options);
 
   var delims = verb.utils.delims;
   src = delims.escape(src || '');
@@ -117,7 +119,7 @@ verb.process = function(src, options) {
   verb.init(verb.options);
 
   // Copy the `config` object
-  verb.context = _.extend({}, verb.config(options.config));
+  verb.context = _.cloneDeep(verb.config(options.config));
 
   // Delete the `context.config` property
   delete verb.context.config;
@@ -133,8 +135,8 @@ verb.process = function(src, options) {
   var settings = options.settings || {};
 
   // Initialize Lo-Dash tags and filters
-  _.extend(verb.context, verb.tags.init(verb));
-  _.extend(verb.context, verb.filters.init(verb));
+  _.extend(verb.context, verb.tags(verb));
+  _.extend(verb.context, verb.filters(verb));
 
   // Merge in `options.data`
   _.extend(verb.context, verb.data(verb));
@@ -147,11 +149,10 @@ verb.process = function(src, options) {
 
   // Exclusion patterns, to omit certain options from context
   verb.context = verb.exclusions(verb.context, options);
-  _.extend(verb.context, {runner: verb.runner});
+  _.extend(verb.context, { runner: verb.runner });
 
    // Initialize plugins
-  _.extend(verb.context, verb.plugins.init(verb));
-  file.writeJSONSync('context.json', verb.context);
+  _.extend(verb.context, verb.plugins(verb));
 
   // Process templates and render content
   var rendered = verb.template(verb.page.content, verb.context, settings);
@@ -169,6 +170,7 @@ verb.process = function(src, options) {
     original: src
   };
 };
+
 
 /**
  * Read a source file and call `verb.process()`
@@ -194,6 +196,7 @@ verb.parse = function(src, options) {
 
   return result;
 };
+
 
 
 /**

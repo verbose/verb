@@ -5,7 +5,6 @@ module.exports = function(verb) {
   var route = function(src, options) {
     var list = methods(path.resolve(src));
 
-
     return foo;
   };
 

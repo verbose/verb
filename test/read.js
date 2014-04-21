@@ -7,6 +7,7 @@ var verb = require('../');
 
 
 describe('verb.read()', function () {
+
   describe('when a file path is passed:', function () {
     it('should read the file and process templates using package.json as context', function () {
       var actual = verb.read('test/fixtures/author.tmpl');
@@ -56,7 +57,6 @@ describe('verb.read()', function () {
       var fixture = 'test/fixtures/author.tmpl';
       var actual = verb.read(fixture, {
         data: 'test/fixtures/data/author.json',
-        namespace: true
       });
       var expected = 'Brian Woodward';
       expect(actual).to.eql(expected);
@@ -66,7 +66,6 @@ describe('verb.read()', function () {
       var fixture = 'test/fixtures/name.tmpl';
       var actual = verb.read(fixture, {
         data: 'test/fixtures/data/author.json',
-        namespace: false
       });
       var expected = 'Brian Woodward';
       expect(actual).to.eql(expected);
@@ -82,7 +81,6 @@ describe('verb.read()', function () {
       var fixture = 'test/fixtures/name.tmpl';
       var actual = verb.read(fixture, {
         data: 'test/fixtures/**/author.json',
-        namespace: false
       });
       var expected = 'Brian Woodward';
       expect(actual).to.eql(expected);

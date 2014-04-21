@@ -3,6 +3,7 @@ const file = require('fs-utils');
 const verb = require('../');
 
 
+
 describe('verb.process()', function () {
 
   describe('when a Lo-Dash template is passed as a string:', function () {
@@ -20,24 +21,12 @@ describe('verb.process()', function () {
       expect(actual.content).to.eql(expected);
     });
 
-    it('should change the name of the project to a custom value from the data object.', function () {
-      var actual = verb.process('{%= name %}', {
-        data: {name: "foo"}
-      });
-      var expected = 'foo';
-      expect(actual.content).to.eql(expected);
-    });
-
     it('should return the author name.', function () {
       var actual = verb.process('{%= author.name %}');
       var expected = 'Jon Schlinkert';
       expect(actual.content).to.eql(expected);
     });
-  });
 
-
-
-  describe('verb.process:', function () {
     it('should return a variable from the default config object', function () {
       var actual = verb.process('{%= name %}');
       var expected = 'verb';
@@ -57,7 +46,9 @@ describe('verb.process()', function () {
       var expected = 'foo';
       expect(actual.content).to.eql(expected);
     });
+  });
 
+  describe('options.data:', function () {
     it('should update a variable on the data object.', function () {
       var actual = verb.process('{%= name %}', {
         data: {name: "bar"}
@@ -66,6 +57,13 @@ describe('verb.process()', function () {
       expect(actual.content).to.eql(expected);
     });
 
+    it('should change the name of the project to a custom value from the data object.', function () {
+      var actual = verb.process('{%= name %}', {
+        data: {name: "foo"}
+      });
+      var expected = 'foo';
+      expect(actual.content).to.eql(expected);
+    });
   });
 
 
