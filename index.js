@@ -8,7 +8,6 @@
 
 const cwd = require('cwd');
 const file = require('fs-utils');
-const configFile = require('config-file');
 const relative = require('relative');
 const toc = require('marked-toc');
 const _ = require('lodash');
@@ -28,11 +27,12 @@ verb.cwd          = cwd;
 verb.base         = cwd;
 verb.docs         = verb.cwd('docs');
 verb.ext          = '.md';
-verb.file         = _.defaults(require('./lib/file'), file);
 
-// Logging and utils
-verb.colors       = require('./lib/colors');
+// Utils
 verb.utils        = require('./lib/utils/index');
+
+// Logging
+verb.colors       = require('./lib/colors');
 verb.log          = require('./lib/log');
 verb.verbose      = verb.log.verbose;
 verb.mode         = {};
@@ -48,9 +48,11 @@ verb.scaffolds    = require('./lib/scaffolds');
 verb.template     = require('./lib/template');
 
 // Data
+verb.config       = require('./lib/config');
 verb.data         = require('./lib/data');
 verb.matter       = require('./lib/matter');
 
+// Omitted properties
 verb.exclusions   = require('./lib/exclusions');
 
 
@@ -76,6 +78,7 @@ verb.runner = {
 
 verb.verbrc = {};
 
+
 /**
  * Initialize Verb and the Verb API
  *
@@ -100,32 +103,24 @@ verb.init = function (options) {
   _.mixin(_.fn);
 };
 
+
 /**
  * Process Lo-Dash templates using metadata from the user's config as context.
  * e.g. package.json and info from the local git repository.
  */
 
 verb.process = function(src, options) {
-  options = _.extend({toc: {maxDepth: 2}}, options);
-  _.extend(verb.options, options);
+  options = _.extend({}, {toc: {maxDepth: 2}}, options);
+  verb.options = _.extend({}, verb.options, options);
 
   var delims = verb.utils.delims;
   src = delims.escape(src || '');
 
-  verb.init(options);
+  verb.init(verb.options);
 
-  // Add runtime config
-  var runtimeConfig = {};
-  if(options.verbrc) {
-    runtimeConfig = configFile.load(cwd(options.verbrc));
-  } else {
-    runtimeConfig = verb.verbrc;
-  }
-  _.extend(options, runtimeConfig);
-
-  verb.config = require('./lib/config').init(options.config);
   // Copy the `config` object
-  verb.context = verb.config || {};
+  verb.context = _.cloneDeep(verb.config(options.config));
+
   // Delete the `context.config` property
   delete verb.context.config;
 
@@ -135,42 +130,34 @@ verb.process = function(src, options) {
   // Build up the context
   _.extend(verb.context, options);
   _.extend(verb.context, options.metadata || {});
-  _.extend(verb.context, require('./lib/data').init(options));
 
-  // Template settings
+  // Expose Lo-dash template settings to options
   var settings = options.settings || {};
 
   // Initialize Lo-Dash tags and filters
-  _.extend(verb.context, verb.tags.init(verb));
-  _.extend(verb.context, verb.filters.init(verb));
+  _.extend(verb.context, verb.tags(verb));
+  _.extend(verb.context, verb.filters(verb));
 
-  // Initialize `options.data`
-  _.extend(verb.context, verb.data.init(options));
+  // Merge in `options.data`
+  _.extend(verb.context, verb.data(verb));
 
   // Extract and parse front matter
   verb.page  = verb.matter(src, options);
+
+  // Extend the context with YAML front matter
   _.extend(verb.context, verb.page.context);
 
   // Exclusion patterns, to omit certain options from context
   verb.context = verb.exclusions(verb.context, options);
-  _.extend(verb.context, {runner: verb.runner});
+  _.extend(verb.context, { runner: verb.runner });
 
    // Initialize plugins
-  _.extend(verb.context, verb.plugins.init(verb));
+  _.extend(verb.context, verb.plugins(verb));
 
   // Process templates and render content
-  var renderDone = false;
   var rendered = verb.template(verb.page.content, verb.context, settings);
 
-  verb.tags.resolve(verb, rendered, function (err, results) {
-    rendered = results;
-    renderDone = true;
-  });
-
-  while (!renderDone) {
-    process.nextTick();
-  }
-
+  // Post-process
   var result = verb.utils.postProcess(rendered, options);
 
   // Generate a TOC from <!-- toc --> after all content is included.
@@ -179,7 +166,7 @@ verb.process = function(src, options) {
   return {
     verb: verb,
     context: verb.context,
-    content: verb.utils.postProcess(result, options),
+    content: result,
     original: src
   };
 };
@@ -193,22 +180,51 @@ verb.process = function(src, options) {
  * @return {String} `content` from `verb.process()`
  */
 
-verb.read = function(src, options) {
-  options = options || {};
+verb.parse = function(src, options) {
+  options = _.extend({}, verb.options, options || {});
+  options.src = verb.cwd(src);
+
   verb.init(options);
-
-  verb.options = verb.options || {};
-  verb.options.src = verb.cwd(src);
-
-  _.extend(verb.options, options);
 
   // Log the start.
   verb.verbose.write();
-  verb.verbose.run('processing', relative(process.cwd(), src));
+  verb.verbose.run('processing', relative(src));
 
   var content = file.readFileSync(src);
-  return verb.process(content, options).content;
+  var result = verb.matter(content, options);
+  _.extend(verb.options, options);
+
+  return result;
 };
+
+
+
+/**
+ * Read a source file and call `verb.process()`
+ *
+ * @param {String} src
+ * @param {Object} options
+ * @return {String} `content` from `verb.process()`
+ */
+
+verb.read = function(src, options) {
+  options = _.extend({}, verb.options, options || {});
+  options.src = verb.cwd(src);
+
+  verb.init(options);
+
+  // Log the start.
+  verb.verbose.write();
+  verb.verbose.run('processing', relative(src));
+
+  var content = file.readFileSync(src);
+  var result = verb.process(content, options).content;
+  _.extend(verb.options, options);
+
+  return result;
+};
+
+
 
 /**
  * Read a source file and call `verb.process()`,
@@ -221,28 +237,28 @@ verb.read = function(src, options) {
  */
 
 verb.copy = function(src, dest, options) {
-  options = options || {};
+  options = _.extend({}, verb.options, options || {});
   verb.init(options);
 
-  verb.options = verb.options || {};
-  verb.options.src = verb.cwd(src);
-  verb.options.dest = verb.cwd(dest);
-
-  _.extend(options, verb.options);
+  options.src = verb.cwd(src);
+  options.dest = verb.cwd(dest);
 
   // Log the start.
-  verb.log.write();
-  verb.log.subhead('reading', file.normalizeSlash(src));
+  verb.verbose.write();
+  verb.verbose.subhead('reading', file.normalizeSlash(src));
 
   // Write the actual files.
   file.writeFileSync(dest, verb.read(src, options));
-  verb.log.run('writing', relative(process.cwd(), dest));
+
+  _.extend(verb.options, options);
+  verb.verbose.run('writing', relative(dest));
 
   // Log a success message.
-  verb.log.write();
-  verb.log.success('  ' + verb.runner.name + ' [done]');
+  verb.verbose.write();
+  verb.verbose.success('  ' + verb.runner.name + ' [done]');
   return;
 };
+
 
 
 /**
@@ -290,12 +306,12 @@ verb.expand = function(src, dest, options) {
 
   // Log the start.
   verb.log.write();
-  verb.log('\n  Expanding files:', src);
+  verb.log.subhead('expanding', src);
 
   file.expandMapping(src, defaults).map(function(fp) {
     fp.src.filter(function(filepath) {
       if (!file.exists(filepath)) {
-        verb.log.error('>> Source file "' + filepath + '" not found.');
+        verb.log.error('  Source file "' + filepath + '" not found.');
         return false;
       } else {
         return true;
@@ -329,5 +345,5 @@ verb.expand = function(src, dest, options) {
 
   // Log a success message.
   verb.log.write();
-  verb.log.success('  ' + verb.runner.name + ' [done]');
+  verb.log.done('done');
 };

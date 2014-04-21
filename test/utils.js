@@ -7,7 +7,6 @@ var utils = require('../lib/utils');
 
 describe('utils.adjust.headings', function () {
 
-
   /**
    * Escaped templates
    */
