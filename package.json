@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate docs, using simple markdown templates, with zero configuration required.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://github.com/assemble/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -25,7 +25,6 @@
     "node": ">= 0.8.0"
   },
   "dependencies": {
-    "chalk": "~0.4.0",
     "change-case": "~2.0.1",
     "coffee-script": "~1.7.1",
     "columnify": "~0.1.2",
@@ -43,7 +42,7 @@
     "minimatch": "~0.2.14",
     "moment": "~2.5.1",
     "parse-authors": "~0.1.0",
-    "plasma": "~0.2.4",
+    "plasma": "~0.2.6",
     "relative": "~0.1.4",
     "remote-origin-url": "~0.2.1",
     "repeat-string": "~0.1.0",

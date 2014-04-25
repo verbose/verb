@@ -13,7 +13,7 @@ module.exports = function(verb) {
 
   function convert(str) {
     return str.replace(/<!--\s*([\S]+)\(([\S]+)\)\s*-->/g, '{%= $1($2) %}');
-  };
+  }
 
   verb.page.content = convert(content);
 };

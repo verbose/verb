@@ -32,11 +32,9 @@ verb.ext          = '.md';
 verb.utils        = require('./lib/utils/index');
 
 // Logging
-verb.colors       = require('./lib/colors');
 verb.log          = require('verbalize');
 verb.verbose      = verb.log.verbose;
-verb.mode         = {};
-verb.mode.verbose = false;
+verb.mode         = verb.log.mode;
 
 // Extensions
 verb.plugins      = require('./lib/plugins');

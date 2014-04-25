@@ -1,8 +1,11 @@
 ---
+# Define a custom template for the `toc` tag to use
 tocOpts:
   template: |+
     <%= depth %><%= bullet %>[<%= heading %>](<%= url %>)
 
+# Specify the destination. Defaults to CWD
+dest: TOC.md
 ---
 # Table of Contents
 
