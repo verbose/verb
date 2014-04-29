@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Verb by assemble</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Verb</h1>
+          <h2>A project without documentation is like a project that doesn&#39;t exist. Verb solves this by making it dead simple to generate docs, using simple markdown templates, with zero configuration required.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/assemble/verb/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/assemble/verb/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/assemble/verb" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="verb-" class="anchor" href="#verb-"><span class="octicon octicon-link"></span></a>verb <a href="http://badge.fury.io/js/verb"><img src="https://badge.fury.io/js/verb.png" alt="NPM version"></a>
+</h1>
+
+<blockquote>
+<p>A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate docs, using simple markdown templates, with zero configuration required.</p>
+</blockquote>
+
+<p>Verb is a new project, please star it to get updates! See <a href="https://github.com/assemble/verb/issues/12">what's planned for v0.3.0</a>, feel free to add your thoughts or ask questions!</p>
+
+<h2>
+<a name="runners" class="anchor" href="#runners"><span class="octicon octicon-link"></span></a>Runners</h2>
+
+<p><strong>Verb itself is just an API</strong>, so it requires a "runner" to run.
+Currently, there are three Verb runners to choose from:</p>
+
+<ul>
+<li>
+<a href="https://github.com/assemble/verb-cli">verb-cli</a> runs Verb globally from the command line</li>
+<li>
+<a href="https://github.com/assemble/grunt-verb">grunt-verb</a> for your favorite JavaScript task runner.</li>
+<li>
+<a href="https://github.com/assemble/gulp-verb">gulp-verb</a> for your streaming build systems.</li>
+</ul><p>Those tools are great for building docs once they already exist, but you can also use <a href="https://github.com/assemble/generator-verb">generator-verb</a> to:</p>
+
+<ul>
+<li>Initialize new Node.js projects <em>with documentation read-to-go</em>. This is a great generator for Node.js projects in general, even if you don't want to use Verb!</li>
+<li>Add docs templates to new or existing projects</li>
+</ul><p>Read <a href="./DOCS.md">the documentation</a> to learn more about Verb!</p>
+
+<h2>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>Install with <a href="npmjs.org">npm</a>:</p>
+
+<div class="highlight highlight-bash"><pre>npm i verb --save
+</pre></div>
+
+<h2>
+<a name="meet-verb" class="anchor" href="#meet-verb"><span class="octicon octicon-link"></span></a>Meet Verb</h2>
+
+<blockquote>
+<p>Verb's CLI makes kickstarting new markdown documentation a breeze.</p>
+</blockquote>
+
+<p>For example, to <a href="https://github.com/assemble/generator-verb">generate a readme</a> for your project just add <code>docs/README.tmpl.md</code> with the following:</p>
+
+<pre lang="markdown"><code># {%= name %}
+
+&gt; {%= description %}
+
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+accusantium doloremque laudantium, totam rem aperiam.
+</code></pre>
+
+<p>Then run <code>verb</code> in the command line and it will generate <code>README.md</code>, <em>automatically using data from your project's package.json to process templates</em>.</p>
+
+<p><strong><a href="./DOCS.md#tags">Built-in tags</a></strong></p>
+
+<p>Need more than simple variables, like <code>date()</code>? Use one of Verb's <a href="./DOCS.md#date">built-in tags</a>:</p>
+
+<pre lang="markdown"><code>## License
+Copyright (c) {%= date('YYYY') %} {%= author.name %}, contributors.
+Released under the {%= license.type %} license
+</code></pre>
+
+<p><strong><a href="./DOCS.md#include">Includes</a></strong></p>
+
+<p>Easily include other documents. To use any markdown file in the <code>docs/</code> directory just use <a href="./DOCS.md#docs"><code>{%= docs() %}</code></a>:</p>
+
+<pre lang="markdown"><code>## Contribute
+{%= docs("contributing") %}
+</code></pre>
+
+<p>That's it! <a href="https://gist.github.com/jonschlinkert/9712957">See this gist</a> for a more detailed example.</p>
+
+<p>This is just a simple example though, Verb can easily build multi-page markdown documentation, with a fully-linked <a href="./DOCS.md#toc">multi-page TOC</a>, or even build a book!</p>
+
+<p><em>(Verb builds its own docs (WIP) too, check progress in the <a href="./docs">docs directory</a>!)</em>.</p>
+
+<h2>
+<a name="customize" class="anchor" href="#customize"><span class="octicon octicon-link"></span></a>Customize</h2>
+
+<p>Verb is easy to extend, here are some examples (<a href="https://github.com/assemble/verb-cli">verb-cli</a> will automatically use these):</p>
+
+<ul>
+<li>
+<a href="https://gist.github.com/jonschlinkert/9685280">example verbfile</a>, with custom <code>src</code>, <code>dest</code> and metadata.</li>
+<li><a href="https://gist.github.com/jonschlinkert/9685144">example verbfile with logging</a></li>
+<li><a href="https://gist.github.com/jonschlinkert/9686195">example .verbrc.yml</a></li>
+</ul><p>You can also use Verb as a basis for creating your own documentation generator!</p>
+
+<h2>
+<a name="test" class="anchor" href="#test"><span class="octicon octicon-link"></span></a>Test</h2>
+
+<p>Run Verb's 75+ unit tests:</p>
+
+<div class="highlight highlight-bash"><pre>mocha -R spec
+</pre></div>
+
+<h2>
+<a name="release-history" class="anchor" href="#release-history"><span class="octicon octicon-link"></span></a>Release history</h2>
+
+<p><strong>DATE</strong>       <strong>VERSION</strong>   <strong>CHANGES</strong>                                                        </p>
+
+<ul>
+<li>2014-03-29   v0.2.0        Changes the delimiter escaping format to be similar to Yeoman.,Adds
+                         documentation. Fixes and adds tests for front matter.<br>
+</li>
+<li>2014-03-10   v0.1.0        First commmit.<br>
+</li>
+</ul><h2>
+<a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute</h2>
+
+<p>All contributions are welcome! <em>Stars and tweets</em> are always a great way to show your support! But we can definitely use some help with:</p>
+
+<ul>
+<li><a href="./docs">documentation</a></li>
+<li><a href="./test">writing unit tests</a></li>
+<li><a href="https://github.com/assemble/verb/issues">addressing issues</a></li>
+</ul><p>Please read <a href="CONTRIBUTING.md">contributing guide</a> for more info!</p>
+
+<h2>
+<a name="author" class="anchor" href="#author"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<p><strong>Jon Schlinkert</strong></p>
+
+<ul>
+<li><a href="https://github.com/jonschlinkert">github/jonschlinkert</a></li>
+<li><a href="http://twitter.com/jonschlinkert">twitter/jonschlinkert</a></li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright (c) 2014 Jon Schlinkert, contributors.<br>
+Released under the MIT license</p>
+
+<hr><p><em>This file was generated by <a href="https://github.com/assemble/verb-cli">verb-cli</a> on April 26, 2014.</em></p>
+        </section>
+
+        <footer>
+          Verb is maintained by <a href="https://github.com/assemble">assemble</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
