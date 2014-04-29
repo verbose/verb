@@ -30,6 +30,7 @@ verb.ext          = '.md';
 
 // Utils
 verb.utils        = require('./lib/utils/index');
+verb.file         = require('./lib/file');
 
 // Logging
 verb.log          = require('verbalize');
@@ -117,7 +118,7 @@ verb.process = function(src, options) {
   verb.init(verb.options);
 
   // Copy the `config` object
-  verb.context = _.cloneDeep(verb.config(options.config));
+  verb.context = _.cloneDeep(verb.config(verb));
 
   // Delete the `context.config` property
   delete verb.context.config;
