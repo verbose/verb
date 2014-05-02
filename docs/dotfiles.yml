@@ -12,7 +12,11 @@ files:
   - <%= ignore.join('\n') %>
   - test
 
-# This is an arbitrary custom property
+
+
+# This is an arbitrary custom property, used by both the
+# npmignore object and the gitignore ogject. It's just a
+# convenience to keep the two "igmore" files in sync.
 ignore:
 # dotfiles
 - '# dotfiles'
