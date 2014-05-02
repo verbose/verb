@@ -12,4 +12,4 @@ tmp
 npm-debug.log
 # Always-ignore files
 TODO.md
-test/actual
+test
