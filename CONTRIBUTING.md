@@ -20,4 +20,3 @@ To build the docs, first make sure [verb-cli](https://github.com/assemble/verb-c
 * Pull request!
 
 Thanks!
-

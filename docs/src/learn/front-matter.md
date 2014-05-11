@@ -10,3 +10,17 @@ Verb uses [gray-matter](https://github.com/assemble/gray-matter) for parsing fro
 * Coffee-script
 
 Please see the [gray-matter](https://github.com/assemble/gray-matter) project for documentation and to see all available options.
+
+
+### Coffee
+
+**Example**
+
+Pass data to be used for generating [dotfiles](./docs/dotfiles.md):
+
+```yaml
+---coffee
+options =
+  dotfiles: require './dotfiles.json'
+---
+```
