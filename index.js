@@ -144,7 +144,7 @@ verb.process = function(src, options) {
   verb.page  = verb.matter(src, options);
 
   // Extend the context with YAML front matter
-  _.extend(verb.context, verb.page.context);
+  _.extend(verb.context, verb.page.data);
 
   // Exclusion patterns, to omit certain options from context
   verb.context = verb.exclusions(verb.context, options);

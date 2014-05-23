@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate docs, using simple markdown templates, with zero configuration required.",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "homepage": "https://github.com/assemble/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -33,7 +33,7 @@
     "find": "~0.1.5",
     "frep": "~0.2.0",
     "fs-utils": "~0.4.0",
-    "gray-matter": "~0.3.5",
+    "gray-matter": "~0.4.0",
     "list-methods": "~0.3.1",
     "lodash": "~2.4.1",
     "marked": "0.3.0",

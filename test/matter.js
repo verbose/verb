@@ -12,6 +12,7 @@ describe('front-matter', function () {
     it('should detect JSON as the language and correctly parse it as JSON.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect-json.md');
       var actual = verb.process(fixture, {matter: {autodetect: true}});
+      // console.log(actual)
       expect(actual.content).to.deep.equal('JSON Front Matter');
       done();
     });
@@ -32,7 +33,7 @@ describe('front-matter', function () {
   });
 
   describe('when "---coffee" is defined after the first front-matter delimiter"', function () {
-    it('should detect CoffeScript as the language, evaluate it, and extend the context with the result.', function (done) {
+    it('should detect CoffeScript as the language, evaluate it, and extend the data with the result.', function (done) {
       var fixture = file.readFileSync('./test/fixtures/autodetect.md');
       var actual = verb.process(fixture, {
         matter: {autodetect: true}
@@ -41,7 +42,7 @@ describe('front-matter', function () {
       done();
     });
 
-    it('should evaluate it and extend the context with the returned result.', function () {
+    it('should evaluate it and extend the data with the returned result.', function () {
       var fixture = 'test/fixtures/matter-coffee.md';
       var actual = verb.read(fixture, {matter: {autodetect: true}});
       var expected = 'Coffee Front Matter';
@@ -90,7 +91,7 @@ describe('front-matter', function () {
 
   describe('when CoffeeScript is used in front-matter', function () {
 
-    it('should be evaluated as CoffeeScript and extend the context with the result.', function (done) {
+    it('should be evaluated as CoffeeScript and extend the data with the result.', function (done) {
       var fixture = file.readFileSync('test/fixtures/coffee.md');
       var actual = verb.process(fixture, {
         matter: {autodetect: true},
@@ -100,7 +101,7 @@ describe('front-matter', function () {
       done();
     });
 
-    it('should evaluate functions and extend the context with the returned result.', function (done) {
+    it('should evaluate functions and extend the data with the returned result.', function (done) {
       var fixture = file.readFileSync('test/fixtures/coffee-fn.md');
       var actual = verb.process(fixture, {matter: {autodetect: true}});
       expect(actual.content).to.equal('jonschlinkert\ntreknilhcsnoj\n');
