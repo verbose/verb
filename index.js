@@ -87,6 +87,7 @@ verb.verbrc = {};
 verb.init = function (options) {
   options = options || {};
 
+
   if (verb.initalized) {
     return;
   }
@@ -133,10 +134,6 @@ verb.process = function(src, options) {
   // Expose Lo-dash template settings to options
   var settings = options.settings || {};
 
-  // Initialize Lo-Dash tags and filters
-  _.extend(verb.context, verb.tags(verb));
-  _.extend(verb.context, verb.filters(verb));
-
   // Merge in `options.data`
   _.extend(verb.context, verb.data(verb));
 
@@ -145,6 +142,10 @@ verb.process = function(src, options) {
 
   // Extend the context with YAML front matter
   _.extend(verb.context, verb.page.data);
+
+  // Initialize Lo-Dash tags and filters
+  _.extend(verb.context, verb.tags(verb));
+  _.extend(verb.context, verb.filters(verb));
 
   // Exclusion patterns, to omit certain options from context
   verb.context = verb.exclusions(verb.context, options);
