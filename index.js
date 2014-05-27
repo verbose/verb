@@ -111,18 +111,14 @@ verb.init = function (options) {
 
 verb.process = function(src, options) {
   options = _.extend({}, {toc: {maxDepth: 2}}, options);
-  verb.options = _.extend({}, verb.options, options);
+  verb.options = _.extend({}, options);
+  verb.init(verb.options);
 
   var delims = verb.utils.delims;
   src = delims.escape(src || '');
 
-  verb.init(verb.options);
-
   // Copy the `config` object
   verb.context = _.cloneDeep(verb.config(verb));
-
-  // Delete the `context.config` property
-  delete verb.context.config;
 
   // Extend `verb`
   verb.layout = require('./lib/layout')(verb);
