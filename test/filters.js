@@ -4,6 +4,13 @@ var verb = require('../');
 
 describe('Verb filters', function () {
 
+  describe('filters.namify:', function () {
+    it('should namify the string.', function () {
+      var actual = verb.process('{%= namify(name) %}', {name: 'a B'});
+      expect(actual.content).to.eql('aB');
+    });
+  });
+
   describe('filters.reverse:', function () {
     it('should return the reversed string.', function () {
       var actual = verb.process('{%= reverse("abc") %}');
