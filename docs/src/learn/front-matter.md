@@ -18,7 +18,7 @@ Please see the [gray-matter](https://github.com/assemble/gray-matter) project fo
 
 Pass data to be used for generating [dotfiles](./docs/dotfiles.md):
 
-```yaml
+```coffee
 ---coffee
 options =
   dotfiles: require './dotfiles.json'
