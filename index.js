@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Verb <https://github.com/assemble/verb>
  * Generate markdown documentation for GitHub projects.
@@ -85,7 +86,6 @@ verb.runner = {
 verb.init = function (options) {
   options = options || {};
 
-
   if (verb.initalized) {
     return;
   }
@@ -109,14 +109,18 @@ verb.init = function (options) {
 
 verb.process = function(src, options) {
   options = _.extend({}, {toc: {maxDepth: 2}}, options);
-  verb.options = _.extend({}, options);
-  verb.init(verb.options);
+  verb.options = _.extend({}, verb.options, options);
 
   var delims = verb.utils.delims;
   src = delims.escape(src || '');
 
+  verb.init(verb.options);
+
   // Copy the `config` object
   verb.context = _.cloneDeep(verb.config(verb));
+
+  // Delete the `context.config` property
+  delete verb.context.config;
 
   // Extend `verb`
   verb.layout = require('./lib/layout')(verb);
@@ -182,7 +186,7 @@ verb.parse = function(src, options) {
 
   // Log the start.
   verb.verbose.write();
-  verb.verbose.run('processing', relative(src));
+  verb.verbose.inform('processing', relative(src));
 
   var content = file.readFileSync(src);
   var result = verb.matter(content, options);
@@ -209,7 +213,7 @@ verb.read = function(src, options) {
 
   // Log the start.
   verb.verbose.write();
-  verb.verbose.run('processing', relative(src));
+  verb.verbose.inform('processing', relative(src));
 
   var content = file.readFileSync(src);
   var result = verb.process(content, options).content;
@@ -245,7 +249,7 @@ verb.copy = function(src, dest, options) {
   file.writeFileSync(dest, verb.read(src, options));
 
   _.extend(verb.options, options);
-  verb.verbose.run('writing', relative(dest));
+  verb.verbose.inform('writing', relative(dest));
 
   // Log a success message.
   verb.verbose.write();
