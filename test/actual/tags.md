@@ -205,14 +205,6 @@ Example:
 {%= log() %}
 ```
 
-### methods
-
-Example:
-
-```
-{%= methods() %}
-```
-
 ### moment
 
 Example:
