@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Verb <https://github.com/assemble/verb>
  * Generate markdown documentation for GitHub projects.
@@ -6,53 +7,60 @@
  * Licensed under the MIT license.
  */
 
-const cwd = require('cwd');
-const file = require('fs-utils');
-const relative = require('relative');
-const toc = require('marked-toc');
-const _ = require('lodash');
+var Base = require('class-extend');
+var cwd = require('cwd');
+var file = require('fs-utils');
+var relative = require('relative');
+var toc = require('marked-toc');
+var _ = require('lodash');
+
+// Verb modules
+var Cache = require('./lib/cache');
 
 
 /**
  * verb
  */
 
-const verb = module.exports = {};
+var verb = module.exports = new Cache();
+
+verb.set('foo', {bar: 'baz'});
 
 /**
  * Initialize API
  */
 
-verb.cwd          = cwd;
-verb.base         = cwd;
-verb.docs         = verb.cwd('docs');
-verb.ext          = '.md';
+_.extend(verb, {cwd: cwd});
+_.extend(verb, {base: cwd});
+_.extend(verb, {docs: verb.cwd('docs')});
+_.extend(verb, {ext: '.md'});
+
 
 // Utils
-verb.utils        = require('./lib/utils/index');
-verb.file         = require('./lib/file');
+_.extend(verb, {utils: require('./lib/utils/index')});
+_.extend(verb, {file:  require('./lib/file')});
 
 // Logging
-verb.log          = require('verbalize');
-verb.verbose      = verb.log.verbose;
-verb.mode         = verb.log.mode;
+_.extend(verb, {log:     require('verbalize')});
+_.extend(verb, {verbose: verb.log.verbose});
+_.extend(verb, {mode:    verb.log.mode});
 
 // Extensions
-verb.plugins      = require('./lib/plugins');
-verb.filters      = require('./lib/filters');
-verb.tags         = require('./lib/tags');
+_.extend(verb, {plugins: require('./lib/plugins')});
+_.extend(verb, {filters: require('./lib/filters')});
+_.extend(verb, {tags:    require('./lib/tags')});
 
 // Templates
-verb.scaffolds    = require('./lib/scaffolds');
-verb.template     = require('./lib/template');
+_.extend(verb, {scaffolds: require('./lib/scaffolds')});
+_.extend(verb, {template:  require('./lib/template')});
 
 // Data
-verb.config       = require('./lib/config');
-verb.data         = require('./lib/data');
-verb.matter       = require('./lib/matter');
+_.extend(verb, {config: require('./lib/config')});
+_.extend(verb, {data:   require('./lib/data')});
+_.extend(verb, {matter: require('./lib/matter')});
 
 // Omitted properties
-verb.exclusions   = require('./lib/exclusions');
+_.extend(verb, {exclusions: require('./lib/exclusions')});
 
 
 /**
@@ -66,16 +74,6 @@ verb.runner = {
   name: 'Verb',
   url: 'https://github.com/assemble/verb'
 };
-
-
-/**
- * If one exists, automatically load the user's
- * runtime config file.
- *
- * @api {private}
- */
-
-verb.verbrc = {};
 
 
 /**
