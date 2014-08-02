@@ -10,3 +10,4 @@ var verb = require('../');
 var dest = 'test/actual/comments.md';
 
 verb.copy('examples/templates/comments.md', dest, {dest: dest});
+console.log('Done.')

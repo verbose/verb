@@ -2,22 +2,70 @@
 
 > Developer documentation for Verb
 
-## [colors.js](../../lib/colors.js)
+## [cache.js](../../lib/cache.js)
+
+The Cache constructor. This is Assemble's parent storage class.
+
+* ``obj``: (Object):
+
+## .set( key, value ) Sets a new element by `key`.
+
+
+* ``key``: (String):
+* ``value``: (*):
+* ``expand``: (Boolean):
+
+Store a constant.
+
+* `key`: (String):
+* `value`: (*):
+
+Check if `value` is enabled (truthy). this.enabled('foo') // => false this.enable('foo') this.enabled('foo') // => true
+
+* `value`: (String):
+
+Check if `value` is disabled. this.'foo') // => true this.enable('foo') this.disabled('foo') // => false
+
+* `value`: (String):
+
+Enable `value`.
+
+* `value`: (String):
+
+Disable `value`.
+
+* `value`: (String):
+
+## .merge ( arguments ) Extend the cache with the given object. This method is chainable. **Example** ```js var cache = new Cache(); cache .merge({foo: 'bar'}, {baz: 'quux'}); .merge({fez: 'bang'}); ```
+
+## .get( key ) Gets the data by key.
+
+
+* ``key``: (*):
+* ``create``: (Boolean):
+
+## .all() Lists all elements.
+
+## .remove( key ) Removes an element by key.
+
+
+* `key`: (*):
+
+## .omit ( arguments ) Omit properties from the cache. **Example** ```js var cache = new Cache(); cache.set('src', 'foo/'); cache.set('dest', 'bar/'); cache .omit('src'); // or cache .omit('src', 'dest'); // or cache .omit(['src']); // or cache .omit(['src', 'dest']); ```
+
+## .exists( key ) Return true if an element exists. **Example** ```js cache.exists('person'); //=> true ```
+
+* `key`: (String):
 
 ## [config.js](../../lib/config.js)
 
-Initialize config object. This defaults to
-package.json, unless overridden by passing
-an object to `options.config`
-
-* `config`: (Object):
-
 ## [data.js](../../lib/data.js)
 
-Extend context with metadata from
-`options.data`.
+Extend context with metadata from `options.data`.
 
 * `options`: (Object):
+
+## [event.js](../../lib/event.js)
 
 ## [exclusions.js](../../lib/exclusions.js)
 
@@ -26,82 +74,41 @@ Omit properties from the context
 
 ## [file.js](../../lib/file.js)
 
-### [expand](../../lib/file.js#L17)
-
-Expand files.
-
-* `src`: (String):
-* `options`: (Object):
-
-### [read](../../lib/file.js#L41)
-
-Read files.
-
-* `src`: (String):
-* `options`: (Object):
-
-Expand mapping
-
-* `expandMapping`: (name):
-* `patterns`: (Array
-
-String): Accepts either comma separated globbing patterns or an array of globbing patterns.
-
-* `dest`: (String): The base path for dest files.
-* `options`: (Object): Options to pass in: @option {String} cwd: the current working directory for source files. @option {String} ext: the file extension to use on dest files.
+Expose fs-utils on verb
 
 ## [filters.js](../../lib/filters.js)
 
-### [filters](../../lib/filters.js#L15)
+### [filters](../../lib/filters.js#L12)
 
-Adds filters to the context
+Filters Adds `filter` extensions to the context.
 
 * `options`: (Object):
-
-Built-in filters
-User-defined
 
 ## [columnify.js](../../lib/filters/columnify.js)
 
 ## [listify.js](../../lib/utils/listify.js)
 
-Flatten an array and convert it
-to a comma-separated list.
-
-* `arr`: (Array): [description]
+## [namify.js](../../lib/filters/namify.js)
 
 ## [reverse.js](../../lib/utils/reverse.js)
 
-### [reverse](../../lib/utils/reverse.js#L11)
-
-Reverse a string
-
-* `str`: (String): The string to reverse
-
 ## [safename.js](../../lib/utils/safename.js)
 
+Strings to strip from the return value.
 Safename
 
 * `name`: ([type]): The name to be modified
 
-## [shortname.js](../../lib/filters/shortname.js)
-
 ## [strip.js](../../lib/utils/strip.js)
-
-### [reverse](../../lib/utils/strip.js#L11)
-
-Strip newlines and whitespace padding.
-
-* `str`: (String): The string to reverse
 
 ## [layout.js](../../lib/scaffolds/layout.js)
 
-## [log.js](../../lib/tags/log.js)
-
 ## [matter.js](../../lib/matter.js)
 
-Parse and extract YAML, JSON or Coffee
-front matter.
+Use gray-matter to parse and extract YAML, JSON, Coffee or TOML front matter. Also set some defaults.
+
+* `str`: (String): Source string to be parsed by gray-matter.
+* `options`: (Object): Options are passed to gray-matter on the `options.matter` property.
 
 ## [mixins.js](../../lib/mixins.js)
 
@@ -113,16 +120,23 @@ Export mixins
 
 ## [plugins.js](../../lib/plugins.js)
 
-### [plugins](../../lib/plugins.js#L17)
+### [plugins](../../lib/plugins.js#L12)
 
-Adds plugins to the context
+Plugins Adds `plugin` extensions to the context.
 
 * `options`: (Object):
 
-Run built-in plugins
-Run user-defined plugins
+## [authors.js](../../lib/utils/authors.js)
+
+Parse the AUTHORS file into an array of `author` objects.
+
+* `filepath`: (String): Alternate filepath.
 
 ## [contributors.js](../../lib/utils/contributors.js)
+
+## [dotfiles.js](../../lib/plugins/dotfiles.js)
+
+Generate dotfiles from a data file
 
 ## [homepage.js](../../lib/plugins/homepage.js)
 
@@ -131,18 +145,12 @@ Run user-defined plugins
 ## [travis.js](../../lib/plugins/travis.js)
 
 .travis.yml
-If `.travis.yml` does not exist, and
-`travis: true` is defined in the options,
-then add a `.travis.yml` file to the root
-of the project.
-If `.travis.yml` already exists, add
-a travis URL to the context for use
-in templates
+If `.travis.yml` does not exist, and `travis: true` is defined in the options, then add a `.travis.yml` file to the root of the project.
+If `.travis.yml` already exists, add a travis URL to the context for use in templates
 
 ## [username.js](../../lib/utils/username.js)
 
-Extract a username/org from a
-GitHub URL.
+Extract a username/org from a GitHub URL.
 
 * `{String}`: ():
 
@@ -150,11 +158,9 @@ GitHub URL.
 
 ## [comment.js](../../lib/scaffolds/comment.js)
 
-## [gitignore.js](../../lib/scaffolds/gitignore.js)
-
 ## [html-layout.js](../../lib/scaffolds/html-layout.js)
 
-## [methods.js](../../lib/tags/methods.js)
+## [methods.js](../../lib/scaffolds/methods.js)
 
 ## [readme-basic.js](../../lib/scaffolds/readme-basic.js)
 
@@ -162,26 +168,17 @@ GitHub URL.
 
 ## [tags.js](../../lib/tags.js)
 
-### [tags](../../lib/tags.js#L16)
+### [tags](../../lib/tags.js#L12)
 
 Adds tags to the context
 
 * `options`: (Object):
 
-Initialize tags
-
-* `verb`: (Object):
-
-Built-in tags
-User-defined
-
-## [authors.js](../../lib/utils/authors.js)
-
 ## [badge.js](../../lib/tags/badge.js)
 
 Status, analytics and version badges.
 
-* `config`: (Object):
+* `context`: (Object):
 * `options`: (Object):
 
 ## [changelog.js](../../lib/tags/changelog.js)
@@ -198,21 +195,7 @@ Add a copyright statement, with author and year(s) in effect.
 
 ## [date.js](../../lib/utils/date.js)
 
-### [formatDate](../../lib/utils/date.js#L10)
-
-Date functions used in _.date() filter
-
-* `dateobj`: (Object): The date object to format.
-* `structure`: (String): The structure to use, e.g. 'YYYY-MM-DD'.
-
 ## [dates.js](../../lib/tags/dates.js)
-
-### [formatDate](../../lib/tags/dates.js#L11)
-
-Date functions used in _.date() filter
-
-* `dateobj`: (Object): The date object to format.
-* `structure`: (String): The structure to use, e.g. 'YYYY-MM-DD'.
 
 ## [docs.js](../../lib/tags/docs.js)
 
@@ -224,11 +207,11 @@ Date functions used in _.date() filter
 
 ## [license.js](../../lib/tags/license.js)
 
+## [log.js](../../lib/tags/log.js)
+
 ## [moment.js](../../lib/tags/moment.js)
 
-## [pkg.js](../../lib/tags/pkg.js)
-
-## [raw.js](../../lib/tags/raw.js)
+## [nl.js](../../lib/tags/nl.js)
 
 ## [toc.js](../../lib/utils/toc.js)
 
@@ -247,52 +230,34 @@ Compile Lo-Dash templates.
 
 ## [adjust.js](../../lib/utils/adjust.js)
 
-Adjust heading levels. Adds one heading
-level next to all markdown headings to
-make them correct within the scope of the
-inheriting document. Headings in fenced
-code blocks are skipped.
-Unescapes delimiters
+Adjust heading levels. Adds one heading level next to all markdown headings to make them correct within the scope of the inheriting document. Headings in fenced code blocks are skipped.
 
 ## [arrayify.js](../../lib/utils/arrayify.js)
 
-Coerce the value to an array
-
-* `arrayify`: (name):
-* `arr`: (Array
-
-String):
-
 ## [block.js](../../lib/utils/block.js)
 
-TODO: This isn't used anywhere.
-Move it to example for delims!
+TODO: This isn't used anywhere. Move it to example for delims!
 Create a block template
 
 ## [condense.js](../../lib/utils/condense.js)
 
-Remove all extraneous newlines.
+Replace extraneous newlines with a single newline.
 
 * `str`: (String):
 
 ## [convertUrl.js](../../lib/utils/convertUrl.js)
 
+## [delims.js](../../lib/utils/delims.js)
+
+Escape / Unescape delimiters. Syntax was changed to mirror Yeoman's, for familiarity to users.
+
 ## [dir.js](../../lib/utils/dir.js)
 
-Get the relative path from process.cwd() to
-the specifiied paths, from any other directory
-in the project.
-
-## [expandData.js](../../lib/utils/expandData.js)
-
-### [expandData](../../lib/utils/expandData.js#L19)
-
-Read in data from a string, object or array
-
-* `data`: (String,Object,Array): String, object or array
-* `options`: (Object): Pass an object of options
+Get the relative path from process.cwd() to the specifiied paths, from any other directory in the project.
 
 ## [extendContext.js](../../lib/utils/extendContext.js)
+
+## [extension.js](../../lib/utils/extension.js)
 
 ## [index.js](../../lib/utils/index.js)
 
@@ -300,16 +265,14 @@ Read in data from a string, object or array
 
 ## [isType.js](../../lib/utils/isType.js)
 
-Returns the `typeOf` a JavaScript value
-
 ## [lookup.js](../../lib/utils/lookup.js)
 
-Convenience wrapper around `glob.find` and `glob.match`.
-Expand the given glob patterns, then look for a match
-in the result set.
+Convenience wrapper around `glob.find` and `glob.match`. Expand the given glob patterns, then look for a match in the result set.
 
 * `patterns`: (String): The glob patterns to expand.
 * `name`: (String): The name to match in the result set.
+
+## [matchname.js](../../lib/utils/matchname.js)
 
 ## [md.js](../../lib/utils/md.js)
 
@@ -324,16 +287,18 @@ Post-process content with RegExp replacement patterns
 * `str`: (String): The string with patterns to replace.
 * `options`: (Object): The options to use @option {patterns} Replacement patterns to use
 
+## [resolveMatches.js](../../lib/utils/resolveMatches.js)
+
+Resolve matches.
+
+* `name`: ([type]): [description]
+* `filepath`: ([type]): [description]
+
 ## [rollcall.js](../../lib/utils/rollcall.js)
 
 ## [time.js](../../lib/utils/time.js)
 
-## function time()
-
-Get the current time using `.toLocaleTimeString()`.
+## function time() Get the current time using `.toLocaleTimeString()`.
 
 ## [timestamp.js](../../lib/utils/timestamp.js)
 
-### [function timetamp()](../../lib/utils/timestamp.js#L9)
-
-Get the current time using `.toISOString()`
