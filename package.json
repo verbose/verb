@@ -35,18 +35,8 @@
     "verb": ">= 0.2.6",
     "mocha": "*"
   },
-  "keywords": [
-    "docs",
-    "documentation",
-    "generate",
-    "generator",
-    "markdown",
-    "templates",
-    "verb"
-  ],
   "dependencies": {
     "archy": "^1.0.0",
-    "arrayify-compact": "^0.1.0",
     "chalk": "^0.5.1",
     "debug": "^2.1.0",
     "event-stream": "^3.1.7",
@@ -57,6 +47,7 @@
     "liftoff": "^0.13.5",
     "lodash": "^2.4.1",
     "minimist": "^1.1.0",
+    "noun": "^0.2.0",
     "orchestrator": "^0.3.7",
     "parse-filepath": "^0.3.1",
     "parser-front-matter": "^0.3.0",
@@ -66,5 +57,14 @@
     "tildify": "^1.0.0",
     "v8flags": "^1.0.1",
     "vinyl-fs": "^0.3.10"
-  }
+  },
+  "keywords": [
+    "docs",
+    "documentation",
+    "generate",
+    "generator",
+    "markdown",
+    "templates",
+    "verb"
+  ]
 }

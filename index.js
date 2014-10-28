@@ -43,11 +43,13 @@ var Verb = module.exports = Engine.extend({
     this._defaultRoutes();
     this._defaultTemplates();
     Config.call(this);
+    Noun.call(this, 'verb');
   }
 });
 
 util.inherits(Verb, Engine);
 extend(Verb.prototype, Config.prototype);
+extend(Verb.prototype, Noun.prototype);
 
 /**
  * Initialize default template types
@@ -104,15 +106,15 @@ Verb.prototype._defaultTemplates = function() {
  * @api private
  */
 
-// Verb.prototype._defaultRoutes = function() {
-//   this.route(/\.*$/, function (src, dest, next) {
-//     debug('default route: %j', arguments);
-//     parser.parse(unBuffer(src), function (err) {
-//       if (err) return next(err);
-//       next();
-//     });
-//   });
-// };
+Verb.prototype._defaultRoutes = function() {
+  this.route(/\.*$/, function (src, dest, next) {
+    debug('default route: %j', arguments);
+    parser.parse(unBuffer(src), function (err) {
+      if (err) return next(err);
+      next();
+    });
+  });
+};
 
 /**
  * Register default template delimiters.
