@@ -7,7 +7,7 @@
 
 'use strict';
 
-process.env.DEBUG = 'verb';
+// process.env.DEBUG = 'verb:*'
 
 var util = require('util');
 var vfs = require('vinyl-fs');
@@ -19,7 +19,7 @@ var debug = require('debug')('verb');
 var Engine = require('engine');
 var Config = require('orchestrator');
 var parser = require('parser-front-matter');
-var stack = require('./lib/defaults');
+var stack = require('./lib/stack');
 var utils = require('./lib/utils');
 var _ = require('lodash');
 var extend = _.extend;
