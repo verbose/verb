@@ -31,12 +31,14 @@
     "test": "mocha -R spec"
   },
   "devDependencies": {
-    "verb-tag-jscomments": ">= 0.2.0",
+    "mocha": "*",
+    "should": "^4.1.0",
     "verb": ">= 0.2.6",
-    "mocha": "*"
+    "verb-tag-jscomments": ">= 0.2.0"
   },
   "dependencies": {
     "archy": "^1.0.0",
+    "array-slice": "^0.2.2",
     "chalk": "^0.5.1",
     "debug": "^2.1.0",
     "event-stream": "^3.1.7",
@@ -45,13 +47,15 @@
     "interpret": "^0.3.7",
     "isobject": "^0.2.0",
     "liftoff": "^0.13.5",
+    "load-plugins": "^0.3.0",
     "lodash": "^2.4.1",
     "minimist": "^1.1.0",
-    "noun": "^0.2.0",
+    "mixin-deep": "^0.1.0",
     "orchestrator": "^0.3.7",
     "parse-filepath": "^0.3.1",
     "parser-front-matter": "^0.3.0",
     "pretty-hrtime": "^0.2.2",
+    "rte": "^0.4.0",
     "semver": "^4.1.0",
     "through2": "^0.6.3",
     "tildify": "^1.0.0",

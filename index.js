@@ -11,9 +11,10 @@
 
 var util = require('util');
 var vfs = require('vinyl-fs');
-var Noun = require('noun');
 var File = require('gulp-util').File;
 var es = require('event-stream');
+var load = require('load-plugins');
+var slice = require('array-slice');
 var debug = require('debug')('verb');
 var Engine = require('engine');
 var Config = require('orchestrator');
@@ -39,17 +40,20 @@ var extend = _.extend;
 var Verb = module.exports = Engine.extend({
   constructor: function (options) {
     Verb.__super__.constructor.call(this, options);
-    this._defaultConfig();
-    this._defaultRoutes();
-    this._defaultTemplates();
     Config.call(this);
-    Noun.call(this, 'verb');
+
+    this.fns = {};
+
+    this._loadExtensions();
+    this._defaultTemplates();
+    this._defaultRoutes();
+    this._defaultConfig();
+    this._loadHelpers();
   }
 });
 
 util.inherits(Verb, Engine);
 extend(Verb.prototype, Config.prototype);
-extend(Verb.prototype, Noun.prototype);
 
 /**
  * Initialize default template types
@@ -58,8 +62,6 @@ extend(Verb.prototype, Noun.prototype);
  */
 
 Verb.prototype._defaultConfig = function() {
-  this.disable('built-in:engines');
-
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
   this.option('defaults', {
@@ -67,7 +69,7 @@ Verb.prototype._defaultConfig = function() {
     isPartial: true,
     engine: '.md',
     ext: '.md'
-  })
+  });
 };
 
 /**
@@ -117,16 +119,67 @@ Verb.prototype._defaultRoutes = function() {
 };
 
 /**
- * Register default template delimiters.
+ * Load plugins.
  *
- *   - engine delimiters: Delimiters used in templates process by [engine-lodash], the default engine.
- *   - layout delimiters: Delimiters used in layouts.
+ * Called in the constructor to load plugins from `node_modules`
+ * using the given `namespace`, but you may also call the method
+ * directly.
+ *
+ * For example, the namespace `foo` would load plugins using the
+ * `foo-*` glob pattern, e.g:
+ *
+ * ```js
+ * verb.loadPlugins('foo-*');
+ * ```
+ *
+ * @param  {String} `pattern` Optionally pass a glob pattern when calling the method directly.
+ * @return {Object} Returns an object of plugins loaded from `node_modules`.
+ * @api public
+ */
+
+Verb.prototype._loadExtensions = function(pattern) {
+  this.loadType('plugin', 'plugins', pattern);
+  this.loadType('helper', 'helpers', pattern);
+  this.loadType('tag', 'tags', pattern);
+};
+
+/**
+ * Register helpers that are automatically loaded.
  *
  * @api private
  */
 
-Verb.prototype.defaultDelimiters = function() {
-  this.addDelims('md', ['{%', '%}'], ['<<%', '%>>']);
+Verb.prototype._loadHelpers = function() {
+  var helpers = Object.keys(this.fns.helpers);
+  var len = helpers.length;
+
+  for (var i = 0; i < len; i++) {
+    var name = helpers[i];
+    var fn = this.fns.helpers[name];
+    this.addHelperAsync(name, fn.bind(this));
+  }
+  return this;
+};
+
+/**
+ * Private method to create a plugin loader for the
+ * given `type`.
+ *
+ * @param  {String} `type`
+ * @param  {String} `plural`
+ * @param  {String} `pattern`
+ * @return {Object} `fns`
+ */
+
+Verb.prototype.loadType = function(type, plural, pattern) {
+  this.fns[plural] = this.fns[plural] || {};
+
+  extend(this.fns[plural], load(namify(type) + '*', {
+    strip: namify(type),
+    cwd: process.cwd()
+  }));
+
+  return this.fns[plural];
 };
 
 /**
@@ -174,9 +227,10 @@ Verb.prototype.toVinyl = function(value) {
 
   return new File({
     contents: new Buffer(value.content),
-    path: value.path,
+    options: value.options || {},
     locals: value.locals || {},
-    options: value.options || {}
+    path: value.path,
+    ext: value.ext,
   });
 };
 
@@ -196,10 +250,6 @@ Verb.prototype.toVinyl = function(value) {
  */
 
 Verb.prototype.src = function (glob, options) {
-  if (this.enabled('minimal')) {
-    return vfs.dest(glob, options);
-  }
-
   debug('src: %j', arguments);
 
   return es.pipe.apply(es, utils.arrayify([
@@ -223,10 +273,6 @@ Verb.prototype.src = function (glob, options) {
  */
 
 Verb.prototype.dest = function (dest, options) {
-  if (this.enabled('minimal')) {
-    return vfs.dest(dest, options);
-  }
-
   debug('dest: %j', arguments);
 
   return es.pipe.apply(es, utils.arrayify([
@@ -263,6 +309,17 @@ Verb.prototype.watch = function (glob, opts, fn) {
   }
   return vfs.watch(glob, opts, fn);
 };
+
+/**
+ * Private method to make a `verb-` name`.
+ *
+ * @param  {String} `str`
+ * @return {String}
+ */
+
+function namify(str) {
+  return 'verb-' + str;
+}
 
 /**
  * Un-buffer the contents of a template.
