@@ -119,19 +119,6 @@ Verb.prototype._defaultRoutes = function() {
 };
 
 /**
- * Register default template delimiters.
- *
- *   - `['{%', '%}']` => default template delimiters
- *   - `['<<%', '%>>']` => default template delimiters
- *
- * @api private
- */
-
-Verb.prototype.defaultDelimiters = function() {
-  this.addDelims('md', ['{%', '%}'], ['<<%', '%>>']);
-};
-
-/**
  * Load plugins.
  *
  * Called in the constructor to load plugins from `node_modules`
@@ -157,7 +144,9 @@ Verb.prototype._loadExtensions = function(pattern) {
 };
 
 /**
+ * Register helpers that are automatically loaded.
  *
+ * @api private
  */
 
 Verb.prototype._loadHelpers = function() {
