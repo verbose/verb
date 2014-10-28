@@ -11,9 +11,10 @@
 
 var util = require('util');
 var vfs = require('vinyl-fs');
-var Noun = require('noun');
 var File = require('gulp-util').File;
 var es = require('event-stream');
+var load = require('load-plugins');
+var slice = require('array-slice');
 var debug = require('debug')('verb');
 var Engine = require('engine');
 var Config = require('orchestrator');
@@ -39,17 +40,18 @@ var extend = _.extend;
 var Verb = module.exports = Engine.extend({
   constructor: function (options) {
     Verb.__super__.constructor.call(this, options);
-    this._defaultConfig();
-    this._defaultRoutes();
-    this._defaultTemplates();
     Config.call(this);
-    Noun.call(this, 'verb');
+    this.plugins = {};
+    this.helpers = {};
+    this._defaultTemplates();
+    this._defaultRoutes();
+    this._defaultConfig();
+    this._loadPlugins();
   }
 });
 
 util.inherits(Verb, Engine);
 extend(Verb.prototype, Config.prototype);
-extend(Verb.prototype, Noun.prototype);
 
 /**
  * Initialize default template types
@@ -59,7 +61,6 @@ extend(Verb.prototype, Noun.prototype);
 
 Verb.prototype._defaultConfig = function() {
   this.disable('built-in:engines');
-
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
   this.option('defaults', {
@@ -67,7 +68,7 @@ Verb.prototype._defaultConfig = function() {
     isPartial: true,
     engine: '.md',
     ext: '.md'
-  })
+  });
 };
 
 /**
@@ -127,6 +128,114 @@ Verb.prototype._defaultRoutes = function() {
 
 Verb.prototype.defaultDelimiters = function() {
   this.addDelims('md', ['{%', '%}'], ['<<%', '%>>']);
+};
+
+/**
+ * Load plugins based on type.
+ *
+ * @api private
+ */
+
+Verb.prototype._loadPlugins = function() {
+  var stack = Object.keys(this.plugins);
+  var len = stack.length;
+  var i = 0;
+
+  while(len--) {
+    var plugin = stack[i++];
+    var seg = plugin.split('-');
+    var fn = this.plugins[plugin];
+    this.setPlugin(seg[0], slice(seg, 1), fn);
+  }
+};
+
+Verb.prototype.setPlugin = function(type, name, fn) {
+  type = type + 's';
+  this.plugins[type] = this.plugins[type] || {};
+  this.plugins[type][name] = fn;
+  return this;
+};
+
+/**
+ * Define a plugin.
+ *
+ * ```js
+ * noun
+ *   .plugin(foo())
+ *   .plugin(bar())
+ *   .plugin(baz())
+ * ```
+ *
+ * @param  {Function} `fn` The function to call.
+ * @return {Object} Returns `Verb` for chaining.
+ * @api public
+ */
+
+Verb.prototype.plugin = function(fn) {
+  if (fn && typeof fn === 'function') {
+    fn.apply(this, slice(arguments, 1));
+  }
+  return this;
+};
+
+/**
+ * Load plugins.
+ *
+ * Called in the constructor to load plugins from `node_modules`
+ * using the given `namespace`, but you may also call the method
+ * directly.
+ *
+ * For example, the namespace `foo` would load plugins using the
+ * `foo-*` glob pattern, e.g:
+ *
+ * ```js
+ * noun.loadPlugins('foo-*');
+ * ```
+ *
+ * @param  {String} `pattern` Optionally pass a glob pattern when calling the method directly.
+ * @return {Object} Returns an object of plugins loaded from `node_modules`.
+ * @api public
+ */
+
+Verb.prototype.loadPlugins = function(pattern) {
+  var name = pattern || this.namespace + '-*';
+
+  extend(this.plugins, load(name, {
+    omit: this.namespace,
+    cwd: process.cwd()
+  }));
+
+  return this.plugins;
+};
+
+/**
+ * Run an object of plugins. By default, the `.runPlugins()` method
+ * is called in the constructor, but it may also be used directly.
+ *
+ * When used directly, each plugin is a key-value pair, where the
+ * key is the plugin name, and the value is the function to be called.
+ *
+ * Currently, the plugin name is useless, so this could have
+ * been setup to take an array. However, there are plans to
+ * add additional features to take advantage of this configuration.
+ *
+ * **Example:**
+ *
+ * ```js
+ * noun.runPlugins({'myPlugin': [function]});
+ * ```
+ *
+ * @param  {Object} `fns` Object of plugins.
+ * @api public
+ */
+
+Verb.prototype.runPlugins = function(plugins) {
+  plugins = plugins || this.plugins;
+  var keys = Object.keys(plugins);
+
+  for (var i = 0; i < keys.length; i++) {
+    this.plugin.call(this, plugins[keys[i]], this);
+  }
 };
 
 /**
