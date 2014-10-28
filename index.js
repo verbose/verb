@@ -41,12 +41,14 @@ var Verb = module.exports = Engine.extend({
   constructor: function (options) {
     Verb.__super__.constructor.call(this, options);
     Config.call(this);
-    this.plugins = {};
-    this.helpers = {};
+
+    this.fns = {};
+
+    this._loadExtensions();
     this._defaultTemplates();
     this._defaultRoutes();
     this._defaultConfig();
-    this._loadPlugins();
+    this._loadHelpers();
   }
 });
 
@@ -60,7 +62,6 @@ extend(Verb.prototype, Config.prototype);
  */
 
 Verb.prototype._defaultConfig = function() {
-  this.disable('built-in:engines');
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
   this.option('defaults', {
@@ -120,62 +121,14 @@ Verb.prototype._defaultRoutes = function() {
 /**
  * Register default template delimiters.
  *
- *   - engine delimiters: Delimiters used in templates process by [engine-lodash], the default engine.
- *   - layout delimiters: Delimiters used in layouts.
+ *   - `['{%', '%}']` => default template delimiters
+ *   - `['<<%', '%>>']` => default template delimiters
  *
  * @api private
  */
 
 Verb.prototype.defaultDelimiters = function() {
   this.addDelims('md', ['{%', '%}'], ['<<%', '%>>']);
-};
-
-/**
- * Load plugins based on type.
- *
- * @api private
- */
-
-Verb.prototype._loadPlugins = function() {
-  var stack = Object.keys(this.plugins);
-  var len = stack.length;
-  var i = 0;
-
-  while(len--) {
-    var plugin = stack[i++];
-    var seg = plugin.split('-');
-    var fn = this.plugins[plugin];
-    this.setPlugin(seg[0], slice(seg, 1), fn);
-  }
-};
-
-Verb.prototype.setPlugin = function(type, name, fn) {
-  type = type + 's';
-  this.plugins[type] = this.plugins[type] || {};
-  this.plugins[type][name] = fn;
-  return this;
-};
-
-/**
- * Define a plugin.
- *
- * ```js
- * noun
- *   .plugin(foo())
- *   .plugin(bar())
- *   .plugin(baz())
- * ```
- *
- * @param  {Function} `fn` The function to call.
- * @return {Object} Returns `Verb` for chaining.
- * @api public
- */
-
-Verb.prototype.plugin = function(fn) {
-  if (fn && typeof fn === 'function') {
-    fn.apply(this, slice(arguments, 1));
-  }
-  return this;
 };
 
 /**
@@ -189,7 +142,7 @@ Verb.prototype.plugin = function(fn) {
  * `foo-*` glob pattern, e.g:
  *
  * ```js
- * noun.loadPlugins('foo-*');
+ * verb.loadPlugins('foo-*');
  * ```
  *
  * @param  {String} `pattern` Optionally pass a glob pattern when calling the method directly.
@@ -197,45 +150,47 @@ Verb.prototype.plugin = function(fn) {
  * @api public
  */
 
-Verb.prototype.loadPlugins = function(pattern) {
-  var name = pattern || this.namespace + '-*';
-
-  extend(this.plugins, load(name, {
-    omit: this.namespace,
-    cwd: process.cwd()
-  }));
-
-  return this.plugins;
+Verb.prototype._loadExtensions = function(pattern) {
+  this.loadType('plugin', 'plugins', pattern);
+  this.loadType('helper', 'helpers', pattern);
+  this.loadType('tag', 'tags', pattern);
 };
 
 /**
- * Run an object of plugins. By default, the `.runPlugins()` method
- * is called in the constructor, but it may also be used directly.
  *
- * When used directly, each plugin is a key-value pair, where the
- * key is the plugin name, and the value is the function to be called.
- *
- * Currently, the plugin name is useless, so this could have
- * been setup to take an array. However, there are plans to
- * add additional features to take advantage of this configuration.
- *
- * **Example:**
- *
- * ```js
- * noun.runPlugins({'myPlugin': [function]});
- * ```
- *
- * @param  {Object} `fns` Object of plugins.
- * @api public
  */
 
-Verb.prototype.runPlugins = function(plugins) {
-  plugins = plugins || this.plugins;
-  var keys = Object.keys(plugins);
+Verb.prototype._loadHelpers = function() {
+  var helpers = Object.keys(this.fns.helpers);
+  var len = helpers.length;
 
-  for (var i = 0; i < keys.length; i++) {
-    this.plugin.call(this, plugins[keys[i]], this);
+  for (var i = 0; i < len; i++) {
+    var name = helpers[i];
+    var fn = this.fns.helpers[name];
+    this.addHelperAsync(name, fn.bind(this));
   }
+  return this;
+};
+
+/**
+ * Private method to create a plugin loader for the
+ * given `type`.
+ *
+ * @param  {String} `type`
+ * @param  {String} `plural`
+ * @param  {String} `pattern`
+ * @return {Object} `fns`
+ */
+
+Verb.prototype.loadType = function(type, plural, pattern) {
+  this.fns[plural] = this.fns[plural] || {};
+
+  extend(this.fns[plural], load(namify(type) + '*', {
+    strip: namify(type),
+    cwd: process.cwd()
+  }));
+
+  return this.fns[plural];
 };
 
 /**
@@ -283,9 +238,10 @@ Verb.prototype.toVinyl = function(value) {
 
   return new File({
     contents: new Buffer(value.content),
-    path: value.path,
+    options: value.options || {},
     locals: value.locals || {},
-    options: value.options || {}
+    path: value.path,
+    ext: value.ext,
   });
 };
 
@@ -305,10 +261,6 @@ Verb.prototype.toVinyl = function(value) {
  */
 
 Verb.prototype.src = function (glob, options) {
-  if (this.enabled('minimal')) {
-    return vfs.dest(glob, options);
-  }
-
   debug('src: %j', arguments);
 
   return es.pipe.apply(es, utils.arrayify([
@@ -332,10 +284,6 @@ Verb.prototype.src = function (glob, options) {
  */
 
 Verb.prototype.dest = function (dest, options) {
-  if (this.enabled('minimal')) {
-    return vfs.dest(dest, options);
-  }
-
   debug('dest: %j', arguments);
 
   return es.pipe.apply(es, utils.arrayify([
@@ -372,6 +320,17 @@ Verb.prototype.watch = function (glob, opts, fn) {
   }
   return vfs.watch(glob, opts, fn);
 };
+
+/**
+ * Private method to make a `verb-` name`.
+ *
+ * @param  {String} `str`
+ * @return {String}
+ */
+
+function namify(str) {
+  return 'verb-' + str;
+}
 
 /**
  * Un-buffer the contents of a template.
