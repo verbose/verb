@@ -15,6 +15,7 @@ var v8flags = require('v8flags');
 var completion = require('../lib/completion');
 var argv = require('minimist')(process.argv.slice(2));
 var taskTree = require('../lib/taskTree');
+var padKeys = require('../lib/utils/pad-keys');
 
 // set env var for ORIGINAL cwd
 // before anything touches it
@@ -35,15 +36,12 @@ process.once('exit', function(code) {
   }
 });
 
-// parse those args m8
 var cliPackage = require('../package');
 var versionFlag = argv.v || argv.version;
 var tasksFlag = argv.T || argv.tasks;
 var tasks = argv._;
 var toRun = tasks.length ? tasks : ['default'];
 
-// this is a hold-over until we have a better logging system
-// with log levels
 var simpleTasksFlag = argv['tasks-simple'];
 var shouldLog = !argv.silent && !simpleTasksFlag;
 
@@ -76,6 +74,8 @@ cli.launch({
 
 // the actual logic
 function handleArguments(env) {
+  console.log();
+
   if (versionFlag && tasks.length === 0) {
     gutil.log('CLI version', cliPackage.version);
     if (env.modulePackage && typeof env.modulePackage.version !== 'undefined') {
@@ -95,8 +95,9 @@ function handleArguments(env) {
   }
 
   if (!env.configPath) {
-    gutil.log(chalk.red('No verbfile found'));
-    process.exit(1);
+    env.configPath = path.resolve(__dirname, '../lib/verbfile.js');
+    // gutil.log(chalk.red('No verbfile found'));
+    // process.exit(1);
   }
 
   // check for semver difference between cli and local installation
@@ -110,15 +111,11 @@ function handleArguments(env) {
   // we let them chdir as needed
   if (process.cwd() !== env.cwd) {
     process.chdir(env.cwd);
-    gutil.log(
-      'Working directory changed to',
-      chalk.magenta(tildify(env.cwd))
-    );
   }
 
   // this is what actually loads up the verbfile
   require(env.configPath);
-  gutil.log('Using verbfile', chalk.magenta(tildify(env.configPath)));
+  gutil.log('[verbfile]', chalk.gray(tildify(env.configPath)));
 
   var verbInst = require(env.modulePath);
   logEvents(verbInst);
@@ -134,11 +131,10 @@ function handleArguments(env) {
   });
 }
 
-function logTasks(env, localGulp) {
-  var tree = taskTree(localGulp.tasks);
-  tree.label = 'Tasks for ' + chalk.magenta(tildify(env.configPath));
-  archy(tree)
-    .split('\n')
+function logTasks(env, localVerb) {
+  var tree = taskTree(localVerb.tasks);
+  tree.label = 'Tasks for ' + chalk.gray(tildify(env.configPath));
+  archy(tree).split('\n')
     .forEach(function (v) {
       if (v.trim().length === 0) {
         return;
@@ -147,10 +143,9 @@ function logTasks(env, localGulp) {
     });
 }
 
-function logTasksSimple(env, localGulp) {
-  console.log(Object.keys(localGulp.tasks)
-    .join('\n')
-    .trim());
+function logTasksSimple(env, localVerb) {
+  var keys = Object.keys(localVerb.tasks)
+  console.log(keys.join('\n').trim());
 }
 
 // format orchestrator errors
@@ -175,42 +170,30 @@ function formatError(e) {
 
 // wire up logging events
 function logEvents(verbInst) {
-
-  // total hack due to poor error management in orchestrator
+  var o = padKeys(verbInst.tasks);
   verbInst.on('err', function () {
     failed = true;
   });
 
   verbInst.on('task_start', function (e) {
-    // TODO: batch these
-    // so when 5 tasks start at once it only logs one time with all 5
-    gutil.log('Starting', '\'' + chalk.cyan(e.task) + '\'...');
+    gutil.log('[starting] ·', chalk.cyan(o[e.task]));
   });
 
   verbInst.on('task_stop', function (e) {
     var time = prettyTime(e.hrDuration);
-    gutil.log(
-      'Finished', '\'' + chalk.cyan(e.task) + '\'',
-      'after', chalk.magenta(time)
-    );
+    gutil.log('[finished] ·', chalk.cyan(o[e.task]), '· after', chalk.magenta(time) );
   });
 
   verbInst.on('task_err', function (e) {
     var msg = formatError(e);
     var time = prettyTime(e.hrDuration);
-    gutil.log(
-      '\'' + chalk.cyan(e.task) + '\'',
-      chalk.red('errored after'),
-      chalk.magenta(time)
-    );
+    gutil.log(chalk.cyan(o[e.task]), chalk.red('errored after'), chalk.magenta(time));
     gutil.log(msg);
   });
 
   verbInst.on('task_not_found', function (err) {
-    gutil.log(
-      chalk.red('Task \'' + err.task + '\' is not in your verbfile')
-    );
-    gutil.log('Please check the documentation for proper verbfile formatting');
+    gutil.log(chalk.red('task \'' + err.task + '\' is not in your verbfile'));
+    gutil.log('please check the documentation for proper verbfile formatting');
     process.exit(1);
   });
 }

@@ -46,6 +46,7 @@ var Verb = module.exports = Engine.extend({
 
     this._loadExtensions();
     this._defaultTemplates();
+    this._defaultHelpers();
     this._defaultRoutes();
     this._defaultConfig();
     this._loadHelpers();
@@ -157,13 +158,28 @@ Verb.prototype._loadExtensions = function(pattern) {
 };
 
 /**
+ * Initialize default helpers.
+ *
+ * @api private
+ */
+
+Verb.prototype._defaultHelpers = function() {
+  this.helperAsync('docs', function (name, locals, cb) {
+    var doc = this.cache.docs[name];
+    this.render(doc, locals, function (err, content) {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+  });
+};
+
+/**
  * Register helpers that are automatically loaded.
  *
  * @api private
  */
 
 Verb.prototype._loadHelpers = function() {
-
   var helpers = Object.keys(this.fns.helpers);
   var len = helpers.length;
 
@@ -186,13 +202,11 @@ Verb.prototype._loadHelpers = function() {
  */
 
 Verb.prototype.loadType = function(type, plural, pattern) {
-
   this.fns[plural] = this.fns[plural] || {};
   extend(this.fns[plural], load(namify(type) + '*', {
     strip: namify(type),
     cwd: process.cwd()
   }));
-
   return this.fns[plural];
 };
 

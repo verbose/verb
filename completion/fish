@@ -1,5 +1,7 @@
 #!/usr/bin/env fish
 
+# Borrowed from gulp:
+
 # Usage:
 #
 # To enable fish <tab> completion for verb, add the following line to
