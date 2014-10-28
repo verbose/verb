@@ -62,7 +62,6 @@ extend(Verb.prototype, Config.prototype);
  */
 
 Verb.prototype._defaultConfig = function() {
-  debug('_defaultConfig');
 
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
@@ -81,7 +80,6 @@ Verb.prototype._defaultConfig = function() {
  */
 
 Verb.prototype.defaultPlugins = function() {
-  debug('defaultPlugins');
   this.enable('src:routes');
   this.enable('src:extend');
   this.enable('dest:path');
@@ -97,7 +95,6 @@ Verb.prototype.defaultPlugins = function() {
  */
 
 Verb.prototype._defaultTemplates = function() {
-  debug('_defaultTemplates');
   this.create('include', this.option('defaults'));
   this.create('file', this.option('defaults'));
   this.create('doc', this.option('defaults'));
@@ -113,9 +110,7 @@ Verb.prototype._defaultTemplates = function() {
  */
 
 Verb.prototype._defaultRoutes = function() {
-  debug('_defaultRoutes');
   this.route(/\.*$/, function (src, dest, next) {
-    // debug('default route: %j', arguments);
     parser.parse(unBuffer(src), function (err) {
       if (err) return next(err);
       next();
@@ -168,7 +163,6 @@ Verb.prototype._loadExtensions = function(pattern) {
  */
 
 Verb.prototype._loadHelpers = function() {
-  debug('_loadHelpers');
 
   var helpers = Object.keys(this.fns.helpers);
   var len = helpers.length;
@@ -192,7 +186,6 @@ Verb.prototype._loadHelpers = function() {
  */
 
 Verb.prototype.loadType = function(type, plural, pattern) {
-  debug('loadType');
 
   this.fns[plural] = this.fns[plural] || {};
   extend(this.fns[plural], load(namify(type) + '*', {
@@ -244,14 +237,12 @@ Verb.prototype.run = function () {
  */
 
 Verb.prototype.toVinyl = function(value) {
-  debug('toVinyl');
-
   return new File({
     contents: new Buffer(value.content),
     options: value.options || {},
     locals: value.locals || {},
     path: value.path,
-    // ext: value.ext,
+    ext: value.ext,
   });
 };
 
@@ -271,8 +262,6 @@ Verb.prototype.toVinyl = function(value) {
  */
 
 Verb.prototype.src = function (glob, options) {
-  debug('src: %j', glob);
-
   return es.pipe.apply(es, utils.arrayify([
     vfs.src(glob, options),
     stack.src(this, glob, options)
@@ -294,8 +283,6 @@ Verb.prototype.src = function (glob, options) {
  */
 
 Verb.prototype.dest = function (dest, options) {
-  debug('dest: %j', dest);
-
   return es.pipe.apply(es, utils.arrayify([
     stack.dest(this, dest, options),
     vfs.dest(dest, options)
@@ -357,7 +344,6 @@ function unBuffer(value) {
     return value;
   }
 
-  debug('unBuffer: %j', value);
   value.content = value.contents.toString('utf8');
   var o = {};
 
