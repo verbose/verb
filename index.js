@@ -11,6 +11,7 @@
 
 var util = require('util');
 var vfs = require('vinyl-fs');
+var Noun = require('noun');
 var File = require('gulp-util').File;
 var es = require('event-stream');
 var debug = require('debug')('verb');
@@ -62,7 +63,6 @@ Verb.prototype._defaultConfig = function() {
   this.option('defaults', {
     isRenderable: true,
     isPartial: true,
-    // vinyl: true,
     engine: '.md',
     ext: '.md'
   })
@@ -104,15 +104,15 @@ Verb.prototype._defaultTemplates = function() {
  * @api private
  */
 
-Verb.prototype._defaultRoutes = function() {
-  this.route(/\.*$/, function (src, dest, next) {
-    debug('default route: %j', arguments);
-    parser.parse(unBuffer(src), function (err) {
-      if (err) return next(err);
-      next();
-    });
-  });
-};
+// Verb.prototype._defaultRoutes = function() {
+//   this.route(/\.*$/, function (src, dest, next) {
+//     debug('default route: %j', arguments);
+//     parser.parse(unBuffer(src), function (err) {
+//       if (err) return next(err);
+//       next();
+//     });
+//   });
+// };
 
 /**
  * Register default template delimiters.
@@ -157,6 +157,25 @@ Verb.prototype.task = Verb.prototype.add;
 Verb.prototype.run = function () {
   var tasks = arguments.length ? arguments : ['default'];
   this.start.apply(this, tasks);
+};
+
+/**
+ * Transform `value` to a vinyl file.
+ *
+ * @param  {Object} `value`
+ * @return {Object} Returns a vinyl file.
+ * @api public
+ */
+
+Verb.prototype.toVinyl = function(value) {
+  debug('toVinyl: %j', arguments);
+
+  return new File({
+    contents: new Buffer(value.content),
+    path: value.path,
+    locals: value.locals || {},
+    options: value.options || {}
+  });
 };
 
 /**
@@ -259,7 +278,7 @@ function unBuffer(value) {
   }
 
   debug('unBuffer: %j', arguments);
-  value.content = value.contents.toString();
+  value.content = value.contents.toString('utf8');
   var o = {};
 
   for (var key in value) {
@@ -268,26 +287,6 @@ function unBuffer(value) {
     }
   }
   return o;
-}
-
-/**
- * When `options.vinyl` is true, transform the value to
- * a vinyl file.
- *
- * @param  {Object} `value`
- * @return {Object} Returns a vinyl file.
- * @api private
- */
-
-function toVinyl(value) {
-  debug('toVinyl: %j', arguments);
-
-  return new File({
-    contents: new Buffer(value.content),
-    path: value.path,
-    locals: value.locals || {},
-    options: value.options || {}
-  });
 }
 
 /**
