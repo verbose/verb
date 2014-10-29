@@ -64,19 +64,13 @@ extend(Verb.prototype, Config.prototype);
 
 Verb.prototype._defaultConfig = function() {
 
-  var rename = function (name) {
-    return name;
-  };
-
-  this.option('renameKey', rename);
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
   this.option('defaults', {
     isRenderable: true,
     isPartial: true,
     engine: '.md',
-    ext: '.md',
-    renameKey: rename
+    ext: '.md'
   });
 };
 
