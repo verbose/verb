@@ -45,15 +45,15 @@ var Verb = module.exports = Engine.extend({
     this.fns = {};
 
     this._loadExtensions();
+    this._defaultConfig();
     this._defaultTemplates();
     this._defaultHelpers();
     this._defaultRoutes();
-    this._defaultConfig();
     this._loadHelpers();
   }
 });
 
-util.inherits(Verb, Engine);
+// util.inherits(Verb, Engine);
 extend(Verb.prototype, Config.prototype);
 
 /**
@@ -64,13 +64,19 @@ extend(Verb.prototype, Config.prototype);
 
 Verb.prototype._defaultConfig = function() {
 
+  var rename = function (name) {
+    return name;
+  };
+
+  this.option('renameKey', rename);
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
   this.option('defaults', {
     isRenderable: true,
     isPartial: true,
     engine: '.md',
-    ext: '.md'
+    ext: '.md',
+    renameKey: rename
   });
 };
 
