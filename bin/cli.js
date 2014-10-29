@@ -95,9 +95,7 @@ function handleArguments(env) {
   }
 
   if (!env.configPath) {
-    env.configPath = path.resolve(__dirname, '../lib/verbfile.js');
-    // gutil.log(chalk.red('No verbfile found'));
-    // process.exit(1);
+    env.configPath = path.resolve(__dirname, '../lib/_verbfile.js');
   }
 
   // check for semver difference between cli and local installation
