@@ -1,0 +1,44 @@
+{
+  "name": "<%= _.slugify(appname) %>",
+  "description": "<%= projectdesc %>",
+  "version": "0.1.0",
+  "homepage": "https://github.com/<%= username %>/<%= _.slugify(appname) %>",
+  "author": {
+    "name": "<%= authorname %>",
+    "url": "<%= authorurl %>"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/<%= username %>/<%= _.slugify(appname) %>.git"
+  },
+  "bugs": {
+    "url": "https://github.com/<%= username %>/<%= _.slugify(appname) %>/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/<%= username %>/<%= _.slugify(appname) %>/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "devDependencies": {<% if (jscomments) { %>
+    "verb-tag-jscomments": ">= 0.2.0",<% } %>
+    "verb": ">= 0.2.6",
+    "mocha": "*"
+  },
+  "keywords": [
+    "docs",
+    "documentation",
+    "generate",
+    "generator",
+    "markdown",
+    "templates",
+    "verb"
+  ]
+}
