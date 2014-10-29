@@ -41,6 +41,7 @@
     "array-slice": "^0.2.2",
     "chalk": "^0.5.1",
     "debug": "^2.1.0",
+    "engine": "git+ssh://git@github.com:sellside/engine#better-routes",
     "event-stream": "^3.1.7",
     "gray-matter": "^0.5.3",
     "gulp-util": "^3.0.1",
