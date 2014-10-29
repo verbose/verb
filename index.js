@@ -111,8 +111,8 @@ Verb.prototype._defaultTemplates = function() {
  */
 
 Verb.prototype._defaultRoutes = function() {
-  this.route(/\.*$/, function (src, dest, next) {
-    parser.parse(unBuffer(src), function (err) {
+  this.route(/\.*$/, function (file, next) {
+    parser.parse(file, function (err) {
       if (err) return next(err);
       next();
     });
@@ -164,7 +164,7 @@ Verb.prototype._loadExtensions = function(pattern) {
  */
 
 Verb.prototype._defaultHelpers = function() {
-  this.helperAsync('docs', function (name, locals, cb) {
+  this.addHelperAsync('docs', function (name, locals, cb) {
     var doc = this.cache.docs[name];
     this.render(doc, locals, function (err, content) {
       if (err) return cb(err);
