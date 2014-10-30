@@ -63,7 +63,6 @@ extend(Verb.prototype, Config.prototype);
  */
 
 Verb.prototype._defaultConfig = function() {
-
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
   this.option('defaults', {
@@ -96,9 +95,13 @@ Verb.prototype.defaultPlugins = function() {
  */
 
 Verb.prototype._defaultTemplates = function() {
-  this.create('include', this.option('defaults'));
-  this.create('file', this.option('defaults'));
   this.create('doc', this.option('defaults'));
+  this.create('include', this.option('defaults'));
+  this.create('file', extend(this.option('defaults'), {
+    renameKey: function (fp) {
+      return fp
+    }
+  }));
 };
 
 /**
