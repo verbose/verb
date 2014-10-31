@@ -96,6 +96,12 @@ Verb.prototype.defaultPlugins = function() {
  */
 
 Verb.prototype._defaultTemplates = function() {
+  this.on('task_start', function (tasks) {
+    _.forIn(tasks, function (task) {
+      this.create('_task_' + task.name, this.option('defaults'));
+    }, this);
+  });
+
   this.create('doc', this.option('defaults'));
   this.create('include', this.option('defaults'));
   this.create('file', extend(this.option('defaults'), {
@@ -247,17 +253,6 @@ Verb.prototype.task = Verb.prototype.add;
  *
  * @param {Array} `tasks`
  * @api public
- */
-
-Verb.prototype.run = function () {
-  var tasks = arguments.length ? arguments : ['default'];
-  this.start.apply(this, tasks);
-};
-
-/**
- * Wrapper around Config.start to normalize task arguments.
- *
- * @api private
  */
 
 Verb.prototype.run = function () {
