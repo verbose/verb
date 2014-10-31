@@ -206,18 +206,17 @@ Verb.prototype._loadHelpers = function() {
 
 /**
  * Private method to create a plugin loader for the
- * given `type`.
+ * given plugin `type`, e.g. "helper"
  *
- * @param  {String} `type`
- * @param  {String} `plural`
- * @param  {String} `pattern`
- * @return {Object} `fns`
+ * @param  {String} `type` The plugin type, e.g. "helper"
+ * @param  {String} `plural` Plural form of `type`, e.g. "helpers"
+ * @return {Object} `fns` Object of plugins, key-value pairs. The value is a function.
  */
 
-Verb.prototype.loadType = function(type, plural, pattern) {
+Verb.prototype.loadType = function(type, plural) {
   this.fns[plural] = this.fns[plural] || {};
-  extend(this.fns[plural], load(namify(type) + '*', {
-    strip: namify(type),
+  extend(this.fns[plural], load('verb-' + type + '*', {
+    strip: 'verb-' + type,
     cwd: process.cwd()
   }));
   return this.fns[plural];
@@ -373,17 +372,6 @@ Verb.prototype.watch = function (glob, opts, fn) {
   }
   return vfs.watch(glob, opts, fn);
 };
-
-/**
- * Private method to make a `verb-` name`.
- *
- * @param  {String} `str`
- * @return {String}
- */
-
-function namify(str) {
-  return 'verb-' + str;
-}
 
 /**
  * Un-buffer the contents of a template.
