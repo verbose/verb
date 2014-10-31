@@ -19,6 +19,7 @@ var debug = require('debug')('verb');
 var Engine = require('engine');
 var Config = require('orchestrator');
 var parser = require('parser-front-matter');
+var session = require('./lib/session');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
 var _ = require('lodash');
@@ -252,6 +253,32 @@ Verb.prototype.task = Verb.prototype.add;
 Verb.prototype.run = function () {
   var tasks = arguments.length ? arguments : ['default'];
   this.start.apply(this, tasks);
+};
+
+/**
+ * Wrapper around Config.start to normalize task arguments.
+ *
+ * @api private
+ */
+
+Verb.prototype.run = function () {
+  var tasks = arguments.length ? arguments : ['default'];
+  this.start.apply(this, tasks);
+};
+
+/**
+ * Wrapper around Config._runTask to enable `sessions`
+ *
+ * @param  {Object} `task` Task to run
+ * @api private
+ */
+
+Verb.prototype._runTask = function(task) {
+  var verb = this;
+  session.run(function () {
+    session.set('task_name', task.name);
+    Config.prototype._runTask.call(verb, task);
+  });
 };
 
 /**
