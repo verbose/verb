@@ -167,9 +167,18 @@ Verb.prototype._loadExtensions = function(pattern) {
  */
 
 Verb.prototype._defaultHelpers = function() {
-  this.addHelperAsync('docs', function (name, locals, cb) {
-    var doc = this.cache.docs[name];
-    this.render(doc, locals, function (err, content) {
+  var verb = this;
+  verb.helperAsync('docs', function (name, locals, cb) {
+    var doc = verb.cache.docs[name];
+    verb.render(doc, locals, function(err, content) {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+  });
+
+  verb.helperAsync('include', function (name, locals, cb) {
+    var include = verb.cache.includes[name];
+    verb.render(include, locals, function (err, content) {
       if (err) return cb(err);
       cb(null, content);
     });
