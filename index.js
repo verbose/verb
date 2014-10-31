@@ -16,7 +16,7 @@ var es = require('event-stream');
 var load = require('load-plugins');
 var slice = require('array-slice');
 var debug = require('debug')('verb');
-var Engine = require('engine');
+var Template = require('template');
 var Config = require('orchestrator');
 var parser = require('parser-front-matter');
 var session = require('./lib/session');
@@ -38,13 +38,12 @@ var extend = _.extend;
  * @api public
  */
 
-var Verb = module.exports = Engine.extend({
+var Verb = module.exports = Template.extend({
   constructor: function (options) {
     Verb.__super__.constructor.call(this, options);
     Config.call(this);
 
     this.fns = {};
-
     this._loadExtensions();
     this._defaultConfig();
     this._defaultTemplates();
@@ -54,7 +53,6 @@ var Verb = module.exports = Engine.extend({
   }
 });
 
-// util.inherits(Verb, Engine);
 extend(Verb.prototype, Config.prototype);
 
 /**
@@ -168,7 +166,23 @@ Verb.prototype._loadExtensions = function(pattern) {
  */
 
 Verb.prototype._defaultHelpers = function() {
+  // verb.helper('comments', require('helper-comments'));
+  // verb.helper('include', require('helper-include'));
+
   var verb = this;
+  // verb.helperAsync('docs', function (name, locals, cb) {
+  //   verb.renderDoc(name, locals, function(err, content) {
+  //     if (err) return cb(err);
+  //     cb(null, content);
+  //   });
+  // });
+
+  // verb.helperAsync('include', function (name, locals, cb) {
+  //   verb.renderInclude(name, locals, function (err, content) {
+  //     if (err) return cb(err);
+  //     cb(null, content);
+  //   });
+  // });
   verb.helperAsync('docs', function (name, locals, cb) {
     var doc = verb.cache.docs[name];
     verb.render(doc, locals, function(err, content) {
