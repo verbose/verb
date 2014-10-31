@@ -189,7 +189,7 @@ Verb.prototype._loadHelpers = function() {
   for (var i = 0; i < len; i++) {
     var name = helpers[i];
     var fn = this.fns.helpers[name];
-    this.addHelperAsync(name, fn.bind(this));
+    this.addHelperAsync(name, fn);
   }
   return this;
 };
@@ -254,13 +254,16 @@ Verb.prototype.run = function () {
  */
 
 Verb.prototype.toVinyl = function(value) {
-  return new File({
+  var file = new File({
     contents: new Buffer(value.content),
-    options: value.options || {},
-    locals: value.locals || {},
     path: value.path,
-    ext: value.ext,
   });
+
+  file.options = value.options || (value.options = {});
+  file.locals = value.locals || (value.locals = {});
+  file.data = value.data || (value.data = {});
+  file.ext = value.ext;
+  return file;
 };
 
 /**
