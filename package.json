@@ -31,8 +31,11 @@
     "test": "mocha -R spec"
   },
   "devDependencies": {
+    "consolidate": "^0.10.0",
+    "handlebars": "^2.0.0",
     "mocha": "*",
     "should": "^4.1.0",
+    "swig": "^1.4.2",
     "verb": ">= 0.2.6",
     "verb-tag-jscomments": ">= 0.2.0"
   },
@@ -42,7 +45,7 @@
     "chalk": "^0.5.1",
     "continuation-local-storage": "^3.1.1",
     "debug": "^2.1.0",
-    "template": "sellside/engine#main",
+    "engine-lodash": "^0.3.3",
     "event-stream": "^3.1.7",
     "gray-matter": "^0.5.3",
     "gulp-util": "^3.0.1",
@@ -59,6 +62,7 @@
     "repeat-string": "^0.2.2",
     "rte": "^0.4.0",
     "semver": "^4.1.0",
+    "template": "sellside/engine#main",
     "through2": "^0.6.3",
     "tildify": "^1.0.0",
     "v8flags": "^1.0.1",
