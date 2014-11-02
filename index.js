@@ -46,6 +46,7 @@ var Verb = module.exports = Template.extend({
     this.fns = {};
     this._loadExtensions();
     this._defaultConfig();
+    this._defaultDelims();
     this._defaultTemplates();
     this._defaultHelpers();
     this._defaultRoutes();
@@ -94,13 +95,41 @@ Verb.prototype.defaultPlugins = function() {
  */
 
 Verb.prototype._defaultTemplates = function() {
-  this.create('doc', this.option('defaults'));
-  this.create('include', this.option('defaults'));
-  this.create('file', extend(this.option('defaults'), {
+  var defaults = this.option('defaults');
+  this.create('doc', defaults);
+  this.create('include', defaults);
+  this.create('file', extend(defaults, {
     renameKey: function (fp) {
       return fp
     }
   }));
+};
+
+/**
+ * Initialize default helpers.
+ *
+ * @api private
+ */
+Verb.prototype._defaultHelpers = function() {
+  var verb = this;
+  verb.helperAsync('comments', require('helper-comments'));
+  // verb.helper('include', require('helper-include'));
+
+  verb.helperAsync('docs', function (name, locals, cb) {
+    var doc = verb.lookup('docs', name);
+    verb.render(doc, locals, function(err, content) {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+  });
+
+  verb.helperAsync('include', function (name, locals, cb) {
+    var include = verb.lookup('includes', name);
+    verb.render(include, locals, function (err, content) {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+  });
 };
 
 /**
@@ -130,7 +159,7 @@ Verb.prototype._defaultRoutes = function() {
  * @api private
  */
 
-Verb.prototype.defaultDelimiters = function() {
+Verb.prototype._defaultDelims = function() {
   this.addDelims('md', ['{%', '%}'], ['<<%', '%>>']);
 };
 
@@ -160,47 +189,6 @@ Verb.prototype._loadExtensions = function(pattern) {
 };
 
 /**
- * Initialize default helpers.
- *
- * @api private
- */
-
-Verb.prototype._defaultHelpers = function() {
-  // verb.helper('comments', require('helper-comments'));
-  // verb.helper('include', require('helper-include'));
-
-  var verb = this;
-  // verb.helperAsync('docs', function (name, locals, cb) {
-  //   verb.renderDoc(name, locals, function(err, content) {
-  //     if (err) return cb(err);
-  //     cb(null, content);
-  //   });
-  // });
-
-  // verb.helperAsync('include', function (name, locals, cb) {
-  //   verb.renderInclude(name, locals, function (err, content) {
-  //     if (err) return cb(err);
-  //     cb(null, content);
-  //   });
-  // });
-  verb.helperAsync('docs', function (name, locals, cb) {
-    var doc = verb.cache.docs[name];
-    verb.render(doc, locals, function(err, content) {
-      if (err) return cb(err);
-      cb(null, content);
-    });
-  });
-
-  verb.helperAsync('include', function (name, locals, cb) {
-    var include = verb.cache.includes[name];
-    verb.render(include, locals, function (err, content) {
-      if (err) return cb(err);
-      cb(null, content);
-    });
-  });
-};
-
-/**
  * Register helpers that are automatically loaded.
  *
  * @api private
@@ -209,7 +197,6 @@ Verb.prototype._defaultHelpers = function() {
 Verb.prototype._loadHelpers = function() {
   var helpers = Object.keys(this.fns.helpers);
   var len = helpers.length;
-
   for (var i = 0; i < len; i++) {
     var name = helpers[i];
     var fn = this.fns.helpers[name];
@@ -234,6 +221,26 @@ Verb.prototype.loadType = function(type, plural) {
     cwd: process.cwd()
   }));
   return this.fns[plural];
+};
+
+/**
+ * Convenience method for looking up a template
+ * on the cache.
+ *
+ * @param {String} `plural` The template cache to search.
+ * @param {String} `name` The name of the template.
+ * @api public
+ */
+
+Verb.prototype.lookup = function(plural, name) {
+  var cache = this.cache[plural];
+  if (cache.hasOwnProperty(name)) {
+    return cache[name];
+  }
+  if (cache.hasOwnProperty(name + '.md')) {
+    return cache[name + '.md'];
+  }
+  return name;
 };
 
 /**
