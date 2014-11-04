@@ -110,10 +110,12 @@ Verb.prototype._defaultTemplates = function() {
  *
  * @api private
  */
+
 Verb.prototype._defaultHelpers = function() {
   var verb = this;
-  verb.helperAsync('comments', require('helper-comments'));
-  // verb.helper('include', require('helper-include'));
+
+  verb.helper('comments', require('./lib/helpers/comments').sync);
+  // verb.helperAsync('include', require('helper-include'));
 
   verb.helperAsync('docs', function (name, locals, cb) {
     var doc = verb.lookup('docs', name);
@@ -183,9 +185,9 @@ Verb.prototype._defaultDelims = function() {
  */
 
 Verb.prototype._loadExtensions = function(pattern) {
-  this.loadType('plugin', 'plugins', pattern);
+  // this.loadType('plugin', 'plugins', pattern);
   this.loadType('helper', 'helpers', pattern);
-  this.loadType('tag', 'tags', pattern);
+  // this.loadType('tag', 'tags', pattern);
 };
 
 /**

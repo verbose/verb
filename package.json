@@ -42,6 +42,7 @@
   "dependencies": {
     "archy": "^1.0.0",
     "array-slice": "^0.2.2",
+    "async": "^0.9.0",
     "chalk": "^0.5.1",
     "continuation-local-storage": "^3.1.1",
     "debug": "^2.1.0",
@@ -50,6 +51,7 @@
     "gray-matter": "^0.5.3",
     "gulp-util": "^3.0.1",
     "interpret": "^0.3.7",
+    "js-comments": "^0.3.4",
     "liftoff": "^0.13.5",
     "load-plugins": "^0.3.0",
     "lodash": "^2.4.1",
