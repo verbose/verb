@@ -99,7 +99,22 @@ Verb.prototype._defaultPlugins = function() {
 Verb.prototype._defaultTemplates = function() {
   var opts = this.option('defaults');
   this.create('doc', opts);
-  this.create('include', opts);
+
+  this.create('include', opts, [
+    function (patterns, next) {
+      var includes = require('verb-readme-includes');
+      var fp = path.join(includes, patterns);
+      next(null, mapFiles(fp));
+    }
+  ]);
+
+  this.create('badge', opts, [
+    function (patterns, next) {
+      var badges = require('verb-readme-badges');
+      next(null, mapFiles(badges));
+    }
+  ]);
+
   this.create('file', extend(opts, {
     renameKey: function (fp) {
       return fp
@@ -159,16 +174,67 @@ Verb.prototype._defaultHelpers = function() {
 
   this.helper('comments', require('./lib/helpers/comments'));
   this.helperAsync('docs', function(name, locals, cb) {
+    debug('docs helper: %j', arguments);
+    if (typeof locals === 'function') {
+      cb = locals;
+      locals = {};
+    }
+
     var doc = self.lookup('docs', name);
-    self.render(doc, locals, function(err, content) {
-      if (err) return cb(err);
+    if (typeof doc !== 'object') {
+      throw new Error('cannot find doc: "' + name + '"');
+    }
+
+    doc.render(locals, function(err, content) {
+      if (err) {
+        console.log(err)
+        debug('docs helper err: %j', err);
+        return cb(err);
+      }
       cb(null, content);
     });
   });
+
+  this.helperAsync('badge', function(name, locals, cb) {
+    debug('badges helper: %j', arguments);
+    if (typeof locals === 'function') {
+      cb = locals;
+      locals = {};
+    }
+
+    var badge = self.lookup('badges', name);
+    if (typeof badge !== 'object') {
+      throw new Error('cannot find badge: "' + name + '"');
+    }
+
+    badge.render(locals, function(err, content) {
+      if (err) {
+        console.log(err)
+        debug('badges helper err: %j', err);
+        return cb(err);
+      }
+      cb(null, content);
+    });
+  });
+
   this.helperAsync('include', function(name, locals, cb) {
+    debug('include helper: %j', arguments);
+    if (typeof locals === 'function') {
+      cb = locals;
+      locals = {};
+    }
+
     var include = self.lookup('includes', name);
-    self.render(include, locals, function(err, content) {
-      if (err) return cb(err);
+    if (typeof include !== 'object') {
+      throw new Error('cannot find include: "' + name + '"');
+    }
+
+    include.render(locals, function(err, content) {
+      if (err) {
+        console.log(err)
+        debug('include helper err: %j', err);
+        return cb(err);
+      }
       cb(null, content);
     });
   });

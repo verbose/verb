@@ -68,6 +68,8 @@
     "through2": "^0.6.3",
     "tildify": "^1.0.0",
     "v8flags": "^1.0.1",
+    "verb-readme-badges": "^0.1.1",
+    "verb-readme-includes": "^0.1.20",
     "vinyl-fs": "^0.3.10"
   },
   "keywords": [
