@@ -18,6 +18,7 @@ var slice = require('array-slice');
 var debug = require('debug')('verb');
 var Template = require('template');
 var Config = require('orchestrator');
+var lodash = require('engine-lodash');
 var parser = require('parser-front-matter');
 var session = require('./lib/session');
 var stack = require('./lib/stack');
@@ -47,6 +48,7 @@ var Verb = module.exports = Template.extend({
     this._loadExtensions();
     this._defaultConfig();
     this._defaultDelims();
+    this._defaultEngines();
     this._defaultTemplates();
     this._defaultHelpers();
     this._defaultRoutes();
@@ -79,7 +81,7 @@ Verb.prototype._defaultConfig = function() {
  * @api private
  */
 
-Verb.prototype.defaultPlugins = function() {
+Verb.prototype._defaultPlugins = function() {
   this.enable('src:routes');
   this.enable('src:extend');
   this.enable('dest:path');
@@ -95,10 +97,10 @@ Verb.prototype.defaultPlugins = function() {
  */
 
 Verb.prototype._defaultTemplates = function() {
-  var defaults = this.option('defaults');
-  this.create('doc', defaults);
-  this.create('include', defaults);
-  this.create('file', extend(defaults, {
+  var opts = this.option('defaults');
+  this.create('doc', opts);
+  this.create('include', opts);
+  this.create('file', extend(opts, {
     renameKey: function (fp) {
       return fp
     }
@@ -106,45 +108,13 @@ Verb.prototype._defaultTemplates = function() {
 };
 
 /**
- * Initialize default helpers.
- *
- * @api private
- */
-
-Verb.prototype._defaultHelpers = function() {
-  var verb = this;
-
-  verb.helper('comments', require('./lib/helpers/comments').sync);
-  // verb.helperAsync('include', require('helper-include'));
-
-  verb.helperAsync('docs', function (name, locals, cb) {
-    var doc = verb.lookup('docs', name);
-    verb.render(doc, locals, function(err, content) {
-      if (err) return cb(err);
-      cb(null, content);
-    });
-  });
-
-  verb.helperAsync('include', function (name, locals, cb) {
-    var include = verb.lookup('includes', name);
-    verb.render(include, locals, function (err, content) {
-      if (err) return cb(err);
-      cb(null, content);
-    });
-  });
-};
-
-/**
  * Load default middleware
- *
- *   - `.md`: parse front matter in markdown files
- *   - `.hbs`: parse front matter in handlebars templates
  *
  * @api private
  */
 
 Verb.prototype._defaultRoutes = function() {
-  this.route(/\.*$/, function (file, next) {
+  this.route(/\.*/, function (file, next) {
     parser.parse(file, function (err) {
       if (err) return next(err);
       next();
@@ -166,6 +136,45 @@ Verb.prototype._defaultDelims = function() {
 };
 
 /**
+ * Load default engines
+ *
+ * @api private
+ */
+
+Verb.prototype._defaultEngines = function() {
+  this.engine(['*', 'md'], lodash, {
+    layoutDelims: ['{%', '%}'],
+    destExt: '.html'
+  });
+};
+
+/**
+ * Initialize default helpers.
+ *
+ * @api private
+ */
+
+Verb.prototype._defaultHelpers = function() {
+  var self = this;
+
+  this.helper('comments', require('./lib/helpers/comments'));
+  this.helperAsync('docs', function(name, locals, cb) {
+    var doc = self.lookup('docs', name);
+    self.render(doc, locals, function(err, content) {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+  });
+  this.helperAsync('include', function(name, locals, cb) {
+    var include = self.lookup('includes', name);
+    self.render(include, locals, function(err, content) {
+      if (err) return cb(err);
+      cb(null, content);
+    });
+  });
+};
+
+/**
  * Load plugins.
  *
  * Called in the constructor to load plugins from `node_modules`
@@ -181,13 +190,13 @@ Verb.prototype._defaultDelims = function() {
  *
  * @param  {String} `pattern` Optionally pass a glob pattern when calling the method directly.
  * @return {Object} Returns an object of plugins loaded from `node_modules`.
- * @api public
+ * @api private
  */
 
 Verb.prototype._loadExtensions = function(pattern) {
-  // this.loadType('plugin', 'plugins', pattern);
+  this.loadType('plugin', 'plugins', pattern);
   this.loadType('helper', 'helpers', pattern);
-  // this.loadType('tag', 'tags', pattern);
+  this.loadType('tag', 'tags', pattern);
 };
 
 /**

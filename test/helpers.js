@@ -53,7 +53,7 @@ describe('helpers', function () {
       });
     });
 
-    it.only('should use the `include` helper:', function (done) {
+    it('should use the `include` helper:', function (done) {
       verb.includes(require('verb-readme-includes') + '/**/*.md');
       verb.data({author: {name: 'Jon Schlinkert'}, username: 'jonschlinkert'});
 
