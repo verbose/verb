@@ -64,7 +64,7 @@
     "repeat-string": "^0.2.2",
     "rte": "^0.4.0",
     "semver": "^4.1.0",
-    "template": "sellside/engine#main",
+    "template": "sellside/engine",
     "through2": "^0.6.3",
     "tildify": "^1.0.0",
     "v8flags": "^1.0.1",

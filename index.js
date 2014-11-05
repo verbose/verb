@@ -10,6 +10,7 @@
 // process.env.DEBUG = 'verb:*'
 
 var util = require('util');
+var path = require('path');
 var vfs = require('vinyl-fs');
 var File = require('gulp-util').File;
 var es = require('event-stream');
@@ -26,6 +27,19 @@ var utils = require('./lib/utils');
 var _ = require('lodash');
 var extend = _.extend;
 
+function mapFiles (patterns) {
+  var fs = require('fs');
+  var glob = require('glob');
+  var files = glob.sync(patterns);
+  return _.reduce(files, function (acc, fp) {
+    var key = path.basename(fp);
+    acc[key] = {
+      path: fp,
+      content: fs.readFileSync(fp).toString()
+    };
+    return acc;
+  }, {});
+}
 
 /**
  * Create an instance of `Verb` with the given `options`.
@@ -102,9 +116,14 @@ Verb.prototype._defaultTemplates = function() {
 
   this.create('include', opts, [
     function (patterns, next) {
-      var includes = require('verb-readme-includes');
-      var fp = path.join(includes, patterns);
-      next(null, mapFiles(fp));
+      try {
+        var includes = require('verb-readme-includes');
+        var fp = path.join(includes, patterns);
+        var files =  mapFiles(fp);
+        return next(null, files);
+      } catch (err) {
+        return next(err);
+      }
     }
   ]);
 
@@ -173,7 +192,7 @@ Verb.prototype._defaultHelpers = function() {
   var self = this;
 
   this.helper('comments', require('./lib/helpers/comments'));
-  this.helperAsync('docs', function(name, locals, cb) {
+  this.asyncHelper('docs', function(name, locals, cb) {
     debug('docs helper: %j', arguments);
     if (typeof locals === 'function') {
       cb = locals;
@@ -195,7 +214,7 @@ Verb.prototype._defaultHelpers = function() {
     });
   });
 
-  this.helperAsync('badge', function(name, locals, cb) {
+  this.asyncHelper('badge', function(name, locals, cb) {
     debug('badges helper: %j', arguments);
     if (typeof locals === 'function') {
       cb = locals;
@@ -217,7 +236,7 @@ Verb.prototype._defaultHelpers = function() {
     });
   });
 
-  this.helperAsync('include', function(name, locals, cb) {
+  this.asyncHelper('include', function(name, locals, cb) {
     debug('include helper: %j', arguments);
     if (typeof locals === 'function') {
       cb = locals;
@@ -277,7 +296,7 @@ Verb.prototype._loadHelpers = function() {
   for (var i = 0; i < len; i++) {
     var name = helpers[i];
     var fn = this.fns.helpers[name];
-    this.addHelperAsync(name, fn);
+    this.addAsyncHelper(name, fn);
   }
   return this;
 };
