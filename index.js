@@ -90,12 +90,10 @@ Verb.prototype._defaultConfig = function() {
  */
 
 Verb.prototype._defaultSettings = function() {
-  // default plugins
   this.enable('src:init plugin');
   this.enable('dest:travis plugin');
   this.enable('dest:render plugin');
   this.enable('dest:readme plugin');
-  // Middleware settings
   this.disable('travis badge');
 };
 
