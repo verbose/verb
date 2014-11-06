@@ -54,7 +54,7 @@ describe('helpers', function () {
     });
 
     it('should use the `include` helper:', function (done) {
-      verb.includes(require('verb-readme-includes') + '/**/*.md');
+      verb.includes('/**/*.md');
       verb.data({author: {name: 'Jon Schlinkert'}, username: 'jonschlinkert'});
 
       verb.render('{%= include("author") %}', function (err, content) {
