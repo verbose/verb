@@ -2,6 +2,7 @@
 
 'use strict';
 
+var fs = require('fs');
 var path = require('path');
 var gutil = require('gulp-util');
 var prettyTime = require('pretty-hrtime');
@@ -75,7 +76,7 @@ cli.launch({
 
 // the actual logic
 function handleArguments(env) {
-  console.log();
+  console.log(); // empty line
 
   if (versionFlag && tasks.length === 0) {
     gutil.log('CLI version', cliPackage.version);
@@ -100,11 +101,11 @@ function handleArguments(env) {
   }
 
   // check for semver difference between cli and local installation
-  if (semver.gt(cliPackage.version, env.modulePackage.version)) {
-    gutil.log(chalk.red('Warning: verb version mismatch:'));
-    gutil.log(chalk.red('Global verb is', cliPackage.version));
-    gutil.log(chalk.red('Local verb is', env.modulePackage.version));
-  }
+  // if (semver.gt(cliPackage.version, env.modulePackage.version)) {
+  //   console.log(chalk.red('Warning: verb version mismatch:'));
+  //   console.log(chalk.red('Global verb is', cliPackage.version));
+  //   console.log(chalk.red('Local verb is', env.modulePackage.version));
+  // }
 
   // chdir before requiring verbfile to make sure
   // we let them chdir as needed

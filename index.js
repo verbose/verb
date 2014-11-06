@@ -10,10 +10,12 @@
 // process.env.DEBUG = 'verb:*'
 
 var util = require('util');
+var path = require('path');
 var vfs = require('vinyl-fs');
 var File = require('gulp-util').File;
 var es = require('event-stream');
 var load = require('load-plugins');
+var chalk = require('chalk');
 var slice = require('array-slice');
 var debug = require('debug')('verb');
 var Template = require('template');
@@ -45,14 +47,20 @@ var Verb = module.exports = Template.extend({
     Config.call(this);
 
     this.fns = {};
-    this._loadExtensions();
+
+    // extension must be loaded first
+    this.loadPlugins();
+    this.loadHelpers();
+
+    this._defaultSettings();
     this._defaultConfig();
     this._defaultDelims();
     this._defaultEngines();
     this._defaultTemplates();
-    this._defaultHelpers();
     this._defaultRoutes();
-    this._loadHelpers();
+    this._defaultMiddleware();
+    this._defaultHelpers();
+    this._defaultAsyncHelpers();
   }
 });
 
@@ -81,13 +89,14 @@ Verb.prototype._defaultConfig = function() {
  * @api private
  */
 
-Verb.prototype._defaultPlugins = function() {
-  this.enable('src:routes');
-  this.enable('src:extend');
-  this.enable('dest:path');
-  this.enable('dest:extend');
-  this.enable('dest:routes');
-  this.enable('dest:render');
+Verb.prototype._defaultSettings = function() {
+  // default plugins
+  this.enable('src:init plugin');
+  this.enable('dest:travis plugin');
+  this.enable('dest:render plugin');
+  this.enable('dest:readme plugin');
+  // Middleware settings
+  this.disable('travis badge');
 };
 
 /**
@@ -100,20 +109,9 @@ Verb.prototype._defaultTemplates = function() {
   var opts = this.option('defaults');
   this.create('doc', opts);
 
-  this.create('include', opts, [
-    function (patterns, next) {
-      var includes = require('verb-readme-includes');
-      var fp = path.join(includes, patterns);
-      next(null, mapFiles(fp));
-    }
-  ]);
-
-  this.create('badge', opts, [
-    function (patterns, next) {
-      var badges = require('verb-readme-badges');
-      next(null, mapFiles(badges));
-    }
-  ]);
+  var create = require('./lib/create/base')(this, opts);
+  create('include', require('verb-readme-includes'));
+  create('badge', require('template-badges'));
 
   this.create('file', extend(opts, {
     renameKey: function (fp) {
@@ -128,12 +126,23 @@ Verb.prototype._defaultTemplates = function() {
  * @api private
  */
 
+Verb.prototype._defaultMiddleware = function() {
+  this.use(require('./lib/middleware/data')(this));
+  this.use(require('./lib/middleware/travis')(this));
+  this.use(require('./lib/middleware/username')(this));
+  this.use(require('./lib/middleware/license')(this));
+};
+
+/**
+ * Load default routes
+ *
+ * @api private
+ */
+
 Verb.prototype._defaultRoutes = function() {
-  this.route(/\.*/, function (file, next) {
-    parser.parse(file, function (err) {
-      if (err) return next(err);
-      next();
-    });
+  this.route(/\.md/).all(function (file, next) {
+    file.data.filepath = file.path;
+    next();
   });
 };
 
@@ -170,84 +179,51 @@ Verb.prototype._defaultEngines = function() {
  */
 
 Verb.prototype._defaultHelpers = function() {
-  var self = this;
-
   this.helper('comments', require('./lib/helpers/comments'));
-  this.helperAsync('docs', function(name, locals, cb) {
-    debug('docs helper: %j', arguments);
-    if (typeof locals === 'function') {
-      cb = locals;
-      locals = {};
-    }
+  this.helper('copyright', require('./lib/helpers/copyright'));
+  this.helper('license', require('./lib/helpers/license'));
 
-    var doc = self.lookup('docs', name);
-    if (typeof doc !== 'object') {
-      throw new Error('cannot find doc: "' + name + '"');
-    }
-
-    doc.render(locals, function(err, content) {
-      if (err) {
-        console.log(err)
-        debug('docs helper err: %j', err);
-        return cb(err);
-      }
-      cb(null, content);
-    });
+  this.helper('info', function (msg) {
+    console.log.apply(console, arguments);
   });
 
-  this.helperAsync('badge', function(name, locals, cb) {
-    debug('badges helper: %j', arguments);
-    if (typeof locals === 'function') {
-      cb = locals;
-      locals = {};
-    }
-
-    var badge = self.lookup('badges', name);
-    if (typeof badge !== 'object') {
-      throw new Error('cannot find badge: "' + name + '"');
-    }
-
-    badge.render(locals, function(err, content) {
-      if (err) {
-        console.log(err)
-        debug('badges helper err: %j', err);
-        return cb(err);
-      }
-      cb(null, content);
-    });
+  this.helper('warn', function (msg) {
+    console.log.apply(console, arguments);
   });
 
-  this.helperAsync('include', function(name, locals, cb) {
-    debug('include helper: %j', arguments);
-    if (typeof locals === 'function') {
-      cb = locals;
-      locals = {};
-    }
+  this.helper('error', function (msg) {
+    console.log.apply(console, arguments);
+  });
 
-    var include = self.lookup('includes', name);
-    if (typeof include !== 'object') {
-      throw new Error('cannot find include: "' + name + '"');
-    }
+  this.imports('log', function (mgs) {
+    console.log.apply(console, arguments);
+  });
 
-    include.render(locals, function(err, content) {
-      if (err) {
-        console.log(err)
-        debug('include helper err: %j', err);
-        return cb(err);
-      }
-      cb(null, content);
-    });
+  this.helper('date', function () {
+    return new Date().getFullYear();
   });
 };
 
 /**
- * Load plugins.
+ * Initialize async helpers.
  *
- * Called in the constructor to load plugins from `node_modules`
- * using the given `namespace`, but you may also call the method
- * directly.
+ * @api private
+ */
+
+Verb.prototype._defaultAsyncHelpers = function() {
+  this.asyncHelper('include', require('./lib/helpers/include')(this));
+  this.asyncHelper('badge', require('./lib/helpers/badge')(this));
+  this.asyncHelper('docs', require('./lib/helpers/docs')(this));
+};
+
+/**
+ * Load plugins. Called in the constructor to load plugins from
+ * `node_modules` using the given `namespace`. You may also call
+ * the method directly.
  *
- * For example, the namespace `foo` would load plugins using the
+ * **Example**
+ *
+ * Namespace `foo` would load plugins using the
  * `foo-*` glob pattern, e.g:
  *
  * ```js
@@ -259,10 +235,10 @@ Verb.prototype._defaultHelpers = function() {
  * @api private
  */
 
-Verb.prototype._loadExtensions = function(pattern) {
-  this.loadType('plugin', 'plugins', pattern);
-  this.loadType('helper', 'helpers', pattern);
-  this.loadType('tag', 'tags', pattern);
+Verb.prototype.loadPlugins = function() {
+  this.loadType('plugin', 'plugins');
+  this.loadType('helper', 'helpers');
+  this.loadType('tag', 'tags');
 };
 
 /**
@@ -271,13 +247,14 @@ Verb.prototype._loadExtensions = function(pattern) {
  * @api private
  */
 
-Verb.prototype._loadHelpers = function() {
+Verb.prototype.loadHelpers = function() {
   var helpers = Object.keys(this.fns.helpers);
   var len = helpers.length;
   for (var i = 0; i < len; i++) {
     var name = helpers[i];
     var fn = this.fns.helpers[name];
-    this.addHelperAsync(name, fn);
+    this.asyncHelper(name, fn);
+    this.helper(name, fn);
   }
   return this;
 };
@@ -311,12 +288,15 @@ Verb.prototype.loadType = function(type, plural) {
 
 Verb.prototype.lookup = function(plural, name) {
   var cache = this.cache[plural];
+
   if (cache.hasOwnProperty(name)) {
     return cache[name];
   }
+
   if (cache.hasOwnProperty(name + '.md')) {
     return cache[name + '.md'];
   }
+
   return name;
 };
 
