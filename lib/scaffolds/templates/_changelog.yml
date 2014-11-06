@@ -1,4 +1,0 @@
-v0.1.0:
-  date: {%= date("YYYY-MM-DD") %}
-  changes:
-    - First commmit.
