@@ -54,8 +54,8 @@ var Verb = module.exports = Template.extend({
 
     this._defaultSettings();
     this._defaultConfig();
+    this._defaultTransforms();
     this._defaultDelims();
-    this._defaultEngines();
     this._defaultTemplates();
     this._defaultRoutes();
     this._defaultMiddleware();
@@ -90,10 +90,13 @@ Verb.prototype._defaultConfig = function() {
  */
 
 Verb.prototype._defaultSettings = function() {
+  this.enable('debug');
+  this.enable('debugEngine');
+
   this.enable('src:init plugin');
-  this.enable('dest:travis plugin');
   this.enable('dest:render plugin');
   this.enable('dest:readme plugin');
+  this.disable('dest:travis plugin');
   this.disable('travis badge');
 };
 
@@ -119,16 +122,29 @@ Verb.prototype._defaultTemplates = function() {
 };
 
 /**
+ * Load default transforms. Transforms are used to extend or
+ * modify the `cache.data` object, but really anything on the
+ * `this` object can be tranformed.
+ *
+ * @api private
+ */
+
+Verb.prototype._defaultTransforms = function() {
+  this.transform('pkg', require('./lib/transforms/pkg'));
+  this.transform('author', require('./lib/transforms/author'));
+  this.transform('username', require('./lib/transforms/username'));
+  this.transform('travis', require('./lib/transforms/travis'));
+  this.transform('runner', require('./lib/transforms/runner'));
+};
+
+/**
  * Load default middleware
  *
  * @api private
  */
 
 Verb.prototype._defaultMiddleware = function() {
-  this.use(require('./lib/middleware/data')(this));
-  this.use(require('./lib/middleware/travis')(this));
-  this.use(require('./lib/middleware/username')(this));
-  this.use(require('./lib/middleware/license')(this));
+  this.use(require('./lib/middleware/ext')(this));
 };
 
 /**
@@ -158,47 +174,49 @@ Verb.prototype._defaultDelims = function() {
 };
 
 /**
- * Load default engines
- *
- * @api private
- */
-
-Verb.prototype._defaultEngines = function() {
-  this.engine(['*', 'md'], lodash, {
-    layoutDelims: ['{%', '%}'],
-    destExt: '.html'
-  });
-};
-
-/**
  * Initialize default helpers.
  *
  * @api private
  */
 
 Verb.prototype._defaultHelpers = function() {
+  var app = this;
+
+  this.helper('date', require('helper-date'));
+  this.helper('license', require('helper-license'));
+  this.helper('copyright', require('helper-copyright'));
+  this.helper('strip', require('./lib/helpers/strip'));
   this.helper('comments', require('./lib/helpers/comments'));
-  this.helper('copyright', require('./lib/helpers/copyright'));
-  this.helper('license', require('./lib/helpers/license'));
+
+  this.helper('log', function (mgs) {
+    console.log.apply(console, arguments);
+  });
+
+  this.helper('debug', function (mgs) {
+    if (app.enabled('debug')) {
+      arguments[0] = chalk.cyan(arguments[0]);
+      console.log.apply(console, arguments);
+    }
+  });
 
   this.helper('info', function (msg) {
+    arguments[0] = chalk.cyan(arguments[0]);
+    console.log.apply(console, arguments);
+  });
+
+  this.helper('bold', function (msg) {
+    arguments[0] = chalk.bold(arguments[0]);
     console.log.apply(console, arguments);
   });
 
   this.helper('warn', function (msg) {
+    arguments[0] = chalk.yellow(arguments[0]);
     console.log.apply(console, arguments);
   });
 
   this.helper('error', function (msg) {
+    arguments[0] = chalk.red(arguments[0]);
     console.log.apply(console, arguments);
-  });
-
-  this.imports('log', function (mgs) {
-    console.log.apply(console, arguments);
-  });
-
-  this.helper('date', function () {
-    return new Date().getFullYear();
   });
 };
 
