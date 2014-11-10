@@ -5,9 +5,9 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
 // process.env.DEBUG = 'verb:*'
+
+'use strict';
 
 var util = require('util');
 var path = require('path');
@@ -20,7 +20,6 @@ var slice = require('array-slice');
 var debug = require('debug')('verb');
 var Template = require('template');
 var Config = require('orchestrator');
-var lodash = require('engine-lodash');
 var parser = require('parser-front-matter');
 var session = require('./lib/session');
 var stack = require('./lib/stack');
@@ -45,26 +44,35 @@ var Verb = module.exports = Template.extend({
   constructor: function (options) {
     Verb.__super__.constructor.call(this, options);
     Config.call(this);
-
-    this.fns = {};
-
-    // extension must be loaded first
-    this.loadPlugins();
-    this.loadHelpers();
-
-    this._defaultSettings();
-    this._defaultConfig();
-    this._defaultTransforms();
-    this._defaultDelims();
-    this._defaultTemplates();
-    this._defaultRoutes();
-    this._defaultMiddleware();
-    this._defaultHelpers();
-    this._defaultAsyncHelpers();
+    this._initialize();
   }
 });
 
 extend(Verb.prototype, Config.prototype);
+
+/**
+ * Initialize all configuration settings.
+ *
+ * @api private
+ */
+
+Verb.prototype._initialize = function() {
+  this.fns = {};
+
+  // extension must be loaded first
+  this.loadPlugins();
+  this.loadHelpers();
+
+  this._defaultSettings();
+  this._defaultConfig();
+  this._defaultTransforms();
+  this._defaultDelims();
+  this._defaultTemplates();
+  this._defaultRoutes();
+  this._defaultMiddleware();
+  this._defaultHelpers();
+  this._defaultAsyncHelpers();
+};
 
 /**
  * Initialize default template types
@@ -96,6 +104,7 @@ Verb.prototype._defaultSettings = function() {
   this.enable('src:init plugin');
   this.enable('dest:render plugin');
   this.enable('dest:readme plugin');
+
   this.disable('dest:travis plugin');
   this.disable('travis badge');
 };
@@ -110,9 +119,9 @@ Verb.prototype._defaultTemplates = function() {
   var opts = this.option('defaults');
   this.create('doc', opts);
 
-  var create = require('./lib/create/base')(this, opts);
-  create('include', require('verb-readme-includes'));
-  create('badge', require('template-badges'));
+  var createBase = require('./lib/create/base')(this, opts);
+  createBase('include', require('verb-readme-includes'));
+  createBase('badge', require('verb-readme-badges'));
 
   this.create('file', extend(opts, {
     renameKey: function (fp) {
@@ -295,7 +304,11 @@ Verb.prototype.loadType = function(type, plural) {
 
 /**
  * Convenience method for looking up a template
- * on the cache.
+ * on the cache by:
+ *
+ *   1. `name`, as-is
+ *   2. If `name` has an extension, try without it
+ *   3. If `name` does not have an extension, try `name.md`
  *
  * @param {String} `plural` The template cache to search.
  * @param {String} `name` The name of the template.
@@ -303,14 +316,24 @@ Verb.prototype.loadType = function(type, plural) {
  */
 
 Verb.prototype.lookup = function(plural, name) {
+  var base = path.basename(name, path.extname(name));
   var cache = this.cache[plural];
+
+  var ext = this.option('ext');
+  if (ext[0] !== '.') {
+    ext = '.' + ext;
+  }
 
   if (cache.hasOwnProperty(name)) {
     return cache[name];
   }
 
-  if (cache.hasOwnProperty(name + '.md')) {
-    return cache[name + '.md'];
+  if (/\./.test(name) && cache.hasOwnProperty(base)) {
+    return cache[base];
+  }
+
+  if (cache.hasOwnProperty(name + ext)) {
+    return cache[name + ext];
   }
 
   return name;
