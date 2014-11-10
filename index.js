@@ -174,6 +174,10 @@ Verb.prototype._defaultDelims = function() {
 Verb.prototype._defaultHelpers = function() {
   var app = this;
 
+  this.helper('date', require('helper-date'));
+  this.helper('license', require('helper-license'));
+  this.helper('copyright', require('helper-copyright'));
+
   this.helper('strip', require('./lib/helpers/strip'));
   this.helper('comments', require('./lib/helpers/comments'));
 
@@ -310,7 +314,7 @@ Verb.prototype.loadType = function(type, plural) {
  *
  * @param {String} `plural` The template cache to search.
  * @param {String} `name` The name of the template.
- * @api public
+ * @api private
  */
 
 Verb.prototype.lookup = function(plural, name) {
@@ -394,7 +398,7 @@ Verb.prototype._runTask = function(task) {
  *
  * @param  {Object} `value`
  * @return {Object} Returns a vinyl file.
- * @api public
+ * @api private
  */
 
 Verb.prototype.toVinyl = function(value) {
