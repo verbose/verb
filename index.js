@@ -5,23 +5,19 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
-
 // process.env.DEBUG = 'verb:*'
 
-var util = require('util');
+'use strict';
+
 var path = require('path');
 var vfs = require('vinyl-fs');
 var File = require('gulp-util').File;
 var es = require('event-stream');
 var load = require('load-plugins');
 var chalk = require('chalk');
-var slice = require('array-slice');
 var debug = require('debug')('verb');
 var Template = require('template');
 var Config = require('orchestrator');
-var lodash = require('engine-lodash');
-var parser = require('parser-front-matter');
 var session = require('./lib/session');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
@@ -45,26 +41,34 @@ var Verb = module.exports = Template.extend({
   constructor: function (options) {
     Verb.__super__.constructor.call(this, options);
     Config.call(this);
-
-    this.fns = {};
-
-    // extension must be loaded first
-    this.loadPlugins();
-    this.loadHelpers();
-
-    this._defaultSettings();
-    this._defaultConfig();
-    this._defaultTransforms();
-    this._defaultDelims();
-    this._defaultTemplates();
-    this._defaultRoutes();
-    this._defaultMiddleware();
-    this._defaultHelpers();
-    this._defaultAsyncHelpers();
+    this._initialize();
   }
 });
 
 extend(Verb.prototype, Config.prototype);
+
+/**
+ * Initialize all configuration settings.
+ *
+ * @api private
+ */
+
+Verb.prototype._initialize = function() {
+  this.fns = {};
+
+  // extension must be loaded first
+  this.loadPlugins();
+  this.loadHelpers();
+
+  this._defaultSettings();
+  this._defaultConfig();
+  this._defaultTransforms();
+  this._defaultDelims();
+  this._defaultTemplates();
+  this._defaultMiddleware();
+  this._defaultHelpers();
+  this._defaultAsyncHelpers();
+};
 
 /**
  * Initialize default template types
@@ -96,6 +100,7 @@ Verb.prototype._defaultSettings = function() {
   this.enable('src:init plugin');
   this.enable('dest:render plugin');
   this.enable('dest:readme plugin');
+
   this.disable('dest:travis plugin');
   this.disable('travis badge');
 };
@@ -110,13 +115,13 @@ Verb.prototype._defaultTemplates = function() {
   var opts = this.option('defaults');
   this.create('doc', opts);
 
-  var create = require('./lib/create/base')(this, opts);
-  create('include', require('verb-readme-includes'));
-  create('badge', require('template-badges'));
+  var createBase = require('./lib/create/base')(this, opts);
+  createBase('include', require('verb-readme-includes'));
+  createBase('badge', require('verb-readme-badges'));
 
   this.create('file', extend(opts, {
     renameKey: function (fp) {
-      return fp
+      return fp;
     }
   }));
 };
@@ -148,19 +153,6 @@ Verb.prototype._defaultMiddleware = function() {
 };
 
 /**
- * Load default routes
- *
- * @api private
- */
-
-Verb.prototype._defaultRoutes = function() {
-  this.route(/\.md/).all(function (file, next) {
-    file.data.filepath = file.path;
-    next();
-  });
-};
-
-/**
  * Register default template delimiters.
  *
  *   - `['{%', '%}']` => default template delimiters
@@ -182,39 +174,36 @@ Verb.prototype._defaultDelims = function() {
 Verb.prototype._defaultHelpers = function() {
   var app = this;
 
-  this.helper('date', require('helper-date'));
-  this.helper('license', require('helper-license'));
-  this.helper('copyright', require('helper-copyright'));
   this.helper('strip', require('./lib/helpers/strip'));
   this.helper('comments', require('./lib/helpers/comments'));
 
-  this.helper('log', function (mgs) {
+  this.helper('log', function () {
     console.log.apply(console, arguments);
   });
 
-  this.helper('debug', function (mgs) {
+  this.helper('debug', function () {
     if (app.enabled('debug')) {
       arguments[0] = chalk.cyan(arguments[0]);
       console.log.apply(console, arguments);
     }
   });
 
-  this.helper('info', function (msg) {
+  this.helper('info', function () {
     arguments[0] = chalk.cyan(arguments[0]);
     console.log.apply(console, arguments);
   });
 
-  this.helper('bold', function (msg) {
+  this.helper('bold', function () {
     arguments[0] = chalk.bold(arguments[0]);
     console.log.apply(console, arguments);
   });
 
-  this.helper('warn', function (msg) {
+  this.helper('warn', function () {
     arguments[0] = chalk.yellow(arguments[0]);
     console.log.apply(console, arguments);
   });
 
-  this.helper('error', function (msg) {
+  this.helper('error', function () {
     arguments[0] = chalk.red(arguments[0]);
     console.log.apply(console, arguments);
   });
@@ -252,9 +241,8 @@ Verb.prototype._defaultAsyncHelpers = function() {
  */
 
 Verb.prototype.loadPlugins = function() {
-  this.loadType('plugin', 'plugins');
+  this.loadType('async-helper', 'async');
   this.loadType('helper', 'helpers');
-  this.loadType('tag', 'tags');
 };
 
 /**
@@ -264,14 +252,29 @@ Verb.prototype.loadPlugins = function() {
  */
 
 Verb.prototype.loadHelpers = function() {
+  debug('loading helpers: %j', arguments);
+  var fn, name;
+
   var helpers = Object.keys(this.fns.helpers);
   var len = helpers.length;
-  for (var i = 0; i < len; i++) {
-    var name = helpers[i];
-    var fn = this.fns.helpers[name];
-    this.asyncHelper(name, fn);
+  var i = 0;
+
+  while (i < len) {
+    name = helpers[i++];
+    fn = this.fns.helpers[name];
     this.helper(name, fn);
   }
+
+  var async = Object.keys(this.fns.async);
+  var alen = async.length;
+  var j = 0;
+
+  while (j < len) {
+    name = async[j++];
+    fn = this.fns.async[name];
+    this.asyncHelper(name, fn);
+  }
+
   return this;
 };
 
@@ -282,20 +285,28 @@ Verb.prototype.loadHelpers = function() {
  * @param  {String} `type` The plugin type, e.g. "helper"
  * @param  {String} `plural` Plural form of `type`, e.g. "helpers"
  * @return {Object} `fns` Object of plugins, key-value pairs. The value is a function.
+ * @api private
  */
 
 Verb.prototype.loadType = function(type, plural) {
+  debug('loading type: %s', type);
+
   this.fns[plural] = this.fns[plural] || {};
-  extend(this.fns[plural], load('verb-' + type + '*', {
-    strip: 'verb-' + type,
+  extend(this.fns[plural], load(type + '*', {
+    strip: type,
     cwd: process.cwd()
   }));
+
   return this.fns[plural];
 };
 
 /**
  * Convenience method for looking up a template
- * on the cache.
+ * on the cache by:
+ *
+ *   1. `name`, as-is
+ *   2. If `name` has an extension, try without it
+ *   3. If `name` does not have an extension, try `name.md`
  *
  * @param {String} `plural` The template cache to search.
  * @param {String} `name` The name of the template.
@@ -303,14 +314,29 @@ Verb.prototype.loadType = function(type, plural) {
  */
 
 Verb.prototype.lookup = function(plural, name) {
+  debug('lookup [plural]: %s, [name]: %s', plural, name);
+
+  var base = path.basename(name, path.extname(name));
   var cache = this.cache[plural];
 
+  var ext = this.option('ext');
+  if (ext[0] !== '.') {
+    ext = '.' + ext;
+  }
+
   if (cache.hasOwnProperty(name)) {
+    debug('lookup name: %s', name);
     return cache[name];
   }
 
-  if (cache.hasOwnProperty(name + '.md')) {
-    return cache[name + '.md'];
+  if (/\./.test(name) && cache.hasOwnProperty(base)) {
+    debug('lookup base: %s', base);
+    return cache[base];
+  }
+
+  if (cache.hasOwnProperty(name + ext)) {
+    debug('lookup name + ext: %s', name + ext);
+    return cache[name + ext];
   }
 
   return name;
@@ -372,6 +398,8 @@ Verb.prototype._runTask = function(task) {
  */
 
 Verb.prototype.toVinyl = function(value) {
+  debug('toVinyl: %j', arguments);
+
   var file = new File({
     contents: new Buffer(value.content),
     path: value.path,
@@ -455,32 +483,6 @@ Verb.prototype.watch = function (glob, opts, fn) {
   }
   return vfs.watch(glob, opts, fn);
 };
-
-/**
- * Un-buffer the contents of a template.
- *
- * @api private
- */
-
-function unBuffer(value) {
-  if (value == null) {
-    return {};
-  }
-
-  if (!Buffer.isBuffer(value.contents)) {
-    return value;
-  }
-
-  value.content = value.contents.toString('utf8');
-  var o = {};
-
-  for (var key in value) {
-    if (['contents', '_contents'].indexOf(key) === -1) {
-      o[key] = value[key];
-    }
-  }
-  return o;
-}
 
 /**
  * Expose `verb.Verb`

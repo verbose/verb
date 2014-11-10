@@ -11,6 +11,7 @@ var fs = require('fs');
 var path = require('path');
 var should = require('should');
 var consolidate = require('consolidate');
+var hbs = require('handlebars'); // keep
 var verb = require('..');
 
 describe('verb.render()', function () {

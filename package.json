@@ -1,27 +1,27 @@
 {
-  "name": "verb4",
-  "description": "The most interesting project in the world > Verb",
-  "version": "0.1.0",
-  "homepage": "https://github.com/jonschlinkert/verb4",
+  "name": "verb",
+  "description": "Verb makes it dead simple to generate markdown documentation, using simple templates, with zero configuration required. A project without documentation is like a project that doesn't exist.",
+  "version": "0.3.0",
+  "homepage": "https://github.com/jonschlinkert/verb",
   "author": {
     "name": "Jon Schlinkert",
     "url": "https://github.com/jonschlinkert"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jonschlinkert/verb4.git"
+    "url": "git://github.com/jonschlinkert/verb.git"
   },
   "bugs": {
-    "url": "https://github.com/jonschlinkert/verb4/issues"
+    "url": "https://github.com/jonschlinkert/verb/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/jonschlinkert/verb4/blob/master/LICENSE-MIT"
+      "url": "https://github.com/jonschlinkert/verb/blob/master/LICENSE-MIT"
     }
   ],
   "bin": {
-    "verb4": "./bin/cli.js"
+    "verb": "./bin/cli.js"
   },
   "main": "index.js",
   "engines": {
@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "archy": "^1.0.0",
-    "array-slice": "^0.2.2",
     "async": "^0.9.0",
     "chalk": "^0.5.1",
     "continuation-local-storage": "^3.1.1",
@@ -50,39 +49,50 @@
     "extend-shallow": "^0.1.1",
     "gray-matter": "^0.5.3",
     "gulp-util": "^3.0.1",
+    "helper-copyright": "^0.1.0",
+    "helper-date": "^0.1.1",
+    "helper-license": "^0.1.0",
     "interpret": "^0.3.7",
     "js-comments": "^0.3.4",
     "liftoff": "^0.13.5",
     "load-plugins": "^0.3.0",
     "lodash": "^2.4.1",
-    "longest": "^0.2.1",
     "map-files": "^0.2.1",
-    "minimatch": "^1.0.0",
     "minimist": "^1.1.0",
     "orchestrator": "^0.3.7",
     "parse-author": "^0.1.0",
-    "parser-front-matter": "^0.3.0",
     "pretty-hrtime": "^0.2.2",
-    "repeat-string": "^0.2.2",
     "rte": "^0.4.0",
     "semver": "^4.1.0",
-    "stringify-author": "^0.1.1",
     "template": "^0.3.0",
     "through2": "^0.6.3",
     "tildify": "^1.0.0",
     "v8flags": "^1.0.1",
-    "verb-readme-badges": "^0.1.1",
+    "verb-readme-badges": "^0.2.0",
     "verb-readme-includes": "^0.1.20",
     "vinyl-fs": "^0.3.10",
     "write-yaml": "^0.1.2"
   },
   "keywords": [
+    "comment",
+    "comments",
+    "doc",
     "docs",
+    "document",
     "documentation",
     "generate",
     "generator",
+    "gh",
+    "gh-pages",
     "markdown",
+    "md",
+    "pages",
+    "readme",
+    "repo",
+    "repository",
+    "template",
     "templates",
-    "verb"
+    "verb",
+    "verbiage"
   ]
 }
