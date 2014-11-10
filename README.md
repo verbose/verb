@@ -32,7 +32,7 @@ Create an instance of `Verb` with the given `options`.
 var verb = new Verb();
 ```
 
-## [.lookup](index.js#L320)
+## [.lookup](index.js#L332)
 
 Convenience method for looking up a template on the cache by:
 
@@ -43,7 +43,7 @@ Convenience method for looking up a template on the cache by:
   2. If `name` has an extension, try without it
   3. If `name` does not have an extension, try `name.md`
 
-## [.task](index.js#L363)
+## [.task](index.js#L375)
 
 Define a Verb task.
 
@@ -56,7 +56,7 @@ verb.task('docs', function() {
 });
 ```
 
-## [.run](index.js#L376)
+## [.run](index.js#L388)
 
 Run an array of tasks.
 
@@ -66,14 +66,14 @@ Run an array of tasks.
 verb.run(['foo', 'bar']);
 ```
 
-## [.toVinyl](index.js#L404)
+## [.toVinyl](index.js#L416)
 
 * `value` **{Object}**    
 * `returns` **{Object}**: Returns a vinyl file.  
 
 Transform `value` to a vinyl file.
 
-## [.src](index.js#L434)
+## [.src](index.js#L446)
 
 Glob patterns or filepaths to source files.
 
@@ -87,7 +87,7 @@ verb.task('site', function() {
 });
 ```
 
-## [.dest](index.js#L455)
+## [.dest](index.js#L467)
 
 Specify a destination for processed files.
 
@@ -101,7 +101,7 @@ verb.task('sitemap', function() {
 });
 ```
 
-## [.watch](index.js#L477)
+## [.watch](index.js#L489)
 
 Rerun the specified task when a file changes.
 

@@ -153,19 +153,6 @@ Verb.prototype._defaultMiddleware = function() {
 };
 
 /**
- * Load default routes
- *
- * @api private
- */
-
-// Verb.prototype._defaultRoutes = function() {
-//   this.route(/\.md/).all(function (file, next) {
-//     file.data.filepath = file.path;
-//     next();
-//   });
-// };
-
-/**
  * Register default template delimiters.
  *
  *   - `['{%', '%}']` => default template delimiters
@@ -187,9 +174,6 @@ Verb.prototype._defaultDelims = function() {
 Verb.prototype._defaultHelpers = function() {
   var app = this;
 
-  this.helper('date', require('helper-date'));
-  this.helper('license', require('helper-license'));
-  this.helper('copyright', require('helper-copyright'));
   this.helper('strip', require('./lib/helpers/strip'));
   this.helper('comments', require('./lib/helpers/comments'));
 
@@ -257,9 +241,8 @@ Verb.prototype._defaultAsyncHelpers = function() {
  */
 
 Verb.prototype.loadPlugins = function() {
-  this.loadType('plugin', 'plugins');
+  this.loadType('async-helper', 'async');
   this.loadType('helper', 'helpers');
-  this.loadType('tag', 'tags');
 };
 
 /**
@@ -270,14 +253,26 @@ Verb.prototype.loadPlugins = function() {
 
 Verb.prototype.loadHelpers = function() {
   debug('loading helpers: %j', arguments);
+  var fn, name;
 
   var helpers = Object.keys(this.fns.helpers);
   var len = helpers.length;
-  for (var i = 0; i < len; i++) {
-    var name = helpers[i];
-    var fn = this.fns.helpers[name];
-    this.asyncHelper(name, fn);
+  var i = 0;
+
+  while (i < len) {
+    name = helpers[i++];
+    fn = this.fns.helpers[name];
     this.helper(name, fn);
+  }
+
+  var async = Object.keys(this.fns.async);
+  var alen = async.length;
+  var j = 0;
+
+  while (j < len) {
+    name = async[j++];
+    fn = this.fns.async[name];
+    this.asyncHelper(name, fn);
   }
 
   return this;
@@ -290,14 +285,15 @@ Verb.prototype.loadHelpers = function() {
  * @param  {String} `type` The plugin type, e.g. "helper"
  * @param  {String} `plural` Plural form of `type`, e.g. "helpers"
  * @return {Object} `fns` Object of plugins, key-value pairs. The value is a function.
+ * @api private
  */
 
 Verb.prototype.loadType = function(type, plural) {
   debug('loading type: %s', type);
 
   this.fns[plural] = this.fns[plural] || {};
-  extend(this.fns[plural], load('verb-' + type + '*', {
-    strip: 'verb-' + type,
+  extend(this.fns[plural], load(type + '*', {
+    strip: type,
     cwd: process.cwd()
   }));
 
