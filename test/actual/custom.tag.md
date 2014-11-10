@@ -1,3 +1,0 @@
-This is just the beginning!
-
-This is the end...

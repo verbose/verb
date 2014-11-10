@@ -1,1 +1,0 @@
-{%= append('examples/templates/lorem.md', 'This is the end...') %}
