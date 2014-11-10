@@ -9,18 +9,15 @@
 
 'use strict';
 
-var util = require('util');
 var path = require('path');
 var vfs = require('vinyl-fs');
 var File = require('gulp-util').File;
 var es = require('event-stream');
 var load = require('load-plugins');
 var chalk = require('chalk');
-var slice = require('array-slice');
 var debug = require('debug')('verb');
 var Template = require('template');
 var Config = require('orchestrator');
-var parser = require('parser-front-matter');
 var session = require('./lib/session');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
@@ -68,7 +65,6 @@ Verb.prototype._initialize = function() {
   this._defaultTransforms();
   this._defaultDelims();
   this._defaultTemplates();
-  this._defaultRoutes();
   this._defaultMiddleware();
   this._defaultHelpers();
   this._defaultAsyncHelpers();
@@ -125,7 +121,7 @@ Verb.prototype._defaultTemplates = function() {
 
   this.create('file', extend(opts, {
     renameKey: function (fp) {
-      return fp
+      return fp;
     }
   }));
 };
@@ -162,12 +158,12 @@ Verb.prototype._defaultMiddleware = function() {
  * @api private
  */
 
-Verb.prototype._defaultRoutes = function() {
-  this.route(/\.md/).all(function (file, next) {
-    file.data.filepath = file.path;
-    next();
-  });
-};
+// Verb.prototype._defaultRoutes = function() {
+//   this.route(/\.md/).all(function (file, next) {
+//     file.data.filepath = file.path;
+//     next();
+//   });
+// };
 
 /**
  * Register default template delimiters.
@@ -197,33 +193,33 @@ Verb.prototype._defaultHelpers = function() {
   this.helper('strip', require('./lib/helpers/strip'));
   this.helper('comments', require('./lib/helpers/comments'));
 
-  this.helper('log', function (mgs) {
+  this.helper('log', function () {
     console.log.apply(console, arguments);
   });
 
-  this.helper('debug', function (mgs) {
+  this.helper('debug', function () {
     if (app.enabled('debug')) {
       arguments[0] = chalk.cyan(arguments[0]);
       console.log.apply(console, arguments);
     }
   });
 
-  this.helper('info', function (msg) {
+  this.helper('info', function () {
     arguments[0] = chalk.cyan(arguments[0]);
     console.log.apply(console, arguments);
   });
 
-  this.helper('bold', function (msg) {
+  this.helper('bold', function () {
     arguments[0] = chalk.bold(arguments[0]);
     console.log.apply(console, arguments);
   });
 
-  this.helper('warn', function (msg) {
+  this.helper('warn', function () {
     arguments[0] = chalk.yellow(arguments[0]);
     console.log.apply(console, arguments);
   });
 
-  this.helper('error', function (msg) {
+  this.helper('error', function () {
     arguments[0] = chalk.red(arguments[0]);
     console.log.apply(console, arguments);
   });
@@ -273,6 +269,8 @@ Verb.prototype.loadPlugins = function() {
  */
 
 Verb.prototype.loadHelpers = function() {
+  debug('loading helpers: %j', arguments);
+
   var helpers = Object.keys(this.fns.helpers);
   var len = helpers.length;
   for (var i = 0; i < len; i++) {
@@ -281,6 +279,7 @@ Verb.prototype.loadHelpers = function() {
     this.asyncHelper(name, fn);
     this.helper(name, fn);
   }
+
   return this;
 };
 
@@ -294,11 +293,14 @@ Verb.prototype.loadHelpers = function() {
  */
 
 Verb.prototype.loadType = function(type, plural) {
+  debug('loading type: %s', type);
+
   this.fns[plural] = this.fns[plural] || {};
   extend(this.fns[plural], load('verb-' + type + '*', {
     strip: 'verb-' + type,
     cwd: process.cwd()
   }));
+
   return this.fns[plural];
 };
 
@@ -316,6 +318,8 @@ Verb.prototype.loadType = function(type, plural) {
  */
 
 Verb.prototype.lookup = function(plural, name) {
+  debug('lookup [plural]: %s, [name]: %s', plural, name);
+
   var base = path.basename(name, path.extname(name));
   var cache = this.cache[plural];
 
@@ -325,14 +329,17 @@ Verb.prototype.lookup = function(plural, name) {
   }
 
   if (cache.hasOwnProperty(name)) {
+    debug('lookup name: %s', name);
     return cache[name];
   }
 
   if (/\./.test(name) && cache.hasOwnProperty(base)) {
+    debug('lookup base: %s', base);
     return cache[base];
   }
 
   if (cache.hasOwnProperty(name + ext)) {
+    debug('lookup name + ext: %s', name + ext);
     return cache[name + ext];
   }
 
@@ -395,6 +402,8 @@ Verb.prototype._runTask = function(task) {
  */
 
 Verb.prototype.toVinyl = function(value) {
+  debug('toVinyl: %j', arguments);
+
   var file = new File({
     contents: new Buffer(value.content),
     path: value.path,
@@ -478,32 +487,6 @@ Verb.prototype.watch = function (glob, opts, fn) {
   }
   return vfs.watch(glob, opts, fn);
 };
-
-/**
- * Un-buffer the contents of a template.
- *
- * @api private
- */
-
-function unBuffer(value) {
-  if (value == null) {
-    return {};
-  }
-
-  if (!Buffer.isBuffer(value.contents)) {
-    return value;
-  }
-
-  value.content = value.contents.toString('utf8');
-  var o = {};
-
-  for (var key in value) {
-    if (['contents', '_contents'].indexOf(key) === -1) {
-      o[key] = value[key];
-    }
-  }
-  return o;
-}
 
 /**
  * Expose `verb.Verb`

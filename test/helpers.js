@@ -54,9 +54,6 @@ describe('helpers', function () {
     });
 
     it('should use the `include` helper:', function (done) {
-      verb.includes('/**/*.md');
-      verb.data({author: {name: 'Jon Schlinkert'}, username: 'jonschlinkert'});
-
       verb.render('{%= include("author") %}', function (err, content) {
         if (err) console.log(err);
         /\*\*Jon Schlinkert\*\*/.test(content).should.be.true;
