@@ -1,8 +1,6 @@
 # verb [![NPM version](https://badge.fury.io/js/verb.svg)](http://badge.fury.io/js/verb)
 
-> A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate docs, using simple markdown templates, with zero configuration required.
-
-A project without documentation is like a project that doesn't exist. Verb solves this by making it too easy _not to do it_.
+> Verb makes it dead simple to generate markdown documentation, using simple templates, with zero configuration required. A project without documentation is like a project that doesn't exist.
 
 ## Install
 ## Install globally with [npm](npmjs.org):
@@ -24,7 +22,7 @@ var verb = require('verb');
 ```
 
 ## API
-## [Verb](index.js#L43)
+## [Verb](index.js#L40)
 
 Create an instance of `Verb` with the given `options`.
 
@@ -34,7 +32,7 @@ Create an instance of `Verb` with the given `options`.
 var verb = new Verb();
 ```
 
-## [.lookup](index.js#L318)
+## [.lookup](index.js#L320)
 
 Convenience method for looking up a template on the cache by:
 
@@ -45,7 +43,7 @@ Convenience method for looking up a template on the cache by:
   2. If `name` has an extension, try without it
   3. If `name` does not have an extension, try `name.md`
 
-## [.task](index.js#L356)
+## [.task](index.js#L363)
 
 Define a Verb task.
 
@@ -58,7 +56,7 @@ verb.task('docs', function() {
 });
 ```
 
-## [.run](index.js#L369)
+## [.run](index.js#L376)
 
 Run an array of tasks.
 
@@ -68,14 +66,14 @@ Run an array of tasks.
 verb.run(['foo', 'bar']);
 ```
 
-## [.toVinyl](index.js#L397)
+## [.toVinyl](index.js#L404)
 
 * `value` **{Object}**    
 * `returns` **{Object}**: Returns a vinyl file.  
 
 Transform `value` to a vinyl file.
 
-## [.src](index.js#L425)
+## [.src](index.js#L434)
 
 Glob patterns or filepaths to source files.
 
@@ -89,7 +87,7 @@ verb.task('site', function() {
 });
 ```
 
-## [.dest](index.js#L446)
+## [.dest](index.js#L455)
 
 Specify a destination for processed files.
 
@@ -103,7 +101,7 @@ verb.task('sitemap', function() {
 });
 ```
 
-## [.watch](index.js#L468)
+## [.watch](index.js#L477)
 
 Rerun the specified task when a file changes.
 
@@ -129,6 +127,7 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 
 ## License
 Copyright (c) 2014 Jon Schlinkert  
+Copyright (c) 2014 Fractal <contact@wearefractal.com>
 Released under the MIT license
 
 ***
