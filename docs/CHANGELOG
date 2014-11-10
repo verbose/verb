@@ -1,9 +1,0 @@
-v0.2.0:
-  date: 2014-03-30
-  changes:
-    - 'Changes the delimiter escaping format to be similar to Yeoman.'
-    - 'Adds documentation. Fixes and adds tests for front matter.'
-v0.1.0:
-  date: 2014-03-11
-  changes:
-    - 'First commmit.'

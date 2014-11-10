@@ -1,4 +1,0 @@
----yaml
-user: jonschlinkert
----
-{%= user %}
