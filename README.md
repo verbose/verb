@@ -1,115 +1,135 @@
-# verb [![NPM version](https://badge.fury.io/js/verb.png)](http://badge.fury.io/js/verb)
+# verb [![NPM version](https://badge.fury.io/js/verb.svg)](http://badge.fury.io/js/verb)
 
-> A project without documentation is like a project that doesn't exist. Verb solves this by making it dead simple to generate docs, using simple markdown templates, with zero configuration required.
-
-Verb is a new project, please give feedback on your experience so we can improve it! See [what's planned for v0.3.0](https://github.com/assemble/verb/issues/12), feel free to add your thoughts or ask questions there as well.
-
-## Runners
-**Verb itself is just an API**, so it requires a "runner" to run.
-Currently, there are three Verb runners to choose from:
-
-* [verb-cli](https://github.com/assemble/verb-cli) runs Verb globally from the command line
-* [grunt-verb](https://github.com/assemble/grunt-verb) for your favorite JavaScript task runner.
-* [gulp-verb](https://github.com/assemble/gulp-verb) for your streaming build systems.
-
-Those tools are great for building docs once they already exist, but you can also use [generator-verb](https://github.com/assemble/generator-verb) to:
-
-* Initialize new Node.js projects _with documentation read-to-go_. This is a great generator for Node.js projects in general, even if you don't want to use Verb!
-* Add docs templates to new or existing projects
-
-Read [the documentation](./DOCS.md) to learn more about Verb!
-
+> Verb makes it dead simple to generate markdown documentation, using simple templates, with zero configuration required. A project without documentation is like a project that doesn't exist.
 
 ## Install
-Install with [npm](npmjs.org):
+## Install globally with [npm](npmjs.org):
 
 ```bash
-npm i verb --save-dev
+npm i -g verb
 ```
 
-## Meet Verb
-> Verb's CLI makes kickstarting new markdown documentation a breeze.
-
-For example, to [generate a readme](https://github.com/assemble/generator-verb) for your project just add `docs/README.tmpl.md` with the following:
-
-```markdown
-# {%= name %}
-
-> {%= description %}
-
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-accusantium doloremque laudantium, totam rem aperiam.
-```
-
-Then run `verb` in the command line and it will generate `README.md`, _automatically using data from your project's package.json to process templates_.
-
-**[Built-in tags](./DOCS.md#tags)**
-
-Need more than simple variables, like `date()`? Use one of Verb's [built-in tags](./DOCS.md#date):
-
-```markdown
-## License
-Copyright (c) {%= date('YYYY') %} {%= author.name %}, contributors.
-Released under the {%= license.type %} license
-```
-
-**[Includes](./DOCS.md#include)**
-
-Easily include other documents. To use any markdown file in the `docs/` directory just use [`{%= docs() %}`](./DOCS.md#docs):
-
-```markdown
-## Contribute
-{%= docs("contributing") %}
-```
-
-That's it! [See this gist](https://gist.github.com/jonschlinkert/9712957) for a more detailed example.
-
-This is just a simple example though, Verb can easily build multi-page markdown documentation, with a fully-linked [multi-page TOC](./DOCS.md#toc), or even build a book!
-
-_(Verb builds its own docs (WIP) too, check progress in the [docs directory](./docs)!)_.
-
-
-
-## Customize
-Verb is easy to extend, here are some examples ([verb-cli](https://github.com/assemble/verb-cli) will automatically use these):
-
-* [example verbfile](https://gist.github.com/jonschlinkert/9685280), with custom `src`, `dest` and metadata.
-* [example verbfile with logging](https://gist.github.com/jonschlinkert/9685144)
-* [example .verbrc.yml](https://gist.github.com/jonschlinkert/9686195)
-
-You can also use Verb as a basis for creating your own documentation generator!
-
-## Test
-Run Verb's 75+ unit tests:
+## Run tests
 
 ```bash
-mocha -R spec
+npm test
 ```
 
-## Release history
-**DATE**       **VERSION**   **CHANGES**
-* 2014-08-02   src                      
+## Usage
 
-## Contribute
-All contributions are welcome! _Stars and tweets_ are always a great way to show your support! But we can definitely use some help with:
+```js
+var verb = require('verb');
+```
 
-* [documentation](./docs)
-* [writing unit tests](./test)
-* [addressing issues](https://github.com/assemble/verb/issues)
+## API
+## [Verb](index.js#L40)
 
-Please read [contributing guide](CONTRIBUTING.md) for more info!
+Create an instance of `Verb` with the given `options`.
+
+* `options` **{Object}**    
+
+```js
+var verb = new Verb();
+```
+
+## [.lookup](index.js#L316)
+
+Convenience method for looking up a template on the cache by:
+
+* `plural` **{String}**: The template cache to search.    
+* `name` **{String}**: The name of the template.    
+
+  1. `name`, as-is
+  2. If `name` has an extension, try without it
+  3. If `name` does not have an extension, try `name.md`
+
+## [.task](index.js#L359)
+
+Define a Verb task.
+
+* `name` **{String}**    
+* `fn` **{Function}**    
+
+```js
+verb.task('docs', function() {
+  // do stuff
+});
+```
+
+## [.run](index.js#L372)
+
+Run an array of tasks.
+
+* `tasks` **{Array}**    
+
+```js
+verb.run(['foo', 'bar']);
+```
+
+## [.toVinyl](index.js#L400)
+
+* `value` **{Object}**    
+* `returns` **{Object}**: Returns a vinyl file.  
+
+Transform `value` to a vinyl file.
+
+## [.src](index.js#L430)
+
+Glob patterns or filepaths to source files.
+
+* `glob` **{String|Array}**    
+* `options` **{Object}**    
+
+```js
+verb.task('site', function() {
+  verb.src('src/*.hbs', {layout: 'default'})
+    verb.dest('dist')
+});
+```
+
+## [.dest](index.js#L451)
+
+Specify a destination for processed files.
+
+* `patterns` **{String|Array|Function}**: Glob patterns, file paths, or renaming function.    
+* `opts` **{Object}**: Options to be passed to `dest` plugins.    
+
+```js
+verb.task('sitemap', function() {
+  verb.src('src/*.txt')
+    verb.dest('dist', {ext: '.xml'})
+});
+```
+
+## [.watch](index.js#L473)
+
+Rerun the specified task when a file changes.
+
+* `glob` **{String|Array}**: Filepaths or glob patterns.    
+* `options` **{String}**    
+* `fn` **{Function}**: Task(s) to watch.    
+
+```js
+verb.task('watch', function() {
+  verb.watch('docs/*.md', ['docs']);
+});
+```
+
+## Contributing
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/jonschlinkert/verb/issues)
 
 ## Author
 
 **Jon Schlinkert**
-
+ 
 + [github/jonschlinkert](https://github.com/jonschlinkert)
-+ [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
++ [twitter/jonschlinkert](http://twitter.com/jonschlinkert) 
 
 ## License
-Copyright (c) 2014 Jon Schlinkert, contributors.  
+Copyright (c) 2014 Jon Schlinkert  
+Copyright (c) 2014 Fractal <contact@wearefractal.com>
 Released under the MIT license
 
 ***
 
-_This file was generated by [verb-cli](https://github.com/assemble/verb-cli) on August 02, 2014._
+_This file was generated by [verb](https://github.com/jonschlinkert/verb) on November 10, 2014._
