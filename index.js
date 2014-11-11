@@ -16,9 +16,9 @@ var es = require('event-stream');
 var load = require('load-plugins');
 var chalk = require('chalk');
 var debug = require('debug')('verb');
+var session = require('session-cache')('verb');
 var Template = require('template');
 var Config = require('orchestrator');
-var session = require('./lib/session');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
 var _ = require('lodash');
@@ -312,7 +312,7 @@ Verb.prototype.loadType = function(type, plural) {
  *   2. If `name` has an extension, try without it
  *   3. If `name` does not have an extension, try `name.md`
  *
- * @param {String} `plural` The template cache to search.
+ * @param {String} `plural` The collection to search.
  * @param {String} `name` The name of the template.
  * @api private
  */
@@ -343,7 +343,7 @@ Verb.prototype.lookup = function(plural, name) {
     return cache[name + ext];
   }
 
-  return name;
+  return null;
 };
 
 /**
