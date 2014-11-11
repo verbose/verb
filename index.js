@@ -24,7 +24,6 @@ var utils = require('./lib/utils');
 var _ = require('lodash');
 var extend = _.extend;
 
-
 /**
  * Create an instance of `Verb` with the given `options`.
  *
@@ -79,6 +78,10 @@ Verb.prototype._initialize = function() {
 Verb.prototype._defaultConfig = function() {
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
+  this.option('escapeDelims', {
+    from: ['{%%', '%}'],
+    to: ['{%', '%}']
+  });
   this.option('defaults', {
     isRenderable: true,
     isPartial: true,
@@ -103,27 +106,6 @@ Verb.prototype._defaultSettings = function() {
 
   this.disable('dest:travis plugin');
   this.disable('travis badge');
-};
-
-/**
- * Initialize default template types
- *
- * @api private
- */
-
-Verb.prototype._defaultTemplates = function() {
-  var opts = this.option('defaults');
-  this.create('doc', opts);
-
-  var createBase = require('./lib/create/base')(this, opts);
-  createBase('include', require('verb-readme-includes'));
-  createBase('badge', require('verb-readme-badges'));
-
-  this.create('file', extend(opts, {
-    renameKey: function (fp) {
-      return fp;
-    }
-  }));
 };
 
 /**
@@ -166,51 +148,41 @@ Verb.prototype._defaultDelims = function() {
 };
 
 /**
+ * Initialize default template types
+ *
+ * @api private
+ */
+
+Verb.prototype._defaultTemplates = function() {
+  var opts = this.option('defaults');
+  this.create('doc', opts);
+
+  var createBase = require('./lib/create/base')(this, opts);
+  createBase('include', require('verb-readme-includes'));
+  createBase('badge', require('verb-readme-badges'));
+
+  this.create('file', extend(opts, {
+    renameKey: function (fp) {
+      return fp;
+    }
+  }));
+};
+
+/**
  * Initialize default helpers.
  *
  * @api private
  */
 
 Verb.prototype._defaultHelpers = function() {
-  var app = this;
-
   this.helper('date', require('helper-date'));
   this.helper('license', require('helper-license'));
   this.helper('copyright', require('helper-copyright'));
 
+  this.helpers(require('logging-helpers'));
+  this.helpers(require('./lib/helpers/deprecated'));
   this.helper('strip', require('./lib/helpers/strip'));
   this.helper('comments', require('./lib/helpers/comments'));
-
-  this.helper('log', function () {
-    console.log.apply(console, arguments);
-  });
-
-  this.helper('debug', function () {
-    if (app.enabled('debug')) {
-      arguments[0] = chalk.cyan(arguments[0]);
-      console.log.apply(console, arguments);
-    }
-  });
-
-  this.helper('info', function () {
-    arguments[0] = chalk.cyan(arguments[0]);
-    console.log.apply(console, arguments);
-  });
-
-  this.helper('bold', function () {
-    arguments[0] = chalk.bold(arguments[0]);
-    console.log.apply(console, arguments);
-  });
-
-  this.helper('warn', function () {
-    arguments[0] = chalk.yellow(arguments[0]);
-    console.log.apply(console, arguments);
-  });
-
-  this.helper('error', function () {
-    arguments[0] = chalk.red(arguments[0]);
-    console.log.apply(console, arguments);
-  });
 };
 
 /**

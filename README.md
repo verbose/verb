@@ -16,8 +16,6 @@ Visit the [documentation](./docs/DOCS.md) for a full overview of Verb's capabili
 
 
 
-
-
 ### .verb.md
 
 For basic docs, like a README, just drop a [.verb.md](./.verb.md) in the root of your project. Then, to build the README just run `verb` in the command line.
@@ -34,8 +32,6 @@ var verb = require('verb');
 verb.data('docs/*.json');
 verb.data({author: 'Jon Schlinkert'});
 
-verb
-
 verb.task('default', function() {
   verb.src('.verb.md')
     .pipe(verb.dest('./'));
@@ -49,7 +45,7 @@ In addition to all of Verb's unique features, Verb can also run any [gulp](https
 
 In adition to the following, all methods from [Template](https://github.com/jonschlinkert/template) are expose on verb.
 
-## [Verb](index.js#L40)
+## [Verb](index.js#L39)
 
 Create an instance of `Verb` with the given `options`.
 
@@ -59,7 +55,7 @@ Create an instance of `Verb` with the given `options`.
 var verb = new Verb();
 ```
 
-## [.task](index.js#L363)
+## [.task](index.js#L335)
 
 Define a Verb task.
 
@@ -72,7 +68,7 @@ verb.task('docs', function() {
 });
 ```
 
-## [.run](index.js#L376)
+## [.run](index.js#L348)
 
 Run an array of tasks.
 
@@ -82,7 +78,7 @@ Run an array of tasks.
 verb.run(['foo', 'bar']);
 ```
 
-## [.src](index.js#L434)
+## [.src](index.js#L406)
 
 Glob patterns or filepaths to source files.
 
@@ -96,7 +92,7 @@ verb.task('site', function() {
 });
 ```
 
-## [.dest](index.js#L455)
+## [.dest](index.js#L427)
 
 Specify a destination for processed files.
 
@@ -110,7 +106,7 @@ verb.task('sitemap', function() {
 });
 ```
 
-## [.watch](index.js#L477)
+## [.watch](index.js#L449)
 
 Rerun the specified task when a file changes.
 
@@ -136,11 +132,19 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 
 ## Author
  
+**Jon Schlinkert**
+ 
 + [github/jonschlinkert](https://github.com/jonschlinkert)
 + [twitter/jonschlinkert](http://twitter.com/jonschlinkert) 
+ 
+**Brian Woodward**
+ 
++ [github/doowb](https://github.com/doowb)
++ [twitter/doowb](http://twitter.com/doowb) 
+
 
 ## License
-Copyright (c) 2014 undefined  
+Copyright (c) 2014 Jon Schlinkert  
 Copyright (c) 2014 Fractal <contact@wearefractal.com>
 Released under the MIT license
 

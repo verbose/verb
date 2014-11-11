@@ -57,11 +57,11 @@ if (!shouldLog) {
   gutil.log = function(){};
 }
 
-cli.on('require', function (name) {
+cli.on('require', function(name) {
   gutil.log('Requiring external module', chalk.magenta(name));
 });
 
-cli.on('requireFail', function (name) {
+cli.on('requireFail', function(name) {
   gutil.log(chalk.red('Failed to load external module'), chalk.magenta(name));
 });
 
@@ -94,10 +94,7 @@ function handleArguments(env) {
 
   env.modulePath = path.resolve(__dirname, '../index.js');
   if (!env.modulePath) {
-    gutil.log(
-      chalk.red('Local verb not found in'),
-      chalk.magenta(tildify(env.cwd))
-    );
+    gutil.log(chalk.red('Local verb not found in'), chalk.magenta(tildify(env.cwd)));
     gutil.log(chalk.red('Try running: npm install verb'));
     process.exit(1);
   }
