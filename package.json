@@ -66,6 +66,7 @@
     "repeat-string": "^0.2.2",
     "rte": "^0.4.0",
     "semver": "^4.1.0",
+    "session-cache": "^0.1.0",
     "template": "^0.3.0",
     "through2": "^0.6.3",
     "tildify": "^1.0.0",
