@@ -1,5 +1,6 @@
 # Completion for verb
-> Thanks to grunt team and Tyler Kellen
+
+> Borrowed from gulp, thanks to gulp and the grunt team and Tyler Kellen for creating this.
 
 To enable tasks auto-completion in shell you should add `eval "$(verb --completion=shell)"` in your `.shellrc` file.
 

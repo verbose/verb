@@ -1,5 +1,6 @@
 # Copyright (c) 2014 Jason Jarrett
 #
+# Borrowed from gulp
 # Tab completion for the `verb`
 #
 # Usage:

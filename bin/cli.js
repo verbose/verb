@@ -2,6 +2,12 @@
 
 'use strict';
 
+/**
+ * Borrowed from gulp
+ * The MIT License (MIT)
+ * Copyright (c) 2014 Fractal <contact@wearefractal.com>
+ */
+
 var fs = require('fs');
 var path = require('path');
 var gutil = require('gulp-util');
