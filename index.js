@@ -33,7 +33,6 @@ var extend = _.extend;
  *
  * @param {Object} `options`
  * @constructor
- * @api public
  */
 
 var Verb = module.exports = Template.extend({
@@ -319,22 +318,6 @@ Verb.prototype.lookup = function(plural, name) {
 };
 
 /**
- * Define a Verb task.
- *
- * ```js
- * verb.task('docs', function() {
- *   // do stuff
- * });
- * ```
- *
- * @param {String} `name`
- * @param {Function} `fn`
- * @api public
- */
-
-Verb.prototype.task = Verb.prototype.add;
-
-/**
  * Run an array of tasks.
  *
  * ```js
@@ -342,7 +325,7 @@ Verb.prototype.task = Verb.prototype.add;
  * ```
  *
  * @param {Array} `tasks`
- * @api public
+ * @api private
  */
 
 Verb.prototype.run = function () {
@@ -392,14 +375,20 @@ Verb.prototype.toVinyl = function(value) {
  * Glob patterns or filepaths to source files.
  *
  * ```js
+ * verb.src('src/*.hbs', {layout: 'default'})
+ * ```
+ *
+ * **Example usage**
+ *
+ * ```js
  * verb.task('site', function() {
  *   verb.src('src/*.hbs', {layout: 'default'})
  *     verb.dest('dist')
  * });
  * ```
  *
- * @param {String|Array} `glob`
- * @param {Object} `options`
+ * @param {String|Array} `glob` Glob patterns or file paths to source files.
+ * @param {Object} `options` Options or locals to merge into the context and/or pass to `src` plugins
  * @api public
  */
 
@@ -414,13 +403,20 @@ Verb.prototype.src = function (glob, options) {
  * Specify a destination for processed files.
  *
  * ```js
+ * verb.dest('dist', {ext: '.xml'})
+ * ```
+ *
+ * **Example usage**
+ *
+ * ```js
  * verb.task('sitemap', function() {
  *   verb.src('src/*.txt')
  *     verb.dest('dist', {ext: '.xml'})
  * });
  * ```
- * @param {String|Array|Function} `patterns` Glob patterns, file paths, or renaming function.
- * @param {Object} `opts` Options to be passed to `dest` plugins.
+ *
+ * @param {String|Function} `dest` File path or rename function.
+ * @param {Object} `options` Options or locals to merge into the context and/or pass to `dest` plugins
  * @api public
  */
 
@@ -432,7 +428,24 @@ Verb.prototype.dest = function (dest, options) {
 };
 
 /**
- * Rerun the specified task when a file changes.
+ * Define a Verb task.
+ *
+ * ```js
+ * verb.task('docs', function() {
+ *   verb.src(['.verb.md', 'docs/*.md'])
+ *     .pipe(verb.dest('./'));
+ * });
+ * ```
+ *
+ * @param {String} `name`
+ * @param {Function} `fn`
+ * @api public
+ */
+
+Verb.prototype.task = Verb.prototype.add;
+
+/**
+ * Re-run the specified task(s) when a file changes.
  *
  * ```js
  * verb.task('watch', function() {
@@ -441,7 +454,6 @@ Verb.prototype.dest = function (dest, options) {
  * ```
  *
  * @param  {String|Array} `glob` Filepaths or glob patterns.
- * @param  {String} `options`
  * @param  {Function} `fn` Task(s) to watch.
  * @api public
  */

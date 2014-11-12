@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "Verb makes it dead simple to generate markdown documentation, using simple templates, with zero configuration required. A project without documentation is like a project that doesn't exist.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage": "https://github.com/jonschlinkert/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -36,14 +36,12 @@
     "handlebars": "^2.0.0",
     "mocha": "*",
     "should": "^4.1.0",
-    "swig": "^1.4.2",
-    "verb": ">= 0.2.6"
+    "swig": "^1.4.2"
   },
   "dependencies": {
     "archy": "^1.0.0",
     "async": "^0.9.0",
     "chalk": "^0.5.1",
-    "continuation-local-storage": "^3.1.1",
     "debug": "^2.1.0",
     "event-stream": "^3.1.7",
     "extend-shallow": "^0.1.1",
@@ -57,7 +55,9 @@
     "liftoff": "^0.13.5",
     "load-plugins": "^0.3.0",
     "lodash": "^2.4.1",
+    "logging-helpers": "^0.1.0",
     "longest": "^0.2.1",
+    "lookup-deps": "^0.2.4",
     "map-files": "^0.2.1",
     "minimist": "^1.1.0",
     "orchestrator": "^0.3.7",
