@@ -7,3 +7,7 @@ vendor
 _gh_pages
 *.sublime-*
 TODO.md
+
+# npmignore
+test
+docs
