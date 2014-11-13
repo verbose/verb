@@ -77,7 +77,6 @@ Verb.prototype._initialize = function() {
 Verb.prototype._defaultConfig = function() {
   this.option('base', process.cwd());
   this.option('cwd', process.cwd());
-
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
   this.option('escapeDelims', {
@@ -100,7 +99,7 @@ Verb.prototype._defaultConfig = function() {
 
 Verb.prototype._defaultSettings = function() {
   this.enable('debug');
-  this.enable('debugEngine');
+  this.disable('debugEngine');
 
   this.enable('src:init plugin');
   this.enable('dest:render plugin');
@@ -133,12 +132,6 @@ Verb.prototype._defaultTransforms = function() {
  */
 
 Verb.prototype._defaultMiddleware = function() {
-  this.use(function (file, next) {
-    file._vinyl = this.toVinyl(file);
-    createProp(file, {}, {}, ['base', 'cwd', 'relative', 'ext']);
-    createProp(file, {}, {}, ['options', 'locals', 'data', 'fofofo'], {});
-    next();
-  });
   this.use(require('./lib/middleware/ext')(this));
 };
 
