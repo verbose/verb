@@ -75,6 +75,9 @@ Verb.prototype._initialize = function() {
  */
 
 Verb.prototype._defaultConfig = function() {
+  this.option('base', process.cwd());
+  this.option('cwd', process.cwd());
+
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
   this.option('escapeDelims', {
@@ -130,6 +133,12 @@ Verb.prototype._defaultTransforms = function() {
  */
 
 Verb.prototype._defaultMiddleware = function() {
+  this.use(function (file, next) {
+    file._vinyl = this.toVinyl(file);
+    createProp(file, {}, {}, ['base', 'cwd', 'relative', 'ext']);
+    createProp(file, {}, {}, ['options', 'locals', 'data', 'fofofo'], {});
+    next();
+  });
   this.use(require('./lib/middleware/ext')(this));
 };
 
@@ -349,25 +358,26 @@ Verb.prototype._runTask = function(task) {
 };
 
 /**
- * Transform `value` to a vinyl file.
+ * Convert `value` to a vinyl file.
  *
  * @param  {Object} `value`
  * @return {Object} Returns a vinyl file.
  * @api private
  */
 
-Verb.prototype.toVinyl = function(value) {
+Verb.prototype.toVinyl = function(value, options) {
   debug('toVinyl: %j', arguments);
+  var opts = extend({}, this.options, options);
 
-  var file = new File({
-    contents: new Buffer(value.content),
-    path: value.path,
-  });
+  var file = new File({path: value.path});
+  if (value.content) {
+    file.contents = new Buffer(value.content);
+  }
 
-  file.options = value.options || (value.options = {});
-  file.locals = value.locals || (value.locals = {});
-  file.data = value.data || (value.data = {});
-  file.ext = value.ext;
+  // create string props
+  createProps(file, value, opts, ['base', 'cwd', 'relative', 'ext']);
+  // create object props
+  createProps(file, value, opts, ['options', 'locals', 'data'], {});
   return file;
 };
 
@@ -472,6 +482,38 @@ Verb.prototype.watch = function (glob, opts, fn) {
   return vfs.watch(glob, opts, fn);
 };
 
+/**
+ * Create default properties on a vinyl file object.
+ *
+ * @param  {Object} `file`
+ * @param  {Object} `value`
+ * @param  {Object} `opts`
+ * @param  {Array} `props` Array of properties to add
+ * @param  {*} `defaultVal` optionally pass a default value
+ * @return {Object}
+ */
+
+function createProps(file, value, opts, props, defaultVal) {
+  props = Array.isArray(props) ? props : [props];
+  var len = props.length;
+  var i = 0;
+
+  while (len--) {
+    var prop = props[i++];
+    if (value.hasOwnProperty(prop)) {
+      file[prop] = value[prop];
+
+    } else if (opts.hasOwnProperty(prop)) {
+      file[prop] = opts[prop];
+
+    } else if (defaultVal) {
+      file[prop] = defaultVal;
+
+    } else {
+      continue;
+    }
+  }
+}
 /**
  * Expose `verb.Verb`
  */

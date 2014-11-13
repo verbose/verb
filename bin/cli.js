@@ -22,7 +22,6 @@ var v8flags = require('v8flags');
 var completion = require('../lib/completion');
 var argv = require('minimist')(process.argv.slice(2));
 var taskTree = require('../lib/taskTree');
-var padKeys = require('../lib/utils/pad-keys');
 
 
 // set env var for ORIGINAL cwd
@@ -114,11 +113,12 @@ function handleArguments(env) {
   // we let them chdir as needed
   if (process.cwd() !== env.cwd) {
     process.chdir(env.cwd);
+    gutil.log('working directory changed to', chalk.gray(tildify(env.cwd)));
   }
 
   // this is what actually loads up the verbfile
   require(env.configPath);
-  gutil.log('[verbfile]', chalk.gray(tildify(env.configPath)));
+  gutil.log('using verbfile', chalk.gray(tildify(env.configPath)));
 
   var verbInst = require(env.modulePath);
   logEvents(verbInst);
@@ -173,18 +173,17 @@ function formatError(e) {
 
 // wire up logging events
 function logEvents(verbInst) {
-  var o = padKeys(verbInst.tasks);
   verbInst.on('err', function () {
     failed = true;
   });
 
   verbInst.on('task_start', function (e) {
-    gutil.log('[starting] ·', chalk.cyan(o[e.task]));
+    gutil.log('starting', '\'' + chalk.cyan(e.task) + '\'');
   });
 
   verbInst.on('task_stop', function (e) {
     var time = prettyTime(e.hrDuration);
-    gutil.log('[finished] ·', chalk.cyan(o[e.task]), '· after', chalk.magenta(time) );
+    gutil.log('finished', '\'' + chalk.cyan(e.task) + '\'', 'after', chalk.magenta(time));
   });
 
   verbInst.on('task_err', function (e) {
