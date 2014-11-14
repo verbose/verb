@@ -9,6 +9,7 @@
 
 'use strict';
 
+var fs = require('fs');
 var path = require('path');
 var vfs = require('vinyl-fs');
 var File = require('gulp-util').File;
@@ -18,6 +19,7 @@ var chalk = require('chalk');
 var debug = require('debug')('verb');
 var session = require('session-cache')('verb');
 var Template = require('template');
+var tmplutil = require('template-utils');
 var Config = require('orchestrator');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
@@ -54,10 +56,11 @@ extend(Verb.prototype, Config.prototype);
 Verb.prototype._initialize = function() {
   this.fns = {};
 
-  // extension must be loaded first
+  // load extensions first
   this.loadPlugins();
   this.loadHelpers();
 
+  // load all defaults
   this._defaultSettings();
   this._defaultConfig();
   this._defaultTransforms();
@@ -132,6 +135,9 @@ Verb.prototype._defaultTransforms = function() {
  */
 
 Verb.prototype._defaultMiddleware = function() {
+  var escaper = tmplutil.escape;
+  this.route(/\.*/).before(escaper.escape(this));
+  this.route(/\.*/).after(escaper.unescape(this));
   this.use(require('./lib/middleware/ext')(this));
 };
 
@@ -179,11 +185,13 @@ Verb.prototype._defaultHelpers = function() {
   this.helper('date', require('helper-date'));
   this.helper('license', require('helper-license'));
   this.helper('copyright', require('helper-copyright'));
-
   this.helpers(require('logging-helpers'));
   this.helpers(require('./lib/helpers/deprecated'));
   this.helper('strip', require('./lib/helpers/strip'));
   this.helper('comments', require('./lib/helpers/comments'));
+  this.helper('read', function (fp) {
+    return fs.readFileSync(fp, 'utf8');
+  });
 };
 
 /**
@@ -362,13 +370,18 @@ Verb.prototype.toVinyl = function(value, options) {
   debug('toVinyl: %j', arguments);
   var opts = extend({}, this.options, options);
 
-  var file = new File({path: value.path});
+  var file = new File({
+    cwd: value.cwd,
+    base: value.base,
+    path: value.path,
+  });
+
   if (value.content) {
     file.contents = new Buffer(value.content);
   }
 
   // create string props
-  createProps(file, value, opts, ['base', 'cwd', 'relative', 'ext']);
+  createProps(file, value, opts, ['ext']);
   // create object props
   createProps(file, value, opts, ['options', 'locals', 'data'], {});
   return file;
