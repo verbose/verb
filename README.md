@@ -67,13 +67,15 @@ verb.task('default', function() {
 });
 ```
 
-## Template API
+# Template API
 
 > See [Template](https://github.com/jonschlinkert/template) for all available methods.
 
 ### .data
 
-Load data to pass to templates. Any of these work:
+> Load data to pass to templates.
+
+Any of these work:
 
 ```js
 verb.data({foo: 'bar'});
@@ -83,7 +85,7 @@ verb.data(['foo/*.{json,yml}']);
 
 ### .helper
 
-Add helpers to be used in templates.
+> Add helpers to be used in templates.
 
 ```js
 verb.helper('read', function(filepath) {
@@ -95,7 +97,7 @@ verb.helper('read', function(filepath) {
 
 ### .partial
 
-Add partials to be used in other templates.
+> Add partials to be used in other templates.
 
 ```js
 verb.partial('notice', { content: '<strong>...</strong>' });
@@ -123,7 +125,7 @@ var banner = verb.cache.partials['banner'];
 
 ### .page
 
-Add pages:
+> Add pages that might be rendered (really, any template is renderable, pages fit the part though)
 
 ```js
 verb.page('toc.md', { content: 'Table of Contents...'});
@@ -164,7 +166,7 @@ var res = toc.render();
 
 ### .layout
 
-Add layouts, which are used to "wrap" other templates:
+> Add layouts, which are used to "wrap" other templates:
 
 ```js
 verb.layout('default', {content: [
@@ -222,7 +224,7 @@ verb.layout('sidebar', {content: [
 ].join('\n')});
 ```
 
-## Task API
+# Task API
 
 ## [.src](index.js#L411)
 
