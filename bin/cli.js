@@ -48,7 +48,6 @@ var versionFlag = argv.v || argv.version;
 var tasksFlag = argv.T || argv.tasks;
 var tasks = argv._;
 var toRun = tasks.length ? tasks : ['default'];
-
 var simpleTasksFlag = argv['tasks-simple'];
 var shouldLog = !argv.silent && !simpleTasksFlag;
 
@@ -91,23 +90,16 @@ function handleArguments(env) {
     process.exit(0);
   }
 
-  env.modulePath = path.resolve(__dirname, '../index.js');
+  // local node_modules/verb
   if (!env.modulePath) {
-    gutil.log(chalk.red('Local verb not found in'), chalk.magenta(tildify(env.cwd)));
-    gutil.log(chalk.red('Try running: npm install verb'));
-    process.exit(1);
+    env.modulePath = path.join(__dirname, '../../index.js');
   }
 
+  // local verbfile.js
   if (!env.configPath) {
     env.configPath = path.resolve(__dirname, '../lib/_verbfile.js');
+    env.configBase = path.dirname(env.configBase);
   }
-
-  // check for semver difference between cli and local installation
-  // if (semver.gt(cliPackage.version, env.modulePackage.version)) {
-  //   console.log(chalk.red('Warning: verb version mismatch:'));
-  //   console.log(chalk.red('Global verb is', cliPackage.version));
-  //   console.log(chalk.red('Local verb is', env.modulePackage.version));
-  // }
 
   // chdir before requiring verbfile to make sure
   // we let them chdir as needed
@@ -116,9 +108,19 @@ function handleArguments(env) {
     gutil.log('working directory changed to', chalk.gray(tildify(env.cwd)));
   }
 
-  // this is what actually loads up the verbfile
-  require(env.configPath);
-  gutil.log('using verbfile', chalk.gray(tildify(env.configPath)));
+  if (!env.configPath) {
+    env.configPath = path.resolve(__dirname, '../lib/_verbfile.js');
+    require(env.configPath);
+  } else {
+    // this is what actually loads up the verbfile
+    require(env.configPath);
+  }
+
+  gutil.log('using verbfile', chalk.gray(env.configPath));
+
+  if (!env.modulePath || !fs.existsSync(env.modulePath)) {
+    env.modulePath = path.resolve(__dirname, '../index.js');
+  }
 
   var verbInst = require(env.modulePath);
   logEvents(verbInst);
@@ -136,7 +138,7 @@ function handleArguments(env) {
 
 function logTasks(env, localVerb) {
   var tree = taskTree(localVerb.tasks);
-  tree.label = 'Tasks for ' + chalk.gray(tildify(env.configPath));
+  tree.label = 'Tasks for ' + chalk.gray(env.configPath);
   archy(tree).split('\n')
     .forEach(function (v) {
       if (v.trim().length === 0) {
