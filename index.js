@@ -14,12 +14,12 @@ var path = require('path');
 var vfs = require('vinyl-fs');
 var File = require('gulp-util').File;
 var es = require('event-stream');
+var async = require('async');
 var load = require('load-plugins');
-var chalk = require('chalk');
 var debug = require('debug')('verb');
 var session = require('session-cache')('verb');
 var Template = require('template');
-var tmplutil = require('template-utils');
+var tutil = require('template-utils');
 var Config = require('orchestrator');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
@@ -135,10 +135,18 @@ Verb.prototype._defaultTransforms = function() {
  */
 
 Verb.prototype._defaultMiddleware = function() {
-  var escaper = tmplutil.escape;
+  var escaper = tutil.escape;
+
+  // escape protected templates
   this.route(/\.*/).before(escaper.escape(this));
   this.route(/\.*/).after(escaper.unescape(this));
-  this.use(require('./lib/middleware/ext')(this));
+
+  // run middlewares to extend the context
+  this.use(tutil.parallel([
+    require('./lib/middleware/data'),
+    require('./lib/middleware/filename'),
+    require('./lib/middleware/ext')
+  ]));
 };
 
 /**
@@ -185,13 +193,13 @@ Verb.prototype._defaultHelpers = function() {
   this.helper('date', require('helper-date'));
   this.helper('license', require('helper-license'));
   this.helper('copyright', require('helper-copyright'));
-  this.helpers(require('logging-helpers'));
-  this.helpers(require('./lib/helpers/deprecated'));
   this.helper('strip', require('./lib/helpers/strip'));
   this.helper('comments', require('./lib/helpers/comments'));
   this.helper('read', function (fp) {
     return fs.readFileSync(fp, 'utf8');
   });
+  this.helpers(require('./lib/helpers/deprecated'));
+  this.helpers(require('logging-helpers'));
 };
 
 /**
@@ -246,8 +254,7 @@ Verb.prototype.loadHelpers = function() {
 
   while (i < len) {
     name = helpers[i++];
-    fn = this.fns.helpers[name];
-    this.helper(name, fn);
+    this.helper(name, this.fns.helpers[name]);
   }
 
   var async = Object.keys(this.fns.async);
@@ -256,8 +263,7 @@ Verb.prototype.loadHelpers = function() {
 
   while (j < len) {
     name = async[j++];
-    fn = this.fns.async[name];
-    this.asyncHelper(name, fn);
+    this.asyncHelper(name, this.fns.async[name]);
   }
 
   return this;
@@ -382,6 +388,7 @@ Verb.prototype.toVinyl = function(value, options) {
 
   // create string props
   createProps(file, value, opts, ['ext']);
+
   // create object props
   createProps(file, value, opts, ['options', 'locals', 'data'], {});
   return file;
@@ -497,6 +504,7 @@ Verb.prototype.watch = function (glob, opts, fn) {
  * @param  {Array} `props` Array of properties to add
  * @param  {*} `defaultVal` optionally pass a default value
  * @return {Object}
+ * @api private
  */
 
 function createProps(file, value, opts, props, defaultVal) {
@@ -520,6 +528,7 @@ function createProps(file, value, opts, props, defaultVal) {
     }
   }
 }
+
 /**
  * Expose `verb.Verb`
  */
