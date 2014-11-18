@@ -376,22 +376,7 @@ Verb.prototype.toVinyl = function(value, options) {
   debug('toVinyl: %j', arguments);
   var opts = extend({}, this.options, options);
 
-  var file = new File({
-    cwd: value.cwd,
-    base: value.base,
-    path: value.path,
-  });
-
-  if (value.content) {
-    file.contents = new Buffer(value.content);
-  }
-
-  // create string props
-  createProps(file, value, opts, ['ext']);
-
-  // create object props
-  createProps(file, value, opts, ['options', 'locals', 'data'], {});
-  return file;
+  return tutil.toVinyl(value, opts);
 };
 
 /**
@@ -494,40 +479,6 @@ Verb.prototype.watch = function (glob, opts, fn) {
   }
   return vfs.watch(glob, opts, fn);
 };
-
-/**
- * Create default properties on a vinyl file object.
- *
- * @param  {Object} `file`
- * @param  {Object} `value`
- * @param  {Object} `opts`
- * @param  {Array} `props` Array of properties to add
- * @param  {*} `defaultVal` optionally pass a default value
- * @return {Object}
- * @api private
- */
-
-function createProps(file, value, opts, props, defaultVal) {
-  props = Array.isArray(props) ? props : [props];
-  var len = props.length;
-  var i = 0;
-
-  while (len--) {
-    var prop = props[i++];
-    if (value.hasOwnProperty(prop)) {
-      file[prop] = value[prop];
-
-    } else if (opts.hasOwnProperty(prop)) {
-      file[prop] = opts[prop];
-
-    } else if (defaultVal) {
-      file[prop] = defaultVal;
-
-    } else {
-      continue;
-    }
-  }
-}
 
 /**
  * Expose `verb.Verb`
