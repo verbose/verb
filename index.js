@@ -142,8 +142,9 @@ Verb.prototype._defaultMiddleware = function() {
   this.route(/\.*/).after(escaper.unescape(this));
 
   // run middlewares to extend the context
-  this.use(tutil.parallel([
+  this.onLoad(/\.*/, tutil.parallel([
     require('./lib/middleware/data'),
+    require('./lib/middleware/dirname'),
     require('./lib/middleware/filename'),
     require('./lib/middleware/ext')
   ]));
