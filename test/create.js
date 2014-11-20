@@ -23,20 +23,20 @@ describe('engine create:', function () {
   });
 
   describe('when a new template type is created:', function () {
-    it('should add methods to the cache for that type:', function () {
+    it('should add methods to the views for that type:', function () {
       verb.create('apple', 'apples');
       verb.should.have.properties('apple', 'apples');
     });
 
-    it('should add templates to the cache for a given template type:', function () {
+    it('should add templates to the views for a given template type:', function () {
       verb.create('apple', 'apples');
 
       verb.apple('a', 'one');
       verb.apple('b', 'two');
       verb.apple('c', 'three');
 
-      verb.cache.should.have.property('apples');
-      verb.cache.apples.should.have.properties('a', 'b', 'c');
+      verb.views.should.have.property('apples');
+      verb.views.apples.should.have.properties('a', 'b', 'c');
     });
 
     describe('.decorate()', function () {
