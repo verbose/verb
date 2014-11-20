@@ -159,7 +159,7 @@ describe('verb.render()', function () {
       verb.page('b.tmpl', {content: '<title><%= title %></title>', title: 'Lo-Dash'});
       verb.page('d.swig', {content: '<title>{{title}}</title>', title: 'Swig'});
 
-      Object.keys(verb.cache.pages).forEach(function(file) {
+      Object.keys(verb.views.pages).forEach(function(file) {
         verb.render(file, function (err, content) {
           if (err) console.log(err);
 
