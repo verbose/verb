@@ -78,6 +78,9 @@ Verb.prototype._initialize = function() {
  */
 
 Verb.prototype._defaultConfig = function() {
+  this.option('delims', ['{%', '%}']);
+  this.option('layoutDelims', ['<<%', '%>>']);
+
   this.option('base', process.cwd());
   this.option('cwd', process.cwd());
   this.option('viewEngine', '.md');
@@ -144,8 +147,6 @@ Verb.prototype._defaultMiddleware = function() {
   // run middlewares to extend the context
   this.onLoad(/\.*/, tutil.parallel([
     require('./lib/middleware/data'),
-    require('./lib/middleware/dirname'),
-    require('./lib/middleware/filename'),
     require('./lib/middleware/ext')
   ]));
 };
@@ -275,21 +276,21 @@ Verb.prototype.loadHelpers = function() {
  * given plugin `type`, e.g. "helper"
  *
  * @param  {String} `type` The plugin type, e.g. "helper"
- * @param  {String} `plural` Plural form of `type`, e.g. "helpers"
+ * @param  {String} `collection` Plural form of `type`, e.g. "helpers"
  * @return {Object} `fns` Object of plugins, key-value pairs. The value is a function.
  * @api private
  */
 
-Verb.prototype.loadType = function(type, plural) {
+Verb.prototype.loadType = function(type, collection) {
   debug('loading type: %s', type);
 
-  this.fns[plural] = this.fns[plural] || {};
-  extend(this.fns[plural], load(type + '*', {
+  this.fns[collection] = this.fns[collection] || {};
+  extend(this.fns[collection], load(type + '*', {
     strip: type,
     cwd: process.cwd()
   }));
 
-  return this.fns[plural];
+  return this.fns[collection];
 };
 
 /**
@@ -300,35 +301,35 @@ Verb.prototype.loadType = function(type, plural) {
  *   2. If `name` has an extension, try without it
  *   3. If `name` does not have an extension, try `name.md`
  *
- * @param {String} `plural` The collection to search.
+ * @param {String} `collection` The collection to search.
  * @param {String} `name` The name of the template.
  * @api private
  */
 
-Verb.prototype.lookup = function(plural, name) {
-  debug('lookup [plural]: %s, [name]: %s', plural, name);
+Verb.prototype.lookup = function(collection, name) {
+  debug('lookup [collection]: %s, [name]: %s', collection, name);
 
   var base = path.basename(name, path.extname(name));
-  var cache = this.cache[plural];
+  var views = this.views[collection];
 
   var ext = this.option('ext');
   if (ext[0] !== '.') {
     ext = '.' + ext;
   }
 
-  if (cache.hasOwnProperty(name)) {
+  if (views.hasOwnProperty(name)) {
     debug('lookup name: %s', name);
-    return cache[name];
+    return views[name];
   }
 
-  if (/\./.test(name) && cache.hasOwnProperty(base)) {
+  if (/\./.test(name) && views.hasOwnProperty(base)) {
     debug('lookup base: %s', base);
-    return cache[base];
+    return views[base];
   }
 
-  if (cache.hasOwnProperty(name + ext)) {
+  if (views.hasOwnProperty(name + ext)) {
     debug('lookup name + ext: %s', name + ext);
-    return cache[name + ext];
+    return views[name + ext];
   }
 
   return null;
