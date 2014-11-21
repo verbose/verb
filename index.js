@@ -69,6 +69,7 @@ Verb.prototype._initialize = function() {
   this._defaultMiddleware();
   this._defaultHelpers();
   this._defaultAsyncHelpers();
+
 };
 
 /**
@@ -80,15 +81,15 @@ Verb.prototype._initialize = function() {
 Verb.prototype._defaultConfig = function() {
   this.option('delims', ['{%', '%}']);
   this.option('layoutDelims', ['<<%', '%>>']);
+  this.option('escapeDelims', {
+    from: ['{%%', '%}'],
+    to: ['{%', '%}']
+  });
 
   this.option('base', process.cwd());
   this.option('cwd', process.cwd());
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
-  this.option('escapeDelims', {
-    from: ['{%%', '%}'],
-    to: ['{%', '%}']
-  });
   this.option('defaults', {
     isRenderable: true,
     isPartial: true,
@@ -172,12 +173,11 @@ Verb.prototype._defaultDelims = function() {
 
 Verb.prototype._defaultTemplates = function() {
   var opts = this.option('defaults');
-  this.create('doc', opts);
-
   var createBase = require('./lib/create/base')(this, opts);
   createBase('include', require('verb-readme-includes'));
   createBase('badge', require('verb-readme-badges'));
 
+  this.create('doc', opts);
   this.create('file', extend(opts, {
     renameKey: function (fp) {
       return fp;
@@ -364,21 +364,6 @@ Verb.prototype._runTask = function(task) {
     session.set('task_name', task.name);
     Config.prototype._runTask.call(verb, task);
   });
-};
-
-/**
- * Convert `value` to a vinyl file.
- *
- * @param  {Object} `value`
- * @return {Object} Returns a vinyl file.
- * @api private
- */
-
-Verb.prototype.toVinyl = function(value, options) {
-  debug('toVinyl: %j', arguments);
-  var opts = extend({}, this.options, options);
-
-  return tutil.toVinyl(value, opts);
 };
 
 /**
