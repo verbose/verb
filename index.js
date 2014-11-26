@@ -5,8 +5,6 @@
  * Licensed under the MIT license.
  */
 
-// process.env.DEBUG = 'verb:helper'
-
 'use strict';
 
 var fs = require('fs');
