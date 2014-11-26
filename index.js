@@ -5,7 +5,7 @@
  * Licensed under the MIT license.
  */
 
-// process.env.DEBUG = 'verb:*'
+// process.env.DEBUG = 'verb:helper'
 
 'use strict';
 
@@ -248,7 +248,7 @@ Verb.prototype.loadPlugins = function() {
 
 Verb.prototype.loadHelpers = function() {
   debug('loading helpers: %j', arguments);
-  var fn, name;
+  var name;
 
   var helpers = Object.keys(this.fns.helpers);
   var len = helpers.length;
@@ -263,7 +263,7 @@ Verb.prototype.loadHelpers = function() {
   var alen = async.length;
   var j = 0;
 
-  while (j < len) {
+  while (j < alen) {
     name = async[j++];
     this.asyncHelper(name, this.fns.async[name]);
   }
@@ -347,7 +347,10 @@ Verb.prototype.lookup = function(collection, name) {
  */
 
 Verb.prototype.run = function () {
-  var tasks = arguments.length ? arguments : ['default'];
+  var tasks = arguments.length
+    ? arguments :
+    ['default'];
+
   this.start.apply(this, tasks);
 };
 
