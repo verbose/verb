@@ -46,7 +46,6 @@
     "export-files": "^0.1.0",
     "extend-shallow": "^0.1.1",
     "globby": "^0.1.1",
-    "gray-matter": "^0.5.3",
     "gulp-util": "^3.0.1",
     "helper-copyright": "^0.1.0",
     "helper-date": "^0.1.1",
@@ -72,7 +71,7 @@
     "tildify": "^1.0.0",
     "v8flags": "^1.0.1",
     "verb-readme-badges": "^0.2.0",
-    "verb-readme-includes": "^0.1.20",
+    "verb-readme-includes": "^0.2.0",
     "vinyl-fs": "^0.3.10",
     "write-yaml": "^0.1.2"
   },
