@@ -53,10 +53,8 @@ describe('helpers', function () {
       });
     });
 
-    // verb.include('foo', {content: "this is foo"})
-
-    it.only('should use the `include` helper:', function (done) {
-      verb.render('{%= include("foo") %}', function (err, content) {
+    it('should use the `include` helper:', function (done) {
+      verb.render('{%= include("author") %}', function (err, content) {
         if (err) console.log(err);
         /\*\*Jon Schlinkert\*\*/.test(content).should.be.true;
         done();
