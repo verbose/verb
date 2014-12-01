@@ -7,6 +7,8 @@
 
 'use strict';
 
+// require('require-progress');
+
 var fs = require('fs');
 var path = require('path');
 var vfs = require('vinyl-fs');
@@ -63,8 +65,8 @@ Verb.prototype._initialize = function() {
   this._defaultConfig();
   this._defaultTransforms();
   this._defaultDelims();
+  this._defaultRoutes();
   this._defaultTemplates();
-  this._defaultMiddleware();
   this._defaultHelpers();
   this._defaultAsyncHelpers();
 
@@ -104,6 +106,7 @@ Verb.prototype._defaultConfig = function() {
 
 Verb.prototype._defaultSettings = function() {
   this.enable('debug');
+  this.enable('silent');
   this.disable('debugEngine');
 
   this.enable('src:init plugin');
@@ -124,27 +127,30 @@ Verb.prototype._defaultSettings = function() {
 
 Verb.prototype._defaultTransforms = function() {
   this.transform('pkg', require('./lib/transforms/pkg'));
-  this.transform('author', require('./lib/transforms/author'));
+  this.transform('nickname', require('./lib/transforms/nickname'));
   this.transform('username', require('./lib/transforms/username'));
-  this.transform('travis', require('./lib/transforms/travis'));
+  this.transform('author', require('./lib/transforms/author'));
   this.transform('runner', require('./lib/transforms/runner'));
+  this.transform('travis-link', require('./lib/transforms/travis'));
 };
 
 /**
- * Load default middleware
+ * Load default routes / middleware
+ *
+ *   - `.md`: parse front matter in markdown files
+ *   - `.hbs`: parse front matter in handlebars templates
  *
  * @api private
  */
 
-Verb.prototype._defaultMiddleware = function() {
-  var escaper = tutil.escape;
-
-  // escape protected templates
-  this.route(/\.*/).before(escaper.escape(this));
-  this.route(/\.*/).after(escaper.unescape(this));
+Verb.prototype._defaultRoutes = function() {
+  // protect escaped templates
+  this.route(/\.*/).before(tutil.escape.escape(this));
+  this.route(/\.*/).after(tutil.escape.unescape(this));
 
   // run middlewares to extend the context
   this.onLoad(/\.*/, tutil.parallel([
+    require('./lib/middleware/matter'),
     require('./lib/middleware/data'),
     require('./lib/middleware/ext')
   ]));
@@ -171,11 +177,13 @@ Verb.prototype._defaultDelims = function() {
 
 Verb.prototype._defaultTemplates = function() {
   var opts = this.option('defaults');
-  var createBase = require('./lib/create/base')(this, opts);
-  createBase('include', require('verb-readme-includes'));
-  createBase('badge', require('verb-readme-badges'));
 
-  this.create('doc', opts);
+  var create = require('./lib/create/base')(this, opts);
+  create('include', require('verb-readme-includes'));
+  create('badge', require('verb-readme-badges'));
+  create('doc', process.cwd());
+
+  this.create('comment', opts);
   this.create('file', extend(opts, {
     renameKey: function (fp) {
       return fp;
@@ -194,7 +202,6 @@ Verb.prototype._defaultHelpers = function() {
   this.helper('license', require('helper-license'));
   this.helper('copyright', require('helper-copyright'));
   this.helper('strip', require('./lib/helpers/strip'));
-  this.helper('comments', require('./lib/helpers/comments'));
   this.helper('read', function (fp) {
     return fs.readFileSync(fp, 'utf8');
   });
@@ -209,6 +216,7 @@ Verb.prototype._defaultHelpers = function() {
  */
 
 Verb.prototype._defaultAsyncHelpers = function() {
+  this.asyncHelper('comments', require('./lib/helpers/comments'));
   this.asyncHelper('include', require('./lib/helpers/include')(this));
   this.asyncHelper('badge', require('./lib/helpers/badge')(this));
   this.asyncHelper('docs', require('./lib/helpers/docs')(this));
