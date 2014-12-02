@@ -7,6 +7,8 @@
 
 'use strict';
 
+// process.env.DEBUG = 'verb*'
+
 // require('require-progress');
 
 var fs = require('fs');
@@ -216,7 +218,8 @@ Verb.prototype._defaultHelpers = function() {
  */
 
 Verb.prototype._defaultAsyncHelpers = function() {
-  this.asyncHelper('comments', require('./lib/helpers/comments'));
+  this.asyncHelper('apidocs', require('helper-apidocs'));
+  this.asyncHelper('comments', require('helper-apidocs'));
   this.asyncHelper('include', require('./lib/helpers/include')(this));
   this.asyncHelper('badge', require('./lib/helpers/badge')(this));
   this.asyncHelper('docs', require('./lib/helpers/docs')(this));
@@ -229,11 +232,13 @@ Verb.prototype._defaultAsyncHelpers = function() {
  *
  * **Example**
  *
- * Namespace `foo` would load plugins using the
- * `foo-*` glob pattern, e.g:
+ * The namespace `helper` will load plugins using the `helper-*` glob pattern,
+ * whilst also stripping the `helper-` part from the name of each helper. In
+ * other words, assuming we have a helper named `helper-lowercase`:
  *
  * ```js
- * verb.loadPlugins('foo-*');
+ * verb.loadPlugins('helper-*');
+ * //=> {lowercase: [function]}
  * ```
  *
  * @param  {String} `pattern` Optionally pass a glob pattern when calling the method directly.
