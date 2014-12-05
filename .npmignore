@@ -1,15 +1,13 @@
-# dotfiles
-*.rar
-*.sublime-*
-*.zip
-# folders
+npm-debug.log
+bower_components
 node_modules
-experimental
-vendor
 temp
 tmp
-# logs
-npm-debug.log
-# Always-ignore files
+vendor
+_gh_pages
+*.sublime-*
 TODO.md
+
+# npmignore
 test
+docs

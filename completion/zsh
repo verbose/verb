@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+# Borrowed from grunt-cli, by way of gulp
+# http://gruntjs.com/
+#
+# Copyright (c) 2012 Tyler Kellen, contributors
+# Licensed under the MIT license.
+# https://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+
+# Usage:
+#
+# To enable zsh <tab> completion for verb, add the following line (minus the
+# leading #, which is the zsh comment character) to your ~/.zshrc file:
+#
+# eval "$(verb --completion=zsh)"
+
+# Enable zsh autocompletion.
+function _verb_completion() {
+  # Grab tasks
+  compls=$(verb --tasks-simple)
+  completions=(${=compls})
+  compadd -- $completions
+}
+
+compdef _verb_completion verb

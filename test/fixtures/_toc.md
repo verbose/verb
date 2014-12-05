@@ -1,8 +1,0 @@
-
-{%= toc() %}
-
-# first
-
-# second
-
-# third
