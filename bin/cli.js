@@ -13,7 +13,6 @@ var path = require('path');
 var gutil = require('gulp-util');
 var prettyTime = require('pretty-hrtime');
 var chalk = require('chalk');
-var semver = require('semver');
 var archy = require('archy');
 var Liftoff = require('liftoff');
 var tildify = require('tildify');
@@ -149,7 +148,7 @@ function logTasks(env, localVerb) {
 }
 
 function logTasksSimple(env, localVerb) {
-  var keys = Object.keys(localVerb.tasks)
+  var keys = Object.keys(localVerb.tasks);
   console.log(keys.join('\n').trim());
 }
 
@@ -191,7 +190,7 @@ function logEvents(verbInst) {
   verbInst.on('task_err', function (e) {
     var msg = formatError(e);
     var time = prettyTime(e.hrDuration);
-    gutil.log(chalk.cyan(o[e.task]), chalk.red('errored after'), chalk.magenta(time));
+    gutil.log(chalk.cyan(e.task), chalk.red('errored after'), chalk.magenta(time));
     gutil.log(msg);
   });
 

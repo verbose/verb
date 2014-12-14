@@ -7,16 +7,10 @@
 
 'use strict';
 
-// process.env.DEBUG = 'verb*'
-
-// require('require-progress');
-
 var fs = require('fs');
 var path = require('path');
 var vfs = require('vinyl-fs');
-var File = require('gulp-util').File;
 var es = require('event-stream');
-var async = require('async');
 var load = require('load-plugins');
 var debug = require('debug')('verb');
 var session = require('session-cache')('verb');

@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "Verb makes it dead simple to generate markdown documentation, using simple templates, with zero configuration required. A project without documentation is like a project that doesn't exist.",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "homepage": "https://github.com/jonschlinkert/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -14,12 +14,10 @@
   "bugs": {
     "url": "https://github.com/jonschlinkert/verb/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/jonschlinkert/verb/blob/master/LICENSE-MIT"
-    }
-  ],
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/jonschlinkert/verb/blob/master/LICENSE-MIT"
+  },
   "bin": {
     "verb": "./bin/cli.js"
   },
