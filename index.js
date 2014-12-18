@@ -128,6 +128,7 @@ Verb.prototype._defaultTransforms = function() {
   this.transform('author', require('./lib/transforms/author'));
   this.transform('runner', require('./lib/transforms/runner'));
   this.transform('travis-link', require('./lib/transforms/travis'));
+  this.transform('year', require('./lib/transforms/year'));
 };
 
 /**
