@@ -1,7 +1,7 @@
 /*!
  * verb <https://github.com/assemble/verb>
  *
- * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
+ * Copyright (c) 2014-2015, Jon Schlinkert.
  * Licensed under the MIT license.
  */
 
@@ -13,10 +13,10 @@ var vfs = require('vinyl-fs');
 var es = require('event-stream');
 var load = require('load-plugins');
 var debug = require('debug')('verb');
-var session = require('session-cache')('verb');
 var Template = require('template');
 var tutil = require('template-utils');
 var Config = require('orchestrator');
+var session = require('./lib/session');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
 var _ = require('lodash');
@@ -38,6 +38,7 @@ var Verb = module.exports = Template.extend({
     Verb.__super__.constructor.call(this, options);
     Config.call(this);
     this._initialize();
+    this.session = session;
   }
 });
 
@@ -108,8 +109,6 @@ Verb.prototype._defaultSettings = function() {
   this.enable('src:init plugin');
   this.enable('dest:render plugin');
   this.enable('dest:readme plugin');
-
-  this.disable('dest:travis plugin');
   this.disable('travis badge');
 };
 
@@ -475,6 +474,37 @@ Verb.prototype.watch = function (glob, opts, fn) {
   }
   return vfs.watch(glob, opts, fn);
 };
+
+/**
+ * Session-context-specific `files` property that returns
+ * the `files` from the current task as a collection.
+ *
+ * When used in a plugin, the stream must be bound to the
+ * session via `session.bindEmitter`:
+ *
+ * ```js
+ * var stream = through.obj(...);
+ * verb.session.bindEmitter(stream);
+ * return stream;
+ * ```
+ *
+ * @return {Object} `files` Collection from current task.
+ * @api public
+ */
+
+Object.defineProperty(Verb.prototype, 'files', {
+  enumerable: true,
+  configurable: true,
+  get: function () {
+    var name = this.session.get('task_name');
+    var type = name
+      ? 'task_' + name
+      : 'page';
+
+    var collection = this.collection[type];
+    return this.views[collection] || {};
+  }
+});
 
 /**
  * Expose `verb.Verb`
