@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-# Borrowed from grunt-cli, by way of gulp
+# Borrowed from grunt-cli, via gulp
 # http://gruntjs.com/
 #
 # Copyright (c) 2012 Tyler Kellen, contributors
