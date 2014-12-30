@@ -7,7 +7,10 @@ vendor
 _gh_pages
 *.sublime-*
 TODO.md
+*.DS_Store
+
 
 # npmignore
 test
 docs
+.*
