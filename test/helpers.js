@@ -53,10 +53,34 @@ describe('helpers', function () {
       });
     });
 
+    it('should use the `docs` helper to get files without extension:', function (done) {
+      verb.render('{%= docs("README") %}', function (err, content) {
+        if (err) console.log(err);
+        /verb/i.test(content).should.be.true;
+        done();
+      });
+    });
+
+    it('should use the `docs` helper to get files with extension:', function (done) {
+      verb.render('{%= docs("README.md") %}', function (err, content) {
+        if (err) console.log(err);
+        /verb/i.test(content).should.be.true;
+        done();
+      });
+    });
+
+    it('should change the directory for the `docs` helper', function (done) {
+      verb.render('{%= docs("README.md") %}', function (err, content) {
+        if (err) console.log(err);
+        /verb/i.test(content).should.be.true;
+        done();
+      });
+    });
+
     it('should use the `include` helper:', function (done) {
       verb.render('{%= include("author") %}', function (err, content) {
         if (err) console.log(err);
-        /\*\*Jon Schlinkert\*\*/.test(content).should.be.true;
+        /\*\*Jon\s*Schlinkert\*\*/i.test(content).should.be.true;
         done();
       });
     });
