@@ -1,7 +1,7 @@
 /*!
  * verb <https://github.com/assemble/verb>
  *
- * Copyright (c) 2014 Jon Schlinkert, Brian Woodward, contributors.
+ * Copyright (c) 2014-2015, Jon Schlinkert.
  * Licensed under the MIT license.
  */
 
@@ -13,14 +13,13 @@ var vfs = require('vinyl-fs');
 var es = require('event-stream');
 var load = require('load-plugins');
 var debug = require('debug')('verb');
+var extend = require('extend-shallow');
 var session = require('session-cache')('verb');
 var Template = require('template');
 var tutil = require('template-utils');
 var Config = require('orchestrator');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
-var _ = require('lodash');
-var extend = _.extend;
 
 /**
  * Create an instance of `Verb` with the given `options`.
@@ -123,6 +122,7 @@ Verb.prototype._defaultSettings = function() {
 
 Verb.prototype._defaultTransforms = function() {
   this.transform('pkg', require('./lib/transforms/pkg'));
+  this.transform('repo', require('./lib/transforms/repo'));
   this.transform('nickname', require('./lib/transforms/nickname'));
   this.transform('username', require('./lib/transforms/username'));
   this.transform('author', require('./lib/transforms/author'));
