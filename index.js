@@ -27,6 +27,7 @@ var Config = require('orchestrator');
  * Local dependencies
  */
 
+var transforms = require('./lib/transforms');
 var helpers = require('./lib/helpers');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
@@ -130,14 +131,14 @@ Verb.prototype._defaultSettings = function() {
  */
 
 Verb.prototype._defaultTransforms = function() {
-  this.transform('pkg', require('./lib/transforms/pkg'));
-  this.transform('repo', require('./lib/transforms/repo'));
-  this.transform('nickname', require('./lib/transforms/nickname'));
-  this.transform('username', require('./lib/transforms/username'));
-  this.transform('author', require('./lib/transforms/author'));
-  this.transform('runner', require('./lib/transforms/runner'));
-  this.transform('travis-link', require('./lib/transforms/travis'));
-  this.transform('year', require('./lib/transforms/year'));
+  this.transform('pkg', transforms.pkg);
+  this.transform('repo', transforms.repo);
+  this.transform('nickname', transforms.nickname);
+  this.transform('username', transforms.username);
+  this.transform('author', transforms.author);
+  this.transform('runner', transforms.runner);
+  this.transform('year', transforms.year);
+  this.transform('travis-link', transforms.travis);
 };
 
 /**
