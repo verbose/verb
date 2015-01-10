@@ -226,7 +226,7 @@ verb.layout('sidebar', {content: [
 
 # Task API
 
-### [.src](index.js#L399)
+### [.src](index.js#L409)
 
 Glob patterns or filepaths to source files.
 
@@ -246,7 +246,7 @@ verb.task('site', function() {
 });
 ```
 
-### [.dest](index.js#L427)
+### [.dest](index.js#L437)
 
 Specify a destination for processed files.
 
@@ -266,7 +266,7 @@ verb.task('sitemap', function() {
 });
 ```
 
-### [.task](index.js#L449)
+### [.task](index.js#L459)
 
 Define a Verb task.
 
@@ -280,7 +280,7 @@ verb.task('docs', function() {
 });
 ```
 
-### [.watch](index.js#L465)
+### [.watch](index.js#L475)
 
 Re-run the specified task(s) when a file changes.
 
