@@ -7,6 +7,10 @@
 
 'use strict';
 
+/**
+ * Module dependencies
+ */
+
 var fs = require('fs');
 var path = require('path');
 var vfs = require('vinyl-fs');
@@ -18,6 +22,12 @@ var session = require('session-cache')('verb');
 var Template = require('template');
 var tutil = require('template-utils');
 var Config = require('orchestrator');
+
+/**
+ * Local dependencies
+ */
+
+var helpers = require('./lib/helpers');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
 
@@ -64,7 +74,6 @@ Verb.prototype._initialize = function() {
   this._defaultTemplates();
   this._defaultHelpers();
   this._defaultAsyncHelpers();
-
 };
 
 /**
@@ -174,8 +183,8 @@ Verb.prototype._defaultDelims = function() {
 
 Verb.prototype._defaultTemplates = function() {
   var opts = this.option('defaults');
-
   var create = require('./lib/create/base')(this, opts);
+  // pass a cwd to each default template type
   create('include', require('verb-readme-includes'));
   create('badge', require('verb-readme-badges'));
   create('doc', process.cwd());
@@ -195,15 +204,16 @@ Verb.prototype._defaultTemplates = function() {
  */
 
 Verb.prototype._defaultHelpers = function() {
+  this.helpers(require('logging-helpers'));
+  this.helpers(helpers.deprecated);
+
   this.helper('date', require('helper-date'));
   this.helper('license', require('helper-license'));
   this.helper('copyright', require('helper-copyright'));
-  this.helper('strip', require('./lib/helpers/strip'));
+  this.helper('strip', helpers.strip);
   this.helper('read', function (fp) {
     return fs.readFileSync(fp, 'utf8');
   });
-  this.helpers(require('./lib/helpers/deprecated'));
-  this.helpers(require('logging-helpers'));
 };
 
 /**
@@ -215,9 +225,9 @@ Verb.prototype._defaultHelpers = function() {
 Verb.prototype._defaultAsyncHelpers = function() {
   this.asyncHelper('apidocs', require('helper-apidocs'));
   this.asyncHelper('comments', require('helper-apidocs'));
-  this.asyncHelper('include', require('./lib/helpers/include')(this));
-  this.asyncHelper('badge', require('./lib/helpers/badge')(this));
-  this.asyncHelper('docs', require('./lib/helpers/docs')(this));
+  this.asyncHelper('include', helpers.include(this));
+  this.asyncHelper('badge', helpers.badge(this));
+  this.asyncHelper('docs', helpers.docs(this));
 };
 
 /**
@@ -273,7 +283,6 @@ Verb.prototype.loadHelpers = function() {
     name = async[j++];
     this.asyncHelper(name, this.fns.async[name]);
   }
-
   return this;
 };
 
@@ -292,8 +301,8 @@ Verb.prototype.loadType = function(type, collection) {
 
   this.fns[collection] = this.fns[collection] || {};
   extend(this.fns[collection], load(type + '*', {
-    strip: type,
-    cwd: process.cwd()
+    cwd: process.cwd(),
+    strip: type
   }));
 
   return this.fns[collection];
@@ -464,8 +473,7 @@ Verb.prototype.task = Verb.prototype.add;
 
 Verb.prototype.watch = function (glob, opts, fn) {
   if (Array.isArray(opts) || typeof opts === 'function') {
-    fn = opts;
-    opts = null;
+    fn = opts; opts = null;
   }
 
   if (Array.isArray(fn)) {
@@ -473,6 +481,7 @@ Verb.prototype.watch = function (glob, opts, fn) {
       this.start.apply(this, fn);
     }.bind(this));
   }
+
   return vfs.watch(glob, opts, fn);
 };
 
