@@ -152,12 +152,12 @@ Verb.prototype._defaultTransforms = function() {
 
 Verb.prototype._defaultRoutes = function() {
   // protect escaped templates
-  this.route(/\.*/).before(tutil.escape.escape(this));
-  this.route(/\.*/).after(tutil.escape.unescape(this));
+  this.route(/\.*$/).before(tutil.escape.escape(this));
+  this.route(/\.*$/).after(tutil.escape.unescape(this));
 
   // run middlewares to extend the context
-  this.onLoad(/\.*/, tutil.parallel([
-    require('./lib/middleware/matter'),
+  this.onLoad(/\.*$/, tutil.parallel([
+    require('./lib/middleware/readme'),
     require('./lib/middleware/data'),
     require('./lib/middleware/ext')
   ]));
@@ -184,8 +184,9 @@ Verb.prototype._defaultDelims = function() {
 
 Verb.prototype._defaultTemplates = function() {
   var opts = this.option('defaults');
+
+  // pass a cwd to each `create()` template type
   var create = require('./lib/create/base')(this, opts);
-  // pass a cwd to each default template type
   create('include', require('verb-readme-includes'));
   create('badge', require('verb-readme-badges'));
   create('doc', process.cwd());
@@ -212,6 +213,7 @@ Verb.prototype._defaultHelpers = function() {
   this.helper('license', require('helper-license'));
   this.helper('copyright', require('helper-copyright'));
   this.helper('strip', helpers.strip);
+
   this.helper('read', function (fp) {
     return fs.readFileSync(fp, 'utf8');
   });
