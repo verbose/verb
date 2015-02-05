@@ -11,8 +11,10 @@ var should = require('should');
 var verb = require('..');
 
 describe('engine create:', function () {
-  beforeEach(function () {
+  beforeEach(function (done) {
     verb = new verb.Verb();
+    verb.engine('*', require('engine-lodash'));
+    done();
   });
 
   describe('.create():', function () {

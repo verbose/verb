@@ -17,6 +17,7 @@ var verb = require('..');
 describe('verb.render()', function () {
   beforeEach(function (done) {
     verb = new verb.Verb();
+    verb.engine('*', require('engine-lodash'));
     done();
   });
 

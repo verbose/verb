@@ -13,6 +13,7 @@ var verb = require('..');
 describe('helpers', function () {
   beforeEach(function (done) {
     verb = new verb.Verb();
+    verb.engine('*', require('engine-lodash'));
     done();
   });
 
