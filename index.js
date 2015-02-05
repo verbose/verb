@@ -151,9 +151,15 @@ Verb.prototype._defaultTransforms = function() {
  */
 
 Verb.prototype._defaultRoutes = function() {
-  // protect escaped templates
-  this.route(/\.*$/).before(tutil.escape.escape(this));
-  this.route(/\.*$/).after(tutil.escape.unescape(this));
+  // run middlewares to extend the context
+  this.preRender(/\.*$/, tutil.parallel([
+    tutil.escape.escape(this)
+  ]));
+
+  // run middlewares to extend the context
+  this.postRender(/\.*$/, tutil.parallel([
+    tutil.escape.unescape(this)
+  ]));
 
   // run middlewares to extend the context
   this.onLoad(/\.*$/, tutil.parallel([
@@ -231,6 +237,10 @@ Verb.prototype._defaultAsyncHelpers = function() {
   this.asyncHelper('include', helpers.include(this));
   this.asyncHelper('badge', helpers.badge(this));
   this.asyncHelper('docs', helpers.docs(this));
+};
+
+Verb.prototype.config = function(config, fn) {
+  this._config = fn.call(this, config);
 };
 
 /**
@@ -413,6 +423,24 @@ Verb.prototype.src = function (glob, options) {
     vfs.src(glob, options),
     stack.src(this, glob, options)
   ]));
+};
+
+/**
+ * Copy a `glob` of files to the specified `dest`.
+ *
+ * ```js
+ * verb.task('assets', function() {
+ *   verb.copy('assets/**', 'dist');
+ * });
+ * ```
+ *
+ * @param  {String|Array} `glob`
+ * @param  {String|Function} `dest`
+ * @return {Stream} Stream to allow doing additional work.
+ */
+
+Verb.prototype.copy = function(glob, dest) {
+  return vfs.src(glob).pipe(vfs.dest(dest));
 };
 
 /**
