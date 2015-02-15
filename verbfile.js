@@ -30,4 +30,4 @@ verb.task('test', function (cb) {
     });
 });
 
-verb.task('default', ['lint', 'test', 'readme', 'api-docs']);
+verb.task('default', ['lint', 'test', 'readme']);
