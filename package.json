@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "Verb makes it dead simple to generate markdown documentation, using simple templates, with zero configuration required. A project without documentation is like a project that doesn't exist.",
-  "version": "0.4.0",
+  "version": "0.4.4",
   "homepage": "https://github.com/jonschlinkert/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -16,23 +16,27 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/jonschlinkert/verb/blob/master/LICENSE-MIT"
+    "url": "https://github.com/jonschlinkert/verb/blob/master/LICENSE"
   },
+  "files": [
+    "index.js",
+    "lib/"
+  ],
   "main": "index.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha"
   },
   "devDependencies": {
     "consolidate": "^0.11.0",
-    "engine-lodash": "^0.5.0",
     "gulp-istanbul": "^0.6.0",
     "gulp-jshint": "^1.9.2",
     "gulp-mocha": "^2.0.0",
-    "handlebars": "^2.0.0",
-    "lodash": "^2.4.0",
+    "handlebars": "^3.0.0",
+    "jshint-stylish": "^1.0.0",
+    "lodash": "^3.2.0",
     "mocha": "^2.0.1",
     "should": "^4.3.0",
     "swig": "^1.4.2"
@@ -42,6 +46,7 @@
     "chalk": "^0.5.1",
     "cwd": "^0.4.0",
     "debug": "^2.1.1",
+    "engine-lodash": "^0.5.0",
     "event-stream": "^3.2.2",
     "export-files": "^1.0.0",
     "extend-shallow": "^0.2.0",
@@ -56,14 +61,13 @@
     "logging-helpers": "^0.3.0",
     "map-files": "^0.3.0",
     "merge-deep": "^0.1.3",
-    "micromatch": "^1.3.1",
     "object.reduce": "^0.1.3",
     "orchestrator": "^0.3.7",
     "parse-author": "^0.1.0",
     "repo-utils": "^0.1.1",
     "session-cache": "^0.1.3",
-    "template": "^0.9.0",
-    "template-utils": "^0.4.0",
+    "template": "^0.10.1",
+    "template-utils": "^0.4.1",
     "through2": "^0.6.3",
     "verb-readme-badges": "^0.2.0",
     "verb-readme-includes": "^0.2.1",

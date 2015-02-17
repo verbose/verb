@@ -48,7 +48,7 @@ describe('helpers', function () {
       verb.render('{%= comments("index.js") %}', function (err, content) {
         if (err) console.log(err);
         // if `verb` isn't in index.js, we have a problem
-        /verb/i.test(content).should.be.true;
+        content.should.match(/verb/i);
         done();
       });
     });
@@ -56,7 +56,7 @@ describe('helpers', function () {
     it('should use the `docs` helper to get files without extension:', function (done) {
       verb.render('{%= docs("README") %}', function (err, content) {
         if (err) console.log(err);
-        /verb/i.test(content).should.be.true;
+        content.should.match(/verb/i);
         done();
       });
     });
@@ -64,16 +64,15 @@ describe('helpers', function () {
     it('should use the `docs` helper to get files with extension:', function (done) {
       verb.render('{%= docs("README.md") %}', function (err, content) {
         if (err) console.log(err);
-        /verb/i.test(content).should.be.true;
+        content.should.match(/verb/i);
         done();
       });
     });
 
-    it.skip('should change the directory for the `docs` helper', function (done) {
+    it('should change the directory for the `docs` helper', function (done) {
       verb.render('{%= docs("a.md", {cwd: "test/fixtures"}) %}', function (err, content) {
         if (err) console.log(err);
-        console.log(content)
-        // /fixture/i.test(content).should.be.true;
+        content.should.match(/fixture/i);
         done();
       });
     });
@@ -81,7 +80,7 @@ describe('helpers', function () {
     it('should use the `include` helper:', function (done) {
       verb.render('{%= include("author") %}', function (err, content) {
         if (err) console.log(err);
-        /\*\*Jon\s*Schlinkert\*\*/i.test(content).should.be.true;
+        content.should.match(/\*\*Jon\s*Schlinkert\*\*/i);
         done();
       });
     });

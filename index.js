@@ -61,7 +61,6 @@ extend(Verb.prototype, Config.prototype);
 
 Verb.prototype._initialize = function() {
   this.fns = {};
-
   // load extensions first
   this.loadPlugins();
   this.loadHelpers();
@@ -71,7 +70,8 @@ Verb.prototype._initialize = function() {
   this._defaultConfig();
   this._defaultTransforms();
   this._defaultDelims();
-  this._defaultRoutes();
+  this._defaultEngines();
+  this._defaultMiddleware();
   this._defaultTemplates();
   this._defaultHelpers();
   this._defaultAsyncHelpers();
@@ -84,23 +84,14 @@ Verb.prototype._initialize = function() {
  */
 
 Verb.prototype._defaultConfig = function() {
+  this.option('defaults', {isRenderable: true, isPartial: true, engine: '.md', ext: '.md'});
   this.option('delims', ['{%', '%}']);
   this.option('layoutDelims', ['<<%', '%>>']);
-  this.option('escapeDelims', {
-    from: ['{%%', '%}'],
-    to: ['{%', '%}']
-  });
-
-  this.option('base', process.cwd());
+  this.option('escapeDelims', {from: ['{%%', '%}'], to: ['{%', '%}']});
   this.option('cwd', process.cwd());
+  this.option('base', process.cwd());
   this.option('viewEngine', '.md');
   this.option('destExt', '.md');
-  this.option('defaults', {
-    isRenderable: true,
-    isPartial: true,
-    engine: '.md',
-    ext: '.md'
-  });
 };
 
 /**
@@ -133,12 +124,12 @@ Verb.prototype._defaultSettings = function() {
 Verb.prototype._defaultTransforms = function() {
   this.transform('pkg', transforms.pkg);
   this.transform('repo', transforms.repo);
-  this.transform('nickname', transforms.nickname);
-  this.transform('username', transforms.username);
   this.transform('author', transforms.author);
+  this.transform('nickname', transforms.nickname);
   this.transform('runner', transforms.runner);
-  this.transform('year', transforms.year);
   this.transform('travis-link', transforms.travis);
+  this.transform('username', transforms.username);
+  this.transform('year', transforms.year);
 };
 
 /**
@@ -150,23 +141,39 @@ Verb.prototype._defaultTransforms = function() {
  * @api private
  */
 
-Verb.prototype._defaultRoutes = function() {
+Verb.prototype._defaultMiddleware = function() {
   // run middlewares to extend the context
-  this.preRender(/\.*$/, tutil.parallel([
+  this.preRender(/\.md$/, tutil.parallel([
     tutil.escape.escape(this)
   ]));
 
   // run middlewares to extend the context
-  this.postRender(/\.*$/, tutil.parallel([
+  this.postRender(/\.md$/, tutil.parallel([
     tutil.escape.unescape(this)
   ]));
 
   // run middlewares to extend the context
-  this.onLoad(/\.*$/, tutil.parallel([
+  this.onLoad(/\.md$/, tutil.parallel([
     require('./lib/middleware/readme'),
     require('./lib/middleware/data'),
     require('./lib/middleware/ext')
   ]));
+};
+
+/**
+ * Register default template delimiters.
+ *
+ *   - `['{%', '%}']` => default template delimiters
+ *   - `['<<%', '%>>']` => default template delimiters
+ *
+ * @api private
+ */
+
+Verb.prototype._defaultEngines = function() {
+  this.engine('md', require('engine-lodash'));
+  this.engine('*', function noop(str, opts, cb) {
+    cb(null,  str);
+  });
 };
 
 /**
@@ -350,7 +357,7 @@ Verb.prototype.lookup = function(collection, name) {
     return views[name];
   }
 
-  if (/\./.test(name) && views.hasOwnProperty(base)) {
+  if (name.indexOf('.') !== -1 && views.hasOwnProperty(base)) {
     debug('lookup base: %s', base);
     return views[base];
   }
