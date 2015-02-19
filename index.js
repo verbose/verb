@@ -123,6 +123,7 @@ Verb.prototype._defaultSettings = function() {
 
 Verb.prototype._defaultTransforms = function() {
   this.transform('pkg', transforms.pkg);
+  this.transform('license', transforms.license);
   this.transform('repo', transforms.repo);
   this.transform('author', transforms.author);
   this.transform('nickname', transforms.nickname);
@@ -142,17 +143,18 @@ Verb.prototype._defaultTransforms = function() {
  */
 
 Verb.prototype._defaultMiddleware = function() {
-  // run middlewares to extend the context
   this.preRender(/\.md$/, tutil.parallel([
     tutil.escape.escape(this)
   ]));
 
-  // run middlewares to extend the context
   this.postRender(/\.md$/, tutil.parallel([
     tutil.escape.unescape(this)
   ]));
 
-  // run middlewares to extend the context
+  this.onLoad(/\.js$/, tutil.parallel([
+    require('./lib/middleware/copyright')
+  ]));
+
   this.onLoad(/\.md$/, tutil.parallel([
     require('./lib/middleware/readme'),
     require('./lib/middleware/data'),
@@ -172,6 +174,8 @@ Verb.prototype._defaultMiddleware = function() {
 Verb.prototype._defaultEngines = function() {
   this.engine('md', require('engine-lodash'));
   this.engine('*', function noop(str, opts, cb) {
+  // console.log(str)
+
     cb(null,  str);
   });
 };
