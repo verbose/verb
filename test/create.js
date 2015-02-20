@@ -1,13 +1,13 @@
 /*!
- * verb <https://github.com/jonschlinkert/verb>
+ * verb <https://github.com/assemble/verb>
  *
  * Copyright (c) 2014-2015, Jon Schlinkert.
- * Licensed under the MIT License (MIT)
+ * Licensed under the MIT License.
  */
 
 'use strict';
 
-var should = require('should');
+require('should');
 var verb = require('..');
 
 describe('engine create:', function () {

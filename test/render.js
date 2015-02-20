@@ -1,15 +1,15 @@
 /*!
- * verb <https://github.com/jonschlinkert/verb>
+ * verb <https://github.com/assemble/verb>
  *
  * Copyright (c) 2014-2015, Jon Schlinkert.
- * Licensed under the MIT License (MIT)
+ * Licensed under the MIT License.
  */
 
 'use strict';
 
 var fs = require('fs');
 var path = require('path');
-var should = require('should');
+require('should');
 var consolidate = require('consolidate');
 var hbs = require('handlebars'); // keep
 var verb = require('..');

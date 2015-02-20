@@ -2,7 +2,7 @@
  * verb <https://github.com/assemble/verb>
  *
  * Copyright (c) 2014-2015, Jon Schlinkert.
- * Licensed under the MIT license.
+ * Licensed under the MIT License.
  */
 
 'use strict';
@@ -123,14 +123,15 @@ Verb.prototype._defaultSettings = function() {
 
 Verb.prototype._defaultTransforms = function() {
   this.transform('pkg', transforms.pkg);
-  this.transform('license', transforms.license);
   this.transform('repo', transforms.repo);
+  this.transform('authors', transforms.authors);
   this.transform('author', transforms.author);
+  this.transform('username', transforms.username);
+  this.transform('year', transforms.year);
+  this.transform('license', transforms.license);
   this.transform('nickname', transforms.nickname);
   this.transform('runner', transforms.runner);
   this.transform('travis-link', transforms.travis);
-  this.transform('username', transforms.username);
-  this.transform('year', transforms.year);
 };
 
 /**
@@ -174,8 +175,6 @@ Verb.prototype._defaultMiddleware = function() {
 Verb.prototype._defaultEngines = function() {
   this.engine('md', require('engine-lodash'));
   this.engine('*', function noop(str, opts, cb) {
-  // console.log(str)
-
     cb(null,  str);
   });
 };
@@ -248,10 +247,6 @@ Verb.prototype._defaultAsyncHelpers = function() {
   this.asyncHelper('include', helpers.include(this));
   this.asyncHelper('badge', helpers.badge(this));
   this.asyncHelper('docs', helpers.docs(this));
-};
-
-Verb.prototype.config = function(config, fn) {
-  this._config = fn.call(this, config);
 };
 
 /**
