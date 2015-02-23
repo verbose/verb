@@ -10,10 +10,11 @@
 /**
  * Module dependencies
  */
-
 var fs = require('fs');
 var path = require('path');
+var diff = require('diff');
 var vfs = require('vinyl-fs');
+var chalk = require('chalk');
 var es = require('event-stream');
 var load = require('load-plugins');
 var debug = require('debug')('verb');
@@ -47,11 +48,17 @@ var Verb = module.exports = Template.extend({
   constructor: function (options) {
     Verb.__super__.constructor.call(this, options);
     Config.call(this);
-    this._initialize();
+    this._initialize(options && options.config);
   }
 });
 
 extend(Verb.prototype, Config.prototype);
+
+/**
+ * Expose `session`
+ */
+
+Verb.prototype.session = session;
 
 /**
  * Initialize all configuration settings.
@@ -59,9 +66,13 @@ extend(Verb.prototype, Config.prototype);
  * @api private
  */
 
-Verb.prototype._initialize = function() {
+Verb.prototype._initialize = function(config) {
   this.fns = {};
-  // load extensions first
+
+  // first, load user environment
+  this.loadEnvironment(config);
+
+  // load extensions next
   this.loadPlugins();
   this.loadHelpers();
 
@@ -78,12 +89,47 @@ Verb.prototype._initialize = function() {
 };
 
 /**
+ * Load the user's environment.
+ *
+ * @param  {String} `config` Allow the user to optionally pass a config object when calling `new Verb()`.
+ * @api private
+ */
+
+Verb.prototype.loadEnvironment = function(config) {
+  debug('loading environment: %j', config);
+
+  /**
+   * Get a stored value from `verb.env`, a read-only
+   * object that stores the user-environment (mostly
+   * package.json) before it's modified.
+   *
+   * ```js
+   * console.log(verb.env.name);
+   * //=> 'my-project'
+   * ```
+   *
+   * @return {*} The value of specified property.
+   * @api public
+   */
+
+  Object.defineProperty(this, 'env', {
+    get: function () {
+      return config || require(path.resolve('package.json'));
+    },
+    set: function () {
+      console.log('verb.env is read-only and cannot be modified.');
+    }
+  });
+};
+
+/**
  * Initialize default template types
  *
  * @api private
  */
 
 Verb.prototype._defaultConfig = function() {
+  this.option('pkg', 'package.json');
   this.option('defaults', {isRenderable: true, isPartial: true, engine: '.md', ext: '.md'});
   this.option('delims', ['{%', '%}']);
   this.option('layoutDelims', ['<<%', '%>>']);
@@ -101,14 +147,12 @@ Verb.prototype._defaultConfig = function() {
  */
 
 Verb.prototype._defaultSettings = function() {
-  this.enable('debug');
-  this.enable('silent');
   this.disable('debugEngine');
-
+  this.enable('case sensitive routing');
+  this.enable('strict routing');
   this.enable('src:init plugin');
   this.enable('dest:render plugin');
   this.enable('dest:readme plugin');
-
   this.disable('dest:travis plugin');
   this.disable('travis badge');
 };
@@ -122,14 +166,16 @@ Verb.prototype._defaultSettings = function() {
  */
 
 Verb.prototype._defaultTransforms = function() {
+  this.transform('verb', transforms.verb);
   this.transform('pkg', transforms.pkg);
+  this.transform('project', transforms.project);
+  this.transform('nickname', transforms.nickname);
   this.transform('repo', transforms.repo);
   this.transform('authors', transforms.authors);
   this.transform('author', transforms.author);
   this.transform('username', transforms.username);
   this.transform('year', transforms.year);
   this.transform('license', transforms.license);
-  this.transform('nickname', transforms.nickname);
   this.transform('runner', transforms.runner);
   this.transform('travis-link', transforms.travis);
 };
@@ -144,14 +190,6 @@ Verb.prototype._defaultTransforms = function() {
  */
 
 Verb.prototype._defaultMiddleware = function() {
-  this.preRender(/\.md$/, tutil.parallel([
-    tutil.escape.escape(this)
-  ]));
-
-  this.postRender(/\.md$/, tutil.parallel([
-    tutil.escape.unescape(this)
-  ]));
-
   this.onLoad(/\.js$/, tutil.parallel([
     require('./lib/middleware/copyright')
   ]));
@@ -160,6 +198,14 @@ Verb.prototype._defaultMiddleware = function() {
     require('./lib/middleware/readme'),
     require('./lib/middleware/data'),
     require('./lib/middleware/ext')
+  ]));
+
+  this.preRender(/\.md$/, tutil.parallel([
+    tutil.escape.escape(this)
+  ]));
+
+  this.postRender(/\.md$/, tutil.parallel([
+    tutil.escape.unescape(this)
   ]));
 };
 
@@ -209,9 +255,7 @@ Verb.prototype._defaultTemplates = function() {
 
   this.create('comment', opts);
   this.create('file', extend(opts, {
-    renameKey: function (fp) {
-      return fp;
-    }
+    renameKey: function (fp) { return fp; }
   }));
 };
 
@@ -236,6 +280,30 @@ Verb.prototype._defaultHelpers = function() {
 };
 
 /**
+ * Initialize default helpers.
+ *
+ * @api private
+ */
+
+Verb.prototype.diff = function(a, b) {
+  a = a || this.env;
+  b = b || this.cache.data;
+
+  diff.diffJson(a, b).forEach(function (res) {
+    var color = chalk.gray;
+    if (res.added) {
+      color = chalk.green;
+    }
+    if (res.removed) {
+      color = chalk.red;
+    }
+    process.stderr.write(color(res.value));
+  });
+
+  console.log();
+};
+
+/**
  * Initialize async helpers.
  *
  * @api private
@@ -244,6 +312,7 @@ Verb.prototype._defaultHelpers = function() {
 Verb.prototype._defaultAsyncHelpers = function() {
   this.asyncHelper('apidocs', require('helper-apidocs'));
   this.asyncHelper('comments', require('helper-apidocs'));
+  this.asyncHelper('contrib', helpers.contrib(this));
   this.asyncHelper('include', helpers.include(this));
   this.asyncHelper('badge', helpers.badge(this));
   this.asyncHelper('docs', helpers.docs(this));
@@ -370,6 +439,21 @@ Verb.prototype.lookup = function(collection, name) {
 };
 
 /**
+ * Return true if property `key` exists on `verb.cache.data`.
+ *
+ * ```js
+ * verb.hasData('foo');
+ * ```
+ *
+ * @param {String} `key` The property to lookup.
+ * @api public
+ */
+
+Verb.prototype.hasData = function (key) {
+  return this.cache.data.hasOwnProperty(key);
+};
+
+/**
  * Run an array of tasks.
  *
  * ```js
@@ -432,24 +516,6 @@ Verb.prototype.src = function (glob, options) {
 };
 
 /**
- * Copy a `glob` of files to the specified `dest`.
- *
- * ```js
- * verb.task('assets', function() {
- *   verb.copy('assets/**', 'dist');
- * });
- * ```
- *
- * @param  {String|Array} `glob`
- * @param  {String|Function} `dest`
- * @return {Stream} Stream to allow doing additional work.
- */
-
-Verb.prototype.copy = function(glob, dest) {
-  return vfs.src(glob).pipe(vfs.dest(dest));
-};
-
-/**
  * Specify a destination for processed files.
  *
  * ```js
@@ -475,6 +541,24 @@ Verb.prototype.dest = function (dest, options) {
     stack.dest(this, dest, options),
     vfs.dest(dest, options)
   ]));
+};
+
+/**
+ * Copy a `glob` of files to the specified `dest`.
+ *
+ * ```js
+ * verb.task('assets', function() {
+ *   verb.copy('assets/**', 'dist');
+ * });
+ * ```
+ *
+ * @param  {String|Array} `glob`
+ * @param  {String|Function} `dest`
+ * @return {Stream} Stream to allow doing additional work.
+ */
+
+Verb.prototype.copy = function(glob, dest) {
+  return vfs.src(glob).pipe(vfs.dest(dest));
 };
 
 /**
