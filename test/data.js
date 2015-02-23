@@ -22,6 +22,7 @@ describe('helpers', function () {
       verb.helper('upper', function (str) {
         return str.toUpperCase();
       });
+
       verb.render('{%= upper(name) %}', {name: 'Jon Schlinkert'}, function (err, content) {
         if (err) console.log(err);
         content.should.equal('JON SCHLINKERT');
