@@ -249,7 +249,7 @@ console.log(verb.env.name);
 //=> 'my-project'
 ```
 
-### [.hasData](index.js#L452)
+### [.hasData](./index.js#L446)
 
 Return true if property `key` exists on `verb.cache.data`.
 
@@ -259,7 +259,7 @@ Return true if property `key` exists on `verb.cache.data`.
 verb.hasData('foo');
 ```
 
-### [.src](index.js#L511)
+### [.src](./index.js#L505)
 
 Glob patterns or filepaths to source files.
 
@@ -279,7 +279,7 @@ verb.task('site', function() {
 });
 ```
 
-### [.dest](index.js#L539)
+### [.dest](./index.js#L533)
 
 Specify a destination for processed files.
 
@@ -299,7 +299,7 @@ verb.task('sitemap', function() {
 });
 ```
 
-### [.task](index.js#L579)
+### [.task](./index.js#L573)
 
 Define a Verb task.
 
@@ -313,7 +313,7 @@ verb.task('docs', function() {
 });
 ```
 
-### [.watch](index.js#L595)
+### [.watch](./index.js#L589)
 
 Re-run the specified task(s) when a file changes.
 

@@ -55,12 +55,6 @@ var Verb = module.exports = Template.extend({
 extend(Verb.prototype, Config.prototype);
 
 /**
- * Expose `session`
- */
-
-Verb.prototype.session = session;
-
-/**
  * Initialize all configuration settings.
  *
  * @api private
