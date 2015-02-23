@@ -37,7 +37,7 @@
     "for-in": "^0.1.3",
     "globby": "^1.1.0",
     "gulp-util": "^3.0.3",
-    "helper-apidocs": "^0.2.1",
+    "helper-apidocs": "^0.3.0",
     "helper-copyright": "^1.1.1",
     "helper-date": "^0.2.0",
     "helper-license": "^0.1.3",
@@ -71,6 +71,7 @@
     "gulp-mocha": "^2.0.0",
     "handlebars": "^3.0.0",
     "jshint-stylish": "^1.0.0",
+    "should": "^5.0.1",
     "swig": "^1.4.2"
   },
   "keywords": [
