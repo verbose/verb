@@ -32,6 +32,7 @@ var transforms = require('./lib/transforms');
 var helpers = require('./lib/helpers');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
+var log = require('./lib/logging');
 
 /**
  * Create an instance of `Verb` with the given `options`.
@@ -92,6 +93,14 @@ Verb.prototype._initialize = function(config) {
 Verb.prototype.loadEnvironment = function(config) {
   debug('loading environment: %j', config);
 
+  var env = config || require(path.resolve('package.json'));
+  this.known = function (fn) {
+    this.isKnown = fn.call(this, env);
+    if (this.isKnown) {
+      log.success('known project, using defaults.');
+    }
+  }.bind(this);
+
   /**
    * Get a stored value from `verb.env`, a read-only
    * object that stores the user-environment (mostly
@@ -108,7 +117,7 @@ Verb.prototype.loadEnvironment = function(config) {
 
   Object.defineProperty(this, 'env', {
     get: function () {
-      return config || require(path.resolve('package.json'));
+      return env;
     },
     set: function () {
       console.log('verb.env is read-only and cannot be modified.');
@@ -162,7 +171,7 @@ Verb.prototype._defaultSettings = function() {
 Verb.prototype._defaultTransforms = function() {
   this.transform('verb', transforms.verb);
   this.transform('pkg', transforms.pkg);
-  this.transform('project', transforms.project);
+  this.transform('orgname', transforms.orgname);
   this.transform('nickname', transforms.nickname);
   this.transform('repo', transforms.repo);
   this.transform('authors', transforms.authors);
@@ -430,6 +439,53 @@ Verb.prototype.lookup = function(collection, name) {
   }
 
   return null;
+};
+
+/**
+ * When verb is used on a "known" project, conditionally sets values
+ * on `verb.cache` or, if three arguments are passed, calls a verb
+ * method passing it the rest of the arguments. This is useful if you
+ * collaborate a lot on other projects and you want to be able to run
+ * verb "your way" on your own projects and not worry about it messing
+ * with other dev's.
+ *
+ * **Examples**:
+ *
+ * ```js
+ * // only set the username to yours when, well, the repo is yours
+ * verb.ifKnown('set', 'username', 'jonschlinkert');
+ *
+ * // use your crazy dotfile defaults when the repo is yours
+ * verb.ifKnown('set', 'data.travis', {
+ *   sudo: false,
+ *   language: 'node_js',
+ *   node_js:  ['iojs', '0.12', '0.10']
+ * });
+ * ```
+ *
+ * @param {String} `method` or `key` Optionally pass a verb method to call.
+ * @param {String} `key` or `value`
+ * @param {*} `value`
+ * @api private
+ */
+
+Verb.prototype.ifKnown = function (method, key, value) {
+  if (this.env.isKnown) {
+    var len = arguments.length;
+
+    if (len === 2) {
+      this.set(key, value);
+      return this;
+    }
+
+    if (len === 3 && !this.hasOwnProperty(method)) {
+      throw new Error('verb does not have a `.' + method + '() method.');
+    }
+
+    var args = [].slice.call(arguments, 1);
+    this[method].apply(this, args);
+    return this;
+  }
 };
 
 /**
