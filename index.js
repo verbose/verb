@@ -30,9 +30,10 @@ var Config = require('orchestrator');
 
 var transforms = require('./lib/transforms');
 var helpers = require('./lib/helpers');
+var loaders = require('./lib/loaders');
 var stack = require('./lib/stack');
-var utils = require('./lib/utils');
-var log = require('./lib/logging');
+var utils = require('./lib/shared/utils');
+var log = require('./lib/shared/logging');
 
 /**
  * Create an instance of `Verb` with the given `options`.
@@ -74,6 +75,7 @@ Verb.prototype._initialize = function(config) {
   // load all defaults
   this._defaultSettings();
   this._defaultConfig();
+  this._defaultLoaders();
   this._defaultTransforms();
   this._defaultDelims();
   this._defaultEngines();
@@ -94,12 +96,13 @@ Verb.prototype.loadEnvironment = function(config) {
   debug('loading environment: %j', config);
 
   var env = config || require(path.resolve('package.json'));
-  this.known = function (fn) {
-    this.isKnown = fn.call(this, env);
-    if (this.isKnown) {
-      log.success('known project, using defaults.');
-    }
-  }.bind(this);
+
+  // this.known = function (fn) {
+  //   this.isKnown = fn.call(this, env);
+  //   if (this.isKnown) {
+  //     log.success('known project, using defaults.');
+  //   }
+  // }.bind(this);
 
   /**
    * Get a stored value from `verb.env`, a read-only
@@ -126,21 +129,43 @@ Verb.prototype.loadEnvironment = function(config) {
 };
 
 /**
+ * Initialize default helpers.
+ *
+ * @api private
+ */
+
+Verb.prototype.diff = function(a, b) {
+  a = a || this.env;
+  b = b || this.cache.data;
+  diff.diffJson(a, b).forEach(function (res) {
+    var color = chalk.gray;
+    if (res.added) {
+      color = chalk.green;
+    }
+    if (res.removed) {
+      color = chalk.red;
+    }
+    process.stderr.write(color(res.value));
+  });
+  console.log();
+};
+
+/**
  * Initialize default template types
  *
  * @api private
  */
 
 Verb.prototype._defaultConfig = function() {
-  this.option('pkg', 'package.json');
+  this.option('cwd', process.cwd());
+  this.option('base', process.cwd());
+  this.option('destExt', '.md');
+  this.option('config', 'package.json');
   this.option('defaults', {isRenderable: true, isPartial: true, engine: '.md', ext: '.md'});
   this.option('delims', ['{%', '%}']);
   this.option('layoutDelims', ['<<%', '%>>']);
   this.option('escapeDelims', {from: ['{%%', '%}'], to: ['{%', '%}']});
-  this.option('cwd', process.cwd());
-  this.option('base', process.cwd());
   this.option('viewEngine', '.md');
-  this.option('destExt', '.md');
 };
 
 /**
@@ -161,6 +186,15 @@ Verb.prototype._defaultSettings = function() {
 };
 
 /**
+ * Register default loaders
+ */
+
+Verb.prototype._defaultLoaders = function() {
+  // this.loader('helpers', loaders.helpers(this));
+  // this.loader('fns', loaders.fns(this));
+};
+
+/**
  * Load default transforms. Transforms are used to extend or
  * modify the `cache.data` object, but really anything on the
  * `this` object can be tranformed.
@@ -171,16 +205,17 @@ Verb.prototype._defaultSettings = function() {
 Verb.prototype._defaultTransforms = function() {
   this.transform('verb', transforms.verb);
   this.transform('pkg', transforms.pkg);
+  this.transform('year', transforms.year);
   this.transform('orgname', transforms.orgname);
   this.transform('nickname', transforms.nickname);
   this.transform('repo', transforms.repo);
   this.transform('authors', transforms.authors);
   this.transform('author', transforms.author);
   this.transform('username', transforms.username);
-  this.transform('year', transforms.year);
   this.transform('license', transforms.license);
+  this.transform('travis-file', transforms.travisfile);
+  this.transform('travis-url', transforms.travis);
   this.transform('runner', transforms.runner);
-  this.transform('travis-link', transforms.travis);
 };
 
 /**
@@ -275,35 +310,8 @@ Verb.prototype._defaultHelpers = function() {
   this.helper('date', require('helper-date'));
   this.helper('license', require('helper-license'));
   this.helper('copyright', require('helper-copyright'));
+  this.helper('resolve', require('helper-resolve'));
   this.helper('strip', helpers.strip);
-
-  this.helper('read', function (fp) {
-    return fs.readFileSync(fp, 'utf8');
-  });
-};
-
-/**
- * Initialize default helpers.
- *
- * @api private
- */
-
-Verb.prototype.diff = function(a, b) {
-  a = a || this.env;
-  b = b || this.cache.data;
-
-  diff.diffJson(a, b).forEach(function (res) {
-    var color = chalk.gray;
-    if (res.added) {
-      color = chalk.green;
-    }
-    if (res.removed) {
-      color = chalk.red;
-    }
-    process.stderr.write(color(res.value));
-  });
-
-  console.log();
 };
 
 /**
@@ -314,6 +322,7 @@ Verb.prototype.diff = function(a, b) {
 
 Verb.prototype._defaultAsyncHelpers = function() {
   this.asyncHelper('apidocs', require('helper-apidocs'));
+  this.asyncHelper('resolve', require('helper-resolve'));
   this.asyncHelper('comments', require('helper-apidocs'));
   this.asyncHelper('contrib', helpers.contrib(this));
   this.asyncHelper('include', helpers.include(this));
@@ -469,24 +478,24 @@ Verb.prototype.lookup = function(collection, name) {
  * @api private
  */
 
-Verb.prototype.ifKnown = function (method, key, value) {
-  if (this.env.isKnown) {
-    var len = arguments.length;
+// Verb.prototype.ifKnown = function (method, key, value) {
+//   if (this.env.isKnown || this.env.name === 'verb') {
+//     var len = arguments.length;
 
-    if (len === 2) {
-      this.set(key, value);
-      return this;
-    }
+//     if (len === 2) {
+//       this.set(key, value);
+//       return this;
+//     }
 
-    if (len === 3 && !this.hasOwnProperty(method)) {
-      throw new Error('verb does not have a `.' + method + '() method.');
-    }
+//     if (len === 3 && !this[method]) {
+//       throw new Error('verb does not have a `.' + method + '() method.');
+//     }
 
-    var args = [].slice.call(arguments, 1);
-    this[method].apply(this, args);
-    return this;
-  }
-};
+//     var args = [].slice.call(arguments, 1);
+//     this[method].apply(this, args);
+//     return this;
+//   }
+// };
 
 /**
  * Return true if property `key` exists on `verb.cache.data`.
@@ -515,9 +524,9 @@ Verb.prototype.hasData = function (key) {
  */
 
 Verb.prototype.run = function () {
-  var tasks = arguments.length
-    ? arguments :
-    ['default'];
+  var tasks = !arguments.length
+    ? ['default']
+    : arguments;
 
   this.start.apply(this, tasks);
 };
