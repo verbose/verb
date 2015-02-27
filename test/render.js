@@ -9,10 +9,10 @@
 
 var fs = require('fs');
 var path = require('path');
-require('should');
-var consolidate = require('consolidate');
 var hbs = require('handlebars'); // keep
+var consolidate = require('consolidate');
 var verb = require('..');
+require('should');
 
 describe('verb.render()', function () {
   beforeEach(function (done) {

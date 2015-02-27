@@ -7,8 +7,8 @@
 
 'use strict';
 
-require('should');
 var verb = require('..');
+require('should');
 
 describe('helpers', function () {
   beforeEach(function (done) {
@@ -70,7 +70,7 @@ describe('helpers', function () {
     });
 
     it('should change the directory for the `docs` helper', function (done) {
-      verb.render('{%= docs("a.md", {cwd: "test/fixtures"}) %}', function (err, content) {
+      verb.render('{%= docs("a.md", {cwd: "test/fixtures/auto-loading"}) %}', function (err, content) {
         if (err) console.log(err);
         content.should.match(/fixture/i);
         done();

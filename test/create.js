@@ -7,8 +7,8 @@
 
 'use strict';
 
-require('should');
 var verb = require('..');
+require('should');
 
 describe('engine create:', function () {
   beforeEach(function (done) {

@@ -7,8 +7,8 @@
 
 'use strict';
 
-require('should');
 var verb = require('..');
+require('should');
 
 describe('helpers', function () {
   beforeEach(function (done) {
