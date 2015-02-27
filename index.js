@@ -311,7 +311,6 @@ Verb.prototype._defaultHelpers = function() {
   this.helper('date', require('helper-date'));
   this.helper('license', require('helper-license'));
   this.helper('copyright', require('helper-copyright'));
-  this.helper('resolve', require('helper-resolve'));
   this.helper('strip', helpers.strip);
 };
 
@@ -322,9 +321,9 @@ Verb.prototype._defaultHelpers = function() {
  */
 
 Verb.prototype._defaultAsyncHelpers = function() {
+  this.asyncHelper('resolve', require('helper-resolve'));
   this.asyncHelper('apidocs', require('helper-apidocs'));
   this.asyncHelper('comments', require('helper-apidocs'));
-  this.asyncHelper('resolve', require('helper-resolve'));
   this.asyncHelper('related', require('helper-related')());
   this.asyncHelper('contrib', helpers.contrib(this));
   this.asyncHelper('include', helpers.include(this));
