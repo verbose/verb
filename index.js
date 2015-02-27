@@ -97,13 +97,12 @@ Verb.prototype.loadEnvironment = function(config) {
   debug('loading environment: %j', config);
 
   var env = config || require(path.resolve('package.json'));
-
-  // this.known = function (fn) {
-  //   this.isKnown = fn.call(this, env);
-  //   if (this.isKnown) {
-  //     log.success('known project, using defaults.');
-  //   }
-  // }.bind(this);
+  this.known = function (fn) {
+    this.isKnown = fn.call(this, env);
+    if (this.isKnown) {
+      log.success('known project, using defaults.');
+    }
+  }.bind(this);
 
   /**
    * Get a stored value from `verb.env`, a read-only
@@ -480,24 +479,31 @@ Verb.prototype.lookup = function(collection, name) {
  * @api private
  */
 
-// Verb.prototype.ifKnown = function (method, key, value) {
-//   if (this.env.isKnown || this.env.name === 'verb') {
-//     var len = arguments.length;
+Verb.prototype.ifKnown = function (method, key, value) {
+  if (this.env.isKnown || this.env.name === 'verb') {
+    var len = arguments.length;
 
-//     if (len === 2) {
-//       this.set(key, value);
-//       return this;
-//     }
+    if (len === 2) {
+      this.set(key, value);
+      return this;
+    }
 
-//     if (len === 3 && !this[method]) {
-//       throw new Error('verb does not have a `.' + method + '() method.');
-//     }
+    if (len === 3 && !this[method]) {
+      throw new Error('verb does not have a `.' + method + '() method.');
+    }
 
-//     var args = [].slice.call(arguments, 1);
-//     this[method].apply(this, args);
-//     return this;
-//   }
-// };
+    // don't slice args for v8 optimization
+    var len = arguments.length - 1;
+    var args = new Array(len);
+
+    for (var i = 0; i < len; i++) {
+      args[i] = arguments[i + 1];
+    }
+
+    this[method].apply(this, args);
+    return this;
+  }
+};
 
 /**
  * Return true if property `key` exists on `verb.cache.data`.
@@ -529,7 +535,6 @@ Verb.prototype.run = function () {
   var tasks = !arguments.length
     ? ['default']
     : arguments;
-
   this.start.apply(this, tasks);
 };
 
