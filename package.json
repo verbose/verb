@@ -26,7 +26,6 @@
   "dependencies": {
     "async": "^0.9.0",
     "chalk": "^0.5.1",
-    "cwd": "^0.4.0",
     "debug": "^2.1.1",
     "diff": "^1.2.2",
     "ends-with": "^0.2.0",
@@ -44,7 +43,6 @@
     "helper-resolve": "^0.1.2",
     "js-yaml": "^3.2.7",
     "load-plugins": "^1.0.1",
-    "loader-cache": "^0.3.1",
     "log-symbols": "^1.0.1",
     "logging-helpers": "^0.3.0",
     "map-files": "^0.3.0",
@@ -56,6 +54,7 @@
     "parse-author": "^0.1.0",
     "parse-copyright": "^0.3.1",
     "parse-github-repo-url": "^1.0.0",
+    "parse-gitignore": "^0.1.0",
     "relative": "^2.0.0",
     "remote-origin-url": "^0.3.0",
     "repo-utils": "^0.1.1",

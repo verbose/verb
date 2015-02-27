@@ -5,11 +5,9 @@ var jshint = require('gulp-jshint');
 var mocha = require('gulp-mocha');
 var verb = require('./');
 
-// verb.layout('foo.md', 'AAA\n<<% body %>>');
-
 verb.task('readme', function() {
   verb.src('.verb.md')
-    .pipe(verb.dest('./'));
+    .pipe(verb.dest('.'));
 });
 
 verb.task('lint', function () {
@@ -30,4 +28,5 @@ verb.task('test', function (cb) {
     });
 });
 
+verb.diff();
 verb.task('default', ['lint', 'test', 'readme']);
