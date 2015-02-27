@@ -24,9 +24,12 @@ verb.task('test', function (cb) {
       verb.src('test/*.js')
         .pipe(mocha())
         .pipe(istanbul.writeReports())
-        .on('end', cb);
+        .on('end', function () {
+          verb.diff();
+          console.log();
+          cb();
+        });
     });
 });
 
-verb.diff();
 verb.task('default', ['lint', 'test', 'readme']);
