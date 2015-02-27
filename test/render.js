@@ -1,18 +1,18 @@
 /*!
- * verb <https://github.com/jonschlinkert/verb>
+ * verb <https://github.com/assemble/verb>
  *
- * Copyright (c) 2014 Jon Schlinkert, contributors
- * Licensed under the MIT License (MIT)
+ * Copyright (c) 2014-2015, Jon Schlinkert.
+ * Licensed under the MIT License.
  */
 
 'use strict';
 
 var fs = require('fs');
 var path = require('path');
-var should = require('should');
-var consolidate = require('consolidate');
 var hbs = require('handlebars'); // keep
+var consolidate = require('consolidate');
 var verb = require('..');
+require('should');
 
 describe('verb.render()', function () {
   beforeEach(function (done) {
@@ -30,9 +30,9 @@ describe('verb.render()', function () {
     });
   });
 
-  describe('when an un-cached string is passed to `.render()`:', function () {
+  describe.skip('when an un-cached string is passed to `.render()`:', function () {
     it('should detect the engine from `ext` (with dot) on locals:', function (done) {
-      verb.render('<%= name %>', {name: 'Jon Schlinkert', ext: '.html'}, function (err, content) {
+      verb.render('<%= name %>', {name: 'Jon Schlinkert', engine: '.html'}, function (err, content) {
         if (err) console.log(err);
         content.should.equal('Jon Schlinkert');
         done();

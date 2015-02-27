@@ -1,18 +1,20 @@
 /*!
- * verb <https://github.com/jonschlinkert/verb>
+ * verb <https://github.com/assemble/verb>
  *
- * Copyright (c) 2014 Jon Schlinkert
- * Licensed under the MIT License (MIT)
+ * Copyright (c) 2014-2015, Jon Schlinkert.
+ * Licensed under the MIT License.
  */
 
 'use strict';
 
-var should = require('should');
 var verb = require('..');
+require('should');
 
 describe('engine create:', function () {
-  beforeEach(function () {
+  beforeEach(function (done) {
     verb = new verb.Verb();
+    verb.engine('*', require('engine-lodash'));
+    done();
   });
 
   describe('.create():', function () {

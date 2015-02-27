@@ -1,25 +1,38 @@
-# verb [![NPM version](https://badge.fury.io/js/verb.svg)](http://badge.fury.io/js/verb)
+# verb [![NPM version](https://badge.fury.io/js/verb.svg)](http://badge.fury.io/js/verb)  [![Build Status](https://travis-ci.org/.svg)](https://travis-ci.org/) 
 
 > Verb makes it dead simple to generate markdown documentation, using simple templates, with zero configuration required. A project without documentation is like a project that doesn't exist.
 
+**Heads up!**
 
-- In addition to verb's unique features, verb can also run any [gulp](https://github.com/gulpjs/gulp) plugin
-- All methods from [Template](https://github.com/jonschlinkert/template) can be used in Verb
+As of v0.4.0, Verb now requires [verb-cli] to run. See the [getting started](#getting-started) section for details.
 
-## Install
-## Install globally with [npm](npmjs.org):
+**Features**
+
+- Build API docs from code comments (this couldn't be easier!)
+- Add a [.verb.md](#verbmd) markdown template to your project, and verb will build your readme using data from package.json.
+- If you need more, create a [verbfile.js](#verbfile.js)! Verb can complex documentation too, including multi-page TOCs, cross-reference links, auto-generated links to dependencies and so on.
+- Verb can run any [gulp](https://github.com/gulpjs/gulp) plugin
+- Verb is built on top of [Template](https://github.com/jonschlinkert/template). All of Template's methods are exposed on the API.
+- You can get by with a simple `.verb.md` markdown template, or do things like add layouts, pages, partials, helpers, register a template engine, load data or use a `.transform()` or two to modify that data at runtime.
+
+
+## Install verb-cli
+
+As of v0.4.0, Verb requires verb-cli to run. To install verb-cli, run:
 
 ```bash
-npm i -g verb
+npm i -g verb-cli
 ```
 
-## Usage
+## .verb.md
 
-Run `verb` to build your project's readme from a `.verb.md` file using metadata from package.json, or add a `verbfile.js` to the project if you need more.
+Add a `.verb.md.` [template]() to your project and run `verb` from the command line to generate the project's readme using data from package.json.
+
+If you need more, use a [verbfile.js]().
 
 **Example .verb.md**
 
-Basic template for generating a readme from metadata in `package.json`:
+This is a basic readme template that Verb's maintainers like to use.
 
 ```markdown
 # {%= name %} {%= badge("fury") %}
@@ -27,7 +40,7 @@ Basic template for generating a readme from metadata in `package.json`:
 > {%= description %}
 
 ## Install
-{%= include("install-global") %}
+{%= include("install") %}
 
 ## API
 {%= apidocs("index.js") %}
@@ -44,28 +57,33 @@ Basic template for generating a readme from metadata in `package.json`:
 {%= include("footer") %}
 ```
 
-## Install with [npm](npmjs.org)
+`.verb.md` files are rendered using data from `package.json`, but Verb is not restricted to package.json. You can use any data you want, with any templates, helpers, etc.
+
+
+## verbfile.js
+
+For projects that need more than readme documentation, you can add a `verbfile.js` to the project, and be sure to install verb locally with:
 
 ```bash
 npm i verb --save-dev
 ```
 
-**Example verbfile.js**
-
-Basic verbfile for projects that need more than a readme for documentation:
+**Example basic verbfile.js**
 
 ```js
 var verb = require('verb');
 
-// load data to pass to templates.
-verb.data('docs/*.json');
-verb.data({author: 'Jon Schlinkert'});
+// load data for templates if needed
+verb.data('foo/*.json');
 
 verb.task('default', function() {
   verb.src(['.verb.md', 'docs/*.md'])
     .pipe(verb.dest('./'));
 });
 ```
+
+
+***
 
 # Template API
 
@@ -226,7 +244,22 @@ verb.layout('sidebar', {content: [
 
 # Task API
 
-### [.src](index.js#L398)
+```js
+console.log(verb.env.name);
+//=> 'my-project'
+```
+
+### [.hasData](./index.js#L519)
+
+Return true if property `key` exists on `verb.cache.data`.
+
+* `key` **{String}**: The property to lookup.    
+
+```js
+verb.hasData('foo');
+```
+
+### [.src](./index.js#L577)
 
 Glob patterns or filepaths to source files.
 
@@ -246,7 +279,7 @@ verb.task('site', function() {
 });
 ```
 
-### [.dest](index.js#L426)
+### [.dest](./index.js#L605)
 
 Specify a destination for processed files.
 
@@ -266,7 +299,7 @@ verb.task('sitemap', function() {
 });
 ```
 
-### [.task](index.js#L448)
+### [.task](./index.js#L645)
 
 Define a Verb task.
 
@@ -280,7 +313,7 @@ verb.task('docs', function() {
 });
 ```
 
-### [.watch](index.js#L464)
+### [.watch](./index.js#L661)
 
 Re-run the specified task(s) when a file changes.
 
@@ -294,33 +327,46 @@ verb.task('watch', function() {
 ```
 
 
-## Run tests
+
+## Why Verb instead of X?
+
+I created Verb to help me maintain my own projects. Any time that is spent maintaining a project that could be automated instead, is time that is being taken away from real productivity.
+
+**Verb does exactly what I needed**
+
+To that end, I wanted a documentation generator that would work in the following scenarios:
+
+- **simple, no config**: most projects don't need complicated docs. e.g. "just build the readme and don't ask me questions."
+- **handle the boilerplate stuff**: APIs change from project to project, but my name doesn't, my github URL doesn't, and my choice of licence doesn't. Verb should know those things.
+- **don't ask me questions**: I just want to run `verb`, and it should work. No setup or config. There is more than enough data in package.json to handle the boilerplate part of a readme.
+- **generate API docs**: When I want [API docs](#api-docs), I should have to jump through hoops, or add `.json` files to directories. I should be able to add the docs wherever I want, to the README, separate docs, or use templates to generate a gh-pages site.
+- **render markdown, not HTML**: this one was important to me. There are hundreds of [great libs](https://github.com/jonschlinkert/remarkable) that can render markdown to HTML. Once you have well-formatted markdown documentation, it's easy to convert to HTML.
+
+
+## Running tests
+
+Install dev dependencies:
 
 ```bash
 npm test
 ```
 
 ## Contributing
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/jonschlinkert/verb/issues)
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/assemble/verb/issues)
 
 ## Author
- 
+
 **Jon Schlinkert**
  
-+ [github/jonschlinkert](https://github.com/jonschlinkert)
-+ [twitter/jonschlinkert](http://twitter.com/jonschlinkert) 
- 
-**Brian Woodward**
- 
-+ [github/doowb](https://github.com/doowb)
-+ [twitter/doowb](http://twitter.com/doowb) 
-
 
 ## License
-Copyright (c) 2014 Jon Schlinkert  
+Copyright (c) 2014-2015 Jon Schlinkert  
 Copyright (c) 2014 Fractal <contact@wearefractal.com>
 Released under the MIT license
 
 ***
 
-_This file was generated by [verb](https://github.com/assemble/verb) on December 14, 2014._
+_This file was generated by [verb-cli](https://github.com/assemble/verb-cli) on February 27, 2015._
+
+[verb-cli]: https://github.com/verbose/verb-cli
+<!-- deps:remote-origin-url jshint-stylish lodash swig -->

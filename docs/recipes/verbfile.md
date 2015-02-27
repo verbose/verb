@@ -1,18 +1,15 @@
 # verbfile
 
-> Creating a verbfile
+> Creating a basic verbfile.js
 
-A basic `verbfile.js`:
+This is what the default `verbfile.js` looks like:
 
 ```js
-'use strict';
-
-var verb = require('verb4');
-verb.data('package.json');
+var verb = require('verb');
 
 verb.task('default', function() {
-  verb.src('.verbrc.md')
-    .pipe(verb.dest(__dirname));
+  verb.src('.verb.md')
+    .pipe(verb.dest('.'));
 });
 ```
 
