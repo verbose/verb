@@ -206,10 +206,10 @@ Verb.prototype._defaultTransforms = function() {
   this.transform('init', transforms.init);
   this.transform('year', transforms.year);
 
+  this.transform('repo', transforms.repo);
   this.transform('owner', transforms.owner);
   this.transform('nickname', transforms.nickname);
   this.transform('username', transforms.username);
-  this.transform('repo', transforms.repo);
   this.transform('authors', transforms.authors);
   this.transform('author', transforms.author);
 
