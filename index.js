@@ -15,7 +15,9 @@ var fs = require('fs');
 var path = require('path');
 var diff = require('diff');
 var vfs = require('vinyl-fs');
+var async = require('async');
 var chalk = require('chalk');
+var get = require('get-pkgs');
 var es = require('event-stream');
 var load = require('load-plugins');
 var debug = require('debug')('verb');
@@ -321,10 +323,28 @@ Verb.prototype._defaultHelpers = function() {
  * @api private
  */
 
+var mdu = require('markdown-utils');
+
 Verb.prototype._defaultAsyncHelpers = function() {
   this.asyncHelper('apidocs', require('helper-apidocs'));
-  this.asyncHelper('resolve', require('helper-resolve'));
   this.asyncHelper('comments', require('helper-apidocs'));
+  this.asyncHelper('resolve', require('helper-resolve'));
+  this.asyncHelper('related', require('helper-related'));
+  this.asyncHelper('related', function (repos, patterns, opts, cb) {
+    if (typeof opts === 'function') {
+      cb = opts; opts = {};
+    }
+
+    get(repos, patterns, function(err, pkgs) {
+      async.mapSeries(pkgs, function(pkg, next) {
+        var res = mdu.link(pkg.name, pkg.homepage, pkg.description) + ': ' + pkg.description;
+        next(null, res);
+      }, function (err, arr) {
+        if (err) return cb(err);
+        cb(null, arr.join('\n'));
+      });
+    });
+  });
   this.asyncHelper('contrib', helpers.contrib(this));
   this.asyncHelper('include', helpers.include(this));
   this.asyncHelper('badge', helpers.badge(this));
