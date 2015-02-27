@@ -52,7 +52,7 @@
     "load-plugins": "^1.0.1",
     "log-symbols": "^1.0.2",
     "logging-helpers": "^0.3.0",
-    "map-files": "^0.4.0",
+    "map-files": "^0.5.1",
     "merge-deep": "^1.0.1",
     "micromatch": "^1.4.2",
     "noncharacters": "^1.1.0",

@@ -1,4 +1,4 @@
-# verb [![NPM version](https://badge.fury.io/js/verb.svg)](http://badge.fury.io/js/verb)  [![Build Status](https://travis-ci.org/.svg)](https://travis-ci.org/) 
+# verb [![NPM version](https://badge.fury.io/js/verb.svg)](http://badge.fury.io/js/verb)  [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) 
 
 > Verb makes it dead simple to generate markdown documentation, using simple templates, with zero configuration required. A project without documentation is like a project that doesn't exist.
 
@@ -249,7 +249,7 @@ console.log(verb.env.name);
 //=> 'my-project'
 ```
 
-### [.hasData](./index.js#L520)
+### [.hasData](./index.js#L519)
 
 Return true if property `key` exists on `verb.cache.data`.
 
@@ -259,7 +259,7 @@ Return true if property `key` exists on `verb.cache.data`.
 verb.hasData('foo');
 ```
 
-### [.src](./index.js#L578)
+### [.src](./index.js#L577)
 
 Glob patterns or filepaths to source files.
 
@@ -279,7 +279,7 @@ verb.task('site', function() {
 });
 ```
 
-### [.dest](./index.js#L606)
+### [.dest](./index.js#L605)
 
 Specify a destination for processed files.
 
@@ -299,7 +299,7 @@ verb.task('sitemap', function() {
 });
 ```
 
-### [.task](./index.js#L646)
+### [.task](./index.js#L645)
 
 Define a Verb task.
 
@@ -313,7 +313,7 @@ verb.task('docs', function() {
 });
 ```
 
-### [.watch](./index.js#L662)
+### [.watch](./index.js#L661)
 
 Re-run the specified task(s) when a file changes.
 
