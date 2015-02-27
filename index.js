@@ -10,6 +10,7 @@
 /**
  * Module dependencies
  */
+
 var fs = require('fs');
 var path = require('path');
 var diff = require('diff');
@@ -203,15 +204,16 @@ Verb.prototype._defaultLoaders = function() {
  */
 
 Verb.prototype._defaultTransforms = function() {
-  this.transform('verb', transforms.verb);
-  this.transform('pkg', transforms.pkg);
+  this.transform('init', transforms.init);
   this.transform('year', transforms.year);
-  this.transform('orgname', transforms.orgname);
+
+  this.transform('owner', transforms.owner);
   this.transform('nickname', transforms.nickname);
+  this.transform('username', transforms.username);
   this.transform('repo', transforms.repo);
   this.transform('authors', transforms.authors);
   this.transform('author', transforms.author);
-  this.transform('username', transforms.username);
+
   this.transform('license', transforms.license);
   this.transform('travis-file', transforms.travisfile);
   this.transform('travis-url', transforms.travis);
