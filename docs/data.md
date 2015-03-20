@@ -1,6 +1,8 @@
 # Data
 
-> Along with other sources of data, Verb uses data from package.json to render templates.
+> Setting and getting data to be used in templates
+
+Along with other sources of data, Verb uses data from package.json to render templates.
 
 This document describes how Verb works with data, and the methods to used for setting and getting data.
 

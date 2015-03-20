@@ -16,6 +16,6 @@ verb.page('api.md', {content: 'API docs...', layout: 'default.md'});
 //=> '# {%= name %}\n\nAPI docs...\n'
 ```
 
-**What's with the `body` syntax**
+**What's with the wierd `body` syntax?**
 
 Verb is a documentation generator, the crazy `body` syntax is verb's way of ensure that we avoid collision with templates that might be in code examples.

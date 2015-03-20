@@ -13,8 +13,6 @@ verb.layout('default.md', '<foo>\n<<% body %>>\n</foo>');
 verb.includes('includes/*.md');
 verb.docs('docs/*.md');
 
-// verb.helper('comments', require('verb-helper-comments'));
-
 verb.helperAsync('docs', function (name, locals, cb) {
   var doc = this.cache.docs[name];
   this.render(doc, locals, function (err, content) {
@@ -23,16 +21,15 @@ verb.helperAsync('docs', function (name, locals, cb) {
   });
 });
 
-verb.task('foo', function() {
-  verb.src('.verbrc.md')
-    .pipe(verb.dest('temp'));
-});
-
 verb.task('readme', function() {
-  verb.src('.verbrc.md')
-    // .pipe(dest(':dest/:basename'))
+  verb.src('.verb.md')
     .pipe(verb.dest('./'));
 });
 
-verb.task('default', ['foo', 'readme']);
+verb.task('docs', function() {
+  verb.src('docs/_templates/*.md')
+    .pipe(verb.dest('./wiki'));
+});
+
+verb.task('default', ['readme', 'docs']);
 ```
