@@ -27,9 +27,33 @@ describe('middleware', function () {
     done();
   });
 
-  describe('table of contents:', function () {
-    it('should generate a markdown table of contents for a `doc`:', function (done) {
-      verb.doc('*.md', {cwd: __dirname + '/middleware'});
+  describe('multi-toc:', function () {
+    it('should generate a multi-file table of contents:', function (done) {
+      verb.doc('multi-toc.md', {cwd: __dirname + '/fixtures/middleware'});
+      verb.views.docs.should.have.property('multi-toc');
+
+      verb.render('multi-toc', function (err, content) {
+        if (err) console.log(err);
+        content.should.match(/docs\/[^\/]+\/#/);
+        done();
+      });
+    });
+
+    it('should strip the toc marker from the generated file:', function (done) {
+      verb.doc('multi-toc.md', {cwd: __dirname + '/fixtures/middleware'});
+      verb.views.docs.should.have.property('multi-toc');
+
+      verb.render('multi-toc', function (err, content) {
+        if (err) console.log(err);
+        content.should.not.match(/<!-- toc\("docs\/\*\.md"\) -->/);
+        done();
+      });
+    });
+  });
+
+  describe('toc:', function () {
+    it('should generate a table of contents:', function (done) {
+      verb.doc('toc.md', {cwd: __dirname + '/fixtures/middleware'});
       verb.views.docs.should.have.property('toc');
 
       verb.render('toc', function (err, content) {
@@ -40,7 +64,7 @@ describe('middleware', function () {
     });
 
     it('should generate a markdown table of contents for an `include`:', function (done) {
-      verb.include('*.md', {cwd: __dirname + '/middleware'});
+      verb.include('*.md', {cwd: __dirname + '/fixtures/middleware'});
       verb.views.includes.should.have.property('toc');
 
       verb.render('toc', function (err, content) {
@@ -51,7 +75,7 @@ describe('middleware', function () {
     });
 
     it('should generate a markdown table of contents for a `src` file:', function (done) {
-      verb.src('test/middleware/*.md')
+      verb.src('test/fixtures/middleware/toc.md')
         .on('data', function (file) {
           file.contents.toString().should.match(/<\!-- tocstop -->/);
         })
@@ -61,7 +85,7 @@ describe('middleware', function () {
 
   describe('copyright:', function () {
     it('should add copyright data to the context:', function (done) {
-      verb.src('test/middleware/*.js')
+      verb.src('test/fixtures/middleware/copyright.js')
         .on('data', function (file) {
           verb.cache.data.should.have.property('copyright');
         })
