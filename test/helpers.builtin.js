@@ -8,23 +8,10 @@
 'use strict';
 
 var verb = require('..');
+var orig = process.cwd();
 require('should');
 
 describe('built-in helpers', function () {
-  describe('when helpers are registered with the `.helper()` method:', function () {
-    it('should use them in templates:', function (done) {
-      verb.helper('upper', function (str) {
-        return str.toUpperCase();
-      });
-
-      verb.render('{%= upper(name) %}', {name: 'Jon Schlinkert'}, function (err, content) {
-        if (err) console.log(err);
-        content.should.equal('JON SCHLINKERT');
-        done();
-      });
-    });
-  });
-
   describe('when automatically generated helpers are used:', function () {
     it('should use them in templates:', function (done) {
       verb.helper('upper', function (str) {
@@ -41,7 +28,8 @@ describe('built-in helpers', function () {
 });
 
 describe('default helpers:', function () {
-  var orig = process.cwd();
+  verb = new verb.Verb();
+
   beforeEach(function (done) {
     before(function () {
       process.chdir(__dirname + '/fixtures');
