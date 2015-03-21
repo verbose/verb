@@ -4,7 +4,7 @@
 
 **Heads up!**
 
-As of v0.4.0, Verb now requires [verb-cli] to run. See the [getting started](#getting-started) section for details.
+As of v0.4.0, Verb now requires [verb-cli][] to run. See the [getting started](#getting-started) section for details.
 
 **Features**
 
@@ -26,13 +26,13 @@ npm i -g verb-cli
 
 ## .verb.md
 
-Add a `.verb.md.` [template]() to your project and run `verb` from the command line to generate the project's readme using data from package.json.
+Add a `.verb.md.` [template][verbmd] to your project and run `verb` from the command line to generate the project's readme using data from package.json.
 
-If you need more, use a [verbfile.js]().
+If you need more, use a [verbfile.js][verbfile].
 
 **Example .verb.md**
 
-This is a basic readme template that Verb's maintainers like to use.
+This is a basic readme template that Verb's own maintainers like to use.
 
 ```markdown
 # {%%= name %} {%%= badge("fury") %}
