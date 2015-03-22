@@ -6,7 +6,7 @@ var vfs = require('vinyl-fs');
 var es = require('event-stream');
 
 /* deps: template */
-var Template = require('./support/template');
+var Template = require('template');
 var session = require('./lib/session');
 var utils = require('./lib/utils');
 var stack = require('./lib/stack');
@@ -28,43 +28,6 @@ function Verb() {
 
 extend(Verb.prototype, Task.prototype);
 Template.extend(Verb.prototype);
-
-/**
- * Initialize Verb:
- *
- *  | configuration
- *  | middleware
- *  | options
- *  | delimiters
- *  | routes
- *  | templates
- *  | engines
- *
- * @api private
- */
-
-Verb.prototype.loadDefaults = function() {
-  Verb.__super__.loadDefaults.call(this);
-  this.defaultPlugins();
-};
-
-/**
- * Load default plugins.
- */
-
-Verb.prototype.defaultPlugins = function() {
-  // enable all plugins by default
-  this.disable('minimal config');
-
-  // default `src` plugins
-  this.enable('src:init plugin');
-  this.enable('src:assets plugin');
-  this.enable('src:drafts plugin');
-
-  // default `dest` plugins
-  this.enable('dest:paths plugin');
-  this.enable('dest:render plugin');
-};
 
 /**
  * Return true if property `key` exists on `verb.cache.data`.
@@ -196,14 +159,14 @@ Verb.prototype.copy = function(glob, dest) {
  * @api public
  */
 
-// Object.defineProperty(Verb.prototype, 'files', {
-//   configurable: true,
-//   enumerable: true,
-//   get: function () {
-//     var plural = this.collection[this.gettask()];
-//     return this.views[plural];
-//   }
-// });
+Object.defineProperty(Verb.prototype, 'files', {
+  configurable: true,
+  enumerable: true,
+  get: function () {
+    var plural = this.collection[this.gettask()];
+    return this.views[plural];
+  }
+});
 
 /**
  * Define a Verb task.
