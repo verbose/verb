@@ -19,3 +19,8 @@ By default, Verb uses [engine-lodash][], so the helpers we use by default are re
 ## Verb's defaults
 
 Helpers are used when data needs to be updated dynamically, or when it needs to be calculated
+
+
+## Related
+
+- [Helper conflict resolution](./helper-conflict-resolution.md)
