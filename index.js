@@ -1,9 +1,9 @@
 'use strict';
 
+var extend = require('lodash').extend;
 var Task = require('orchestrator');
 var vfs = require('vinyl-fs');
 var es = require('event-stream');
-var _ = require('lodash');
 
 /* deps: template */
 var Template = require('./support/template');
@@ -26,8 +26,8 @@ function Verb() {
   init(this);
 }
 
-_.extend(Verb.prototype, Task.prototype);
-Verb = Template.extend(Verb.prototype);
+extend(Verb.prototype, Task.prototype);
+Template.extend(Verb.prototype);
 
 /**
  * Initialize Verb:
