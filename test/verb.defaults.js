@@ -14,7 +14,6 @@ require('should');
 describe('verb defaults', function () {
   beforeEach(function (done) {
     verb = new verb.Verb();
-    verb.engine('*', require('engine-lodash'));
     done();
   });
 

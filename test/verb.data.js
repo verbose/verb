@@ -10,22 +10,66 @@
 var verb = require('..');
 require('should');
 
-describe('helpers', function () {
+describe('verb.data()', function () {
   beforeEach(function (done) {
     verb = new verb.Verb();
     verb.engine('*', require('engine-lodash'));
     done();
   });
 
-  describe('when helpers are registered with the `.helper()` method:', function () {
-    it('should use them in templates:', function (done) {
-      verb.helper('upper', function (str) {
-        return str.toUpperCase();
-      });
+  describe('`.data()` method:', function () {
+    it('should store data on `verb.cache.data`:', function () {
+      verb.data({name: 'Halle'});
+      verb.cache.data.name.should.equal('Halle');
+    });
 
-      verb.render('{%= upper(name) %}', {name: 'Jon Schlinkert'}, function (err, content) {
+    it('should pass be passed to templates as context:', function (done) {
+      verb.data({name: 'Halle'});
+      verb.render('{%= name %}', function (err, content) {
         if (err) console.log(err);
-        content.should.equal('JON SCHLINKERT');
+        content.should.equal('Halle');
+        done();
+      });
+    });
+
+    it('should be overridden by data passed on the render method:', function (done) {
+      verb.data({name: 'Halle'});
+      verb.render('{%= name %}', {name: 'Brooke'}, function (err, content) {
+        if (err) console.log(err);
+        content.should.equal('Brooke');
+        done();
+      });
+    });
+
+    it('should be overridden by data passed on template locals:', function (done) {
+      verb.data({name: 'Halle'});
+      verb.doc('foo.md', {content: '{%= name %}', locals: {name: 'Brooke'}});
+
+      verb.render('foo', function (err, content) {
+        if (err) console.log(err);
+        content.should.equal('Brooke');
+        done();
+      });
+    });
+
+    it('should be overridden by data passed on template data:', function (done) {
+      verb.data({name: 'Halle'});
+      verb.doc('foo.md', {content: '{%= name %}', data: {name: 'Brooke'}});
+
+      verb.render('foo', function (err, content) {
+        if (err) console.log(err);
+        content.should.equal('Brooke');
+        done();
+      });
+    });
+
+    it('should be overridden by data passed on front-matter:', function (done) {
+      verb.data({name: 'Halle'});
+      verb.doc('foo.md', {content: '---\nname: Brooke\n---\n{%= name %}'});
+
+      verb.render('foo', function (err, content) {
+        if (err) console.log(err);
+        content.should.equal('Brooke');
         done();
       });
     });

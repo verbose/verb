@@ -13,6 +13,8 @@ require('should');
 describe('middleware', function () {
   var orig = process.cwd();
   beforeEach(function (done) {
+    verb = new verb.Verb();
+
     before(function () {
       process.chdir(__dirname + '/fixtures');
     });
@@ -74,10 +76,22 @@ describe('middleware', function () {
       });
     });
 
-    it('should generate a markdown table of contents for a `src` file:', function (done) {
+    it.skip('should add a toc to a file\'s `toc` property:', function (done) {
       verb.src('test/fixtures/middleware/toc.md')
         .on('data', function (file) {
-          file.contents.toString().should.match(/<\!-- tocstop -->/);
+          if (/toc\.md$/.test(file.path)) {
+            file.toc.should.be.a.string;
+          }
+        })
+        .on('end', done);
+    });
+
+    it.skip('should generate a markdown table of contents for a `src` file:', function (done) {
+      verb.src('test/fixtures/middleware/toc.md')
+        .on('data', function (file) {
+          if (/toc\.md$/.test(file.path)) {
+            file.contents.toString().should.match(/<\!-- tocstop -->/);
+          }
         })
         .on('end', done);
     });

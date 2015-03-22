@@ -42,12 +42,9 @@ describe('engine create:', function () {
     });
 
     describe('.decorate()', function () {
-
       /* setup */
-
       beforeEach(function () {
         verb = new verb.Verb();
-
         // create some custom template types
         verb.create('block', 'blocks', { isLayout: true });
         verb.create('include', 'includes', { isPartial: true });
@@ -64,7 +61,6 @@ describe('engine create:', function () {
       });
 
       /* tests */
-
       it('should decorate the type with a `get` method:', function () {
         verb.should.have.properties(['getPage', 'getPost', 'getDoc', 'getInclude']);
       });

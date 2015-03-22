@@ -12,6 +12,7 @@ require('should');
 
 describe('verb', function () {
   it('should expose verb\'s package.json on `verb`:', function () {
+    verb.should.have.property('verb');
     verb.verb.should.be.an.object;
     verb.verb.name.should.be.verb; // ;)
   });

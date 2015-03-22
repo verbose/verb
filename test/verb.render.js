@@ -17,6 +17,7 @@ require('should');
 describe('verb.render()', function () {
   beforeEach(function (done) {
     verb = new verb.Verb();
+    verb.engine('html', require('engine-lodash'));
     done();
   });
 

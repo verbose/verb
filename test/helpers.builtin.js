@@ -56,6 +56,16 @@ describe('default helpers:', function () {
     });
   });
 
+  describe('badge helper:', function () {
+    it.only('should use the `badge` helper:', function (done) {
+      verb.render('{%= badge("travis") %}', function (err, content) {
+        if (err) console.log(err);
+        content.should.equal(' [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) \n');
+        done();
+      });
+    });
+  });
+
   describe('include:', function () {
     it('should use the `include` helper:', function (done) {
       verb.render('{%= include("tests") %}', function (err, content) {
