@@ -8,7 +8,6 @@ var es = require('event-stream');
 /* deps: template */
 var Template = require('template');
 var session = require('./lib/session');
-var utils = require('./lib/utils');
 var stack = require('./lib/stack');
 var init = require('./lib/init/');
 
@@ -28,21 +27,6 @@ function Verb() {
 
 extend(Verb.prototype, Task.prototype);
 Template.extend(Verb.prototype);
-
-/**
- * Return true if property `key` exists on `verb.cache.data`.
- *
- * ```js
- * verb.hasData('foo');
- * ```
- *
- * @param {String} `key` The property to lookup.
- * @api public
- */
-
-Verb.prototype.hasData = function (key) {
-  return this.cache.data.hasOwnProperty(key);
-};
 
 /**
  * Run an array of tasks.
