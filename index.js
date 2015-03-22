@@ -96,11 +96,11 @@ Verb.prototype._runTask = function(task) {
  * @api public
  */
 
-Verb.prototype.src = function (glob, options) {
-  return es.pipe.apply(es, utils.arrayify([
-    vfs.src(glob, options),
-    stack.src(this, glob, options)
-  ]));
+Verb.prototype.src = function (glob, opts) {
+  return es.pipe.apply(es, [
+    vfs.src(glob, opts),
+    stack.src(this, glob, opts)
+  ]);
 };
 
 /**
@@ -124,11 +124,11 @@ Verb.prototype.src = function (glob, options) {
  * @api public
  */
 
-Verb.prototype.dest = function (dest, options) {
-  return es.pipe.apply(es, utils.arrayify([
-    stack.dest(this, dest, options),
-    vfs.dest(dest, options)
-  ]));
+Verb.prototype.dest = function (dest, opts) {
+  return es.pipe.apply(es, [
+    stack.dest(this, dest, opts),
+    vfs.dest(dest, opts)
+  ]);
 };
 
 /**
