@@ -7,11 +7,15 @@
 
 'use strict';
 
-var verb = require('..');
-var orig = process.cwd();
 require('should');
+var Verb = require('..');
+var orig = process.cwd();
+var verb;
+
 
 describe('built-in helpers', function () {
+  verb = new Verb.Verb();
+
   describe('when automatically generated helpers are used:', function () {
     it('should use them in templates:', function (done) {
       verb.helper('upper', function (str) {
@@ -25,10 +29,6 @@ describe('built-in helpers', function () {
       });
     });
   });
-});
-
-describe('default helpers:', function () {
-  verb = new verb.Verb();
 
   beforeEach(function (done) {
     before(function () {
@@ -61,6 +61,17 @@ describe('default helpers:', function () {
       verb.render('{%= badge("travis") %}', function (err, content) {
         if (err) console.log(err);
         content.should.equal(' [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) \n');
+        done();
+      });
+    });
+
+    it('should use context pass to the helper:', function (done) {
+      var str = '{%= badge("travis", {travis_url: "https://travis-ci.org/foo/bar"}) %}';
+      var expected = ' [![Build Status](https://travis-ci.org/foo/bar.svg)](https://travis-ci.org/foo/bar) \n';
+
+      verb.render(str, function (err, content) {
+        if (err) console.log(err);
+        content.should.equal(expected);
         done();
       });
     });
