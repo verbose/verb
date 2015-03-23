@@ -28,6 +28,28 @@ describe('middleware', function () {
     done();
   });
 
+  describe('todos:', function () {
+    it.only('should add a todos list to a markdown file\'s `todos` property:', function (done) {
+      verb.src('test/fixtures/middleware/todo.md')
+        .on('data', function (file) {
+          if (/\/todo\.md$/.test(file.path)) {
+            file.todos.should.be.an.array;
+          }
+        })
+        .on('end', done);
+    });
+
+    it('should add a todos list to a javascript file\'s `todos` property:', function (done) {
+      verb.src('test/fixtures/middleware/todo.js')
+        .on('data', function (file) {
+          if (/\/todo\.js$/.test(file.path)) {
+            file.todos.should.be.an.array;
+          }
+        })
+        .on('end', done);
+    });
+  });
+
   describe('multi-toc:', function () {
     it('should generate a multi-file table of contents:', function (done) {
       verb.doc('multi-toc.md', {cwd: __dirname + '/fixtures/middleware'});
