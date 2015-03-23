@@ -9,8 +9,8 @@ var verb = require('./');
 
 verb.disable('debugEngine');
 
-verb.data({travis: '', username: 'jonschlinkert'});
-verb.data({twitter: {username: 'jonschlinkert'}, github: {username: 'jonschlinkert'}});
+// verb.data({travis: '', username: 'jonschlinkert'});
+// verb.data({twitter: {username: 'jonschlinkert'}, github: {username: 'jonschlinkert'}});
 
 verb.task('readme', function () {
   return verb.src('.verb.md')
