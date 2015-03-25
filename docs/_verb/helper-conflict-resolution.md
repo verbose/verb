@@ -60,10 +60,10 @@ And which of the following should the template engine give priority to?
 
 ```js
 // non-function value
-{%= foo %}
+{%%= foo %}
 
 // helper function
-{%= foo("quux") %}
+{%%= foo("quux") %}
 ```
 
 You might be wondering:
@@ -105,17 +105,17 @@ And the helper is renamed as follows
 
 ```js
 // from this
-{%= foo("quux") %}
+{%%= foo("quux") %}
 
 // to this
-{%= __.foo("quux") %}
+{%%= __.foo("quux") %}
 ```
 
 Now, both of the following templates will resolve:
 
 ```js
-{%= foo %}
-{%= __.foo("quux") %}
+{%%= foo %}
+{%%= __.foo("quux") %}
 ```
 
 **Done!**
