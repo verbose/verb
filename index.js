@@ -1,12 +1,12 @@
 'use strict';
 
+var es = require('event-stream');
 var extend = require('lodash').extend;
+var Template = require('template');
 var Task = require('orchestrator');
 var vfs = require('vinyl-fs');
-var es = require('event-stream');
 
 /* deps: template */
-var Template = require('template');
 var session = require('./lib/session');
 var stack = require('./lib/stack');
 var init = require('./lib/init/');
@@ -39,7 +39,7 @@ Template.extend(Verb.prototype);
  * @api private
  */
 
-Verb.prototype.run = function () {
+Verb.prototype.run = function() {
   var tasks = arguments.length ? arguments : ['default'];
   this.start.apply(this, tasks);
 };
@@ -80,7 +80,7 @@ Verb.prototype._runTask = function(task) {
  * @api public
  */
 
-Verb.prototype.src = function (glob, opts) {
+Verb.prototype.src = function(glob, opts) {
   return es.pipe.apply(es, [
     vfs.src(glob, opts),
     stack.src(this, glob, opts)
@@ -108,7 +108,7 @@ Verb.prototype.src = function (glob, opts) {
  * @api public
  */
 
-Verb.prototype.dest = function (dest, opts) {
+Verb.prototype.dest = function(dest, opts) {
   return es.pipe.apply(es, [
     stack.dest(this, dest, opts),
     vfs.dest(dest, opts)
@@ -201,7 +201,7 @@ Verb.prototype.gettask = function() {
  * @api public
  */
 
-Verb.prototype.watch = function (glob, opts, fn) {
+Verb.prototype.watch = function(glob, opts, fn) {
   if (Array.isArray(opts) || typeof opts === 'function') {
     fn = opts; opts = null;
   }
