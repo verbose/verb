@@ -10,7 +10,7 @@
 var verb = require('..');
 require('should');
 
-describe('default helpers:', function () {
+describe.skip('default helpers:', function () {
   var orig = process.cwd();
 
   beforeEach(function (done) {
@@ -30,7 +30,7 @@ describe('default helpers:', function () {
   });
 
   describe('todos:', function () {
-    it.skip('should add todos to `file.todos` for markdown files:', function (done) {
+    it('should add todos to `file.todos` for markdown files:', function (done) {
       verb.doc('abc.md', {cwd: __dirname + '/fixtures/todos'});
       verb.views.docs.should.have.property('abc');
 

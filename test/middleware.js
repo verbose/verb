@@ -29,7 +29,7 @@ describe('middleware', function () {
   });
 
   describe('todos:', function () {
-    it.only('should add a todos list to a markdown file\'s `todos` property:', function (done) {
+    it('should add a todos list to a markdown file\'s `todos` property:', function (done) {
       verb.src('test/fixtures/middleware/todo.md')
         .on('data', function (file) {
           if (/\/todo\.md$/.test(file.path)) {
@@ -57,7 +57,7 @@ describe('middleware', function () {
 
       verb.render('multi-toc', function (err, content) {
         if (err) console.log(err);
-        content.should.match(/docs\/[^\/]+\/#/);
+        content.should.match(/docs\/_verb\/[^\/]+\/#/);
         done();
       });
     });
@@ -68,7 +68,7 @@ describe('middleware', function () {
 
       verb.render('multi-toc', function (err, content) {
         if (err) console.log(err);
-        content.should.not.match(/<!-- toc\("docs\/\*\.md"\) -->/);
+        content.should.not.match(/<!-- toc\("docs\/_verb\/\*\.md"\) -->/);
         done();
       });
     });

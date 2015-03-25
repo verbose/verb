@@ -4,7 +4,7 @@
 
 ## Table of Contents
 
-<!-- toc("docs/*.md") -->
+<!-- toc("docs/_verb/*.md") -->
 
 ## Heading 1
 
