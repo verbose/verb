@@ -62,13 +62,25 @@ describe('middleware', function () {
       });
     });
 
-    it('should strip the toc marker from the generated file:', function (done) {
+    it('should strip the toc comment marker from the generated file:', function (done) {
       verb.doc('multi-toc.md', {cwd: __dirname + '/fixtures/middleware'});
       verb.views.docs.should.have.property('multi-toc');
 
       verb.render('multi-toc', function (err, content) {
         if (err) console.log(err);
-        content.should.not.match(/<!-- toc\("docs\/_verb\/\*\.md"\) -->/);
+        content.should.not.match(/<!-- toc/);
+        done();
+      });
+    });
+
+    it('should use options defined as the second argument:', function (done) {
+      verb.doc('multi-toc-options.md', {cwd: __dirname + '/fixtures/middleware'});
+      verb.views.docs.should.have.property('multi-toc-options');
+
+      verb.render('multi-toc-options', function (err, content) {
+        if (err) console.log(err);
+        content.should.match(/## \[AAA\]/);
+        content.should.match(/## \[BBB\]/);
         done();
       });
     });
