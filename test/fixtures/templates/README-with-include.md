@@ -1,1 +1,3 @@
 # Success!
+
+{%= include("a.md") %}
