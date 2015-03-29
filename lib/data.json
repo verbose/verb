@@ -1,0 +1,51 @@
+{
+  "name": "",
+  "description": "",
+  "version": "",
+  "homepage": "",
+  "authors": [
+    {
+      "name": "",
+      "email": "",
+      "url": ""
+    }
+  ],
+  "author": {
+    "name": "",
+    "email": "",
+    "url": ""
+  },
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "licenses": [
+    {
+      "type": "",
+      "url": ""
+    }
+  ],
+  "license": {
+    "type": "MIT",
+    "url": ""
+  },
+  "files": [],
+  "main": "",
+  "bin": {},
+  "engines": {},
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [],
+  "verb": {
+    "data": {}
+  },
+  "github": {
+    "user": "",
+    "repo": ""
+  }
+}

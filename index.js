@@ -1,14 +1,18 @@
 'use strict';
 
 var es = require('event-stream');
+var diff = require('diff');
+var chalk = require('chalk');
 var extend = require('lodash').extend;
 var Template = require('template');
 var Task = require('orchestrator');
+var has = require('has-value');
 var vfs = require('vinyl-fs');
 
 /* deps: template */
 var session = require('./lib/session');
 var stack = require('./lib/stack');
+var utils = require('./lib/utils/');
 var init = require('./lib/init/');
 
 /**
@@ -27,6 +31,50 @@ function Verb() {
 
 extend(Verb.prototype, Task.prototype);
 Template.extend(Verb.prototype);
+
+/*
+ * Return true if `property` exists and has a non-null value.
+ * Dot notation may be used for nested properties.
+ *
+ * **Example**
+ *
+ * ```js
+ * verb.has('author.name');
+ * //=> true
+ * ```
+ *
+ * @param   {String}  `property`
+ * @return  {Boolean}
+ * @api public
+ */
+
+Verb.prototype.has = function(o, prop) {
+  if (arguments.length === 1) {
+    prop = o; o = this.cache;
+  }
+  return has(o, prop);
+};
+
+/**
+ * Display a visual representation of the
+ * difference between `a` and `b`
+ */
+
+Verb.prototype.diff = function(a, b) {
+  a = a || this.env;
+  b = b || this.cache.data;
+  diff.diffJson(a, b).forEach(function (res) {
+    var color = chalk.gray;
+    if (res.added) {
+      color = chalk.green;
+    }
+    if (res.removed) {
+      color = chalk.red;
+    }
+    process.stderr.write(color(res.value));
+  });
+  console.log();
+};
 
 /**
  * Run an array of tasks.
@@ -81,10 +129,10 @@ Verb.prototype._runTask = function(task) {
  */
 
 Verb.prototype.src = function(glob, opts) {
-  return es.pipe.apply(es, [
-    vfs.src(glob, opts),
-    stack.src(this, glob, opts)
-  ]);
+  if (!this.engines.hasOwnProperty(utils.getExt(glob))) {
+    return vfs.src(glob, opts);
+  }
+  return stack.src(this, glob, opts);
 };
 
 /**
@@ -109,10 +157,7 @@ Verb.prototype.src = function(glob, opts) {
  */
 
 Verb.prototype.dest = function(dest, opts) {
-  return es.pipe.apply(es, [
-    stack.dest(this, dest, opts),
-    vfs.dest(dest, opts)
-  ]);
+  return stack.dest(this, dest, opts);
 };
 
 /**
@@ -143,14 +188,14 @@ Verb.prototype.copy = function(glob, dest) {
  * @api public
  */
 
-Object.defineProperty(Verb.prototype, 'files', {
-  configurable: true,
-  enumerable: true,
-  get: function () {
-    var plural = this.collection[this.gettask()];
-    return this.views[plural];
-  }
-});
+// Object.defineProperty(Verb.prototype, 'files', {
+//   configurable: true,
+//   enumerable: true,
+//   get: function () {
+//     var plural = this.collection[this.gettask()];
+//     return this.views[plural];
+//   }
+// });
 
 /**
  * Define a Verb task.
@@ -206,7 +251,10 @@ Verb.prototype.watch = function(glob, opts, fn) {
     fn = opts; opts = null;
   }
 
-  if (!Array.isArray(fn)) vfs.watch(glob, opts, fn);
+  if (!Array.isArray(fn)) {
+    vfs.watch(glob, opts, fn);
+  }
+
   return vfs.watch(glob, opts, function () {
     this.start.apply(this, fn);
   }.bind(this));
