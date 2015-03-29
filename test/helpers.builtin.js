@@ -60,14 +60,14 @@ describe('built-in helpers', function () {
     it('should use the `badge` helper:', function (done) {
       verb.render('{%= badge("travis") %}', function (err, content) {
         if (err) console.log(err);
-        content.should.equal(' [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) \n');
+        content.should.equal(' [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) ');
         done();
       });
     });
 
     it('should use context pass to the helper:', function (done) {
       var str = '{%= badge("travis", {travis_url: "https://travis-ci.org/foo/bar"}) %}';
-      var expected = ' [![Build Status](https://travis-ci.org/foo/bar.svg)](https://travis-ci.org/foo/bar) \n';
+      var expected = ' [![Build Status](https://travis-ci.org/foo/bar.svg)](https://travis-ci.org/foo/bar) ';
 
       verb.render(str, function (err, content) {
         if (err) console.log(err);
