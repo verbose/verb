@@ -1,12 +1,10 @@
 'use strict';
 
-var es = require('event-stream');
 var diff = require('diff');
 var chalk = require('chalk');
 var extend = require('lodash').extend;
 var Template = require('template');
 var Task = require('orchestrator');
-var has = require('has-value');
 var vfs = require('vinyl-fs');
 
 /* deps: template */
@@ -31,29 +29,6 @@ function Verb() {
 
 extend(Verb.prototype, Task.prototype);
 Template.extend(Verb.prototype);
-
-/*
- * Return true if `property` exists and has a non-null value.
- * Dot notation may be used for nested properties.
- *
- * **Example**
- *
- * ```js
- * verb.has('author.name');
- * //=> true
- * ```
- *
- * @param   {String}  `property`
- * @return  {Boolean}
- * @api public
- */
-
-Verb.prototype.has = function(o, prop) {
-  if (arguments.length === 1) {
-    prop = o; o = this.cache;
-  }
-  return has(o, prop);
-};
 
 /**
  * Display a visual representation of the
@@ -129,9 +104,6 @@ Verb.prototype._runTask = function(task) {
  */
 
 Verb.prototype.src = function(glob, opts) {
-  if (!this.engines.hasOwnProperty(utils.getExt(glob))) {
-    return vfs.src(glob, opts);
-  }
   return stack.src(this, glob, opts);
 };
 
@@ -192,7 +164,7 @@ Verb.prototype.copy = function(glob, dest) {
 //   configurable: true,
 //   enumerable: true,
 //   get: function () {
-//     var plural = this.collection[this.gettask()];
+//     var plural = this.inflections[this.gettask()];
 //     return this.views[plural];
 //   }
 // });
@@ -251,10 +223,7 @@ Verb.prototype.watch = function(glob, opts, fn) {
     fn = opts; opts = null;
   }
 
-  if (!Array.isArray(fn)) {
-    vfs.watch(glob, opts, fn);
-  }
-
+  if (!Array.isArray(fn)) vfs.watch(glob, opts, fn);
   return vfs.watch(glob, opts, function () {
     this.start.apply(this, fn);
   }.bind(this));
