@@ -8,32 +8,23 @@ var through = require('through2');
 var verb = require('./');
 
 verb.disable('debugEngine');
-verb.data({author: {username: 'jonschlinkert'}})
-
+// verb.data({author: {username: 'jonschlinkert'}})
 // verb.data({travis: '', username: 'jonschlinkert'});
 // verb.data({twitter: {username: 'jonschlinkert'}, github: {username: 'jonschlinkert'}});
 
 verb.task('readme', function () {
-  // console.log(verb.get('missing'))
-  return verb.src('.verb.md')
-    .on('error', gutil.log)
-    .pipe(tmpl())
-    .pipe(verb.dest('test/actual'))
-    .on('end',function () {
-      // console.log(verb.get('errors'))
-    })
-    .on('error', gutil.log);
+  verb.src('.verb.md').pipe(verb.dest('test/actual'))
 });
 
 verb.task('docs', function () {
-  return verb.src('docs/*.md')
+  verb.src('docs/*.md')
     .on('error', gutil.log)
     .pipe(verb.dest('test/actual'))
     .on('error', gutil.log);
 });
 
 verb.task('helpers', function () {
-  return verb.src('test/fixtures/templates/helpers.md')
+  verb.src('test/fixtures/templates/helpers.md')
     .pipe(verb.dest('test/actual'))
     .on('error', gutil.log);
 });
@@ -83,29 +74,29 @@ function tmpl(options) {
   });
 }
 
-// verb.task('lint', function () {
-//   verb.src(['index.js', 'lib/**/*.js'])
-//     .on('error', gutil.log)
-//     .pipe(jshint('.jshintrc'))
-//     .pipe(jshint.reporter('jshint-stylish'));
-// });
+verb.task('lint', function () {
+  verb.src(['index.js', 'lib/**/*.js'])
+    .on('error', gutil.log)
+    .pipe(jshint('.jshintrc'))
+    .pipe(jshint.reporter('jshint-stylish'));
+});
 
-// verb.task('test', function (cb) {
-//   verb.src(['index.js', 'lib/**/*.js'])
-//     .on('error', gutil.log)
-//     .pipe(istanbul())
-//     .pipe(istanbul.hookRequire())
-//     .on('finish', function () {
-//       verb.src('test/*.js')
-//         .pipe(mocha())
-//         .pipe(istanbul.writeReports())
-//         .on('end', function () {
-//           verb.diff();
-//           console.log();
-//           cb();
-//         });
-//     });
-// });
+verb.task('test', function (cb) {
+  verb.src(['index.js', 'lib/**/*.js'])
+    .on('error', gutil.log)
+    .pipe(istanbul())
+    .pipe(istanbul.hookRequire())
+    .on('finish', function () {
+      verb.src('test/*.js')
+        .pipe(mocha())
+        .pipe(istanbul.writeReports())
+        .on('end', function () {
+          verb.diff();
+          console.log();
+          cb();
+        });
+    });
+});
 
 verb.task('default', ['readme', 'docs']);
 
