@@ -7,11 +7,10 @@ var Template = require('template');
 var Task = require('orchestrator');
 var vfs = require('vinyl-fs');
 
-/* deps: template */
 var session = require('./lib/session');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils/');
-var init = require('./lib/init/');
+var init = require('./lib/init');
 
 /**
  * Initialize `Verb`
