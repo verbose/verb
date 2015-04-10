@@ -13,7 +13,7 @@ verb.disable('debugEngine');
 // verb.data({twitter: {username: 'jonschlinkert'}, github: {username: 'jonschlinkert'}});
 
 verb.task('readme', function () {
-  verb.src('.verb.md').pipe(verb.dest('test/actual'))
+  verb.src('.verb.md').pipe(verb.dest('.'))
 });
 
 verb.task('docs', function () {
