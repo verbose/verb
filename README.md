@@ -1,7 +1,7 @@
 # verb [![NPM version](https://badge.fury.io/js/verb.svg)](http://badge.fury.io/js/verb)  [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) 
 [![build status](http://img.shields.io/travis/badges/shields.svg)](https://travis-ci.org/badges/shields)
 
-> verbiage, for your github repos.
+> Documentation generator for GitHub projects. Extremely powerful, easy to use, can generate anything from API docs to a readme, for projects big or small.
 
 Verb is the most powerful, extensible and easy-to-use documentation generator for node.js. 
 
@@ -10,7 +10,7 @@ Verb is the most powerful, extensible and easy-to-use documentation generator fo
 As of v0.4.0, Verb now requires [verb-cli] to run. See the [getting started](#getting-started) section for details.
 
 ## Why use Verb?
-It's magical and smells like baby powder. If that's not enough for you, it's also the most powerful and easy-to-use documentation generator for node.js. And it's magical.
+It's magical and smells like chocolate. If that's not enough for you, it's also the most powerful and easy-to-use documentation generator for node.js. And it's magical.
 
 **Features**
 

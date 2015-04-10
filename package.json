@@ -1,6 +1,6 @@
 {
   "name": "verb",
-  "description": "verbiage, for your github repos.",
+  "description": "Documentation generator for GitHub projects. Extremely powerful, easy to use, can generate anything from API docs to a readme, for projects big or small.",
   "version": "0.7.0",
   "homepage": "https://github.com/assemble/verb",
   "author": {
