@@ -40,10 +40,10 @@ Verb.prototype.diff = function(a, b) {
   diff.diffJson(a, b).forEach(function (res) {
     var color = chalk.gray;
     if (res.added) {
-      color = chalk.green;
+      color = chalk.red;
     }
     if (res.removed) {
-      color = chalk.red;
+      color = chalk.green;
     }
     process.stderr.write(color(res.value));
   });
