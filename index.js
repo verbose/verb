@@ -34,20 +34,22 @@ Template.extend(Verb.prototype);
  * difference between `a` and `b`
  */
 
-Verb.prototype.diff = function(a, b) {
+Verb.prototype.diff = function(a, b, method) {
+  method = method || 'diffJson';
+
   a = a || this.env;
   b = b || this.cache.data;
-  diff.diffJson(a, b).forEach(function (res) {
+  diff[method](a, b).forEach(function (res) {
     var color = chalk.gray;
     if (res.added) {
-      color = chalk.red;
+      color = chalk.green;
     }
     if (res.removed) {
-      color = chalk.green;
+      color = chalk.red;
     }
     process.stderr.write(color(res.value));
   });
-  console.log();
+  console.log('\n');
 };
 
 /**
@@ -200,7 +202,7 @@ Verb.prototype.gettask = function() {
   var name = this.session.get('task');
   return typeof name != 'undefined'
     ? 'task_' + name
-    : 'doc';
+    : 'file';
 };
 
 /**
