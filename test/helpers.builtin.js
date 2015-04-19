@@ -14,148 +14,134 @@ var verb;
 
 
 describe('built-in helpers', function () {
-  verb = new Verb.Verb();
+  before(function () {
+    process.chdir(__dirname + '/fixtures');
+  });
+
+  after(function () {
+    process.chdir(orig);
+  });
+
+  beforeEach(function (cb) {
+    verb = new Verb.Verb();
+
+    verb.engine('*', require('engine-lodash'));
+    verb.option('cwd', __dirname + '/fixtures');
+    verb.data({'__dirname': verb.option('cwd')});
+    cb();
+  });
 
   describe('when automatically generated helpers are used:', function () {
-    it('should use them in templates:', function (done) {
+    it('should use them in templates:', function (cb) {
       verb.helper('upper', function (str) {
         return str.toUpperCase();
       });
 
       verb.render('{%= upper(name) %}', {name: 'Jon Schlinkert'}, function (err, content) {
+        console.log(arguments)
         if (err) console.log(err);
         content.should.equal('JON SCHLINKERT');
-        done();
+        cb();
       });
     });
   });
 
-  beforeEach(function (done) {
-    before(function () {
-      process.chdir(__dirname + '/fixtures');
-    });
-
-    after(function () {
-      process.chdir(orig);
-    });
-
-    verb.engine('md', require('engine-lodash'));
-    verb.option('cwd', __dirname + '/fixtures');
-    verb.data({'__dirname': verb.option('cwd')});
-    done();
-  });
-
   describe('apidocs helper:', function () {
-    it('should use the `apidocs` helper:', function (done) {
-      var str = '{%= apidocs("apidocs-comments.js", {cwd: "test/fixtures"}) %}';
+    it('should use the `apidocs` helper:', function (cb) {
+      var str = '{%= apidocs("apidocs-comments.js") %}';
       verb.render(str, function (err, content) {
         if (err) console.log(err);
         content.should.match(/apidocs-comments.js#L/i);
-        done();
+        cb();
       });
     });
   });
 
   describe('badge helper:', function () {
-    it('should use the `badge` helper:', function (done) {
+    it('should use the `badge` helper:', function (cb) {
       verb.render('{%= badge("travis") %}', function (err, content) {
         if (err) console.log(err);
-        content.should.equal(' [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) \n');
-        done();
+        content.should.equal(' [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) ');
+        cb();
       });
     });
 
-    it('should use context pass to the helper:', function (done) {
+    it('should use context pass to the helper:', function (cb) {
       var str = '{%= badge("travis", {travis_url: "https://travis-ci.org/foo/bar"}) %}';
-      var expected = ' [![Build Status](https://travis-ci.org/foo/bar.svg)](https://travis-ci.org/foo/bar) \n';
+      var expected = ' [![Build Status](https://travis-ci.org/foo/bar.svg)](https://travis-ci.org/foo/bar) ';
 
       verb.render(str, function (err, content) {
         if (err) console.log(err);
         content.should.equal(expected);
-        done();
+        cb();
       });
     });
   });
 
   describe('include:', function () {
-    it('should use the `include` helper:', function (done) {
+    it('should use the `include` helper:', function (cb) {
       verb.render('{%= include("tests") %}', function (err, content) {
         if (err) console.log(err);
         content.should.match(/Install dev dependencies:/i);
-        done();
+        cb();
       });
     });
 
     describe('escaping:', function () {
-      it('should not try to render escaped templates', function (done) {
+      it('should not try to render escaped templates', function (cb) {
         verb.page('foo.md', {content: '{%%= include("tests") %}'});
         verb.render('foo.md', function (err, content) {
           if (err) console.log(err);
           content.should.equal('{%= include("tests") %}');
-          done();
+          cb();
         });
       });
     });
 
-    it('should support using `includes` as deeply nested includes:', function (done) {
-      verb.include('one.md', {
-        content: '{%= include("a.md", {cwd: "test/fixtures/auto-loading"}) %}'
-      });
-      verb.include('two.md', {content: 'c {%= include("one.md") %} d'});
-      verb.include('three.md', {content: 'b {%= include("two.md") %} e'});
-      verb.include('four.md', {content: 'a {%= include("three.md") %} f'});
+    it('should support using `includes` as deeply nested includes:', function (cb) {
+      verb.include('one', {content: '{%= include("a", {cwd: "auto-loading"}) %}'});
+      verb.include('two', {content: 'c {%= include("one") %} d'});
+      verb.include('three', {content: 'b {%= include("two") %} e'});
+      verb.include('four', {content: 'a {%= include("three") %} f'});
 
       verb.render('four', function (err, content) {
         if (err) console.log(err);
         content.should.match(/a b c # this is a fixture d e f/i);
-        done();
+        cb();
       });
     });
   });
 
   describe('docs:', function () {
-    it('should use the `docs` helper to get files without extension:', function (done) {
+    it('should use the `docs` helper to get files without extension:', function (cb) {
       var str = '{%= docs("README", {cwd: __dirname + "/templates"}) %}';
       verb.render(str, function (err, content) {
         if (err) console.log(err);
         content.should.match(/Success!/i);
-        done();
+        cb();
       });
     });
 
-    it('should use the `docs` helper to get files with extension:', function (done) {
+    it('should use the `docs` helper to get files with extension:', function (cb) {
+      var str = '{%= docs("README", {cwd: __dirname + "/templates"}) %}';
+      verb.render(str, function (err, content) {
+        if (err) console.log(err);
+        content.should.match(/Success!/i);
+        cb();
+      });
+    });
+
+    it('should use the `docs` helper to get files with extension:', function (cb) {
       var str = '{%= docs("README.md", {cwd: __dirname + "/templates"}) %}';
       verb.render(str, function (err, content) {
         if (err) console.log(err);
         content.should.match(/Success!/i);
-        done();
+        cb();
       });
     });
 
-    it('should use the `docs` helper to get files with extension:', function (done) {
-      var str = '{%= docs("README.md", {cwd: __dirname + "/templates"}) %}';
-      verb.render(str, function (err, content) {
-        if (err) console.log(err);
-        content.should.match(/Success!/i);
-        done();
-      });
-    });
-
-    it('should support using `doc` as deeply nested includes:', function (done) {
-      verb.doc('one.md', {content: '{%= doc("a.md", {cwd: "test/fixtures/auto-loading"}) %}'});
-      verb.doc('two.md', {content: 'c {%= doc("one.md") %} d'});
-      verb.doc('three.md', {content: 'b {%= doc("two.md") %} e'});
-      verb.doc('four.md', {content: 'a {%= doc("three.md") %} f'});
-
-      verb.render('four', function (err, content) {
-        if (err) console.log(err);
-        content.should.match(/a b c # this is a fixture d e f/i);
-        done();
-      });
-    });
-
-    it('should support using `docs` as deeply nested includes:', function (done) {
-      verb.doc('one.md', {content: '{%= docs("a.md", {cwd: "test/fixtures/auto-loading"}) %}'});
+    it('should support using `doc` as deeply nested includes:', function (cb) {
+      verb.doc('one.md', {content: '{%= docs("a.md", {cwd: "auto-loading"}) %}'});
       verb.doc('two.md', {content: 'c {%= docs("one.md") %} d'});
       verb.doc('three.md', {content: 'b {%= docs("two.md") %} e'});
       verb.doc('four.md', {content: 'a {%= docs("three.md") %} f'});
@@ -163,7 +149,7 @@ describe('built-in helpers', function () {
       verb.render('four', function (err, content) {
         if (err) console.log(err);
         content.should.match(/a b c # this is a fixture d e f/i);
-        done();
+        cb();
       });
     });
   });
