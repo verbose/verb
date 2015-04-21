@@ -9,7 +9,6 @@ var vfs = require('vinyl-fs');
 
 var session = require('./lib/session');
 var stack = require('./lib/stack');
-var utils = require('./lib/utils/');
 var init = require('./lib/init');
 
 /**
@@ -36,7 +35,6 @@ Template.extend(Verb.prototype);
 
 Verb.prototype.diff = function(a, b, method) {
   method = method || 'diffJson';
-
   a = a || this.env;
   b = b || this.cache.data;
   diff[method](a, b).forEach(function (res) {
@@ -152,25 +150,6 @@ Verb.prototype.copy = function(glob, dest) {
 };
 
 /**
- * The `files` property is session-context-specific
- * and returns the `files` collection being used in
- * the current `task`.
- *
- * @name assemble.files
- * @return {Object} Template files from current task.
- * @api public
- */
-
-// Object.defineProperty(Verb.prototype, 'files', {
-//   configurable: true,
-//   enumerable: true,
-//   get: function () {
-//     var plural = this.inflections[this.gettask()];
-//     return this.views[plural];
-//   }
-// });
-
-/**
  * Define a Verb task.
  *
  * ```js
@@ -206,6 +185,23 @@ Verb.prototype.gettask = function() {
 };
 
 /**
+ * The `taskFiles` property is session-context-specific and
+ * returns the collection of files from the current `task`.
+ *
+ * @name .taskFiles
+ * @return {Object} files from the current task.
+ * @api public
+ */
+
+Object.defineProperty(Verb.prototype, 'taskFiles', {
+  configurable: true,
+  enumerable: true,
+  get: function () {
+    return this.views[this.inflections[this.gettask()]];
+  }
+});
+
+/**
  * Re-run the specified task(s) when a file changes.
  *
  * ```js
@@ -223,7 +219,6 @@ Verb.prototype.watch = function(glob, opts, fn) {
   if (Array.isArray(opts) || typeof opts === 'function') {
     fn = opts; opts = null;
   }
-
   if (!Array.isArray(fn)) vfs.watch(glob, opts, fn);
   return vfs.watch(glob, opts, function () {
     this.start.apply(this, fn);
