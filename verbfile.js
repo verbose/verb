@@ -10,14 +10,13 @@ var verb = require('./');
 verb.disable('debugEngine');
 
 verb.task('readme', function () {
-  verb.src('.verb.md').pipe(verb.dest('.'))
+  verb.src('.verb.md')
+    .pipe(verb.dest('.'))
 });
 
 verb.task('docs', function () {
-  verb.src('docs/*.md')
-    .on('error', gutil.log)
+  verb.src('docs/_template/*.md')
     .pipe(verb.dest('test/actual'))
-    .on('error', gutil.log);
 });
 
 verb.task('lint', function () {
