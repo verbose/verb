@@ -142,7 +142,8 @@ Verb.prototype.dest = function(dest, opts) {
  *
  * @param  {String|Array} `glob`
  * @param  {String|Function} `dest`
- * @return {Stream} Stream to allow doing additional work.
+ * @return {Stream} Stream, to continue processing if necessary.
+ * @api public
  */
 
 Verb.prototype.copy = function(glob, dest) {
@@ -167,10 +168,12 @@ Verb.prototype.copy = function(glob, dest) {
 Verb.prototype.task = Verb.prototype.add;
 
 /**
- * Get the id from the current task.
+ * Get the id from the current task. Used in plugins to get
+ * the current session.
  *
  * ```js
- * verb.gettask();
+ * var id = verb.gettask();
+ * verb.views[id];
  * ```
  *
  * @return {String} `task` The currently running task.
@@ -182,6 +185,23 @@ Verb.prototype.gettask = function() {
   return typeof name != 'undefined'
     ? 'task_' + name
     : 'file';
+};
+
+/**
+ * Used in plugins to get a template from the current session.
+ *
+ * ```js
+ * var template = getFile(id, file);
+ * ```
+ *
+ * @return {String} `id` Pass the task-id from the current session.
+ * @return {Object} `file` Vinyl file object. Must have an `id` property that matches the `id` of the session.
+ * @api public
+ */
+
+Verb.prototype.getFile = function(file) {
+  var collection = this.inflections[this.gettask()];
+  return this.views[collection][file.id];
 };
 
 /**
