@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "Documentation generator for GitHub projects. Extremely powerful, easy to use, can generate anything from API docs to a readme, for projects big or small.",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "homepage": "https://github.com/assemble/verb",
   "author": {
     "name": "Jon Schlinkert",
@@ -74,6 +74,7 @@
     "template-helpers": "^0.3.2",
     "template-toc": "^0.3.3",
     "through2": "^0.6.5",
+    "tildify": "^1.0.0",
     "update-copyright": "^0.1.0",
     "vinyl": "^0.4.6",
     "vinyl-fs": "^1.0.0"
