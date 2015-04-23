@@ -8,6 +8,11 @@
 
 Verb uses data from package.json to render templates, but there are several other ways to add data. This document describes how Verb works with data, and the methods to used for setting and getting data.
 
+## Overview
+
+- Options are stored on `verb.options`.
+
+
 ## package.json
 
 > Verb uses data from package.json to render templates, and more...
@@ -16,11 +21,9 @@ Verb passes the entire package.json object to the template engine to be used as 
 
 ### verb object
 
-If your package.json file has a `verb` object with a `data` property, Verb will use it to extend the context.
+If your package.json file has a `verb` property, Verb will use it to extend the context.
 
 **Example**
-
-This example shows how you would add your Twitter username to package.json so that it will be used in templates:
 
 ```json
 { 
@@ -28,10 +31,15 @@ This example shows how you would add your Twitter username to package.json so th
   "description": "It's awesome, seriously.",
 
   "verb": {
-    "data": {
-      "twitter": {"username": "jonschlinkert"}
-    }
+    "ignore": [
+      ".git"
+    ],
+    "deps": {
+      "ignore": [
+        "support"
+      ]
+    },
+    "data": {}
   }
 }
 ```
-Also see how to set [configuration values](./config.md) in package.json.
