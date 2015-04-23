@@ -15,7 +15,7 @@ verb.task('readme', function () {
 });
 
 verb.task('docs', function () {
-  verb.src('docs/_template/*.md')
+  verb.src('docs/_templates/*.md')
     .pipe(verb.dest('test/actual'))
 });
 
@@ -45,4 +45,4 @@ verb.task('test', ['lint'], function (cb) {
     });
 });
 
-verb.task('default', ['readme', 'docs']);
+verb.task('default', ['readme']);
