@@ -5,21 +5,21 @@
 For a single-file TOC, add the following to the place where you want the TOC to render:
 
 ```html
-<!!-- toc -->
+<!-- toc -->
 ```
 
 For a multi-file TOC, add the following to the place where you want the TOC to render:
 
 ```html
-<!!-- toc("*.md") -->
+<!-- toc("*.md") -->
 ```
 
 **Escaping**
 
 If you ever need to add a TOC comment to documentation for illustrative purposes and you do not want it to render:
 
-Do this:
+Add double exclamation points, like this:
 
 ```html
-<!!!-- toc -->
+<!!-- toc -->
 ```
