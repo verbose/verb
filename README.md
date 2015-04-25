@@ -9,6 +9,7 @@ Verb is the most powerful, extensible and easy-to-use documentation generator fo
 As of v0.4.0, Verb now requires [verb-cli] to run. See the [getting started](#getting-started) section for details.
 
 ## Why use Verb?
+
 It's magical and smells like chocolate. If that's not enough for you, it's also the most powerful and easy-to-use documentation generator for node.js. And it's magical.
 
 **Features**
@@ -18,15 +19,6 @@ It's magical and smells like chocolate. If that's not enough for you, it's also 
 - Include templates from locally installed npm packages with the `{%= include() %}` helper
 - Include templates from your project's `docs/` directory with the `{%= docs() %}` helper
 - Change the templates directory for either helper by passing a `cwd` to the helper: example: `{%= docs("foo", {cwd: ''}) %}`
-
-
-- Generate API docs from code comments (this couldn't be easier!)
-- Add a [.verb.md](#verbmd) markdown template to your project, and verb will build your readme using data from package.json.
-- If you need more, create a [verbfile.js](#verbfile.js)! Verb can complex documentation too, including multi-page TOCs, cross-reference links, auto-generated links to dependencies and so on.
-- Verb can run any [gulp](https://github.com/gulpjs/gulp) plugin
-- Verb is built on top of [Template](https://github.com/jonschlinkert/template). All of Template's methods are exposed on the API.
-- You can get by with a simple `.verb.md` markdown template, or do things like add layouts, pages, partials, helpers, register a template engine, load data or use a `.transform()` or two to modify that data at runtime.
-
 
 ## Install with [npm](npmjs.org)
 
@@ -40,7 +32,149 @@ npm i verb --save
 var verb = require('verb');
 ```
 
+## API
+
+### [.src](index.js#L105)
+
+Glob patterns or filepaths to source files.
+
+**Example usage**
+
+**Params**
+
+* `glob` **{String|Array}**: Glob patterns or file paths to source files.    
+* `options` **{Object}**: Options or locals to merge into the context and/or pass to `src` plugins    
+
+**Examples**
+
+```js
+verb.src('src/*.hbs', {layout: 'default'})
+```
+
+```js
+verb.task('site', function() {
+  verb.src('src/*.hbs', {layout: 'default'})
+    verb.dest('dist')
+});
+```
+
+### [.dest](index.js#L130)
+
+Specify a destination for processed files.
+
+**Example usage**
+
+**Params**
+
+* `dest` **{String|Function}**: File path or rename function.    
+* `options` **{Object}**: Options or locals to merge into the context and/or pass to `dest` plugins    
+
+**Examples**
+
+```js
+verb.dest('dist', {ext: '.xml'})
+```
+
+```js
+verb.task('sitemap', function() {
+  verb.src('src/*.txt')
+    verb.dest('dist', {ext: '.xml'})
+});
+```
+
+### [.copy](index.js#L149)
+
+Copy a `glob` of files to the specified `dest`.
+
+**Params**
+
+* `glob` **{String|Array}**    
+* `dest` **{String|Function}**    
+* `returns` **{Stream}**: Stream, to continue processing if necessary.  
+
+**Example**
+
+```js
+verb.task('assets', function() {
+  verb.copy('assets/**', 'dist');
+});
+```
+
+### [.task](index.js#L168)
+
+Define a Verb task.
+
+**Params**
+
+* `name` **{String}**    
+* `fn` **{Function}**    
+
+**Example**
+
+```js
+verb.task('docs', function() {
+  verb.src(['.verb.md', 'docs/*.md'])
+    .pipe(verb.dest('./'));
+});
+```
+
+### [.gettask](index.js#L183)
+
+Get the id from the current task. Used in plugins to get the current session.
+
+* `returns` **{String}** `task`: The currently running task.  
+
+**Example**
+
+```js
+var id = verb.gettask();
+verb.views[id];
+```
+
+### [.getFile](index.js#L202)
+
+Used in plugins to get a template from the current session.
+
+* `returns` **{String}** `id`: Pass the task-id from the current session.  
+* `returns` **{Object}** `file`: Vinyl file object. Must have an `id` property that matches the `id` of the session.  
+
+**Example**
+
+```js
+var template = getFile(id, file);
+```
+
+### [.taskFiles](index.js#L220)
+
+`taskFiles` is a session-context-specific getter that returns the collection of files from the current `task`.
+
+* `returns` **{Object}**: Get the files from the current task.  
+
+**Example**
+
+```js
+var files = verb.taskFiles;
+```
+
+### [.watch](index.js#L242)
+
+Re-run the specified task(s) when a file changes.
+
+**Params**
+
+* `glob` **{String|Array}**: Filepaths or glob patterns.    
+* `fn` **{Function}**: Task(s) to watch.    
+
+**Example**
+
+```js
+verb.task('watch', function() {
+  verb.watch('docs/*.md', ['docs']);
+});
+```
+
 ## Running tests
+
 Install dev dependencies:
 
 ```bash
@@ -48,25 +182,26 @@ npm i -d && npm test
 ```
 
 ## Contributing
+
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/assemble/verb/issues)
 
 ## Author
+
 **Jon Schlinkert**
 
-[github/jonschlinkert](https://github.com/jonschlinkert)
-[twitter/jonschlinkert](http://twitter.com/jonschlinkert)
++ [github/jonschlinkert](https://github.com/jonschlinkert)
++ [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
 
 ## License
+
 Copyright (c) 2014-2015 Jon Schlinkert
 Released under the MIT license.
 
 ***
 
-_This file was generated by [verb-cli](https://github.com/assemble/verb-cli) on April 23, 2015._
+_This file was generated by [verb-cli](https://github.com/assemble/verb-cli) on April 25, 2015._
 
 [verb-cli]: https://github.com/verbose/verb-cli
-<!-- deps:mocha jshint-stylish lodash swig template -->
-
 
 <!-- reflinks generated by verb-reflinks plugin -->
 
