@@ -1,87 +1,17 @@
-# {%= name %} {%= badge("fury") %} {%= badge("travis") %}
-
-> {%= description %}
-
 **Heads up!**
-
-As of v0.4.0, Verb now requires [verb-cli][] to run. See the [getting started](#getting-started) section for details.
+{%= docs("sections/cli-notice") %}
 
 **Features**
-
-- Build API docs from code comments (this couldn't be easier!)
-- Add a [.verb.md](#verbmd) markdown template to your project, and verb will build your readme using data from package.json.
-- If you need more, create a [verbfile.js](#verbfile.js)! Verb can complex documentation too, including multi-page TOCs, cross-reference links, auto-generated links to dependencies and so on.
-- Verb can run any [gulp](https://github.com/gulpjs/gulp) plugin
-- Verb is built on top of [Template](https://github.com/jonschlinkert/template). All of Template's methods are exposed on the API.
-- You can get by with a simple `.verb.md` markdown template, or do things like add layouts, pages, partials, helpers, register a template engine, load data or use a `.transform()` or two to modify that data at runtime.
-
+{%= docs("sections/features") %}
 
 ## Install verb-cli
-
-As of v0.4.0, Verb requires verb-cli to run. To install verb-cli, run:
-
-```bash
-npm i -g verb-cli
-```
+{%= docs("sections/install-verb-cli") %}
 
 ## .verb.md
-
-Add a `.verb.md.` [template][verbmd] to your project and run `verb` from the command line to generate the project's readme using data from package.json.
-
-If you need more, use a [verbfile.js][verbfile].
-
-**Example .verb.md**
-
-This is a basic readme template that Verb's own maintainers like to use.
-
-```markdown
-# {%%= name %} {%%= badge("fury") %}
-
-> {%%= description %}
-
-## Install
-{%%= include("install") %}
-
-## API
-{%%= apidocs("index.js") %}
-
-## Author
-{%%= include("author") %}
-
-## License
-{%%= copyright() %}
-{%%= license() %}
-
-***
-
-{%%= include("footer") %}
-```
-
-`.verb.md` files are rendered using data from `package.json`, but Verb is not restricted to package.json. You can use any data you want, with any templates, helpers, etc.
-
+{%= docs("sections/verb-md") %}
 
 ## verbfile.js
-
-For projects that need more than readme documentation, you can add a `verbfile.js` to the project, and be sure to install verb locally with:
-
-```bash
-npm i verb --save-dev
-```
-
-**Example basic verbfile.js**
-
-```js
-var verb = require('verb');
-
-// load data for templates if needed
-verb.data('foo/*.json');
-
-verb.task('default', function() {
-  verb.src(['.verb.md', 'docs/*.md'])
-    .pipe(verb.dest('./'));
-});
-```
-
+{%= docs("sections/verbfile") %}
 
 ***
 
@@ -260,29 +190,3 @@ To that end, I wanted a documentation generator that would work in the following
 - **don't ask me questions**: I just want to run `verb`, and it should work. No setup or config. There is more than enough data in package.json to handle the boilerplate part of a readme.
 - **generate API docs**: When I want [API docs](#api-docs), I should have to jump through hoops, or add `.json` files to directories. I should be able to add the docs wherever I want, to the README, separate docs, or use templates to generate a gh-pages site.
 - **render markdown, not HTML**: this one was important to me. There are hundreds of [great libs](https://github.com/jonschlinkert/remarkable) that can render markdown to HTML. Once you have well-formatted markdown documentation, it's easy to convert to HTML.
-
-
-## Running tests
-
-Install dev dependencies:
-
-```bash
-npm test
-```
-
-## Contributing
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue]({%= bugs.url %})
-
-## Author
-{%= include("author") %}
-
-## License
-{%= copyright({year: 2014}) %}
-{%= license() %}
-
-***
-
-{%= include("footer") %}
-
-[verb-cli]: https://github.com/verbose/verb-cli
-<!-- deps:remote-origin-url jshint-stylish lodash swig git-branch parse-git-config -->

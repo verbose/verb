@@ -1,8 +1,12 @@
-# Data
+# Data 
 
-> Along with other sources of data, Verb uses data from package.json to render templates.
+> Define load, transform and process data to be passed to templates as context at render time
 
 This document describes how Verb works with data, and the methods to used for setting and getting data.
+
+## Table of contents
+
+<!-- toc -->
 
 ## Overview
 
@@ -20,12 +24,25 @@ This document describes how Verb works with data, and the methods to used for se
 - A read-only clone of the data from package.json is stored on `verb._env`.
 - You may get values from this object using `verb.env('foo')`
 
+## API
 
-## .set / .get
+### .data
+
+```js
+// pass an object
+verb.data({foo: 'bar'});
+
+// pass a glob
+verb.data('foo/*.json');
+verb.data('foo/*.yml');
+verb.data('foo/*.{json,yml}');
+```
+
+### .set / .get
 
 Set and get arbitrary values on `verb.cache`.
 
-## .set
+### .set
 
 Store a value:
 
@@ -47,7 +64,7 @@ verb.get('a');
 
 Although the `.set()` and `.get()` methods store values on `verb.cache`, Verb only uses child objects on `verb.cache`, like `verb.cache.data`. You may use this object however you want.
 
-## .get
+### .get
 
 Sugar for `verb.cache[foo]`
 
@@ -68,3 +85,5 @@ verb.env('name');
 ```
 
 ## package.json
+
+Along with other sources of data, Verb uses data from package.json to render templates.

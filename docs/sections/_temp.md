@@ -1,4 +1,10 @@
-{%= docs("cli-notice") %}
+# {%= name %} {%= badge("fury") %} {%= badge("travis") %}
+
+> {%= description %}
+
+**Heads up!**
+
+As of v0.4.0, Verb now requires [verb-cli][] to run. See the [getting started](#getting-started) section for details.
 
 **Features**
 
@@ -20,13 +26,13 @@ npm i -g verb-cli
 
 ## .verb.md
 
-Add a `.verb.md.` [template]() to your project and run `verb` from the command line to generate the project's readme using data from package.json.
+Add a `.verb.md.` [template][verbmd] to your project and run `verb` from the command line to generate the project's readme using data from package.json.
 
-If you need more, use a [verbfile.js]().
+If you need more, use a [verbfile.js][verbfile].
 
 **Example .verb.md**
 
-This is a basic readme template that Verb's maintainers like to use.
+This is a basic readme template that Verb's own maintainers like to use.
 
 ```markdown
 # {%%= name %} {%%= badge("fury") %}
@@ -75,7 +81,6 @@ verb.task('default', function() {
     .pipe(verb.dest('./'));
 });
 ```
-
 
 ***
 
@@ -254,3 +259,29 @@ To that end, I wanted a documentation generator that would work in the following
 - **don't ask me questions**: I just want to run `verb`, and it should work. No setup or config. There is more than enough data in package.json to handle the boilerplate part of a readme.
 - **generate API docs**: When I want [API docs](#api-docs), I should have to jump through hoops, or add `.json` files to directories. I should be able to add the docs wherever I want, to the README, separate docs, or use templates to generate a gh-pages site.
 - **render markdown, not HTML**: this one was important to me. There are hundreds of [great libs](https://github.com/jonschlinkert/remarkable) that can render markdown to HTML. Once you have well-formatted markdown documentation, it's easy to convert to HTML.
+
+
+## Running tests
+
+Install dev dependencies:
+
+```bash
+npm test
+```
+
+## Contributing
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue]({%= bugs.url %})
+
+## Author
+{%= include("author") %}
+
+## License
+{%= copyright({year: 2014}) %}
+{%= license() %}
+
+***
+
+{%= include("footer") %}
+
+[verb-cli]: https://github.com/verbose/verb-cli
+<!-- deps:remote-origin-url jshint-stylish lodash swig git-branch parse-git-config -->
