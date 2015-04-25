@@ -20,6 +20,7 @@ verb.task('docs', function () {
 });
 
 verb.task('lint', function () {
+  /* deps: jshint-stylish */
   verb.src(['index.js', 'lib/**/*.js'])
     .on('error', gutil.log)
     .pipe(jshint('.jshintrc'))

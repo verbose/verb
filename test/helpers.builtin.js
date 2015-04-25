@@ -7,11 +7,11 @@
 
 'use strict';
 
+/* deps: mocha lodash swig template */
 require('should');
 var Verb = require('..');
 var orig = process.cwd();
 var verb;
-
 
 describe('built-in helpers', function () {
   before(function () {
@@ -32,13 +32,12 @@ describe('built-in helpers', function () {
   });
 
   describe('when automatically generated helpers are used:', function () {
-    it('should use them in templates:', function (cb) {
+    it.only('should use them in templates:', function (cb) {
       verb.helper('upper', function (str) {
         return str.toUpperCase();
       });
 
       verb.render('{%= upper(name) %}', {name: 'Jon Schlinkert'}, function (err, content) {
-        console.log(arguments)
         if (err) console.log(err);
         content.should.equal('JON SCHLINKERT');
         cb();
