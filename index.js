@@ -205,11 +205,15 @@ Verb.prototype.getFile = function(file) {
 };
 
 /**
- * The `taskFiles` property is session-context-specific and
+ * `taskFiles` is a session-context-specific getter that
  * returns the collection of files from the current `task`.
  *
+ * ```js
+ * var files = verb.taskFiles;
+ * ```
+ *
  * @name .taskFiles
- * @return {Object} files from the current task.
+ * @return {Object} Get the files from the current task.
  * @api public
  */
 
