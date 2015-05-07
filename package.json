@@ -30,8 +30,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "async": "^0.9.0",
     "async-helper-base": "^0.2.0",
+    "base-loader": "^0.1.0",
     "chalk": "^1.0.0",
     "clone-deep": "^0.1.1",
     "cwd": "^0.6.0",
@@ -54,12 +54,12 @@
     "helper-reflinks": "^1.3.0",
     "helper-related": "^0.7.1",
     "helper-resolve": "^0.3.1",
+    "helper-toc": "^0.1.2",
     "init-file-loader": "^0.1.0",
     "is-plain-object": "^1.0.0",
     "lodash": "^3.7.0",
     "log-symbols": "^1.0.2",
     "logging-helpers": "^0.4.0",
-    "map-files": "^0.7.4",
     "markdown-toc": "^0.11.2",
     "markdown-utils": "^0.6.0",
     "micromatch": "^2.1.6",
