@@ -2,13 +2,15 @@
 
 var diff = require('diff');
 var chalk = require('chalk');
-var extend = require('lodash').extend;
+var extend = require('lodash')._.extend;
 var Template = require('template');
+var toVinyl = require('to-vinyl');
 var Task = require('orchestrator');
 var vfs = require('vinyl-fs');
 
 var session = require('./lib/session');
 var stack = require('./lib/stack');
+var utils = require('./lib/utils');
 var init = require('./lib/init');
 
 /**
@@ -27,6 +29,174 @@ function Verb() {
 
 extend(Verb.prototype, Task.prototype);
 Template.extend(Verb.prototype);
+
+/**
+ * Glob patterns or filepaths to source files.
+ *
+ * ```js
+ * verb.src('src/*.hbs', {layout: 'default'})
+ * ```
+ *
+ * @param {String|Array} `glob` Glob patterns or file paths to source files.
+ * @param {Object} `options` Options or locals to merge into the context and/or pass to `src` plugins
+ * @api public
+ */
+
+Verb.prototype.src = function(glob, opts) {
+  return stack.src(this, glob, opts);
+};
+
+/**
+ * Specify a destination for processed files.
+ *
+ * ```js
+ * verb.dest('dist')
+ * ```
+ *
+ * @param {String|Function} `dest` File path or rename function.
+ * @param {Object} `options` Options and locals to pass to `dest` plugins
+ * @api public
+ */
+
+Verb.prototype.dest = function(dest, opts) {
+  return stack.dest(this, dest, opts);
+};
+
+/**
+ * Copy a `glob` of files to the specified `dest`.
+ *
+ * ```js
+ * verb.task('assets', function() {
+ *   verb.copy('assets/**', 'dist');
+ * });
+ * ```
+ *
+ * @param  {String|Array} `glob`
+ * @param  {String|Function} `dest`
+ * @return {Stream} Stream, to continue processing if necessary.
+ * @api public
+ */
+
+Verb.prototype.copy = function(glob, dest, opts) {
+  return vfs.src(glob, opts).pipe(vfs.dest(dest, opts));
+};
+
+/**
+ * Define a Verb task.
+ *
+ * ```js
+ * verb.task('docs', function() {
+ *   verb.src(['.verb.md', 'docs/*.md'])
+ *     .pipe(verb.dest('./'));
+ * });
+ * ```
+ *
+ * @param {String} `name` Task name
+ * @param {Function} `fn`
+ * @api public
+ */
+
+Verb.prototype.task = Verb.prototype.add;
+
+/**
+ * Get the name of the current task-session. This is
+ * used in plugins to lookup data or views created in
+ * a task.
+ *
+ * ```js
+ * var id = verb.getTask();
+ * var views = verb.views[id];
+ * ```
+ *
+ * @return {String} `task` The name of the currently running task.
+ * @api public
+ */
+
+Verb.prototype.getTask = function() {
+  var name = this.session.get('task');
+  return typeof name !== 'undefined'
+    ? 'task_' + name
+    : 'taskFile';
+};
+
+/**
+ * Get a view collection by its singular-form `name`.
+ *
+ * ```js
+ * var collection = verb.getCollection('page');
+ * // gets the `pages` collection
+ * //=> {a: {}, b: {}, ...}
+ * ```
+ *
+ * @return {String} `name` Singular name of the collection to get
+ * @api public
+ */
+
+Verb.prototype.getCollection = function(name) {
+  if (typeof name === 'undefined') {
+    name = this.getTask();
+  }
+
+  if (this.views.hasOwnProperty(name)) {
+    return this.views[name];
+  }
+
+  name = this.inflections[name];
+  return this.views[name];
+};
+
+/**
+ * Get a file from the current session.
+ *
+ * ```js
+ * var file = verb.getFile(file);
+ * ```
+ *
+ * @return {Object} `file` Vinyl file object. Must have an `id` property.
+ * @api public
+ */
+
+Verb.prototype.getFile = function(file, id) {
+  return this.getCollection(id)[file.id];
+};
+
+/**
+ * Get a template from the current session, convert it to a vinyl
+ * file, and push it into the stream.
+ *
+ * ```js
+ * app.pushToStream(file);
+ * ```
+ *
+ * @param {Stream} `stream` Vinyl stream
+ * @param {String} `id` Get the session `id` using `app.getTask()`
+ * @api public
+ */
+
+Verb.prototype.pushToStream = function(id, stream) {
+  return utils.pushToStream(this.getCollection(id), stream, toVinyl);
+};
+
+/**
+ * `taskFiles` is a session-context-specific getter that
+ * returns the collection of files from the current `task`.
+ *
+ * ```js
+ * var taskFiles = verb.taskFiles;
+ * ```
+ *
+ * @name .taskFiles
+ * @return {Object} Get the files from the current task.
+ * @api public
+ */
+
+Object.defineProperty(Verb.prototype, 'taskFiles', {
+  configurable: true,
+  enumerable: true,
+  get: function () {
+    return this.views[this.inflections[this.getTask()]];
+  }
+});
 
 /**
  * Display a visual representation of the
@@ -82,150 +252,6 @@ Verb.prototype._runTask = function(task) {
 };
 
 /**
- * Glob patterns or filepaths to source files.
- *
- * ```js
- * verb.src('src/*.hbs', {layout: 'default'})
- * ```
- *
- * **Example usage**
- *
- * ```js
- * verb.task('site', function() {
- *   verb.src('src/*.hbs', {layout: 'default'})
- *     verb.dest('dist')
- * });
- * ```
- *
- * @param {String|Array} `glob` Glob patterns or file paths to source files.
- * @param {Object} `options` Options or locals to merge into the context and/or pass to `src` plugins
- * @api public
- */
-
-Verb.prototype.src = function(glob, opts) {
-  return stack.src(this, glob, opts);
-};
-
-/**
- * Specify a destination for processed files.
- *
- * ```js
- * verb.dest('dist', {ext: '.xml'})
- * ```
- *
- * **Example usage**
- *
- * ```js
- * verb.task('sitemap', function() {
- *   verb.src('src/*.txt')
- *     verb.dest('dist', {ext: '.xml'})
- * });
- * ```
- *
- * @param {String|Function} `dest` File path or rename function.
- * @param {Object} `options` Options or locals to merge into the context and/or pass to `dest` plugins
- * @api public
- */
-
-Verb.prototype.dest = function(dest, opts) {
-  return stack.dest(this, dest, opts);
-};
-
-/**
- * Copy a `glob` of files to the specified `dest`.
- *
- * ```js
- * verb.task('assets', function() {
- *   verb.copy('assets/**', 'dist');
- * });
- * ```
- *
- * @param  {String|Array} `glob`
- * @param  {String|Function} `dest`
- * @return {Stream} Stream, to continue processing if necessary.
- * @api public
- */
-
-Verb.prototype.copy = function(glob, dest) {
-  return vfs.src(glob).pipe(vfs.dest(dest));
-};
-
-/**
- * Define a Verb task.
- *
- * ```js
- * verb.task('docs', function() {
- *   verb.src(['.verb.md', 'docs/*.md'])
- *     .pipe(verb.dest('./'));
- * });
- * ```
- *
- * @param {String} `name`
- * @param {Function} `fn`
- * @api public
- */
-
-Verb.prototype.task = Verb.prototype.add;
-
-/**
- * Get the id from the current task. Used in plugins to get
- * the current session.
- *
- * ```js
- * var id = verb.gettask();
- * verb.views[id];
- * ```
- *
- * @return {String} `task` The currently running task.
- * @api public
- */
-
-Verb.prototype.gettask = function() {
-  var name = this.session.get('task');
-  return typeof name != 'undefined'
-    ? 'task_' + name
-    : 'file';
-};
-
-/**
- * Used in plugins to get a template from the current session.
- *
- * ```js
- * var template = getFile(id, file);
- * ```
- *
- * @return {String} `id` Pass the task-id from the current session.
- * @return {Object} `file` Vinyl file object. Must have an `id` property that matches the `id` of the session.
- * @api public
- */
-
-Verb.prototype.getFile = function(file) {
-  var collection = this.inflections[this.gettask()];
-  return this.views[collection][file.id];
-};
-
-/**
- * `taskFiles` is a session-context-specific getter that
- * returns the collection of files from the current `task`.
- *
- * ```js
- * var files = verb.taskFiles;
- * ```
- *
- * @name .taskFiles
- * @return {Object} Get the files from the current task.
- * @api public
- */
-
-Object.defineProperty(Verb.prototype, 'taskFiles', {
-  configurable: true,
-  enumerable: true,
-  get: function () {
-    return this.views[this.inflections[this.gettask()]];
-  }
-});
-
-/**
  * Re-run the specified task(s) when a file changes.
  *
  * ```js
@@ -243,7 +269,7 @@ Verb.prototype.watch = function(glob, opts, fn) {
   if (Array.isArray(opts) || typeof opts === 'function') {
     fn = opts; opts = null;
   }
-  if (!Array.isArray(fn)) vfs.watch(glob, opts, fn);
+  if (!Array.isArray(fn)) return vfs.watch(glob, opts, fn);
   return vfs.watch(glob, opts, function () {
     this.start.apply(this, fn);
   }.bind(this));
