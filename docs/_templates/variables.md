@@ -2,7 +2,35 @@
 
 > Describes how variables are used in Verb, namespacing, and protected variables.
 
-
+- `author`
+- `bugs`
+- `data`
+- `dependencies`
+- `deps`
+- `description`
+- `devDependencies`
+- `engines`
+- `files`
+- `fork`
+- `github.username`
+- `homepage`
+- `ignore`
+- `include`
+- `keywords`
+- `license`
+- `main`
+- `name`
+- `node`
+- `repository.url`
+- `repository`
+- `scripts`
+- `test`
+- `twitter.username`
+- `type`
+- `url`
+- `username`
+- `verb`
+- `version`
 
 ## user vs username
 
