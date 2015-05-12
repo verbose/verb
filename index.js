@@ -118,9 +118,9 @@ Verb.prototype.copy = function(glob, dest, opts) {
 Verb.prototype.task = Verb.prototype.add;
 
 /**
- * Get the name of the current task-session. This is
- * used in plugins to lookup data or views created in
- * a task.
+ * Used inside plugins to get the name of the current
+ * task-session, which is used to get data or views created
+ * in a specific task.
  *
  * ```js
  * var id = verb.getTask();
@@ -128,7 +128,6 @@ Verb.prototype.task = Verb.prototype.add;
  * ```
  *
  * @return {String} `task` The name of the currently running task.
- * @api public
  */
 
 Verb.prototype.getTask = function() {
@@ -139,10 +138,11 @@ Verb.prototype.getTask = function() {
 };
 
 /**
- * Get a view collection by its singular-form `name`.
+ * Get a view collection by it's singular or plural
+ * name (e.g. "page" or "pages").
  *
  * ```js
- * var collection = verb.getCollection('page');
+ * var collection = verb.getCollection('pages');
  * // gets the `pages` collection
  * //=> {a: {}, b: {}, ...}
  * ```
@@ -165,14 +165,13 @@ Verb.prototype.getCollection = function(name) {
 };
 
 /**
- * Get a file from the current session.
+ * Used in plugins to get a file from the current session.
  *
  * ```js
  * var file = verb.getFile(file);
  * ```
  *
  * @return {Object} `file` Vinyl file object. Must have an `id` property.
- * @api public
  */
 
 Verb.prototype.getFile = function(file, id) {
@@ -189,7 +188,6 @@ Verb.prototype.getFile = function(file, id) {
  *
  * @param {Stream} `stream` Vinyl stream
  * @param {String} `id` Get the session `id` using `app.getTask()`
- * @api public
  */
 
 Verb.prototype.pushToStream = function(id, stream) {
@@ -206,7 +204,6 @@ Verb.prototype.pushToStream = function(id, stream) {
  *
  * @name .taskFiles
  * @return {Object} Get the files from the current task.
- * @api public
  */
 
 Object.defineProperty(Verb.prototype, 'taskFiles', {
@@ -218,8 +215,20 @@ Object.defineProperty(Verb.prototype, 'taskFiles', {
 });
 
 /**
- * Display a visual representation of the
- * difference between `a` and `b`
+ * Display a visual representation of the difference between
+ * two objects or two strings.
+ *
+ * ```js
+ * var doc = verb.views.docs['foo.md'];
+ * verb.render(doc, function(err, content) {
+ *   verb.diff(doc.orig, content);
+ * });
+ * ```
+ *
+ * @param {Object|String} `a`
+ * @param {Object|String} `b`
+ * @param {String} `methodName` Optionally specify a method name to use from [jsdiff]
+ * @api public
  */
 
 Verb.prototype.diff = function(a, b, method) {
