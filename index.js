@@ -31,6 +31,25 @@ extend(Verb.prototype, Task.prototype);
 Template.extend(Verb.prototype);
 
 /**
+ * Set application defaults that may be overridden by the user.
+ * This is a temporary method and should not be used.
+ *
+ * @param {String} `key`
+ * @param {*} `value`
+ * @api private
+ */
+
+Verb.prototype.defaults = function(key, value) {
+  if (typeof key === 'object') {
+    arguments[0] = {defaults: arguments[0]};
+  } else {
+    arguments[0] = 'defaults.' + arguments[0];
+  }
+  this.option.apply(this, arguments);
+  return this;
+};
+
+/**
  * Glob patterns or filepaths to source files.
  *
  * ```js
