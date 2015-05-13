@@ -216,7 +216,7 @@ Object.defineProperty(Verb.prototype, 'taskFiles', {
 
 /**
  * Display a visual representation of the difference between
- * two objects or two strings.
+ * two objects or strings.
  *
  * ```js
  * var doc = verb.views.docs['foo.md'];
@@ -227,7 +227,7 @@ Object.defineProperty(Verb.prototype, 'taskFiles', {
  *
  * @param {Object|String} `a`
  * @param {Object|String} `b`
- * @param {String} `methodName` Optionally specify a method name to use from [jsdiff]
+ * @param {String} `methodName` Optionally pass a [jsdiff] method name to use. The default is `diffJson`
  * @api public
  */
 
