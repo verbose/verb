@@ -14,10 +14,7 @@
   "bugs": {
     "url": "https://github.com/assemble/verb/issues"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/assemble/verb/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "files": [
     "index.js",
     "lib/"
