@@ -8,7 +8,6 @@ var toVinyl = require('to-vinyl');
 var Task = require('orchestrator');
 var vfs = require('vinyl-fs');
 
-var session = require('./lib/session');
 var stack = require('./lib/stack');
 var utils = require('./lib/utils');
 var init = require('./lib/init');
@@ -23,7 +22,6 @@ var init = require('./lib/init');
 function Verb() {
   Template.apply(this, arguments);
   Task.apply(this, arguments);
-  this.session = session;
   init(this);
 }
 
@@ -118,150 +116,6 @@ Verb.prototype.copy = function(glob, dest, opts) {
 Verb.prototype.task = Verb.prototype.add;
 
 /**
- * Used inside plugins to get the name of the current
- * task-session, which is used to get data or views created
- * in a specific task.
- *
- * ```js
- * var id = verb.getTask();
- * var views = verb.views[id];
- * ```
- *
- * @return {String} `task` The name of the currently running task.
- */
-
-Verb.prototype.getTask = function() {
-  var name = this.session.get('task');
-  return typeof name !== 'undefined'
-    ? 'task_' + name
-    : 'taskFile';
-};
-
-/**
- * Get a view collection by it's singular or plural
- * name (e.g. "page" or "pages").
- *
- * ```js
- * var collection = verb.getCollection('pages');
- * // gets the `pages` collection
- * //=> {a: {}, b: {}, ...}
- * ```
- *
- * @return {String} `name` Singular name of the collection to get
- * @api public
- */
-
-Verb.prototype.getCollection = function(name) {
-  if (typeof name === 'undefined') {
-    name = this.getTask();
-  }
-
-  if (this.views.hasOwnProperty(name)) {
-    return this.views[name];
-  }
-
-  name = this.inflections[name];
-  return this.views[name];
-};
-
-/**
- * Used in plugins to get a file from the current session.
- *
- * ```js
- * var file = verb.getFile(file);
- * ```
- *
- * @return {Object} `file` Vinyl file object. Must have an `id` property.
- */
-
-Verb.prototype.getFile = function(file, id) {
-  return this.getCollection(id)[file.id];
-};
-
-/**
- * Get a template from the current session, convert it to a vinyl
- * file, and push it into the stream.
- *
- * ```js
- * verb.pushToStream(file);
- * ```
- *
- * @param {Stream} `stream` Vinyl stream
- * @param {String} `id` Get the session `id` using `verb.getTask()`
- */
-
-Verb.prototype.pushToStream = function(id, stream) {
-  return utils.pushToStream(this.getCollection(id), stream, toVinyl);
-};
-
-/**
- * Get a template from the current session, convert it to a vinyl
- * file, and push it into the stream.
- *
- * ```js
- * .pipe(verb.renderFile())
- * ```
- *
- * @param {Object} `locals` Pass an options object, or locals to use as context for templates.
- * @return {Stream} Vinyl stream
- */
-
-Verb.prototype.renderFile = function(locals) {
-  var self = this;
-  return through.obj(function (file, enc, cb) {
-    if (file.isNull()) {
-      this.push(file);
-      return cb();
-    }
-    locals = merge({}, locals, file.locals);
-    locals.options = merge({}, self.options, locals.options);
-
-    if (utils.norender(self, file.ext, file, locals)) {
-      this.push(file);
-      return cb();
-    }
-
-    self.handle('onRender', file, function (err) {
-      if (err) {
-        stream.emit('error', new PluginError('renderFile', err));
-        return cb(err);
-      }
-    });
-
-    var stream = this;
-    file.render(locals, function (err, content) {
-      if (err) {
-        stream.emit('error', new PluginError('renderFile', err));
-        return cb(err);
-      }
-      file.contents = new Buffer(content);
-      stream.push(file);
-      return cb();
-    });
-  });
-};
-
-/**
- * `taskFiles` is a session-context-specific getter that
- * returns the collection of files from the current `task`.
- *
- * ```js
- * var taskFiles = verb.taskFiles;
- * ```
- *
- * @name .taskFiles
- * @return {Object} Get the files from the current task.
- */
-
-Object.defineProperty(Verb.prototype, 'taskFiles', {
-  configurable: true,
-  enumerable: true,
-  get: function () {
-    return this.views[this.inflections[this.getTask()]];
-  }
-});
-
-/**
  * Display a visual representation of the difference between
  * two objects or strings.
  *
@@ -309,21 +163,6 @@ Verb.prototype.diff = function(a, b, method) {
 Verb.prototype.run = function() {
   var tasks = arguments.length ? arguments : ['default'];
   this.start.apply(this, tasks);
-};
-
-/**
- * Wrapper around Task._runTask to enable `sessions`
- *
- * @param  {Object} `task` Task to run
- * @api private
- */
-
-Verb.prototype._runTask = function(task) {
-  var verb = this;
-  verb.session.run(function () {
-    verb.session.set('task', task.name);
-    Task.prototype._runTask.call(verb, task);
-  });
 };
 
 /**
