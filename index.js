@@ -4,12 +4,10 @@ var diff = require('diff');
 var chalk = require('chalk');
 var extend = require('lodash')._.extend;
 var Template = require('template');
-var toVinyl = require('to-vinyl');
 var Task = require('orchestrator');
 var vfs = require('vinyl-fs');
 
 var stack = require('./lib/stack');
-var utils = require('./lib/utils');
 var init = require('./lib/init');
 
 /**
@@ -37,7 +35,7 @@ Template.extend(Verb.prototype);
  * @api private
  */
 
-Verb.prototype.defaults = function(key, value) {
+Verb.prototype.defaults = function(key/*, value*/) {
   if (typeof key === 'object') {
     arguments[0] = {defaults: arguments[0]};
   } else {

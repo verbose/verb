@@ -113,7 +113,7 @@ _(WIP)_
 
 ### Task API
 
-### [.src](index.js#L62)
+### [.src](index.js#L60)
 
 Glob patterns or filepaths to source files.
 
@@ -128,7 +128,7 @@ Glob patterns or filepaths to source files.
 verb.src('src/*.hbs', {layout: 'default'})
 ```
 
-### [.dest](index.js#L78)
+### [.dest](index.js#L76)
 
 Specify a destination for processed files.
 
@@ -143,7 +143,7 @@ Specify a destination for processed files.
 verb.dest('dist')
 ```
 
-### [.copy](index.js#L97)
+### [.copy](index.js#L95)
 
 Copy a `glob` of files to the specified `dest`.
 
@@ -161,7 +161,7 @@ verb.task('assets', function() {
 });
 ```
 
-### [.task](index.js#L116)
+### [.task](index.js#L114)
 
 Define a Verb task.
 
@@ -179,7 +179,7 @@ verb.task('docs', function() {
 });
 ```
 
-### [.diff](index.js#L135)
+### [.diff](index.js#L133)
 
 Display a visual representation of the difference between two objects or strings.
 
@@ -198,7 +198,7 @@ verb.render(doc, function(err, content) {
 });
 ```
 
-### [.watch](index.js#L182)
+### [.watch](index.js#L180)
 
 Re-run the specified task(s) when a file changes.
 
