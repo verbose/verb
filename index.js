@@ -183,15 +183,62 @@ Verb.prototype.getFile = function(file, id) {
  * file, and push it into the stream.
  *
  * ```js
- * app.pushToStream(file);
+ * verb.pushToStream(file);
  * ```
  *
  * @param {Stream} `stream` Vinyl stream
- * @param {String} `id` Get the session `id` using `app.getTask()`
+ * @param {String} `id` Get the session `id` using `verb.getTask()`
  */
 
 Verb.prototype.pushToStream = function(id, stream) {
   return utils.pushToStream(this.getCollection(id), stream, toVinyl);
+};
+
+/**
+ * Get a template from the current session, convert it to a vinyl
+ * file, and push it into the stream.
+ *
+ * ```js
+ * .pipe(verb.renderFile())
+ * ```
+ *
+ * @param {Object} `locals` Pass an options object, or locals to use as context for templates.
+ * @return {Stream} Vinyl stream
+ */
+
+Verb.prototype.renderFile = function(locals) {
+  var self = this;
+  return through.obj(function (file, enc, cb) {
+    if (file.isNull()) {
+      this.push(file);
+      return cb();
+    }
+    locals = merge({}, locals, file.locals);
+    locals.options = merge({}, self.options, locals.options);
+
+    if (utils.norender(self, file.ext, file, locals)) {
+      this.push(file);
+      return cb();
+    }
+
+    self.handle('onRender', file, function (err) {
+      if (err) {
+        stream.emit('error', new PluginError('renderFile', err));
+        return cb(err);
+      }
+    });
+
+    var stream = this;
+    file.render(locals, function (err, content) {
+      if (err) {
+        stream.emit('error', new PluginError('renderFile', err));
+        return cb(err);
+      }
+      file.contents = new Buffer(content);
+      stream.push(file);
+      return cb();
+    });
+  });
 };
 
 /**
