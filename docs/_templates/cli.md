@@ -12,6 +12,8 @@ $ verb --foo
 
 ## Commands
 
+- `--nocheck`: don't lint or correct template helpers or variables. See [conflicts].
+
 ### Data store
 
 Verb offers a few methods for persisting and getting "default" config data from the command line. Any values set from the command line are saved in a JSON file in
