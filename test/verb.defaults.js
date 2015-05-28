@@ -1,5 +1,5 @@
 /*!
- * verb <https://github.com/assemble/verb>
+ * verb <https://github.com/verbose/verb>
  *
  * Copyright (c) 2014-2015, Jon Schlinkert.
  * Licensed under the MIT License.

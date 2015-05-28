@@ -60,7 +60,7 @@ describe('built-in helpers', function () {
     it('should use the `badge` helper:', function (cb) {
       verb.render('{%= badge("travis") %}', function (err, content) {
         if (err) console.log(err);
-        content.should.equal(' [![Build Status](https://travis-ci.org/assemble/verb.svg)](https://travis-ci.org/assemble/verb) ');
+        content.should.equal(' [![Build Status](https://travis-ci.org/verbose/verb.svg)](https://travis-ci.org/verbose/verb) ');
         cb();
       });
     });

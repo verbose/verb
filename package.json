@@ -2,17 +2,17 @@
   "name": "verb",
   "description": "Documentation generator for GitHub projects. Extremely powerful, easy to use, can generate anything from API docs to a readme, for projects big or small.",
   "version": "0.8.6",
-  "homepage": "https://github.com/assemble/verb",
+  "homepage": "https://github.com/verbose/verb",
   "author": {
     "name": "Jon Schlinkert",
     "url": "https://github.com/jonschlinkert"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/assemble/verb.git"
+    "url": "git://github.com/verbose/verb.git"
   },
   "bugs": {
-    "url": "https://github.com/assemble/verb/issues"
+    "url": "https://github.com/verbose/verb/issues"
   },
   "license": "MIT",
   "files": [
@@ -27,6 +27,8 @@
     "test": "mocha"
   },
   "dependencies": {
+    "ansi-bold": "^0.1.1",
+    "ansi-cyan": "^0.1.1",
     "arr-union": "^2.0.1",
     "async-helper-base": "^0.2.0",
     "base-loader": "^0.1.0",

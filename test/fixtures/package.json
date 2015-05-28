@@ -2,14 +2,14 @@
   "name": "foo",
   "description": "bar.",
   "version": "25.0",
-  "homepage": "https://github.com/assemble/verb",
+  "homepage": "https://github.com/verbose/verb",
   "author": {
     "name": "Jon Schlinkert",
     "url": "https://github.com/jonschlinkert"
   },
-  "repository": "assemble/verb",
+  "repository": "verbose/verb",
   "bugs": {
-    "url": "https://github.com/assemble/verb/issues"
+    "url": "https://github.com/verbose/verb/issues"
   },
   "license": "MIT",
   "files": [
