@@ -8,6 +8,7 @@ var through = require('through2');
 var verb = require('./');
 
 verb.disable('debugEngine');
+verb.disable('reflinks');
 
 verb.task('readme', function () {
   verb.src('.verb.md')
@@ -15,7 +16,7 @@ verb.task('readme', function () {
 });
 
 verb.task('docs', function () {
-  verb.src('docs/_templates/*.md')
+  verb.src('docs/_templates/[e-g]*.md')
     .pipe(verb.dest('test/actual'))
 });
 
