@@ -40,6 +40,7 @@
     "export-files": "^2.0.1",
     "extend-shallow": "^1.1.2",
     "get-value": "^1.1.4",
+    "gfm-code-blocks": "^0.3.0",
     "git-user-name": "^1.1.2",
     "globby": "^2.0.0",
     "gulp-drafts": "^0.2.0",
