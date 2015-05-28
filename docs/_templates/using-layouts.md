@@ -8,12 +8,12 @@ In your verbfile.js:
 var verb = require('verb');
 
 // register a layout with verb.
-verb.layout('default.md', {content: '# {%= name %}\n\n<<% body %>>\n'});
+verb.layout('default.md', {content: '# {%%= name %}\n\n<<%% body %>>\n'});
 
 // register a page, and use the layout by adding the `layout` property.
 verb.page('api.md', {content: 'API docs...', layout: 'default.md'});
 
-//=> '# {%= name %}\n\nAPI docs...\n'
+//=> '# {%%= name %}\n\nAPI docs...\n'
 ```
 
 **What's with the wierd `body` syntax?**

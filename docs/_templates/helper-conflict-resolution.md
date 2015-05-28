@@ -36,7 +36,7 @@ By way of example, let's see what happens when the following occurs:
 // `context` and `helpers` are passed to an engine 
 // on the engine's `options` object
 
-var options = {context: {foo: 'bar'}, helpers: {foo: [function]}}''
+var options = {context: {foo: 'bar'}, helpers: {foo: [function]}}
 ```
 
 At render-time, these objects are passed to the engine separately, then, since the engine needs all of these values on one object (as context), the (Type 2) engine merges them together just before rendering a template. (This is something an implementor would need to do when implementing an engine. Feel free to follow the pattern used by [engine-lodash]).

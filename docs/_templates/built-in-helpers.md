@@ -16,7 +16,7 @@ Node.js's [console methods][console] are exposed as helpers.
 **Helper example**
 
 ```js
-{%= console.log("foo") %}
+{%%= console.log("foo") %}
 ```
 
 ### [template-helpers]
@@ -26,7 +26,7 @@ All helpers from the [template-helpers] library are available to be used in your
 **Helper example**
 
 ```js
-{%= embed("example.js") %}
+{$%= embed("example.js") %}
 ```
 
 Note that the path helpers are exposed on the `path` object to avoid potential conflicts with other commonly-named path helpers, such as `filename`, etc.
@@ -34,7 +34,7 @@ Note that the path helpers are exposed on the `path` object to avoid potential c
 **Example path helper**
 
 ```js
-{%= path.basename(dest.path) %}
+{%%= path.basename(dest.path) %}
 ```
 
 ### [markdown-utils]
@@ -44,7 +44,7 @@ All methods from [markdown-utils] expose as helpers on the `mdu` object.
 **Example markdown helper**
 
 ```js
-{%= mdu.link("verb", "https://github.com/verbose/verb", "awesome") %}
+{%%= mdu.link("verb", "https://github.com/verbose/verb", "awesome") %}
 //=> [verb](https://github.com/verbose/verb "awesome")
 ```
 
