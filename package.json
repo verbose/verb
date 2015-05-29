@@ -85,7 +85,7 @@
     "remarkable": "^1.6.0",
     "stringify-travis-url": "^0.1.0",
     "template": "^0.14.3",
-    "template-helper-apidocs": "^0.4.2",
+    "template-helper-apidocs": "^0.4.3",
     "template-helpers": "^0.3.2",
     "template-toc": "^0.3.3",
     "through2": "^0.6.5",
