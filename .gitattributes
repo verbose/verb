@@ -1,2 +1,5 @@
-* text=auto
-/test/** text eol=lf
+* text=lf
+*.jpg binary
+*.gif binary
+*.png binary
+*.jpeg binary
