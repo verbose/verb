@@ -1,6 +1,6 @@
 {
   "name": "verb",
-  "description": "Documentation generator for GitHub projects. Extremely powerful, easy to use, can generate anything from API docs to a readme, for projects big or small.",
+  "description": "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.",
   "version": "0.8.8",
   "homepage": "https://github.com/verbose/verb",
   "author": {
@@ -84,7 +84,6 @@
     "relative": "^3.0.1",
     "relative-dest": "^0.1.0",
     "remarkable": "^1.6.0",
-    "rethrow": "^0.2.1",
     "stringify-travis-url": "^0.1.0",
     "template": "^0.14.3",
     "template-helper-apidocs": "^0.4.4",
