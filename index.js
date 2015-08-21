@@ -2,9 +2,9 @@
 
 var diff = require('diff');
 var chalk = require('chalk');
-var extend = require('lodash')._.extend;
+var extend = require('extend-shallow');
 var Template = require('template');
-var Task = require('orchestrator');
+var Composer = require('composer').Composer;
 var vfs = require('vinyl-fs');
 
 var stack = require('./lib/stack');
@@ -19,11 +19,11 @@ var init = require('./lib/init');
 
 function Verb() {
   Template.apply(this, arguments);
-  Task.apply(this, arguments);
+  Composer.apply(this, arguments);
   init(this);
 }
 
-extend(Verb.prototype, Task.prototype);
+extend(Verb.prototype, Composer.prototype);
 Template.extend(Verb.prototype);
 
 /**
@@ -97,23 +97,6 @@ Verb.prototype.copy = function(glob, dest, opts) {
 };
 
 /**
- * Define a Verb task.
- *
- * ```js
- * verb.task('docs', function() {
- *   verb.src(['.verb.md', 'docs/*.md'])
- *     .pipe(verb.dest('./'));
- * });
- * ```
- *
- * @param {String} `name` Task name
- * @param {Function} `fn`
- * @api public
- */
-
-Verb.prototype.task = Verb.prototype.add;
-
-/**
  * Display a visual representation of the difference between
  * two objects or strings.
  *
@@ -145,46 +128,6 @@ Verb.prototype.diff = function(a, b, method) {
     process.stderr.write(color(res.value));
   });
   console.log('\n');
-};
-
-/**
- * Run an array of tasks.
- *
- * ```js
- * verb.run(['foo', 'bar']);
- * ```
- *
- * @param {Array} `tasks`
- * @api private
- */
-
-Verb.prototype.run = function() {
-  var tasks = arguments.length ? arguments : ['default'];
-  this.start.apply(this, tasks);
-};
-
-/**
- * Re-run the specified task(s) when a file changes.
- *
- * ```js
- * verb.task('watch', function() {
- *   verb.watch('docs/*.md', ['docs']);
- * });
- * ```
- *
- * @param  {String|Array} `glob` Filepaths or glob patterns.
- * @param  {Function} `fn` Task(s) to watch.
- * @api public
- */
-
-Verb.prototype.watch = function(glob, opts, fn) {
-  if (Array.isArray(opts) || typeof opts === 'function') {
-    fn = opts; opts = null;
-  }
-  if (!Array.isArray(fn)) return vfs.watch(glob, opts, fn);
-  return vfs.watch(glob, opts, function () {
-    this.start.apply(this, fn);
-  }.bind(this));
 };
 
 /**
