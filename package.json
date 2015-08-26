@@ -1,7 +1,7 @@
 {
   "name": "verb",
   "description": "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "homepage": "https://github.com/verbose/verb",
   "author": {
     "name": "Jon Schlinkert",
