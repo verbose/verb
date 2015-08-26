@@ -4,7 +4,7 @@ var diff = require('diff');
 var chalk = require('chalk');
 var extend = require('extend-shallow');
 var Template = require('template');
-var Composer = require('composer').Composer;
+var Composer = require('composer');
 var vfs = require('vinyl-fs');
 
 var stack = require('./lib/stack');
@@ -19,7 +19,7 @@ var init = require('./lib/init');
 
 function Verb() {
   Template.apply(this, arguments);
-  Composer.apply(this, arguments);
+  Composer.call(this, 'verb');
   init(this);
 }
 

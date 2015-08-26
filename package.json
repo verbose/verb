@@ -35,7 +35,7 @@
     "async-helper-base": "^0.2.0",
     "base-loader": "^0.1.0",
     "chalk": "^1.1.1",
-    "composer": "^0.3.0",
+    "composer": "^0.4.0",
     "computed-property": "^0.1.2",
     "cwd": "^0.8.0",
     "data-store": "^0.8.2",
