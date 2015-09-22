@@ -11,45 +11,40 @@ var outpath = path.join(__dirname, './out-fixtures');
 describe('app output stream', function() {
   describe('dest()', function() {
     beforeEach(function (done) {
+      app = new App();
       rimraf(outpath, done);
     });
     afterEach(function (done) {
       rimraf(outpath, done);
     });
 
-    describe('minimal config - enabled', function () {
-      beforeEach(function () {
-        app = new App();
+    it('should return a stream', function (done) {
+      var stream = app.dest(path.join(__dirname, 'fixtures/'));
+      should.exist(stream);
+      should.exist(stream.on);
+      done();
+    });
+
+    it('should return an output stream that writes files', function (done) {
+      var instream = app.src(path.join(__dirname, 'fixtures/copy/*.txt'));
+      var outstream = app.dest(outpath);
+      instream.pipe(outstream);
+
+      outstream.on('error', done);
+      outstream.on('data', function (file) {
+        // data should be re-emitted correctly
+        should.exist(file);
+        should.exist(file.path);
+        should.exist(file.contents);
+        path.join(file.path, '').should.equal(path.join(outpath, 'example.txt'));
+        String(file.contents).should.equal('this is a test');
       });
-
-      it('should return a stream', function (done) {
-        var stream = app.dest(path.join(__dirname, 'fixtures/'));
-        should.exist(stream);
-        should.exist(stream.on);
-        done();
-      });
-
-      it('should return an output stream that writes files', function (done) {
-        var instream = app.src(path.join(__dirname, 'fixtures/copy/*.txt'));
-        var outstream = app.dest(outpath);
-        instream.pipe(outstream);
-
-        outstream.on('error', done);
-        outstream.on('data', function (file) {
-          // data should be re-emitted correctly
-          should.exist(file);
-          should.exist(file.path);
-          should.exist(file.contents);
-          path.join(file.path, '').should.equal(path.join(outpath, 'example.txt'));
-          String(file.contents).should.equal('this is a test');
-        });
-        outstream.on('end', function () {
-          fs.readFile(path.join(outpath, 'example.txt'), function (err, contents) {
-            should.not.exist(err);
-            should.exist(contents);
-            String(contents).should.equal('this is a test');
-            done();
-          });
+      outstream.on('end', function () {
+        fs.readFile(path.join(outpath, 'example.txt'), function (err, contents) {
+          should.not.exist(err);
+          should.exist(contents);
+          String(contents).should.equal('this is a test');
+          done();
         });
       });
 
@@ -116,7 +111,7 @@ describe('app output stream', function() {
 
     });
 
-    describe('minimal config - disabled', function () {
+    describe('exts', function () {
       beforeEach(function () {
         app = new App();
         app.set('ext', '.txt');
