@@ -6,14 +6,11 @@
 
 var path = require('path');
 var store = require('data-store');
-var Locals = require('./lib/locals');
-var loader = require('assemble-loader');
-var includes = require('readme-includes');
-var badges = require('readme-badges');
 var Templates = require('templates');
 var Composer = require('composer');
 var proto = Composer.prototype;
 var lib = require('./lib');
+var Locals = lib.locals;
 var utils = lib.utils;
 
 /**
@@ -32,11 +29,10 @@ function Verb(options) {
   if (!(this instanceof Verb)) {
     return new Verb(options);
   }
-  this.isVerb = true;
   Templates.apply(this, arguments);
   Composer.apply(this, arguments);
   this.options = options || {};
-  this.initVerb(this, this.options);
+  this.initVerb(this.options);
 }
 
 Templates.inherit(Verb, Composer);
@@ -52,18 +48,34 @@ Templates.extend(Verb, {
    * Initialize Verb defaults
    */
 
-  initVerb: function(app, opts) {
+  initVerb: function(opts) {
     this.store = store('verb', opts.store);
     this.locals = new Locals(this.cache.data.verb);
 
     this.initEngines(this);
     this.initMiddleware(this);
-    this.initViewTypes(this);
+    this.initListeners(this);
 
-    this.option('view', function (view) {
-      if (view.src) view.path = view.src;
-    });
+    lib.helpers(this);
+    lib.views(this);
+  },
 
+  /**
+   * Initialize the user's config.
+   */
+
+  initUserConfig: function () {
+    lib.config(this, this.locals.cache);
+  },
+
+  /**
+   * Initialize event listeners. The default listeners
+   * are setup to listen for events that indicate if
+   * something needs to be re-initialized based on user
+   * options.
+   */
+
+  initListeners: function (app) {
     this.on('option', function (key) {
       utils.reloadViews(app, key);
     });
@@ -71,8 +83,6 @@ Templates.extend(Verb, {
     this.on('use', function () {
       utils.reloadViews(app);
     });
-
-    lib.config(app, app.locals.cache);
   },
 
   /**
@@ -96,121 +106,6 @@ Templates.extend(Verb, {
   initMiddleware: function (app) {
     this.onLoad(/\.md$/, function (view, next) {
       utils.matter.parse(view, next);
-    });
-  },
-
-  /**
-   * Default `viewTypes`
-   *  | includes
-   *  | layouts
-   *  | pages
-   *  | files
-   */
-
-  initViewTypes: function () {
-    // this.use(loader());
-    lib.helpers(this);
-
-    this
-      .use(loader())
-      .use(function (app) {
-        return function (collection) {
-          if (!collection.isCollection) return collection;
-          var fn = this.getView;
-
-          this.getView = function (name) {
-            return fn.apply(this, arguments) || this.loadView(name, {
-              ext: '.md'
-            });
-          };
-          return this;
-        };
-      });
-
-    this.data({
-      author: {name: 'Jon Schlinkert'},
-      twitter: {username: 'jonschlinkert'},
-      github: {username: 'jonschlinkert'},
-      runner: {
-        name: this.get('cache.data.name'),
-        url: this.get('cache.data.repository'),
-      }
-    });
-
-    this.create('includes', {
-      viewType: ['partial'],
-      renameKey: function (key) {
-        var cwd = this.options.cwd;
-        if (!cwd || key.indexOf(cwd) === -1) {
-          return key;
-        }
-        var len = cwd.length + 1;
-        return key.slice(len);
-      },
-      cwd: includes,
-      engine: 'md',
-    });
-
-    this.create('badges', {
-      viewType: ['partial'],
-      renameKey: function (key) {
-        var cwd = this.options.cwd;
-        if (!cwd || key.indexOf(cwd) === -1) {
-          return key;
-        }
-        var len = cwd.length + 1;
-        return key.slice(len);
-      },
-      cwd: badges,
-      engine: 'md'
-    });
-
-    this.create('docs', {
-      viewType: ['partial'],
-      renameKey: utils.basename,
-      engine: 'md'
-    });
-
-    this.create('layouts', {
-      viewType: ['layout'],
-      renameKey: utils.basename,
-      engine: 'md'
-    });
-
-    this.include('npm', {
-      content: '[![total downloads](https://img.shields.io/npm/dt/{%= name %}.svg)](https://www.npmjs.com/package/{%= name %})'
-    });
-
-    this.include('license', {
-      content: 'Copyright © 2015 {%= author.name %}\nReleased under the {%= license %} license.'
-    });
-
-    this.create('files');
-    console.log(this._.helpers)
-  },
-
-  // userConfig: function () {
-  //   // this.helpers(this.store.get('helpers'));
-  //   // this.helpers(this.local.get('helpers'));
-
-  //   // this.asyncHelpers(this.store.get('asyncHelpers'));
-  //   // this.asyncHelpers(this.local.get('asyncHelpers'));
-
-  //   // console.log(this._.helpers)
-
-  //   // var len = paths.length;
-  //   // while(len--) {
-  //   //   var fp = tryRead(path.join(paths[len], name));
-  //   //   if (fp) return fp;
-  //   // }
-  // },
-
-  config: function (name, fn) {
-    var self = this;
-    fn = fn || utils.identity;
-    var config = this.get('cache.data.verb.' + name);
-    return utils.resolveConfig(config, function (key, val) {
-      fn(key, val(self.options));
     });
   },
 
