@@ -1,16 +1,10 @@
 {
-  "name": "verb",
+  "name": "verb2",
   "description": "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.",
   "version": "0.8.8",
-  "homepage": "https://github.com/verbose/verb",
-  "author": {
-    "name": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/verbose/verb.git"
-  },
+  "homepage": "https://github.com/verbose/verb2",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "verbose/verb2",
   "bugs": {
     "url": "https://github.com/verbose/verb/issues"
   },
@@ -27,82 +21,49 @@
     "test": "mocha"
   },
   "dependencies": {
-    "ansi-bold": "^0.1.1",
-    "ansi-cyan": "^0.1.1",
-    "ansi-red": "^0.1.1",
-    "ansi-yellow": "^0.1.1",
-    "arr-union": "^3.0.0",
-    "async-helper-base": "^0.2.0",
-    "base-loader": "^0.1.0",
-    "chalk": "^1.1.1",
-    "composer": "^0.3.0",
-    "computed-property": "^0.1.2",
-    "cwd": "^0.8.0",
-    "data-store": "^0.8.2",
-    "diff": "^2.0.2",
-    "engine-lodash": "^0.8.0",
-    "event-stream": "^3.3.1",
+    "assemble-loader": "^0.1.3",
+    "composer": "^0.4.1",
+    "composer-runtimes": "^0.3.1",
+    "data-store": "^0.9.0",
+    "dest": "^0.2.1",
+    "engine-handlebars": "^0.8.0",
+    "expand-tilde": "^1.2.0",
     "export-files": "^2.1.0",
-    "extend-shallow": "^2.0.1",
-    "get-value": "^1.1.5",
-    "gfm-code-blocks": "^0.3.0",
-    "git-user-name": "^1.1.2",
-    "globby": "^2.1.0",
-    "gulp-drafts": "^0.2.0",
-    "helper-changelog": "^0.1.0",
-    "helper-codelinks": "^0.1.2",
-    "helper-copyright": "^1.4.0",
-    "helper-coverage": "^0.1.2",
-    "helper-date": "^0.2.2",
-    "helper-license": "^0.2.1",
-    "helper-reflinks": "^1.4.1",
-    "helper-related": "^0.10.0",
-    "helper-resolve": "^0.3.1",
-    "helper-toc": "^0.2.0",
-    "init-file-loader": "^0.1.1",
-    "is-plain-object": "^2.0.1",
-    "is-true": "^0.1.0",
-    "js-comments": "^0.5.4",
-    "lint-templates": "^0.1.2",
-    "lodash": "^3.10.1",
-    "log-symbols": "^1.0.2",
-    "logging-helpers": "^0.4.0",
-    "markdown-toc": "^0.11.5",
+    "global-modules": "^0.2.0",
+    "lazy-cache": "^0.2.3",
+    "map-config": "^0.1.0",
     "markdown-utils": "^0.7.1",
-    "micromatch": "^2.2.0",
-    "middleware-utils": "^0.1.4",
-    "parse-author": "^0.2.0",
-    "parse-copyright": "^0.4.0",
-    "parse-filepath": "^0.6.3",
-    "parse-github-url": "^0.1.1",
-    "parse-gitignore": "^0.2.0",
+    "mixin-deep": "^1.1.3",
     "parser-front-matter": "^1.2.5",
-    "plugin-error": "^0.1.2",
-    "pretty-remarkable": "^0.1.8",
     "readme-badges": "^0.3.3",
     "readme-includes": "^0.2.9",
-    "relative": "^3.0.1",
-    "relative-dest": "^0.1.0",
-    "remarkable": "^1.6.0",
-    "stringify-travis-url": "^0.1.0",
-    "template": "^0.14.3",
-    "template-helper-apidocs": "^0.4.4",
-    "template-helpers": "^0.3.2",
-    "template-toc": "^0.3.3",
+    "src-stream": "^0.1.1",
+    "stream-combiner": "^0.2.2",
+    "templates": "jonschlinkert/templates#collections",
     "through2": "^2.0.0",
-    "update-copyright": "^0.1.0",
-    "vinyl-fs": "^1.0.0",
-    "year": "^0.2.1"
+    "to-vinyl": "^0.2.0",
+    "vinyl": "wearefractal/vinyl",
+    "vinyl-fs": "wearefractal/vinyl-fs"
   },
   "devDependencies": {
+    "buffer-equal": "0.0.1",
     "consolidate": "^0.13.1",
+    "engine-base": "^0.1.2",
+    "event-stream": "^3.3.1",
+    "for-own": "^0.1.3",
+    "get-value": "^1.2.1",
+    "globby": "^3.0.1",
+    "graceful-fs": "^4.1.2",
+    "gulp": "^3.9.0",
     "gulp-istanbul": "^0.10.0",
     "gulp-jshint": "^1.11.2",
     "gulp-mocha": "^2.1.3",
-    "gulp-util": "^3.0.6",
-    "handlebars": "^3.0.3",
+    "is-buffer": "^1.0.2",
     "jshint-stylish": "^2.0.1",
+    "minimist": "^1.2.0",
     "mocha": "*",
+    "object.omit": "^2.0.0",
+    "rimraf": "^2.4.3",
     "should": "*",
     "swig": "^1.4.2"
   },
@@ -141,6 +102,37 @@
         "support"
       ]
     },
+    "collections": {
+      "docs": {
+        "options": {
+          "cwd": "fixtures/foo"
+        },
+        "set": {
+          "a.b.c": "d"
+        }
+      },
+      "includes": {
+        "options": {
+          "cwd": "fixtures/bar"
+        }
+      },
+      "badges": {
+        "options": {
+          "cwd": "fixtures/baz"
+        },
+        "addViews": {
+          "foo": "this is a badge"
+        }
+      }
+    },
+    "helpers": {
+      "helper": {
+        "whatever": "@/helper-related"
+      },
+      "asyncHelper": {
+        "whatever": "@/helper-related"
+      }
+    },
     "related": {
       "list": [
         "composer",
@@ -149,14 +141,12 @@
         "engine"
       ]
     },
-    "reflinks": {
-      "list": [
-        "jsdiff",
-        "option-cache",
-        "template",
-        "plasma",
-        "config-cache"
-      ]
-    }
+    "reflinks": [
+      "jsdiff",
+      "option-cache",
+      "template",
+      "plasma",
+      "config-cache"
+    ]
   }
 }
