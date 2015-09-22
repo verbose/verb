@@ -6,7 +6,7 @@
 
 var path = require('path');
 var store = require('data-store');
-var Local = require('./lib/local');
+var Locals = require('./lib/locals');
 var loader = require('assemble-loader');
 var includes = require('readme-includes');
 var badges = require('readme-badges');
@@ -54,7 +54,7 @@ Templates.extend(Verb, {
 
   initVerb: function(app, opts) {
     this.store = store('verb', opts.store);
-    this.local = new Local(this.cache.data.verb);
+    this.locals = new Locals(this.cache.data.verb);
 
     // console.log(this.local.locals)
 
@@ -207,6 +207,8 @@ Templates.extend(Verb, {
       return '\n' + keys.join('\n');
     });
 
+    this.asyncHelper('related', require('helper-related'));
+
     this.asyncHelper('trim', function (str) {
       return str.trim();
     });
@@ -219,10 +221,10 @@ Templates.extend(Verb, {
 
     });
 
-    lib.config(this, this.local.locals);
+    lib.config(this, this.locals.cache);
   },
 
-  local: function (key) {
+  locals: function (key) {
     return this.get('cache.data.verb.' + key);
   },
 
