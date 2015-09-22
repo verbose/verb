@@ -56,8 +56,6 @@ Templates.extend(Verb, {
     this.store = store('verb', opts.store);
     this.locals = new Locals(this.cache.data.verb);
 
-    // console.log(this.local.locals)
-
     this.initEngines(this);
     this.initMiddleware(this);
     this.initViewTypes(this);
@@ -73,6 +71,8 @@ Templates.extend(Verb, {
     this.on('use', function () {
       utils.reloadViews(app);
     });
+
+    lib.config(app, app.locals.cache);
   },
 
   /**
@@ -109,7 +109,7 @@ Templates.extend(Verb, {
 
   initViewTypes: function () {
     // this.use(loader());
-    this.defaultHelpers();
+    lib.helpers(this);
 
     this
       .use(loader())
@@ -127,19 +127,14 @@ Templates.extend(Verb, {
         };
       });
 
-    this.data('author', {
-      name: 'Jon Schlinkert'
-    });
-    this.data('twitter', {
-      username: 'jonschlinkert'
-    });
-    this.data('github', {
-      username: 'jonschlinkert'
-    });
-
-    this.data('runner', {
-      name: this.get('cache.data.name'),
-      url: this.get('cache.data.repository.url'),
+    this.data({
+      author: {name: 'Jon Schlinkert'},
+      twitter: {username: 'jonschlinkert'},
+      github: {username: 'jonschlinkert'},
+      runner: {
+        name: this.get('cache.data.name'),
+        url: this.get('cache.data.repository'),
+      }
     });
 
     this.create('includes', {
@@ -159,7 +154,10 @@ Templates.extend(Verb, {
     this.create('badges', {
       viewType: ['partial'],
       renameKey: function (key) {
-        var cwd = this.options.cwd || '';
+        var cwd = this.options.cwd;
+        if (!cwd || key.indexOf(cwd) === -1) {
+          return key;
+        }
         var len = cwd.length + 1;
         return key.slice(len);
       },
@@ -183,49 +181,12 @@ Templates.extend(Verb, {
       content: '[![total downloads](https://img.shields.io/npm/dt/{%= name %}.svg)](https://www.npmjs.com/package/{%= name %})'
     });
 
+    this.include('license', {
+      content: 'Copyright © 2015 {%= author.name %}\nReleased under the {%= license %} license.'
+    });
+
     this.create('files');
-  },
-
-  defaultHelpers: function () {
-    this.helper('date', function () {
-      return new Date();
-    });
-
-    var mdu = require('markdown-utils');
-    this.helperGroup('mdu', mdu);
-
-    this.helper('log', function (msg) {
-      console.log.apply(console, arguments);
-    });
-
-    this.helper('related', function (keys) {
-      var url = 'https://www.npmjs.com/package/';
-      keys = utils.arrayify(keys);
-      keys.forEach(function (key, i) {
-        keys[i] = '+ ' + mdu.link(key, url + key);
-      });
-      return '\n' + keys.join('\n');
-    });
-
-    this.asyncHelper('related', require('helper-related'));
-
-    this.asyncHelper('trim', function (str) {
-      return str.trim();
-    });
-
-    this.helper('license', function () {
-
-    });
-
-    this.helper('copyright', function () {
-
-    });
-
-    lib.config(this, this.locals.cache);
-  },
-
-  locals: function (key) {
-    return this.get('cache.data.verb.' + key);
+    console.log(this._.helpers)
   },
 
   // userConfig: function () {
