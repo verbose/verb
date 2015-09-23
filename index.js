@@ -50,14 +50,15 @@ Templates.extend(Verb, {
 
   initVerb: function(opts) {
     this.store = store('verb', opts.store);
-    this.locals = new Locals(this.cache.data.verb);
-
     this.initEngines(this);
     this.initMiddleware(this);
     this.initListeners(this);
-
     lib.helpers(this);
     lib.views(this);
+
+    this.locals = new Locals(this.cache.data.verb);
+    this.questions = utils.questions();
+    this.initUserConfig();
   },
 
   /**
@@ -107,6 +108,28 @@ Templates.extend(Verb, {
     this.onLoad(/\.md$/, function (view, next) {
       utils.matter.parse(view, next);
     });
+  },
+
+  ask: function (locals) {
+    var ctx = utils.merge({}, this.cache.data, locals || {});
+    var ask = utils.ask({
+      questions: this.questions,
+      store: this.store,
+      data: ctx
+    });
+
+    return function () {
+      return ask.apply(ask, arguments);
+    }
+  },
+
+  /**
+   * Set a question to ask at a later point.
+   */
+
+  question: function () {
+    this.questions.set.apply(this.questions, arguments);
+    return this;
   },
 
   /**

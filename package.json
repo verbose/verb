@@ -21,6 +21,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "ask-once": "^0.4.3",
     "assemble-loader": "^0.1.3",
     "composer": "^0.4.1",
     "composer-runtimes": "^0.3.1",
@@ -28,12 +29,13 @@
     "dest": "^0.2.1",
     "engine-handlebars": "^0.8.0",
     "export-files": "^2.1.0",
+    "helper-reflinks": "^1.4.1",
     "helper-related": "^0.10.0",
     "lazy-cache": "^0.2.3",
     "map-config": "^0.1.0",
-    "markdown-utils": "^0.7.1",
     "mixin-deep": "^1.1.3",
     "parser-front-matter": "^1.2.5",
+    "question-cache": "^0.3.0",
     "readme-badges": "^0.3.3",
     "readme-includes": "^0.2.9",
     "src-stream": "^0.1.1",
@@ -100,29 +102,6 @@
       "ignore": [
         "support"
       ]
-    },
-    "collections": {
-      "docs": {
-        "options": {
-          "cwd": "fixtures/foo"
-        },
-        "set": {
-          "a.b.c": "d"
-        }
-      },
-      "includes": {
-        "options": {
-          "cwd": "fixtures/bar"
-        }
-      },
-      "badges": {
-        "options": {
-          "cwd": "fixtures/baz"
-        },
-        "addViews": {
-          "foo": "this is a badge"
-        }
-      }
     },
     "helpers": {
       "helper": {
