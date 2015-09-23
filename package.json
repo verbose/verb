@@ -40,7 +40,7 @@
     "readme-includes": "^0.2.9",
     "src-stream": "^0.1.1",
     "stream-combiner": "^0.2.2",
-    "templates": "jonschlinkert/templates#collections",
+    "templates": "^0.1.26",
     "through2": "^2.0.0",
     "to-vinyl": "^0.2.0",
     "vinyl": "wearefractal/vinyl",
