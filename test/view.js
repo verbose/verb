@@ -5,7 +5,9 @@ var path = require('path');
 var assert = require('assert');
 var Stream = require('stream');
 var es = require('event-stream');
-var View = require('../').View;
+var support = require('./support');
+var App = support.resolve();
+var View = App.View;
 var view;
 
 describe('View', function () {
@@ -173,9 +175,7 @@ describe('View', function () {
       view = new View({path: 'foo', contents: 'a b c', layout: 'default'});
       assert(view.layout === 'default');
     });
-  });
 
-  describe('compile', function () {
     it('should add a compiled function to `view.fn`', function () {
       view = new View({path: 'foo', contents: 'a <%= name %> z'});
       view.compile();
@@ -192,16 +192,7 @@ describe('View', function () {
       });
     });
 
-    it('should render a template', function (done) {
-      view = new View({path: 'foo', contents: 'a <%= name %> z'});
-      view.render({name: 'Halle'}, function (err, res) {
-        if (err) return done(err);
-        assert(res.contents.toString() === 'a Halle z');
-        done();
-      });
-    });
-
-    it('should render fn using data passed on the constructor', function (done) {
+    it('should render `fn` using data passed on the constructor', function (done) {
       view = new View({
         path: 'foo',
         contents: 'a <%= name %> z',
@@ -214,6 +205,17 @@ describe('View', function () {
       view.render(function (err, res) {
         if (err) return done(err);
         assert(res.contents.toString() === 'a Brooke z');
+        done();
+      });
+    });
+  });
+
+  describe('render', function () {
+    it('should render a template', function (done) {
+      view = new View({path: 'foo', contents: 'a <%= name %> z'});
+      view.render({name: 'Halle'}, function (err, res) {
+        if (err) return done(err);
+        assert(res.contents.toString() === 'a Halle z');
         done();
       });
     });
@@ -258,15 +260,15 @@ describe('View', function() {
   describe('isVinyl()', function() {
     it('should return true on a vinyl object', function(done) {
       var view = new View();
-      View.isVinyl(view).should.equal(true);
+      assert(View.isVinyl(view) === true);
       done();
     });
     it('should return false on a normal object', function(done) {
-      View.isVinyl({}).should.equal(false);
+      assert(View.isVinyl({}) === false);
       done();
     });
     it('should return false on a null object', function(done) {
-      View.isVinyl({}).should.equal(false);
+      assert(View.isVinyl({}) === false);
       done();
     });
   });

@@ -1,5 +1,6 @@
 require('should');
-var App = require('..');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('collection.option()', function () {

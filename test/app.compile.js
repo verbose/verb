@@ -1,6 +1,7 @@
 require('should');
 var assert = require('assert');
-var App = require('..');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('compile', function () {
@@ -23,6 +24,14 @@ describe('compile', function () {
 
     var page = app.pages.getView('a.tmpl');
     var view = app.compile(page);
+    assert.equal(typeof view.fn, 'function');
+  });
+
+  it('should compile a template by name:', function () {
+    app.engine('tmpl', require('engine-base'));
+    app.pages('a.tmpl', {path: 'a.tmpl', content: '<%= a %>', a: 'b'});
+
+    var view = app.compile('a.tmpl');
     assert.equal(typeof view.fn, 'function');
   });
 

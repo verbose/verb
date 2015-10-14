@@ -1,7 +1,8 @@
 require('mocha');
 require('should');
 var assert = require('assert');
-var App = require('..');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('layouts', function () {
@@ -21,6 +22,20 @@ describe('layouts', function () {
       if (err) return done(err);
       assert.equal(typeof view.content, 'string');
       assert.equal(view.content, 'a b c');
+      done();
+    });
+  });
+
+  it('should not apply a layout when `layoutApplied` is set:', function (done) {
+    app.layout('base', {path: 'base.tmpl', content: 'a {% body %} c'});
+    app.pages('a.tmpl', {path: 'a.tmpl', content: 'b', layout: 'base'});
+    var page = app.pages.getView('a.tmpl');
+    page.option('layoutApplied', true);
+
+    app.render(page, function (err, view) {
+      if (err) return done(err);
+      assert.equal(typeof view.content, 'string');
+      assert.equal(view.content, 'b');
       done();
     });
   });

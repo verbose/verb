@@ -1,100 +1,53 @@
 require('mocha');
 require('should');
 var assert = require('assert');
-var App = require('../');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
-describe('engines', function () {
-  describe('constructor', function () {
-    it('should create an instance of App:', function () {
-      app = new App();
-      assert(app instanceof App);
-    });
+describe('engine support', function() {
+  beforeEach(function() {
+    app = new App();
   });
 
-  describe('static methods', function () {
-    it('should expose `extend`:', function () {
-      assert(typeof App.extend ==='function');
-    });
+  it('should throw an error when engine name is invalid:', function () {
+    (function () {
+      app.engine(null, {});
+    }).should.throw('expected engine ext to be a string or array.');
   });
 
-  describe('prototype methods', function () {
-    beforeEach(function() {
-      app = new App();
-    });
-
-    it('should expose `set`', function () {
-      assert(typeof app.set ==='function');
-    });
-    it('should expose `get`', function () {
-      assert(typeof app.get ==='function');
-    });
-    it('should expose `visit`', function () {
-      assert(typeof app.visit ==='function');
-    });
-    it('should expose `define`', function () {
-      assert(typeof app.define ==='function');
-    });
-    it('should expose `engine`', function () {
-      assert(typeof app.engine ==='function');
-    });
+  it('should register an engine to the given extension', function () {
+    app.engine('hbs', function () {});
+    assert(typeof app.engines['.hbs'] === 'object');
   });
 
-  describe('instance', function () {
-    beforeEach(function() {
-      app = new App();
-    });
-
-    it('should set an arbitrary value on the instance:', function () {
-      app.set('a', 'b');
-      assert(app.a ==='b');
-    });
-
-    it('should get an arbitrary value from the instance:', function () {
-      app.set('a', 'b');
-      assert(app.get('a') ==='b');
-    });
+  it('should set an engine with the given extension', function () {
+    var hbs = function() {};
+    hbs.render = function() {};
+    hbs.renderFile = function() {};
+    app.engine('hbs', hbs);
+    assert(app.engines['.hbs']);
+    assert(app.engines['.hbs'].renderFile);
+    assert(app.engines['.hbs'].render);
   });
 
-  describe('engines', function() {
-    beforeEach(function() {
-      app = new App();
-    });
+  it('should get an engine:', function () {
+    app.engine('hbs', function () {});
+    var hbs = app.engine('hbs');
+    assert(typeof hbs === 'object');
+    assert(hbs.hasOwnProperty('render'));
+    assert(hbs.hasOwnProperty('compile'));
+  });
 
-    it('should throw an error when engine name is invalid:', function () {
-      (function () {
-        app.engine(null, {});
-      }).should.throw('expected engine ext to be a string or array.');
-    });
+  it('should return undefined if no engine is found:', function () {
+    var hbs = app.getEngine();
+    assert.equal(typeof hbs, 'undefined');
+  });
 
-    it('should register an engine to the given extension', function () {
-      app.engine('hbs', function () {});
-      assert(typeof app.engines['.hbs'] === 'object');
-    });
-
-    it('should set an engine with the given extension', function () {
-      var hbs = function() {};
-      hbs.render = function() {};
-      hbs.renderFile = function() {};
-      app.engine('hbs', hbs);
-      assert(app.engines['.hbs']);
-      assert(app.engines['.hbs'].renderFile);
-      assert(app.engines['.hbs'].render);
-    });
-
-    it('should get an engine:', function () {
-      app.engine('hbs', function () {});
-      var hbs = app.engine('hbs');
-      assert(typeof hbs === 'object');
-      assert(hbs.hasOwnProperty('render'));
-      assert(hbs.hasOwnProperty('compile'));
-    });
-
-    it('should register multiple engines to the given extension', function () {
-      app.engine(['hbs', 'md'], function () {});
-      assert(typeof app.engines['.hbs'] === 'object');
-      assert(typeof app.engines['.md'] === 'object');
-    });
+  it('should register multiple engines to the given extension', function () {
+    app.engine(['hbs', 'md'], function () {});
+    assert(typeof app.engines['.hbs'] === 'object');
+    assert(typeof app.engines['.md'] === 'object');
   });
 });
 
@@ -145,12 +98,13 @@ describe('engines', function () {
 });
 
 
-describe('engine selection:', function (done) {
-  beforeEach(function () {
+describe('engine selection:', function () {
+  beforeEach(function (done) {
     app = new App();
     app.engine('tmpl', require('engine-base'));
     app.engine('hbs', require('engine-handlebars'));
     app.create('pages');
+    done();
   });
 
   it('should get the engine from file extension:', function (done) {
@@ -164,6 +118,7 @@ describe('engine selection:', function (done) {
 
   it('should use the engine defined on the collection:', function (done) {
     app.create('posts', {engine: 'hbs'});
+
     app.post('a', {content: '{{a}}', locals: {a: 'b'}})
       .render(function (err, view) {
         if (err) return done(err);

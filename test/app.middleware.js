@@ -1,12 +1,13 @@
 require('mocha');
 require('should');
 var assert = require('assert');
-var Templates = require('../');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('middleware', function () {
   beforeEach(function () {
-    app = new Templates();
+    app = new App();
     app.engine('tmpl', require('engine-base'));
     app.create('pages');
   });

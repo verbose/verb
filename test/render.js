@@ -1,7 +1,8 @@
 require('mocha');
 require('should');
 var assert = require('assert');
-var App = require('../');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('render', function () {
@@ -51,7 +52,7 @@ describe('render', function () {
     it('should emit a re-thrown error when rethrow is true:', function (done) {
       delete view.locals.name;
 
-      app = new App({rethrow: true, silent: true});
+      app = new App({rethrow: true, silent: false});
       app.engine('tmpl', require('engine-base'));
       app.create('page');
 

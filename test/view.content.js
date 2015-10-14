@@ -2,7 +2,8 @@ require('mocha');
 require('should');
 var fs = require('fs');
 var assert = require('assert');
-var App = require('../');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('content', function () {

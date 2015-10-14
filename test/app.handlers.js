@@ -2,8 +2,9 @@ require('should');
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
-var utils = require('../lib/utils');
-var App = require('..');
+var resolve = require('resolve-glob');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 function decorateViews(views) {
@@ -18,7 +19,7 @@ function decorateViews(views) {
     return view;
   };
   views.loader = function (pattern) {
-    var files = utils.resolveGlob(pattern);
+    var files = resolve.sync(pattern);
     return files.reduce(function (acc, fp) {
       acc[fp] = {path: fp};
       return acc;

@@ -1,8 +1,14 @@
 require('mocha');
 require('should');
-var List = require('..').List;
-var Group = require('..').Group;
-var assert = require('./support/');
+
+var assert = require('assert');
+var support = require('./support/');
+assert.containEql = support.containEql;
+
+var support = require('./support');
+var App = support.resolve();
+var List = App.List;
+var Group = App.Group;
 var group;
 
 describe('group', function () {

@@ -1,5 +1,6 @@
 var path = require('path');
-var App = require('..');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 function renameKey(key) {

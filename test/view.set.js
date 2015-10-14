@@ -2,7 +2,8 @@ require('mocha');
 require('should');
 var fs = require('fs');
 var assert = require('assert');
-var App = require('../');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('set', function () {
@@ -26,7 +27,7 @@ describe('set', function () {
       .render(function (err, res) {
         if (err) return done(err);
 
-        assert(res.contents.toString() === 'Brooke');
+        assert(res.content === 'Brooke');
         done();
       });
   });

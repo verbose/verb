@@ -1,7 +1,7 @@
 var assert = require('assert');
-var App = require('../');
+var support = require('./support');
+var App = support.resolve();
 var app;
-
 
 describe('viewType', function () {
   describe('view types', function () {

@@ -3,7 +3,8 @@ require('should');
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
-var App = require('../');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('create', function () {
@@ -19,11 +20,13 @@ describe('create', function () {
     it('should add a collection to `views`', function () {
       app.create('pages');
       assert(typeof app.views.pages === 'object');
+      assert(typeof app.pages === 'function');
     });
 
     it('should add a pluralized collection to `views`', function () {
       app.create('page');
       assert(typeof app.views.pages === 'object');
+      assert(typeof app.page === 'function');
     });
   });
 
@@ -51,7 +54,7 @@ describe('create', function () {
   describe('custom instances', function () {
     it('should create views from custom `View` and `Views` instance/ctor:', function () {
       var Vinyl = require('vinyl');
-      Vinyl.prototype.read = function () {
+      Vinyl.prototype.read = function (file) {
         return fs.readFileSync(file.path);
       };
 

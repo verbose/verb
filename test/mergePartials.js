@@ -1,11 +1,13 @@
 require('should');
-var omit = require('object.omit');
-var App = require('..');
-var app, keys;
+var support = require('./support');
+var App = support.resolve();
+var app;
 
 describe('mergePartials', function () {
   beforeEach(function () {
     app = new App();
+    // reset views
+    app.views = {};
   });
 
   it('should merge multiple partials collections onto one collection:', function () {
@@ -23,7 +25,7 @@ describe('mergePartials', function () {
     actual.partials.should.have.properties(['a', 'b', 'c']);
   });
 
-  it('should keep partials collections on seperate collections:', function () {
+  it('should keep partials collections on separate collections:', function () {
     var opts = { viewType: 'partial' };
     app.create('foo', opts);
     app.create('bar', opts);
@@ -33,11 +35,7 @@ describe('mergePartials', function () {
     app.bar('b', {path: 'b', content: 'bbb'});
     app.baz('c', {path: 'c', content: 'ccc'});
 
-    var actual = app.mergePartials({
-      mergePartials: false,
-      mergeTypes: ['foos', 'bars', 'bazs']
-    });
-
+    var actual = app.mergePartials({mergePartials: false});
     actual.should.not.have.property('partials');
     actual.should.eql({ foos: { a: 'aaa' }, bars: { b: 'bbb' }, bazs: { c: 'ccc' } });
   });
@@ -57,11 +55,7 @@ describe('mergePartials', function () {
     app.bar('b', {path: 'b', content: 'bbb'});
     app.baz('c', {path: 'c', content: 'ccc'});
 
-    var actual = app.mergePartials({
-      mergePartials: false,
-      mergeTypes: ['foos', 'bars', 'bazs']
-    });
-
+    var actual = app.mergePartials({mergePartials: false});
     actual.should.not.have.property('partials');
     actual.should.eql({ foos: { a: 'aaa' }, bars: { b: 'bbb' }, bazs: { c: 'ccc' } });
     arr.should.eql(['aaa', 'bbb', 'ccc']);
@@ -82,11 +76,7 @@ describe('mergePartials', function () {
     app.bar('b', {path: 'b', content: 'bbb'});
     app.baz('c', {path: 'c', content: 'ccc'});
 
-    var actual = app.mergePartials({
-      mergePartials: false,
-      mergeTypes: ['foos', 'bars', 'bazs']
-    });
-
+    var actual = app.mergePartials({mergePartials: false});
     actual.should.eql({
       foos: {a: 'aaa onMerge'},
       bars: {b: 'bbb onMerge'},
@@ -111,7 +101,7 @@ describe('mergePartials', function () {
     app.baz('c', {path: 'c', content: 'ccc'});
 
     var actual = app.mergePartials({mergePartials: false});
-    actual.should.have.property('bazs', { c: 'ccc' });
+    actual.should.eql({ bazs: { c: 'ccc' } });
   });
 });
 

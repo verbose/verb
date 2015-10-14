@@ -1,7 +1,8 @@
 require('mocha');
 require('should');
 var assert = require('assert');
-var App = require('../');
+var support = require('./support');
+var App = support.resolve();
 var app;
 
 describe('events', function () {
@@ -38,7 +39,6 @@ describe('events', function () {
 
   it('should listen for `view` events:', function () {
     var app = new App();
-    app.initialize();
 
     app.on('view', function (view) {
       view.foo = 'bar';

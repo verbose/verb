@@ -1,12 +1,12 @@
 require('mocha');
 require('should');
 var assert = require('assert');
-var verb = require('..');
+var assemble = require('..');
 var app;
 
-describe('app', function () {
+describe('.layout()', function () {
   beforeEach(function() {
-    app = verb();
+    app = assemble();
   });
 
   describe('add layout', function () {

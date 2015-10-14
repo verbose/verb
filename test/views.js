@@ -2,16 +2,24 @@ require('mocha');
 require('should');
 var path = require('path');
 var assert = require('assert');
+var typeOf = require('kind-of');
 var isBuffer = require('is-buffer');
-var List = require('..').List;
-var View = require('..').View;
-var Views = require('..').Views;
+var support = require('./support');
+var App = support.resolve();
+var List = App.List;
+var View = App.View;
+var Views = App.Views;
 var collection;
 
 describe('views', function () {
   describe('constructor', function () {
     it('should create an instance of Views:', function () {
       var collection = new Views();
+      assert(collection instanceof Views);
+    });
+
+    it('should instantiate without `new`:', function () {
+      var collection = Views();
       assert(collection instanceof Views);
     });
   });
@@ -27,20 +35,47 @@ describe('views', function () {
       collection = new Views();
     });
 
-    it('should expose `set`', function () {
-      assert(typeof collection.set ==='function');
+    var methods = [
+      'use',
+      'setView',
+      'addView',
+      'addViews',
+      'addList',
+      'getView',
+      'constructor',
+      'set',
+      'get',
+      'del',
+      'define',
+      'visit',
+      'on',
+      'once',
+      'off',
+      'emit',
+      'listeners',
+      'hasListeners'
+    ];
+
+    methods.forEach(function (method) {
+      it('should expose ' + method + ' method', function () {
+        assert(typeof collection[method] === 'function');
+      });
     });
-    it('should expose `get`', function () {
-      assert(typeof collection.get ==='function');
+
+    it('should expose isCollection property', function () {
+      assert(typeof collection.isCollection === 'boolean');
     });
-    it('should expose `visit`', function () {
-      assert(typeof collection.visit ==='function');
+
+    it('should expose queue property', function () {
+      assert(Array.isArray(collection.queue));
     });
-    it('should expose `define`', function () {
-      assert(typeof collection.define ==='function');
+
+    it('should expose views property', function () {
+      assert(typeOf(collection.views) === 'object');
     });
-    it('should expose `addView`', function () {
-      assert(typeof collection.addView ==='function');
+
+    it('should expose options property', function () {
+      assert(typeOf(collection.options) === 'object');
     });
   });
 
@@ -171,9 +206,9 @@ describe('views', function () {
       var one = collection.view('one', {content: 'foo'});
       var two = collection.view('two', {content: 'bar'});
 
-      assert(one instanceof View);
+      assert(one.isView);
       assert(one.path === 'one');
-      assert(two instanceof View);
+      assert(two.isView);
       assert(two.path === 'two');
     });
 
@@ -181,9 +216,9 @@ describe('views', function () {
       var one = collection.view({path: 'one', content: 'foo'});
       var two = collection.view({path: 'two', content: 'bar'});
 
-      assert(one instanceof View);
+      assert(one.isView);
       assert(one.path === 'one');
-      assert(two instanceof View);
+      assert(two.isView);
       assert(two.path === 'two');
     });
   });
@@ -235,12 +270,34 @@ describe('views', function () {
         while (list.length) {
           collection.addView({path: list.pop()});
         }
+        this.loaded = true;
       });
 
       collection.addList(['a.txt', 'b.txt', 'c.txt']);
       assert(collection.views.hasOwnProperty('a.txt'));
       assert(collection.views['a.txt'].path === 'a.txt');
     });
+
+    it('should load an array of items from the addList callback:', function () {
+      var collection = new Views();
+
+      collection.addList(['a.txt', 'b.txt', 'c.txt'], function (fp) {
+        return {path: fp};
+      });
+      assert(collection.views.hasOwnProperty('a.txt'));
+      assert(collection.views['a.txt'].path === 'a.txt');
+    });
+
+    // it('should not blow up on', function () {
+    //   var collection = new Views();
+    //   var list = [{path: 'a.txt'}, {path: 'b.txt'}, {path: 'c.txt'}];
+    //   collection.addList(list, function (item) {
+    //     item.content = path.basename(item.path, path.extname(item.path));
+    //   });
+    //   assert(collection.views.hasOwnProperty('a.txt'));
+    //   assert(collection.views['a.txt'].path === 'a.txt');
+    //   assert(collection.views['a.txt'].content === 'a');
+    // });
 
     it('should load an object of views from an event:', function () {
       var collection = new Views();
@@ -338,3 +395,51 @@ describe('options', function() {
   });
 });
 
+
+describe('queue', function () {
+  beforeEach(function () {
+    collection = new Views();
+  });
+
+  it('should emit arguments on addView', function (done) {
+    collection.on('addView', function (args) {
+      assert(args[0] === 'a');
+      assert(args[1] === 'b');
+      assert(args[2] === 'c');
+      assert(args[3] === 'd');
+      assert(args[4] === 'e');
+      done();
+    });
+
+    collection.addView('a', 'b', 'c', 'd', 'e');
+  });
+
+  it('should expose the `queue` property for loading views', function () {
+    collection.queue.push(collection.view('b', {path: 'b'}));
+
+    collection.addView('a', {path: 'a'});
+    assert(collection.views.hasOwnProperty('a'));
+    assert(collection.views.hasOwnProperty('b'));
+  });
+
+  it('should load all views on the queue when addView is called', function () {
+    collection.on('addView', function (args) {
+      var len = args.length;
+      var last = args[len - 1];
+      if (typeof last === 'string') {
+        args[len - 1] = { content: last };
+      }
+    });
+
+    collection.addView('a.html', 'aaa');
+    collection.addView('b.html', 'bbb');
+    collection.addView('c.html', 'ccc');
+
+    assert(collection.views.hasOwnProperty('a.html'));
+    assert(collection.getView('a.html').content === 'aaa');
+    assert(collection.views.hasOwnProperty('b.html'));
+    assert(collection.getView('b.html').content === 'bbb');
+    assert(collection.views.hasOwnProperty('c.html'));
+    assert(collection.getView('c.html').content === 'ccc');
+  });
+});

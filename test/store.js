@@ -205,7 +205,7 @@ describe('events', function () {
   it('should emit `del` when a value is delted:', function () {
     var res;
     app.store.on('del', function (keys) {
-      keys.should.eql(['a']);
+      keys.should.eql('a');
       assert(typeof app.store.get('a') === 'undefined');
     });
 
