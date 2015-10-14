@@ -6,9 +6,11 @@
 
 var path = require('path');
 var store = require('data-store');
+// var Assemble = require('assemble');
 var Templates = require('templates');
 var Composer = require('composer');
 var proto = Composer.prototype;
+var plugin = require('./lib/plugins');
 var lib = require('./lib');
 var Locals = lib.locals;
 var utils = lib.utils;
@@ -49,32 +51,18 @@ Templates.extend(Verb, {
    */
 
   initVerb: function(opts) {
-    this.store = store('verb', opts.store);
+    this.use(plugin.collections());
+    this.use(plugin.questions());
+
     this.initEngines(this);
     this.initMiddleware(this);
     this.initListeners(this);
     lib.helpers(this);
-    lib.views(this);
 
-    this.locals = new Locals(this.cache.data.verb);
-    this.questions = utils.questions();
-    this.initUserConfig();
+    this.store = store('verb', opts.store);
+    this.locals = new Locals('verb', this);
+    lib.config(this);
   },
-
-  /**
-   * Initialize the user's config.
-   */
-
-  initUserConfig: function () {
-    lib.config(this, this.locals.cache);
-  },
-
-  /**
-   * Initialize event listeners. The default listeners
-   * are setup to listen for events that indicate if
-   * something needs to be re-initialized based on user
-   * options.
-   */
 
   initListeners: function (app) {
     this.on('option', function (key) {
@@ -91,45 +79,20 @@ Templates.extend(Verb, {
    */
 
   initEngines: function () {
-    this.option('rethrow', {regex: /\{%=?([^%]*)%}/});
-    this.engine('hbs', require('engine-handlebars'));
+    this.option('rethrow', { regex: /\{%=?([^%]*)%}/ });
     this.engine('md', require('engine-base'), {
       delims: ['{%', '%}']
     });
   },
 
   /**
-   * Default middleware
-   *  | Ensure user-defined layout is recognized
-   *  | Parse front-matter
+     * Default middleware for parsing front matter
    */
 
   initMiddleware: function (app) {
     this.onLoad(/\.md$/, function (view, next) {
       utils.matter.parse(view, next);
     });
-  },
-
-  ask: function (locals) {
-    var ctx = utils.merge({}, this.cache.data, locals || {});
-    var ask = utils.ask({
-      questions: this.questions,
-      store: this.store,
-      data: ctx
-    });
-
-    return function () {
-      return ask.apply(ask, arguments);
-    }
-  },
-
-  /**
-   * Set a question to ask at a later point.
-   */
-
-  question: function () {
-    this.questions.set.apply(this.questions, arguments);
-    return this;
   },
 
   /**
@@ -176,9 +139,8 @@ Templates.extend(Verb, {
    */
 
   dest: function (dest) {
-    if (!dest) throw new Error('expected dest to be a string.');
-    return utils.vfs.dest.apply(utils.vfs, arguments)
-      .on('data', function () {}); // TODO: fix this
+    if (!dest) throw new Error('expected dest to be a string or function.');
+    return utils.vfs.dest.apply(utils.vfs, arguments);
   },
 
   /**
@@ -221,9 +183,7 @@ Templates.extend(Verb, {
     var stream = utils.through.obj();
     setImmediate(function () {
       Object.keys(views).forEach(function (key) {
-        var view = views[key];
-        var file = utils.toVinyl(view);
-        stream.write(file);
+        stream.write(views[key]);
       });
       stream.end();
     });
@@ -246,28 +206,22 @@ Templates.extend(Verb, {
 
   renderFile: function (locals) {
     var app = this;
-    var collection = this.viewCollection();
-
+    var collection = this.collection();
     return utils.through.obj(function (file, enc, cb) {
       if (typeof locals === 'function') {
         cb = locals;
         locals = {};
       }
 
-      try {
-        var view = collection.addView(file);
-        var ctx = utils.merge({}, app.cache.data, locals, view.data);
+      var view = collection.setView(file);
+      app.handleView('onLoad', view);
 
-        app.render(view, ctx, function (err, res) {
-          if (err) return cb(err);
-          file = app.view(res);
-          cb(null, file);
-        });
-
-      } catch(err) {
-        err.method = 'renderFile';
-        app.emit('error', err);
-      }
+      var ctx = utils.merge({}, app.cache.data, locals, view.data);
+      app.render(view, ctx, function (err, res) {
+        if (err) return cb(err);
+        file = new utils.Vinyl(res);
+        cb(null, file);
+      });
     });
   },
 
