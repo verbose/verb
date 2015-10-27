@@ -6,12 +6,13 @@ var assert = require('assert');
 var consolidate = require('consolidate');
 var handlebars = require('engine-handlebars');
 var matter = require('parser-front-matter');
-var support = require('./support');
 var swig = consolidate.swig;
 require('swig');
 
 var support = require('./support');
 var App = support.resolve();
+var helpers = App._.proto.helpers;
+var init = App._.proto.init;
 var app;
 
 describe('helpers', function () {
@@ -31,6 +32,19 @@ describe('helpers', function () {
     });
     it('should expose `asyncHelper`', function () {
       assert(typeof app.asyncHelper ==='function');
+    });
+  });
+
+  describe('instance', function () {
+    it('should prime _', function () {
+      function Foo() {
+        Base.call(this);
+        init(this);
+      }
+      Base.extend(Foo);
+      var foo = new Foo();
+      helpers(foo);
+      assert(typeof foo._ ==='object');
     });
   });
 
@@ -203,7 +217,7 @@ describe('sync helpers', function () {
     });
   });
 
-  it.skip('should use a namespaced helper:', function (done) {
+  it('should use a namespaced helper:', function (done) {
     app.pages('a.tmpl', {path: 'a.tmpl', content: '<%= foo.upper(a) %>', locals: {a: 'bbb'}});
 
     app.helperGroup('foo', {
@@ -315,7 +329,7 @@ describe('built-in helpers:', function () {
         });
     });
 
-    it.skip('should use locals from the `view.render` method:', function (done) {
+    it('should use locals from the `view.render` method:', function (done) {
       app.partial('abc.md', {content: '<%= name %>', locals: {name: 'EEE'}});
 
       app.page('xyz.md', {path: 'xyz.md', content: 'foo <%= partial("abc.md") %> bar'})

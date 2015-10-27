@@ -6,7 +6,6 @@ var app;
 describe('mergePartials', function () {
   beforeEach(function () {
     app = new App();
-    // reset views
     app.views = {};
   });
 
@@ -25,7 +24,7 @@ describe('mergePartials', function () {
     actual.partials.should.have.properties(['a', 'b', 'c']);
   });
 
-  it('should keep partials collections on separate collections:', function () {
+  it('should keep partials collections on separaet collections:', function () {
     var opts = { viewType: 'partial' };
     app.create('foo', opts);
     app.create('bar', opts);
