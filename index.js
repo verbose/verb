@@ -13,13 +13,13 @@
 
 var cli = require('base-cli');
 var store = require('base-store');
-var config = require('base-config');
 var loader = require('assemble-loader');
 var Core = require('assemble-core');
 var ask = require('assemble-ask');
 var minimist = require('minimist');
 var expand = require('expand-args');
 var rimraf = require('rimraf');
+var config = require('./lib/config');
 var create = require('./lib/create');
 var locals = require('./lib/locals');
 var utils = require('./lib/utils');
@@ -55,11 +55,12 @@ function Verb(options) {
   this.set('pkg', require('load-pkg')());
   this.set('updaters', {});
 
+  config(this);
   create(this);
+
   this.use(utils.runtimes())
     .use(locals({name: this.name}))
     .use(store(this.name))
-    .use(config())
     .use(loader())
     .use(ask())
     .use(cli());
