@@ -1,3 +1,10 @@
+/*!
+ * verb <https://github.com/jonschlinkert/verb>
+ *
+ * Copyright (c) 2015, Jon Schlinkert.
+ * Licensed under the MIT License.
+ */
+
 'use strict';
 
 /**
@@ -5,15 +12,14 @@
  */
 
 var path = require('path');
-var Assemble = require('assemble');
+var Core = require('assemble-core');
+var ask = require('assemble-ask');
+var config = require('./defaults');
 var utils = require('./lib/utils');
 var lib = require('./lib');
-var datastore = lib.store;
-var config = lib.config;
-var locals = lib.locals;
 
 /**
- * Create an `verb` application. This is the main function exported
+ * Create a `verb` application. This is the main function exported
  * by the verb module.
  *
  * ```js
@@ -24,38 +30,43 @@ var locals = lib.locals;
  * @api public
  */
 
-var defaults = require('./lib/plugins/collections');
-
 function Verb(options) {
   if (!(this instanceof Verb)) {
     return new Verb(options);
   }
 
-  options = utils.defaults({}, options, {
-    reload: false
-  });
+  this.options = utils.extend({reload: false}, options);
+  Core.call(this, this.options);
 
-  Assemble.call(this, options);
-  this.define('isVerb', true);
-
-
-  this.use(datastore);
-  this.use(locals);
-  this.use(config);
-  // lib.helpers(this);
+  this.use(lib.store);
+  this.use(lib.locals);
+  this.use(ask());
+  // this.use(lib.config);
   this.use(lib.helpers);
-  this.use(defaults);
-  // this.use(ask());
+  this.use(lib.defaults);
+  this.use(config);
+
+  this.define('isVerb', true);
+  this.option('rethrow', { regex: /\{%=?([^%]*)%}/ });
+  this.engine('md', require('engine-base'), {
+    delims: ['{%', '%}']
+  });
 }
 
 /**
- * Inherit `Assemble`
+ * Inherit `Core`
  */
 
-Assemble.extend(Verb);
+Core.extend(Verb);
 
 /**
  * Expose `Verb`
  */
 
 module.exports = Verb;
+
+/**
+ * Expose `Verb`
+ */
+
+module.exports.utils = utils;

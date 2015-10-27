@@ -21,52 +21,53 @@
     "test": "mocha"
   },
   "dependencies": {
-    "ask-once": "^0.4.3",
-    "assemble-loader": "^0.1.3",
-    "composer": "^0.4.1",
-    "composer-runtimes": "^0.3.1",
-    "data-store": "^0.9.0",
-    "dest": "^0.2.1",
-    "engine-handlebars": "^0.8.0",
+    "assemble-ask": "^0.1.2",
+    "assemble-core": "^0.1.1",
+    "data-store": "^0.10.1",
+    "engine-base": "^0.1.2",
     "export-files": "^2.1.0",
-    "helper-reflinks": "^1.4.1",
-    "helper-related": "^0.10.0",
+    "extend-shallow": "^2.0.1",
+    "get-value": "^1.2.1",
+    "helper-reflinks": "^2.0.0",
+    "helper-related": "^0.11.1",
     "lazy-cache": "^0.2.3",
-    "map-config": "^0.1.0",
+    "map-config": "^0.1.1",
+    "middleware-utils": "^0.1.4",
     "mixin-deep": "^1.1.3",
     "parser-front-matter": "^1.2.5",
-    "question-cache": "^0.3.0",
-    "readme-badges": "^0.3.3",
     "readme-includes": "^0.2.9",
-    "set-value": "^0.2.0",
-    "src-stream": "^0.1.1",
-    "stream-combiner": "^0.2.2",
-    "templates": "^0.2.0",
-    "through2": "^2.0.0",
-    "vinyl": "wearefractal/vinyl",
-    "vinyl-fs": "wearefractal/vinyl-fs"
+    "resolve-dir": "^0.1.0",
+    "set-value": "^0.2.0"
   },
   "devDependencies": {
+    "async": "^1.4.2",
+    "base-methods": "^0.2.14",
     "buffer-equal": "0.0.1",
     "consolidate": "^0.13.1",
-    "engine-base": "^0.1.2",
-    "event-stream": "^3.3.1",
-    "for-own": "^0.1.3",
-    "get-value": "^1.2.1",
-    "globby": "^3.0.1",
+    "coveralls": "^2.11.4",
+    "define-property": "^0.2.5",
+    "engine-handlebars": "^0.8.0",
+    "event-stream": "^3.3.2",
     "graceful-fs": "^4.1.2",
     "gulp": "^3.9.0",
-    "gulp-istanbul": "^0.10.0",
+    "gulp-git": "^1.5.0",
+    "gulp-istanbul": "^0.10.1",
     "gulp-jshint": "^1.11.2",
     "gulp-mocha": "^2.1.3",
-    "is-buffer": "^1.0.2",
+    "is-buffer": "^1.1.0",
+    "istanbul": "^0.4.0",
     "jshint-stylish": "^2.0.1",
-    "minimist": "^1.2.0",
-    "mocha": "*",
-    "object.omit": "^2.0.0",
+    "kind-of": "^2.0.1",
+    "load-pkg": "^1.3.0",
+    "look-up": "^0.8.1",
+    "mocha": "^2.3.3",
+    "resolve-glob": "^0.1.2",
     "rimraf": "^2.4.3",
-    "should": "*",
-    "swig": "^1.4.2"
+    "should": "^7.1.0",
+    "sinon": "^1.17.1",
+    "swig": "^1.4.2",
+    "through2": "^2.0.0",
+    "vinyl": "^1.0.0"
   },
   "keywords": [
     "comment",
@@ -104,12 +105,10 @@
       ]
     },
     "helpers": {
-      "helper": {
-        "whatever": "@/helper-related"
-      },
-      "asyncHelper": {
-        "whatever": "@/helper-related"
-      }
+      "whatever": "@/helper-related"
+    },
+    "asyncHelpers": {
+      "whatever": "@/helper-related"
     },
     "related": {
       "list": [
