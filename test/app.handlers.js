@@ -7,33 +7,23 @@ var support = require('./support');
 var App = support.resolve();
 var app;
 
-function decorateViews(views) {
-  var fn = views.decorateView;
-  views.decorateView = function () {
-    var view = fn.apply(fn, arguments);
+function read(views) {
+  return function (view) {
     view.read = function () {
       if (!this.contents) {
         this.contents = fs.readFileSync(this.path);
       }
     };
     return view;
-  };
-  views.loader = function (pattern) {
-    var files = resolve.sync(pattern);
-    return files.reduce(function (acc, fp) {
-      acc[fp] = {path: fp};
-      return acc;
-    }, {});
-  };
-  return views;
+  }
 }
 
-describe.skip('handlers', function () {
+describe('handlers', function () {
   describe('custom handlers', function () {
     beforeEach(function () {
       app = new App();
       app.create('pages')
-        .use(decorateViews)
+        .use(read)
         .option('renameKey', function (key) {
           return path.basename(key);
         });
@@ -46,16 +36,13 @@ describe.skip('handlers', function () {
     });
 
     it('should add custom middleware handlers:', function () {
-      app.pages.on('view', function (key, val) {
-        val.read();
+      app.pages.on('view', function (view) {
+        console.log(view.read)
+        // view.read();
       });
 
       app.handler('foo');
       app.handler('bar');
-
-      // app.on('foo', function () {
-      //   console.log(arguments)
-      // })
 
       app.foo(/./, function (view, next) {
         view.one = 'aaa';
@@ -67,10 +54,14 @@ describe.skip('handlers', function () {
         next();
       });
 
-      var pages = app.pages('test/fixtures/templates/*.tmpl')
+      app
+        .pages('a', {contents: '...'})
+        .pages('b', {contents: '...'})
+        .pages('c', {contents: '...'})
         .use(function (pages) {
-          var fn = pages.decorateView;
-          pages.decorateView = function (view) {
+          // console.log(pages)
+          var fn = pages.extendView;
+          pages.extendView = function (view) {
             view = fn(view);
             app.handleView('foo', view);
             return view;
@@ -79,8 +70,8 @@ describe.skip('handlers', function () {
         });
         // .pages('test/fixtures/pages/*.hbs')
         // .use(function (pages) {
-        //   var fn = pages.decorateView;
-        //   pages.decorateView = function (view) {
+        //   var fn = pages.extendView;
+        //   pages.extendView = function (view) {
         //     view = fn(view);
         //     app.handleView('bar', view);
         //     return view;
@@ -88,7 +79,7 @@ describe.skip('handlers', function () {
         //   return pages;
         // })
 
-      console.log(pages.getView('a.tmpl').one);
+      // console.log(pages.getView('a.tmpl').one);
       // console.log(app.pages.getView('a.tmpl').one)
       // console.log(app.pages.getView('a.hbs').two)
 

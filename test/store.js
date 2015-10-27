@@ -14,8 +14,11 @@ describe('store', function () {
     app = new App();
   });
 
-  afterEach(function () {
-    app.store.del({force: true});
+  afterEach(function (cb) {
+    app.store.del({force: true}, function (err) {
+      if (err) return cb(err);
+      cb();
+    });
   });
 
   it('should create an instance of Store', function () {
