@@ -97,7 +97,7 @@ module.exports = function(verb, base, env) {
           return key === '.verb';
         })
         .pipe(verb.renderFile('text', answers))
-        .pipe(verb.dest(process.cwd()))
+        .pipe(verb.dest(dest('readme.md')))
         .on('finish', cb);
       });
   });
