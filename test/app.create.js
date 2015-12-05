@@ -83,7 +83,9 @@ describe('create', function () {
   describe('chaining', function () {
     beforeEach(function () {
       app = new App();
-      app.engine('tmpl', require('engine-base'));
+      app.engine('tmpl', require('engine-base'), {
+        delims: ['{%', '%}']
+      });
       app.create('page');
     });
 
@@ -92,7 +94,7 @@ describe('create', function () {
       app.page('b.hbs', {content: 'b'});
       app.page('c.hbs', {content: 'c'});
       app.views.pages.should.have.properties(['a.hbs', 'b.hbs', 'c.hbs']);
-      assert(app.views.pages['a.hbs'].content === 'a');
+      assert(app.views.pages['a.hbs'].contents.toString() === 'a');
     });
 
     it('should create views from file paths:', function () {
@@ -101,9 +103,9 @@ describe('create', function () {
       app.page('test/fixtures/pages/c.hbs');
 
       app.views.pages.should.have.properties([
-        path.resolve('test/fixtures/pages/a.hbs'),
-        path.resolve('test/fixtures/pages/b.hbs'),
-        path.resolve('test/fixtures/pages/c.hbs')
+        'test/fixtures/pages/a.hbs',
+        'test/fixtures/pages/b.hbs',
+        'test/fixtures/pages/c.hbs'
       ]);
     });
   });
@@ -112,7 +114,9 @@ describe('create', function () {
   describe('instance', function () {
     beforeEach(function () {
       app = new App();
-      app.engine('tmpl', require('engine-base'));
+      app.engine('tmpl', require('engine-base'), {
+        delims: ['{%', '%}']
+      });
     });
 
     it('should return the collection instance', function () {
@@ -126,22 +130,24 @@ describe('create', function () {
         .use(function (views) {
           views.read = function (name) {
             var view = this.getView(name);
-            if (!view.contents) {
-              view.contents = fs.readFileSync(view.path);
+            if (!view.content) {
+              view.content = fs.readFileSync(view.path);
             }
           };
         });
 
       collection.addView('test/fixtures/templates/a.tmpl');
       collection.read('a.tmpl');
-      assert(collection.getView('a.tmpl').content === '<%= name %>');
+      assert(collection.getView('a.tmpl').content === '{%= name %}');
     });
   });
 
   describe('viewType', function () {
     beforeEach(function () {
       app = new App();
-      app.engine('tmpl', require('engine-base'));
+      app.engine('tmpl', require('engine-base'), {
+        delims: ['{%', '%}']
+      });
     });
 
     it('should add collection to the given viewType', function () {
@@ -158,7 +164,9 @@ describe('create', function () {
   describe('events', function () {
     beforeEach(function () {
       app = new App();
-      app.engine('tmpl', require('engine-base'));
+      app.engine('tmpl', require('engine-base'), {
+        delims: ['{%', '%}']
+      });
     });
 
     it('should emit `create` when a collection is created:', function () {

@@ -6,7 +6,7 @@ var support = require('./support');
 var App = support.resolve();
 var app;
 
-describe('content', function () {
+describe.skip('content', function () {
   beforeEach(function () {
     app = new App();
   });

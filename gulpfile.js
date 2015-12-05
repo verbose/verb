@@ -1,18 +1,11 @@
 'use strict';
 
 var gulp = require('gulp');
-var stylish = require('jshint-stylish');
-var istanbul = require('gulp-istanbul');
-var jshint = require('gulp-jshint');
 var mocha = require('gulp-mocha');
-var git = require('gulp-git');
-var del = require('rimraf');
+var istanbul = require('gulp-istanbul');
+var eslint = require('gulp-eslint');
 
-var lint = ['index.js', 'lib/{*,plugins/*}.js'];
-
-function url(repo) {
-  return 'https://github.com/' + repo;
-}
+var lint = ['index.js', 'lib/*.js', 'test/*.js'];
 
 gulp.task('coverage', function () {
   return gulp.src(lint)
@@ -20,37 +13,15 @@ gulp.task('coverage', function () {
     .pipe(istanbul.hookRequire());
 });
 
-gulp.task('test', ['clone', 'coverage'], function () {
+gulp.task('mocha', ['coverage'], function () {
   return gulp.src('test/*.js')
     .pipe(mocha({reporter: 'spec'}))
-    .pipe(istanbul.writeReports())
-    .pipe(istanbul.writeReports({
-      reporters: [ 'text' ],
-      reportOpts: {dir: 'coverage', file: 'summary.txt'}
-    }));
+    .pipe(istanbul.writeReports());
 });
 
-gulp.task('lint', function () {
-  return gulp.src(lint.concat('test/*.js'))
-    .pipe(jshint())
-    .pipe(jshint.reporter(stylish));
+gulp.task('eslint', function () {
+  return gulp.src(lint)
+    .pipe(eslint())
 });
 
-gulp.task('spec', ['clone'], function (cb) {
-  gulp.src('test/_spec/test/*.js')
-    .pipe(mocha({reporter: 'spec'}))
-    .on('end', function () {
-      del('test/_spec', cb);
-    });
-});
-
-gulp.task('clone', function(cb) {
-  del('test/_spec', function (err) {
-    if (err) return cb(err);
-    git.clone(url('assemble/assemble'), {
-      args: 'test/_spec'
-    }, cb);
-  });
-});
-
-gulp.task('default', ['test', 'lint']);
+gulp.task('default', ['mocha', 'eslint']);

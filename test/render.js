@@ -26,6 +26,7 @@ describe('render', function () {
     });
 
     it('should throw an error when a variable is undefined:', function (done) {
+      delete app.cache.data.name;
       delete view.locals.name;
 
       app.page('a.tmpl', view)
@@ -36,9 +37,11 @@ describe('render', function () {
     });
 
     it('should re-throw an error when rethrow is true:', function (done) {
+      app = new App({rethrow: true, silent: true});
+
+      delete app.cache.data.name;
       delete view.locals.name;
 
-      app = new App({rethrow: true, silent: true});
       app.engine('tmpl', require('engine-base'));
       app.create('page');
 
@@ -50,9 +53,11 @@ describe('render', function () {
     });
 
     it('should emit a re-thrown error when rethrow is true:', function (done) {
+      app = new App({rethrow: true, silent: false});
+
+      delete app.cache.data.name;
       delete view.locals.name;
 
-      app = new App({rethrow: true, silent: false});
       app.engine('tmpl', require('engine-base'));
       app.create('page');
 

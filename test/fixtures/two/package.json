@@ -1,0 +1,30 @@
+{
+  "name": "two",
+  "description": "The most interesting project in the world > Verb",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/two",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/two",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/two/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "resolve-modules": "^0.1.2"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "keywords": []
+}

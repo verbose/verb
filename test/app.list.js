@@ -1,7 +1,8 @@
+'use strict';
+
 require('mocha');
 require('should');
 var fs = require('fs');
-var path = require('path');
 var assert = require('assert');
 var support = require('./support');
 var App = support.resolve();
@@ -32,7 +33,9 @@ describe('list', function () {
   describe('adding items', function () {
     beforeEach(function () {
       app = new App();
-      app.engine('tmpl', require('engine-base'));
+      app.engine('tmpl', require('engine-base'), {
+        delims: ['{%', '%}']
+      });
       app.create('pages');
     });
 
@@ -40,7 +43,7 @@ describe('list', function () {
       app.pages('test/fixtures/pages/a.hbs');
       var list = app.list();
       list.addItem(app.pages.getView('test/fixtures/pages/a.hbs'));
-      assert(list.hasItem(path.resolve('test/fixtures/pages/a.hbs')));
+      assert(list.hasItem('test/fixtures/pages/a.hbs'));
     });
 
     it('should expose the `option` method from a list:', function () {
@@ -83,21 +86,23 @@ describe('list', function () {
   describe('rendering items', function () {
     beforeEach(function () {
       app = new App();
-      app.engine('tmpl', require('engine-base'));
+      app.engine('tmpl', require('engine-base'), {
+        delims: ['{%', '%}']
+      });
       app.create('pages');
     });
 
     it('should render a item with inherited app.render', function (done) {
       app.page('test/fixtures/templates/a.tmpl')
         .use(function (item) {
-          if (!item.contents) {
+          if (!item.contents.toString()) {
             item.contents = fs.readFileSync(item.path);
           }
         })
         .set('data.name', 'Brian')
         .render(function (err, res) {
           if (err) return done(err);
-          assert(res.content === 'Brian');
+          assert(res.contents.toString() === 'Brian');
           done();
         });
     });

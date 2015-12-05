@@ -1,18 +1,17 @@
 {
-  "name": "verb2",
-  "description": "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.",
-  "version": "0.8.8",
-  "homepage": "https://github.com/verbose/verb2",
+  "name": "verb",
+  "description": "Documentation generator",
+  "version": "0.9.0",
+  "homepage": "https://github.com/jonschlinkert/verb",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
-  "repository": "verbose/verb2",
+  "repository": "jonschlinkert/verb",
   "bugs": {
-    "url": "https://github.com/verbose/verb/issues"
+    "url": "https://github.com/jonschlinkert/verb/issues"
   },
   "license": "MIT",
   "files": [
-    "defaults.js",
-    "index.js",
-    "lib"
+    "lib/",
+    "index.js"
   ],
   "main": "index.js",
   "engines": {
@@ -21,96 +20,85 @@
   "scripts": {
     "test": "mocha"
   },
+  "preferGlobal": true,
+  "bin": {
+    "verb": "cli.js"
+  },
   "dependencies": {
-    "assemble-ask": "^0.1.4",
-    "assemble-core": "^0.1.7",
+    "ansi-colors": "^0.1.0",
+    "assemble-core": "^0.5.0",
     "assemble-loader": "^0.2.4",
-    "async": "^1.5.0",
-    "base-cli": "^0.1.2",
-    "base-config": "^0.1.2",
-    "base-store": "^0.1.1",
-    "composer-runtimes": "^0.5.1",
+    "base-questions": "^0.1.2",
+    "base-runner": "^0.4.1",
+    "base-store": "^0.2.0",
+    "common-middleware": "^0.1.3",
     "engine-base": "^0.1.2",
-    "expand-args": "^0.2.1",
-    "export-files": "^2.1.0",
     "extend-shallow": "^2.0.1",
-    "get-value": "^1.2.1",
-    "helper-reflinks": "^2.0.1",
-    "helper-related": "^0.11.1",
+    "has-glob": "^0.1.1",
+    "helper-copyright": "^2.0.0",
+    "helper-reflinks": "^2.2.1",
+    "helper-related": "^0.12.1",
+    "is-valid-glob": "^0.3.0",
     "lazy-cache": "^0.2.4",
-    "load-pkg": "^2.0.1",
-    "map-config": "^0.2.1",
-    "middleware-utils": "^0.1.4",
+    "matched": "^0.3.2",
     "minimist": "^1.2.0",
-    "parser-front-matter": "^1.3.0",
-    "readme-includes": "^0.2.9",
-    "resolve-dir": "^0.1.0",
-    "rimraf": "^2.4.3",
-    "set-value": "^0.2.0"
+    "success-symbol": "^0.1.0",
+    "time-stamp": "^0.1.3"
   },
   "devDependencies": {
-    "base-methods": "^0.3.1",
+    "async": "^1.5.0",
+    "base-methods": "^0.6.1",
     "buffer-equal": "0.0.1",
     "consolidate": "^0.13.1",
     "coveralls": "^2.11.4",
+    "data-store": "^0.12.0",
     "define-property": "^0.2.5",
     "engine-handlebars": "^0.8.0",
     "event-stream": "^3.3.2",
+    "get-value": "^2.0.0",
     "graceful-fs": "^4.1.2",
     "gulp": "^3.9.0",
-    "gulp-git": "^1.6.0",
-    "gulp-istanbul": "^0.10.2",
-    "gulp-jshint": "^1.11.2",
-    "gulp-mocha": "^2.1.3",
+    "gulp-eslint": "^1.1.1",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-mocha": "^2.2.0",
     "is-buffer": "^1.1.0",
-    "istanbul": "^0.4.0",
-    "jshint-stylish": "^2.0.1",
-    "kind-of": "^2.0.1",
-    "look-up": "^0.8.1",
-    "mocha": "^2.3.3",
-    "resolve-glob": "^0.1.3",
-    "should": "^7.1.1",
+    "istanbul": "^0.4.1",
+    "kind-of": "^3.0.2",
+    "load-pkg": "^3.0.0",
+    "mocha": "*",
+    "parser-front-matter": "^1.3.0",
+    "resolve-glob": "^0.1.7",
+    "rimraf": "^2.4.4",
+    "scaffold": "^0.2.1",
+    "should": "*",
     "sinon": "^1.17.2",
     "swig": "^1.4.2",
     "through2": "^2.0.0",
     "vinyl": "^1.1.0"
   },
   "keywords": [
-    "comment",
-    "comments",
-    "doc",
-    "docs",
-    "document",
-    "documentation",
-    "generate",
-    "generator",
-    "gh",
-    "gh-pages",
-    "markdown",
-    "md",
-    "pages",
-    "readme",
-    "repo",
-    "repository",
+    "app",
+    "boilerplate",
+    "create",
+    "verb",
+    "verbApp",
+    "init",
+    "initialize",
+    "project",
+    "scaffold",
     "template",
     "templates",
-    "verb",
-    "verbiage"
+    "webapp",
+    "yeoman"
   ],
   "verb": {
-    "data": {
-      "zzz.one": "yyy"
-    },
-    "helpers": {
-      "whatever": "@/helper-related"
-    },
     "related": {
       "list": [
-        "assemble",
+        "base-methods",
         "assemble-core",
-        "composer",
-        "templates",
-        "update"
+        "resolve-modules",
+        "base-runner",
+        "base-resolver"
       ]
     }
   }

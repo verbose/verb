@@ -1,38 +1,19 @@
-/*!
- * verb <https://github.com/jonschlinkert/verb>
- *
- * Copyright (c) 2015, Jon Schlinkert.
- * Licensed under the MIT License.
- */
-
 'use strict';
 
-/**
- * module dependencies
- */
-
-var cli = require('base-cli');
-var store = require('base-store');
-var loader = require('assemble-loader');
-var Core = require('assemble-core');
-var ask = require('assemble-ask');
-var minimist = require('minimist');
-var expand = require('expand-args');
-var rimraf = require('rimraf');
-var config = require('./lib/config');
-var create = require('./lib/create');
-var locals = require('./lib/locals');
+var async = require('async');
+var Assemble = require('assemble-core');
+var defaults = require('./lib/defaults');
 var utils = require('./lib/utils');
+var docs = require('./lib/docs');
 
 /**
- * Create a `verb` application. This is the main function exported
- * by the verb module.
+ * Create an instance of `Verb` with the given `options`
  *
  * ```js
- * var verb = require('verb');
- * var app = verb();
+ * var Verb = require('verb');
+ * var verb = new Verb(options);
  * ```
- * @param {Object} `options` Optionally pass default options to use.
+ * @param {Object} `options` Configuration options to initialize with.
  * @api public
  */
 
@@ -41,57 +22,138 @@ function Verb(options) {
     return new Verb(options);
   }
 
-  this.options = utils.extend({reload: false}, options);
-  Core.call(this, this.options);
-  this.define('isVerb', true);
-  this.name = 'verb';
+  Assemble.apply(this, arguments);
+  this.name = this.options.name || 'base';
+  this.isVerb = true;
+  this.verbApps = {};
 
-  var argv = minimist(process.argv.slice(2));
-  if (process.argv.length > 3) {
-    argv = expand(argv);
-  }
+  this.use(utils.middleware())
+    .use(utils.loader())
+    .use(utils.store())
+    .use(docs())
+    .use(utils.ask());
 
-  this.set('argv', this.argv || argv);
-  this.set('pkg', require('load-pkg')());
-  this.set('updaters', {});
-
-  config(this);
-  create(this);
-
-  this.use(utils.runtimes())
-    .use(locals({name: this.name}))
-    .use(store(this.name))
-    .use(loader())
-    .use(ask())
-    .use(cli());
-
-  var verb = this.get('pkg.verb');
-  this.config.process(verb);
-
-  this.onLoad(/\.md$/, function (view, next) {
-    utils.matter.parse(view, next);
-  });
-
-  this.option('rethrow', { regex: /\{%=?([^%]*)%}/ });
-  this.engine('md', require('engine-base'), {
+  this.engine(['md', 'text'], require('engine-base'), {
     delims: ['{%', '%}']
   });
+
+  this.on('register', function(name, app) {
+    // bubble up errors to `base` instance
+    app.on('error', app.base.emit.bind(app.base, 'error'));
+    app.use(docs());
+  });
+
+  defaults(this, this.base, this.env);
 }
 
 /**
- * Inherit `Core`
+ * Inherit assemble-core
  */
 
-Core.extend(Verb);
+Assemble.extend(Verb);
+
+/**
+ * Similar to [copy](#copy) but calls a plugin `pipeline` if passed
+ * on the `options`. This allows plugin pipelines to be programmatically
+ * built-up and dynamically changed on-the-fly.
+ *
+ * ```js
+ * verb.process({src: ['a.txt', 'b.txt']}, options);
+ * ```
+ *
+ * @param {Object} `files`
+ * @param {Object} `options`
+ * @param {Function} `cb`
+ * @return {Stream} Returns a [vinyl][] src stream
+ * @api public
+ */
+
+Verb.prototype.process = function(files, options) {
+  options = options || {};
+  files.options = files.options || {};
+  var pipeline = files.options.pipeline || options.pipeline;
+  var opts = utils.extend({}, this.options, files.options, options);
+
+  return this.src(files.src, opts)
+    .pipe(this.pipeline(pipeline, opts))
+    .pipe(this.dest(files.dest, opts));
+};
+
+/**
+ * Verb `files` configurations in parallel.
+ *
+ * ```js
+ * verb.each(files, function(err) {
+ *   if (err) console.log(err);
+ * });
+ * ```
+ * @param {Object} `config`
+ * @param {Function} `cb`
+ * @api public
+ */
+
+Verb.prototype.each = function(config, cb) {
+  async.each(config.files, function(files, next) {
+    this.process(files, files.options)
+      .on('error', next)
+      .on('end', next);
+  }.bind(this), cb);
+  return this;
+};
+
+/**
+ * Verb `files` configurations in series.
+ *
+ * ```js
+ * verb.eachSeries(files, function(err) {
+ *   if (err) console.log(err);
+ * });
+ * ```
+ * @param {Object} `config`
+ * @param {Function} `cb`
+ * @api public
+ */
+
+Verb.prototype.eachSeries = function(config, cb) {
+  async.eachSeries(config.files, function(files, next) {
+    this.process(files, files.options)
+      .on('error', next)
+      .on('end', next);
+  }.bind(this), cb);
+};
+
+/**
+ * Verb files from a declarative [scaffold][] configuration.
+ *
+ * ```js
+ * var Scaffold = require('scaffold');
+ * var scaffold = new Scaffold({
+ *   options: {cwd: 'source'},
+ *   posts: {
+ *     src: ['content/*.md']
+ *   },
+ *   pages: {
+ *     src: ['templates/*.hbs']
+ *   }
+ * });
+ *
+ * verb.scaffold(scaffold, function(err) {
+ *   if (err) console.log(err);
+ * });
+ * ```
+ * @param {Object} `scaffold` Scaffold configuration
+ * @param {Function} `cb` Callback function
+ * @api public
+ */
+
+Verb.prototype.scaffold = function(scaffold, cb) {
+  async.eachOf(scaffold, function(target, name, next) {
+    this.each(target, next);
+  }.bind(this), cb);
+};
 
 /**
  * Expose `Verb`
  */
 
 module.exports = Verb;
-
-/**
- * Expose `Verb`
- */
-
-module.exports.utils = utils;

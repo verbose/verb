@@ -229,6 +229,10 @@ describe('methods', function () {
   });
 
   describe('addItems', function () {
+    beforeEach(function() {
+      collection = new Collection();
+    });
+
     it('should add multiple items', function () {
       collection.addItems({
         one: {content: 'foo'},
