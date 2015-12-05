@@ -7,10 +7,10 @@
 
 ## Usage
 {% body %}
-
+{% if (verb && verb.related && verb.related.list) { %}
 ## Related projects
 {%= related((verb.related && verb.related.list) || []) %}  
-
+{% } %}
 ## Running tests
 {%= include("tests") %}
 

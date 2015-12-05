@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 var path = require('path');
-var runner = require('base-runner');
+var mapCommands = require('map-config');
+var processArgv = require('base-argv').processArgv();
 var minimist = require('minimist');
 var utils = require('./lib/utils');
 var Verb = require('./');
@@ -11,8 +12,12 @@ var args = minimist(process.argv.slice(2), {
   alias: {verbose: 'v'}
 });
 
+Verb.use(function(app) {
+  app.set('cache.argv', processArgv(args));
+});
+
 // register `runner` as a mixin
-Verb.mixin(runner('verb', 'verbApp'));
+Verb.mixin(utils.runner('verb', 'verbApp'));
 
 /**
  * Get the `base` instance of verb to use for
@@ -22,6 +27,24 @@ Verb.mixin(runner('verb', 'verbApp'));
  */
 
 var base = Verb.getConfig('verbfile.js', __dirname);
+
+/**
+ * Custom base-cli command mappings.
+ */
+
+var cli = mapCommands(base)
+  .map('save', function(val) {
+    console.log(val)
+  })
+  .map('data', function(val) {
+    app.visit('data', val);
+  })
+  .map('cwd', function(fp) {
+    app.option('cwd', fp);
+  });
+
+var argv = base.processArgv(args);
+cli.process(argv.options);
 
 /**
  * Resolve config files (`verbfile.js`)
@@ -45,7 +68,7 @@ base.cli.map('verbApps', function(verbApps) {
   }
 
   base.runVerbApps(verbApps, function(err) {
-    // if (err) return console.error(err);
+    if (err) return console.error(err);
     utils.timestamp('done');
   });
 });

@@ -2,9 +2,11 @@
 
 var async = require('async');
 var Assemble = require('assemble-core');
+var templates = require('./lib/templates');
 var defaults = require('./lib/defaults');
+var config = require('./lib/config');
 var utils = require('./lib/utils');
-var docs = require('./lib/docs');
+var cli = require('./lib/cli');
 
 /**
  * Create an instance of `Verb` with the given `options`
@@ -27,23 +29,27 @@ function Verb(options) {
   this.isVerb = true;
   this.verbApps = {};
 
+  config(this);
+  cli(this);
+
   this.use(utils.middleware())
+    .use(utils.pipeline())
     .use(utils.loader())
+    .use(utils.config())
     .use(utils.store())
-    .use(docs())
+    .use(templates())
     .use(utils.ask());
 
+  defaults(this, this.base, this.env);
   this.engine(['md', 'text'], require('engine-base'), {
     delims: ['{%', '%}']
   });
 
   this.on('register', function(name, app) {
     // bubble up errors to `base` instance
-    app.on('error', app.base.emit.bind(app.base, 'error'));
-    app.use(docs());
+    defaults(app, app.base, app.env);
+    app.use(templates());
   });
-
-  defaults(this, this.base, this.env);
 }
 
 /**
