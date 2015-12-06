@@ -11,6 +11,8 @@
   "license": "MIT",
   "files": [
     "lib/",
+    "cli.js",
+    "verbfile.js",
     "index.js"
   ],
   "main": "index.js",

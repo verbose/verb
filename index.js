@@ -50,8 +50,8 @@ function Verb(options) {
     app.config.process(pkg.verb);
   });
 
+  // bubble up errors to `base` instance, set defaults
   this.on('register', function(name, app) {
-    // bubble up errors to `base` instance
     defaults(app, app.base, app.env);
     app.use(templates());
   });
