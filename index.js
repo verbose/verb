@@ -29,20 +29,25 @@ function Verb(options) {
   this.isVerb = true;
   this.verbApps = {};
 
+  var opts = this.options;
+  this.use(utils.middleware(opts))
+    .use(utils.pipeline(opts))
+    .use(utils.config())
+    .use(utils.loader())
+    .use(utils.store())
+    .use(templates())
+    .use(utils.ask())
+
   config(this);
   cli(this);
 
-  this.use(utils.middleware())
-    .use(utils.pipeline())
-    .use(utils.loader())
-    .use(utils.config())
-    .use(utils.store())
-    .use(templates())
-    .use(utils.ask());
-
-  defaults(this, this.base, this.env);
   this.engine(['md', 'text'], require('engine-base'), {
     delims: ['{%', '%}']
+  });
+
+  this.on('prebuild', function(name, task, app) {
+    var pkg = app.get('env.user.pkg') || {};
+    app.config.process(pkg.verb);
   });
 
   this.on('register', function(name, app) {

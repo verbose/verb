@@ -1,15 +1,18 @@
-# {%= name %} {%= badge.npm %} {%= badge.travis %}
+# {%= name %} {%= badge('npm') %} {%= badge('travis') %}
 
 > {%= description %}
 
+{% if (typeof options !== 'undefined' && options.toc) { %}
+<!-- toc -->
+{% } %}
 ## Install
 {%= include("install-npm", {save: true}) %}
 
 ## Usage
 {% body %}
-{% if (verb && verb.related && verb.related.list) { %}
+{% if (verb && verb.related && verb.related.list && verb.related.list.length) { %}
 ## Related projects
-{%= related((verb.related && verb.related.list) || []) %}  
+{%= related(verb.related.list) %}  
 {% } %}
 ## Running tests
 {%= include("tests") %}
