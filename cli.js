@@ -39,21 +39,21 @@ Verb.mixin(utils.runner('verb', 'verbApp', runner));
  * or a globally installed module
  */
 
-var base = Verb.getConfig('verbfile.js', __dirname);
+var verb = Verb.getConfig('verbfile.js', __dirname);
 
 /**
  * Resolve user config files, eg. `verbfile.js`.
  */
 
-base.resolve({pattern: 'verb-*/verbfile.js', cwd: gm});
+verb.resolve({pattern: 'verb-*/verbfile.js', cwd: gm});
 
 /**
  * Run verbApps and tasks
  */
 
-base.cli.map('verbApps', function(verbApps) {
+verb.cli.map('verbApps', function(verbApps) {
   if (!verbApps.length) {
-    if (base.tasks.hasOwnProperty('default')) {
+    if (verb.tasks.hasOwnProperty('default')) {
       verbApps = [{base: ['default']}];
     } else {
       console.log(' no default task is defined.');
@@ -62,12 +62,12 @@ base.cli.map('verbApps', function(verbApps) {
     }
   }
 
-  base.on('error', function(err) {
+  verb.on('error', function(err) {
     console.log(err);
     process.exit(1);
   });
 
-  base.runVerbApps(verbApps, function(err) {
+  verb.runVerbApps(verbApps, function(err) {
     if (err) return console.error(err);
     utils.timestamp('done');
   });
@@ -77,4 +77,4 @@ base.cli.map('verbApps', function(verbApps) {
  * Process args
  */
 
-base.cli.process(args);
+verb.cli.process(args);
