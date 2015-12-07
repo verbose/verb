@@ -19,47 +19,36 @@ module.exports = function(verb, base, env) {
     });
   }
 
-  // verb.task('readme', function(cb) {
-  //   verb.ask(function(err, answers) {
-  //     if (err) return cb(err);
-
-  //     verb.toStream('docs', function(key) {
-  //       return key === '.verb';
-  //     })
-  //       .on('error', cb)
-  //       .pipe(verb.renderFile('text', answers))
-  //       .pipe(handle('onStream'))
-  //       .on('error', cb)
-  //       .pipe(verb.pipeline(plugins))
-  //       .pipe(handle('preWrite'))
-  //       .on('error', cb)
-  //       .pipe(verb.dest(dest('readme.md')))
-  //       .pipe(utils.exhaust(handle('postWrite')))
-  //       .on('error', cb)
-  //       .on('finish', cb);
-  //   });
-  // });`
-
   var tasks = verb.get('env.argv.tasks') || ['readme'];
+
+  /**
+   * Readme task
+   */
 
   verb.task('readme', function(cb) {
     var plugins = verb.get('env.argv.plugins') || verb.plugins;
 
+    // load package.json data and user options onto `verb.cache.data`
+    verb.data({options: verb.options});
+    verb.data(env.user.pkg);
+    verb.data({license: 'Released under the MIT license.'});
+
+    // ask pre-configured questions, but only if they don't have
+    // answers yet
     verb.ask(function(err, answers) {
-      if (err) return cb(err);
+      if (err) {
+        cb(err);
+        return;
+      }
 
       verb.toStream('docs', function(key) {
           return key === '.verb';
         })
-        .pipe(verb.renderFile('text', answers))
-        .on('error', function(err) {
-          var m = /(\w+) is not a function/.exec(err.message);
-          if (m) console.log(err.message);
-        })
         .pipe(handle('onStream'))
+        .pipe(verb.renderFile('text', answers))
+        .on('error', handleError)
         .pipe(verb.pipeline(plugins))
         .pipe(handle('preWrite'))
-        .on('error', cb)
         .pipe(verb.dest(dest('readme.md')))
         .pipe(utils.exhaust(handle('postWrite')))
         .on('finish', cb);
@@ -102,4 +91,21 @@ function dest(dest) {
     file.basename = file.basename.replace(/^\$/, '');
     return file.base;
   };
+}
+
+/**
+ * Handle render errors
+ */
+
+function handleError(err) {
+  var m = /(\w+) is not a function/.exec(err.message);
+  console.log(m)
+  if (m) {
+    console.log('"' + m[1] + '" is a variable on `verb.cache.data`, but it is defined');
+    console.log('as a helper in `.verb.md`')
+  } else if (app.options.verbose) {
+    console.log(err.stack);
+  } else {
+    console.log(err.message);
+  }
 }
