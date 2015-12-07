@@ -2,10 +2,6 @@
 
 > {%= description %}
 
-## Install
-{%= include('install-npm', {save: true}) %}
-
-## Usage
 {% body %}
 
 {% var list = get("verb.related.list") || [] %}{% if (list.length) { %}
