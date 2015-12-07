@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var async = require('async');
 var Assemble = require('assemble-core');
 var templates = require('./lib/runner/templates');
@@ -7,6 +8,7 @@ var defaults = require('./lib/runner/defaults');
 var runner = require('./lib/runner/runner');
 var config = require('./lib/config');
 var utils = require('./lib/utils');
+var env = require('./lib/env');
 
 function create(runner) {
 
@@ -31,20 +33,19 @@ function create(runner) {
     this.verbApps = {};
 
     var opts = this.options;
-    this.name = opts.name || 'base';
+    this.name = opts.name || 'verb';
 
     this.use(utils.middleware(opts))
       .use(utils.pipeline(opts))
-      .use(utils.config())
-      .use(utils.loader())
       .use(utils.store())
+      .use(env())
 
     this.engine(['md', 'text'], require('engine-base'), {
       delims: ['{%', '%}']
     });
 
     if (typeof runner === 'function') {
-      runner.call(this, this, this.base, this.env || {});
+      runner.call(this, this, this.base, this.env);
     }
   }
 
@@ -169,13 +170,27 @@ function create(runner) {
 };
 
 /**
- * Expose `Verb`
+ * Expose `Verb` with our baseline defaults
  */
 
-module.exports = create();
+module.exports = create(function(verb) {
+  function renameKey(key) {
+    return path.basename(key, path.extname(key));
+  }
+  verb.create('docs', { renameKey: renameKey });
+  verb.create('includes', {
+    renameKey: renameKey,
+    viewType: ['partial']
+  });
+  verb.create('layouts', {
+    renameKey: renameKey,
+    viewType: ['layout']
+  });
+});
 
 /**
- * Expose `create`
+ * Expose `create` to allow user to instantiate
+ * Verb with their own dafaults
  */
 
 module.exports.create = create;
