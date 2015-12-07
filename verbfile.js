@@ -2,14 +2,12 @@
 
 var path = require('path');
 var utils = require('./lib/utils');
-var defaults = require('./lib/defaults');
+var defaults = require('./lib/runner/defaults');
 var argv = require('minimist')(process.argv.slice(2), {
   alias: {v: 'verbose'}
 });
 
 module.exports = function(verb, base, env) {
-  defaults(verb, base, env);
-
   if (argv.init) {
     verb.questions.options.forceAll = true;
   }

@@ -1,18 +1,36 @@
 #!/usr/bin/env node
 
 var path = require('path');
+var gm = require('global-modules');
 var processArgv = require('base-argv').processArgv();
 var minimist = require('minimist');
+var runner = require('./lib/runner/runner');
 var utils = require('./lib/utils');
-var Verb = require('./');
+var create = require('./').create;
 
 // parse argv
 var args = minimist(process.argv.slice(2), {
   alias: {verbose: 'v'}
 });
 
-// register `runner` as a mixin
-Verb.mixin(utils.runner('verb', 'verbApp'));
+/**
+ * Use Verb's static `create` method to pre-load CLI-specific
+ * plugins and middleware onto each instance created. In essence
+ * this creates a custom `Verb` constructor .
+ */
+
+var Verb = create(runner);
+
+/**
+ * Register `runner` mixin with `Verb`, wich pre-loads
+ * CLI-specific methods onto our custom constructor.
+ *
+ * We also pass the `runner` function so that any user-
+ * defined `Verb` constructors will also be pre-loaded
+ * with our CLI plugins and middeware.
+ */
+
+Verb.mixin(utils.runner('verb', 'verbApp', runner));
 
 /**
  * Get the `base` instance of verb to use for
@@ -24,10 +42,10 @@ Verb.mixin(utils.runner('verb', 'verbApp'));
 var base = Verb.getConfig('verbfile.js', __dirname);
 
 /**
- * Resolve config files (`verbfile.js`)
+ * Resolve user config files, eg. `verbfile.js`.
  */
 
-base.resolve({pattern: 'verb-*/verbfile.js', cwd: '@/'});
+base.resolve({pattern: 'verb-*/verbfile.js', cwd: gm});
 
 /**
  * Run verbApps and tasks
@@ -43,6 +61,11 @@ base.cli.map('verbApps', function(verbApps) {
       return;
     }
   }
+
+  base.on('error', function(err) {
+    console.log(err);
+    process.exit(1);
+  });
 
   base.runVerbApps(verbApps, function(err) {
     if (err) return console.error(err);
