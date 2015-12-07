@@ -2,17 +2,13 @@
 
 > {%= description %}
 
-{% if (typeof options !== 'undefined' && options.toc) { %}
-<!-- toc -->
-{% } %}
 ## Install
 {%= include("install-npm", {save: true}) %}
-
 ## Usage
 {% body %}
-{% if (verb && verb.related && verb.related.list && verb.related.list.length) { %}
+{% var list = get("verb.related.list") || [] %}{% if (list.length) { %}
 ## Related projects
-{%= related(verb.related.list) %}  
+{%= related(list) %}  
 {% } %}
 ## Running tests
 {%= include("tests") %}
@@ -31,4 +27,6 @@
 
 {%= include("footer") %}
 
-{%= reflinks(verb.reflinks || []) %}
+{% if (verb && verb.reflinks && verb.reflinks.list && verb.reflinks.list.length) { %}
+{%= reflinks(verb.reflinks) %}
+{% } %}
