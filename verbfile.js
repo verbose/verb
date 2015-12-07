@@ -12,13 +12,6 @@ module.exports = function(verb, base, env) {
     verb.questions.options.forceAll = true;
   }
 
-  function handle(stage) {
-    return utils.through.obj(function(file, enc, next) {
-      if (file.isNull()) return next();
-      verb.handle(stage, file, next);
-    });
-  }
-
   var tasks = verb.get('env.argv.tasks') || ['readme'];
 
   /**
@@ -77,6 +70,13 @@ module.exports = function(verb, base, env) {
   });
 
   verb.task('default', tasks);
+
+  function handle(stage) {
+    return utils.through.obj(function(file, enc, next) {
+      if (file.isNull()) return next();
+      verb.handle(stage, file, next);
+    });
+  }
 };
 
 /**

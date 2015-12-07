@@ -9,7 +9,7 @@ var assert = require('assert');
 var App = require('../');
 var app;
 
-describe.skip('store', function () {
+describe('store', function () {
   beforeEach(function () {
     app = new App();
   });
@@ -157,7 +157,7 @@ describe.skip('store', function () {
   });
 });
 
-describe.skip('events', function () {
+describe('events', function () {
   beforeEach(function () {
     app = new App();
     app.store = new Store('verb-tests');
@@ -208,29 +208,15 @@ describe.skip('events', function () {
     keys.should.eql(['a', 'c']);
   });
 
-  it.skip('should emit `del` when a value is deleted:', function () {
+  it('should emit `del` when a value is deleted:', function (cb) {
     app.store.on('del', function (keys) {
-      // keys.should.equal('a');
-      // assert(typeof app.store.get('a') === 'undefined');
-      // cb();
+      keys.should.equal('a');
+      assert(typeof app.store.get('a') === 'undefined');
+      cb();
     });
 
     app.store.set('a', {b: 'c'});
     app.store.get('a').should.eql({b: 'c'});
     app.store.del('a');
-  });
-
-  it('should emit deleted keys on `del`:', function (cb) {
-    app.store.on('del', function (keys) {
-      keys.should.eql(['a', 'c', 'e']);
-      assert(Object.keys(app.store.data).length === 0);
-      cb();
-    });
-
-    app.store.set('a', 'b');
-    app.store.set('c', 'd');
-    app.store.set('e', 'f');
-    app.store.data.should.have.properties(['a', 'c', 'e']);
-    app.store.del({force: true});
   });
 });

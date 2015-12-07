@@ -41,6 +41,13 @@ Verb.mixin(utils.runner('verb', 'verbApp', runner));
 
 var verb = Verb.getConfig('verbfile.js', __dirname);
 
+// get `verb` property from package.json, if it exists
+var userConfig = verb.get('env.user.pkg.verb');
+if (userConfig) {
+  verb.config.process(userConfig);
+  verb.emit('config-processed');
+}
+
 /**
  * Resolve user config files, eg. `verbfile.js`.
  */
@@ -51,10 +58,10 @@ verb.resolve({pattern: 'verb-*/verbfile.js', cwd: gm});
  * Run verbApps and tasks
  */
 
-verb.cli.map('verbApps', function(verbApps) {
-  if (!verbApps.length) {
+verb.cli.map('verbApps', function(tasks) {
+  if (!tasks.length) {
     if (verb.tasks.hasOwnProperty('default')) {
-      verbApps = [{base: ['default']}];
+      tasks = [{verb: ['default']}];
     } else {
       console.log(' no default task is defined.');
       utils.timestamp('done');
@@ -67,9 +74,12 @@ verb.cli.map('verbApps', function(verbApps) {
     process.exit(1);
   });
 
-  verb.runVerbApps(verbApps, function(err) {
-    if (err) return console.error(err);
-    utils.timestamp('done');
+  setImmediate(function() {
+    verb.runVerbApps(tasks, function(err) {
+      if (err) return console.error(err);
+      utils.timestamp('done');
+      process.exit(0);
+    });
   });
 });
 
@@ -77,4 +87,4 @@ verb.cli.map('verbApps', function(verbApps) {
  * Process args
  */
 
-verb.cli.process(args);
+verb.cli.processArgv(args);

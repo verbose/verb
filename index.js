@@ -3,12 +3,22 @@
 var path = require('path');
 var async = require('async');
 var Assemble = require('assemble-core');
-var templates = require('./lib/runner/templates');
-var defaults = require('./lib/runner/defaults');
-var runner = require('./lib/runner/runner');
-var config = require('./lib/config');
 var utils = require('./lib/utils');
-var env = require('./lib/env');
+
+/**
+ * Create a customized `Verb` constructor that calls the given
+ * `fn` when an instance is created.
+ *
+ * ```js
+ * var Verb = create(function(verb) {
+ *   // add stuff to `verb`
+ * });
+ * var verb = new Verb();
+ * ```
+ * @param {Function} `fn`
+ * @return {Function}
+ * @api public
+ */
 
 function create(runner) {
 
@@ -38,7 +48,6 @@ function create(runner) {
     this.use(utils.middleware(opts))
       .use(utils.pipeline(opts))
       .use(utils.store())
-      .use(env())
 
     this.engine(['md', 'text'], require('engine-base'), {
       delims: ['{%', '%}']
@@ -190,7 +199,7 @@ module.exports = create(function(verb) {
 
 /**
  * Expose `create` to allow user to instantiate
- * Verb with their own dafaults
+ * Verb with their own defaults
  */
 
 module.exports.create = create;
