@@ -2,10 +2,8 @@
 
 > {%= description %}
 
-## Install
-{%= include("install-npm", {save: true}) %}
-## Usage
 {% body %}
+
 {% var list = get("verb.related.list") || [] %}{% if (list.length) { %}
 ## Related projects
 {%= related(list) %}  
@@ -27,6 +25,7 @@
 
 {%= include("footer") %}
 
-{% if (verb && verb.reflinks && verb.reflinks.list && verb.reflinks.list.length) { %}
-{%= reflinks(verb.reflinks) %}
+{% var links = get("verb.reflinks") || [] %}
+{% if (links.length) { %}
+{%= reflinks(links) %}
 {% } %}

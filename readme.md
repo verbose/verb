@@ -2,36 +2,44 @@
 
 > Documentation generator
 
-
-## Install
-Install with [npm](https://www.npmjs.com/)
-
-```sh
-$ npm i verb --save
-```
-
-## Usage
-## toc
-
-<!-- toc -->
+- [Install](#install)
+- [Usage](#usage)
+- [CLI](#cli)
+  * [help](#help)
+  * [init](#init)
+  * [Run apps](#run-apps)
+  * [Run tasks](#run-tasks)
+  * [Run sub-apps](#run-sub-apps)
+  * [Run a app's tasks](#run-a-app-s-tasks)
+  * [Run a sub-app's tasks](#run-a-sub-app-s-tasks)
+- [API](#api)
+  * [.getConfig](#getconfig)
+  * [.getTask](#gettask)
+  * [.addApp](#addapp)
+  * [.hasApp](#hasapp)
+  * [.getApp](#getapp)
+  * [.extendApp](#extendapp)
+  * [.invoke](#invoke)
+- [Authoring apps](#authoring-apps)
+  * [App naming conventions](#app-naming-conventions)
 
 **TODO**
 
-- [x] publish a fast, composable, highly extendable project app with a user-friendly and expressive API
-- [x] support sub-apps (to any level of nesting)
-- [x] support streams, tasks, and plugins compatible with both [gulp][] and [assemble][assemble-core]
-- [x] make it super easy to run specific tasks from any app or sub-app, programmatically or via CLI 
-- [x] support _instance plugins_ that allow you to easily add functionality and features to verb
-- [x] support any template engine
-- [x] support using any number of template engines at once, so that different file types can simultaneously be handled by the engine that was registered for that file type
-- [x] support templates as [vinyl][] files, simple to use template collections and lists (for pagination, sorting, groups etc)
-- [x] support middleware that can be run on all files or specific files, and at specific points during the _build process_ (like `onLoad`, `preRender`, `postRender`, etc) 
-- [x] 820+ unit tests
-- [ ] create and publish apps (we created a handful of apps that we've been using locally, these will be published shortly)
-- [ ] CLI docs (started)
-- [ ] User help (e.g. when the user does `verb help` or just `verb`)
-- [ ] API docs
-- [ ] App guidelines and conventions
+* [x] publish a fast, composable, highly extendable project app with a user-friendly and expressive API
+* [x] support sub-apps (to any level of nesting)
+* [x] support streams, tasks, and plugins compatible with both [gulp](http://gulpjs.com) and [assemble](https://github.com/assemble/assemble-core)
+* [x] make it super easy to run specific tasks from any app or sub-app, programmatically or via CLI
+* [x] support _instance plugins_ that allow you to easily add functionality and features to verb
+* [x] support any template engine
+* [x] support using any number of template engines at once, so that different file types can simultaneously be handled by the engine that was registered for that file type
+* [x] support templates as [vinyl](http://github.com/gulpjs/vinyl) files, simple to use template collections and lists (for pagination, sorting, groups etc)
+* [x] support middleware that can be run on all files or specific files, and at specific points during the _build process_ (like `onLoad`, `preRender`, `postRender`, etc)
+* [x] 820+ unit tests
+* [ ] create and publish apps (we created a handful of apps that we've been using locally, these will be published shortly)
+* [ ] CLI docs (started)
+* [ ] User help (e.g. when the user does `verb help` or just `verb`)
+* [ ] API docs
+* [ ] App guidelines and conventions
 
 ## Install
 
@@ -45,7 +53,7 @@ Install globally with [npm](https://www.npmjs.com/)
 $ npm i -g verb
 ```
 
-**Install a verb app**
+**Install a "verb app"**
 
 If you aren't familiar with verb, just take the `node` app for a test drive:
 
@@ -53,7 +61,7 @@ If you aren't familiar with verb, just take the `node` app for a test drive:
 $ npm i -g verb-node
 ```
 
-**Run a app**
+**Run a "verb app"**
 
 If everything installed correctly, you should now be able to verb a new project with the following command (make sure you run the command from an empty directory!):
 
@@ -77,7 +85,7 @@ _(WIP)_
 
 _(TODO)_
 
-Get started with Verb. 
+Get started with Verb.
 
 ```js
 $ verb help
@@ -87,14 +95,13 @@ $ verb help
 
 _(TODO)_
 
-Get started with Verb. 
+Get started with Verb.
 
 ```js
 $ verb init
 ```
 
 Upon running `init`, verb will prompt you for answers to the following questions:
-
 
 ### Run apps
 
@@ -118,7 +125,7 @@ To run a task on the `base` app, just pass the name of the task to run.
 $ verb <task name> [options]
 ```
 
-Unless overridden by the user, the `base` app is the default app that ships with Verb. This app doesn't really "verb" anything, but it will prompt you for a few answers (if you choose), to store data that's commonly needed by templates, like `author.name`, GitHub `username`, etc. 
+Unless overridden by the user, the `base` app is the default app that ships with Verb. This app doesn't really "verb" anything, but it will prompt you for a few answers (if you choose), to store data that's commonly needed by templates, like `author.name`, GitHub `username`, etc.
 
 **Example**
 
@@ -132,7 +139,7 @@ $ verb bar
 
 > Sub-apps are normal apps that are called from (or registered by) other apps.
 
-Dot-notation is used for getting and runing sub-apps. 
+Dot-notation is used for getting and runing sub-apps.
 
 ```sh
 $ verb <app name>.<sub-app name> [options]
@@ -153,7 +160,6 @@ $ verb a.b.c [options]
 ```
 
 And so on...
-
 
 ### Run a app's tasks
 
@@ -185,10 +191,9 @@ $ verb a.b.c:foo
 
 ## API
 
-
 ### .getConfig
 
-Static method that first tries to get the `verbfile.js` in the root of the current project, then if not found, falls back to the default `verbfile.js` in this project. 
+Static method that first tries to get the `verbfile.js` in the root of the current project, then if not found, falls back to the default `verbfile.js` in this project.
 
 Once resolved, the verbfile will be loaded and used to create the "base" instance of verb. All other instances will be stored on the base instance's `apps` object.
 
@@ -316,16 +321,16 @@ _(TODO)_
 
 Use `verb-` as the prefix, followed by any words of your choosing to describe the purpose of the app.
 
+## Related projects
 
-[assemble]: http://assemble.io
-[assemble-core]: https://github.com/assemble/assemble-core
-[base-methods]: https://github.com/jonschlinkert/base-methods
-[gulp]: http://gulpjs.com
-[scaffold]: https://github.com/jonschlinkert/scaffold
-[verb]: https://github.com/verbose/verb
-[vinyl]: http://github.com/gulpjs/vinyl
+* [assemble-core](https://www.npmjs.com/package/assemble-core): The core assemble application with no presets or defaults. All configuration is left to the… [more](https://www.npmjs.com/package/assemble-core) | [homepage](https://github.com/assemble/assemble-core)
+* [base-methods](https://www.npmjs.com/package/base-methods): Starter for creating a node.js application with a handful of common methods, like `set`, `get`,… [more](https://www.npmjs.com/package/base-methods) | [homepage](https://github.com/jonschlinkert/base-methods)
+* [base-resolver](https://www.npmjs.com/package/base-resolver): 'base-methods' plugin for resolving and loading globally installed npm modules. | [homepage](https://github.com/jonschlinkert/base-resolver)
+* [base-runner](https://www.npmjs.com/package/base-runner): Orchestrate multiple instances of base-methods at once. | [homepage](https://github.com/jonschlinkert/base-runner)
+* [resolve-modules](https://www.npmjs.com/package/resolve-modules): Resolves local and global npm modules that match specified patterns, and returns a configuration object… [more](https://www.npmjs.com/package/resolve-modules) | [homepage](https://github.com/jonschlinkert/resolve-modules)
 
 ## Running tests
+
 Install dev dependencies:
 
 ```sh
@@ -333,48 +338,21 @@ $ npm i -d && npm test
 ```
 
 ## Contributing
+
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/jonschlinkert/verb/issues/new).
 
 ## Author
+
 **Jon Schlinkert**
 
-+ [github/jonschlinkert](https://github.com/jonschlinkert)
-+ [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
+* [github/jonschlinkert](https://github.com/jonschlinkert)
+* [twitter/jonschlinkert](http://twitter.com/jonschlinkert)
 
 ## License
+
 Copyright © 2015 [Jon Schlinkert](https://github.com/jonschlinkert)
 Released under the MIT license.
 
 ***
 
-_This file was generated by [verb](https://github.com/verbose/verb) on Sun Dec 06 2015 21:35:43 GMT-0500 (EST)._
-
-[ansi-colors]: https://github.com/doowb/ansi-colors
-[assemble-core]: https://github.com/assemble/assemble-core
-[assemble-loader]: https://github.com/jonschlinkert/assemble-loader
-[base-argv]: https://github.com/jonschlinkert/base-argv
-[base-cli]: https://github.com/jonschlinkert/base-cli
-[base-config]: https://github.com/jonschlinkert/base-config
-[base-pipeline]: https://github.com/jonschlinkert/base-pipeline
-[base-questions]: https://github.com/jonschlinkert/base-questions
-[base-runner]: https://github.com/jonschlinkert/base-runner
-[base-store]: https://github.com/jonschlinkert/base-store
-[common-middleware]: https://github.com/jonschlinkert/common-middleware
-[engine-base]: https://github.com/jonschlinkert/engine-base
-[extend-shallow]: https://github.com/jonschlinkert/extend-shallow
-[get-value]: https://github.com/jonschlinkert/get-value
-[global-modules]: https://github.com/jonschlinkert/global-modules
-[has-glob]: https://github.com/jonschlinkert/has-glob
-[helper-copyright]: https://github.com/helpers/helper-copyright
-[helper-reflinks]: https://github.com/helpers/helper-reflinks
-[helper-related]: https://github.com/helpers/helper-related
-[is-valid-glob]: https://github.com/jonschlinkert/is-valid-glob
-[lazy-cache]: https://github.com/jonschlinkert/lazy-cache
-[matched]: https://github.com/jonschlinkert/matched
-[minimist]: https://github.com/substack/minimist
-[node-resolve]: https://github.com/substack/node-resolve
-[resolve-dir]: https://github.com/jonschlinkert/resolve-dir
-[stream-exhaust]: https://github.com/chrisdickinson/stream-exhaust
-[success-symbol]: https://github.com/jonschlinkert/success-symbol
-[time-stamp]: https://github.com/jonschlinkert/time-stamp
-
+_This file was generated by [verb](https://github.com/verbose/verb) on December 07, 2015._
