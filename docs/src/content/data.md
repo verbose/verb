@@ -8,7 +8,7 @@ reflinks: ['base-store', 'base-data']
 
 {{upper name}} keeps "data" on two different objects, depending on your needs. 
 
-| **Storage object** | **Description** | **Methods**|
+| **Storage object** | **Description** | **Methods** |
 | --- | --- | --- |
 | `{{name}}.cache.data` | Kept in-memory | `{{name}}.data()` (function) |
 | `{{name}}.store.data` | Persisted to disk | `{{name}}.store` (object with methods) |

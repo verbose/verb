@@ -2,16 +2,6 @@
 
 > Documentation generator
 
-## Install
-
-Install with [npm](https://www.npmjs.com/)
-
-```sh
-$ npm i verb --save
-```
-
-## Usage
-
 - [Install](#install)
 - [Usage](#usage)
 - [CLI](#cli)
