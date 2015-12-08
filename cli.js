@@ -4,7 +4,7 @@ var path = require('path');
 var gm = require('global-modules');
 var processArgv = require('base-argv').processArgv();
 var minimist = require('minimist');
-var runner = require('./lib/runner/runner');
+var preload = require('./lib/runner/preload');
 var utils = require('./lib/utils');
 var create = require('./').create;
 
@@ -19,7 +19,7 @@ var args = minimist(process.argv.slice(2), {
  * this creates a custom `Verb` constructor .
  */
 
-var Verb = create(runner);
+var Verb = create(preload);
 
 /**
  * Register `runner` mixin with `Verb`, wich pre-loads
@@ -30,7 +30,7 @@ var Verb = create(runner);
  * with our CLI plugins and middeware.
  */
 
-Verb.mixin(utils.runner('verb', 'verbApp', runner));
+Verb.mixin(utils.runner('verb', 'verbApp', preload));
 
 /**
  * Get the `base` instance of verb to use for
