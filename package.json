@@ -31,6 +31,7 @@
     "assemble-core": "^0.5.0",
     "assemble-loader": "^0.2.4",
     "base-argv": "^0.3.0",
+    "base-list": "^0.1.1",
     "base-pipeline": "^0.1.4",
     "base-questions": "^0.2.1",
     "base-runner": "^0.4.1",
