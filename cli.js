@@ -59,27 +59,48 @@ verb.resolve({pattern: 'verb-*/verbfile.js', cwd: gm});
  */
 
 verb.cli.map('verbApps', function(tasks) {
-  if (!tasks.length) {
-    if (verb.tasks.hasOwnProperty('default')) {
-      tasks = [{verb: ['default']}];
-    } else {
-      console.log(' no default task is defined.');
+
+  // ensure this is run after other configuration is complete
+  setImmediate(function() {
+    if (verb.enabled('display tasks')) {
+      console.log(utils.colors.gray(' List of verbApps and their registered tasks:'));
+      verb.displayTasks();
       utils.timestamp('done');
       return;
     }
-  }
 
-  verb.on('error', function(err) {
-    console.log(err);
-    process.exit(1);
-  });
+    if (verb.enabled('choose tasks')) {
+      verb.chooseTasks(function(err, results) {
+        if (err) throw err;
+        run([results.verbApps]);
+      });
+      return;
+    }
 
-  setImmediate(function() {
-    verb.runVerbApps(tasks, function(err) {
-      if (err) return console.error(err);
-      utils.timestamp('done');
-      process.exit(0);
-    });
+    if (!tasks.length) {
+      if (verb.tasks.hasOwnProperty('default')) {
+        tasks = [{verb: ['default']}];
+      } else {
+        console.log(' no default task is defined.');
+        utils.timestamp('done');
+        return;
+      }
+    }
+
+    run(tasks);
+    function run(tasks) {
+      verb.on('error', function(err) {
+        console.log(err);
+        process.exit(1);
+      });
+
+      verb.runVerbApps(tasks, function(err) {
+        if (err) return console.error(err);
+        utils.timestamp('done');
+        process.exit(0);
+      });
+    }
+
   });
 });
 
