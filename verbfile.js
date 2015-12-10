@@ -55,7 +55,7 @@ module.exports = function(verb, base, env) {
 
       verb.toStream('docs')
         .on('error', cb)
-        // .pipe(verb.renderFile('text', answers))
+        .pipe(verb.renderFile('text', answers))
         .on('error', cb)
         .pipe(verb.dest(dest('readme.md')))
         .on('finish', cb);
