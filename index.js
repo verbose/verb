@@ -4,6 +4,7 @@ var path = require('path');
 var async = require('async');
 var Assemble = require('assemble-core');
 var utils = require('./lib/utils');
+var env = require('./lib/env');
 
 /**
  * Create a customized `Verb` constructor that calls the given
@@ -20,7 +21,7 @@ var utils = require('./lib/utils');
  * @api public
  */
 
-function create(runner) {
+function create(preload) {
 
   /**
    * Create an instance of `Verb` with the given `options`
@@ -48,13 +49,14 @@ function create(runner) {
     this.use(utils.middleware(opts))
       .use(utils.pipeline(opts))
       .use(utils.store())
+      .use(env())
 
     this.engine(['md', 'text'], require('engine-base'), {
       delims: ['{%', '%}']
     });
 
-    if (typeof runner === 'function') {
-      runner.call(this, this, this.base, this.env);
+    if (typeof preload === 'function') {
+      preload.call(this, this, this.base, this.env);
     }
   }
 

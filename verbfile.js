@@ -40,14 +40,14 @@ module.exports = function(verb, base, env) {
       verb.emit('info', 'plugins',  Object.keys(plugins).join(', '));
 
       verb.toStream('docs', function(key) {
-          return key === '.verb';
+          return key === '.verb' || key === 'package';
         })
         .pipe(handle('onStream'))
         .pipe(verb.renderFile('text', answers))
         .on('error', handleError(verb))
         .pipe(verb.pipeline(plugins))
         .pipe(handle('preWrite'))
-        .pipe(verb.dest(dest('readme.md')))
+        .pipe(verb.dest(dest()))
         .pipe(utils.exhaust(handle('postWrite')))
         .on('error', cb)
         .on('finish', cb);
@@ -75,7 +75,7 @@ module.exports = function(verb, base, env) {
         .on('error', cb)
         .pipe(verb.renderFile('text', answers))
         .on('error', cb)
-        .pipe(verb.dest(dest('readme.md')))
+        .pipe(verb.dest(dest()))
         .on('finish', cb);
     });
   });
@@ -104,8 +104,9 @@ module.exports = function(verb, base, env) {
 
 function dest(dest) {
   return function(file) {
-    file.base = path.dirname(dest);
-    file.path = dest;
+    var fp = file.dest || dest || '';
+    file.base = path.dirname(fp);
+    file.path = fp;
     file.basename = file.basename.replace(/^_/, '.');
     file.basename = file.basename.replace(/^\$/, '');
     return file.base;
