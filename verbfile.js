@@ -39,11 +39,12 @@ module.exports = function(verb, base, env) {
         })
         .pipe(handle('onStream'))
         .pipe(verb.renderFile('text', answers))
-        .on('error', handleError)
+        .on('error', handleError(verb))
         .pipe(verb.pipeline(plugins))
         .pipe(handle('preWrite'))
         .pipe(verb.dest(dest('readme.md')))
         .pipe(utils.exhaust(handle('postWrite')))
+        .on('error', cb)
         .on('finish', cb);
     });
   });
@@ -54,7 +55,7 @@ module.exports = function(verb, base, env) {
 
       verb.toStream('docs')
         .on('error', cb)
-        .pipe(verb.renderFile('text', answers))
+        // .pipe(verb.renderFile('text', answers))
         .on('error', cb)
         .pipe(verb.dest(dest('readme.md')))
         .on('finish', cb);
@@ -97,15 +98,22 @@ function dest(dest) {
  * Handle render errors
  */
 
-function handleError(err) {
-  var m = /(\w+) is not a function/.exec(err.message);
-  console.log(m)
-  if (m) {
-    console.log('"' + m[1] + '" is a variable on `verb.cache.data`, but it is defined');
-    console.log('as a helper in `.verb.md`')
-  } else if (app.options.verbose) {
-    console.log(err.stack);
-  } else {
-    console.log(err.message);
+function handleError(app) {
+  return function(err, cb) {
+    var m = /(\w+) is not a function/.exec(err.message);
+    var msg = '';
+    if (m) {
+      msg = err.message + ': "' + m[1] + '()" is defined as a helper\n'
+       + 'in `.verb.md`, but "' + m[1] + '" is defined on '
+       + 'verb.cache.data as a "' + typeof app.cache.data[m[1]] + '"';
+    }
+    if (app.options.verbose) {
+      console.log(msg);
+      console.log(err.stack);
+    } else {
+      console.log(err.message);
+      console.log(msg);
+    }
+    process.exit(1);
   }
 }
