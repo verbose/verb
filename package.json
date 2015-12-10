@@ -88,6 +88,7 @@
     "should": "*",
     "sinon": "^1.17.2",
     "swig": "^1.4.2",
+    "template-helper-apidocs": "^0.4.4",
     "through2": "^2.0.0",
     "vinyl": "^1.1.0"
   },
