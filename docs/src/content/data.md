@@ -3,6 +3,7 @@ name: verb
 title: Data
 engine: hbs
 description: "Learn how to get, set and delete data for templates, options and more."
+related: ['#store']
 reflinks: ['base-store', 'base-data']
 ---
 
