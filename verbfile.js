@@ -19,6 +19,8 @@ module.exports = function(verb, base, env) {
    */
 
   verb.task('readme', function(cb) {
+    verb.questions.enqueue('author', 'name', 'description');
+
     var plugins = verb.get('env.argv.plugins') || verb.plugins;
 
     // load package.json data and user options onto `verb.cache.data`
@@ -34,6 +36,9 @@ module.exports = function(verb, base, env) {
         return;
       }
 
+      // placeholder for something better
+      verb.emit('info', 'plugins',  Object.keys(plugins).join(', '));
+
       verb.toStream('docs', function(key) {
           return key === '.verb';
         })
@@ -44,6 +49,19 @@ module.exports = function(verb, base, env) {
         .pipe(handle('preWrite'))
         .pipe(verb.dest(dest('readme.md')))
         .pipe(utils.exhaust(handle('postWrite')))
+        .on('error', cb)
+        .on('finish', cb);
+    });
+  });
+
+  verb.task('verbmd', function(cb) {
+    verb.ask(function(err, answers) {
+      if (err) return cb(err);
+
+      verb.toStream('docs', function(key) {
+          return key === 'min';
+        })
+        .pipe(verb.dest(dest('.verb.md')))
         .on('error', cb)
         .on('finish', cb);
     });
