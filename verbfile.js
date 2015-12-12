@@ -12,7 +12,7 @@ module.exports = function(verb, base, env) {
     verb.questions.options.forceAll = true;
   }
 
-  var tasks = verb.get('env.argv.tasks') || ['readme'];
+  var tasks = verb.get('env.argv.tasks') || ['readme', 'package'];
 
   /**
    * Readme task
@@ -22,25 +22,27 @@ module.exports = function(verb, base, env) {
     verb.questions.enqueue('author', 'name', 'description');
 
     var plugins = verb.get('env.argv.plugins') || verb.plugins;
+    var pkg = env.user.pkg;
+    var config = pkg.verb || {};
+
+    verb.option(config.options || {});
 
     // load package.json data and user options onto `verb.cache.data`
     verb.data({options: verb.options});
-    verb.data(env.user.pkg);
-    verb.data({license: 'Released under the MIT license.'});
+    verb.data(pkg);
+    verb.data(verb.base.get('cache.expanded'));
+    verb.data({license: license(pkg, verb.options)});
 
-    // ask pre-configured questions, but only if they don't have
-    // answers yet
+    // ask pre-configured questions, but only if
+    // they don't have answers yet
     verb.ask(function(err, answers) {
-      if (err) {
-        cb(err);
-        return;
-      }
+      if (err) return cb(err);
 
       // placeholder for something better
       verb.emit('info', 'plugins',  Object.keys(plugins).join(', '));
 
       verb.toStream('docs', function(key) {
-          return key === '.verb' || key === 'package';
+          return key === '.verb';
         })
         .pipe(handle('onStream'))
         .pipe(verb.renderFile('text', answers))
@@ -52,6 +54,17 @@ module.exports = function(verb, base, env) {
         .on('error', cb)
         .on('finish', cb);
     });
+  });
+
+  verb.task('package', function(cb) {
+    verb.toStream('docs', function(key, view) {
+        return view.basename === 'package.json';
+      })
+      .pipe(handle('preWrite'))
+      .pipe(verb.dest(dest()))
+      .pipe(utils.exhaust(handle('postWrite')))
+      .on('error', cb)
+      .on('finish', cb);
   });
 
   verb.task('verbmd', function(cb) {
@@ -105,12 +118,31 @@ module.exports = function(verb, base, env) {
 function dest(dest) {
   return function(file) {
     var fp = file.dest || dest || '';
-    file.base = path.dirname(fp);
+    file.base = fp ? path.dirname(fp) : file.base;
     file.path = fp;
     file.basename = file.basename.replace(/^_/, '.');
     file.basename = file.basename.replace(/^\$/, '');
     return file.base;
   };
+}
+
+/**
+ * Format license
+ */
+
+function license(pkg, options) {
+  options = options || {};
+  if (typeof options.license === 'string') {
+    return options.license;
+  }
+  var str = pkg.license;
+  if (Array.isArray(pkg.licenses)) {
+    str = pkg.licenses[0];
+  }
+  if (typeof str === 'undefined') {
+    return '';
+  }
+  return 'Released under the ' + str + ' license.';
 }
 
 /**

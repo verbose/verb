@@ -3,6 +3,7 @@
 var path = require('path');
 var async = require('async');
 var Assemble = require('assemble-core');
+var expand = require('./lib/expand');
 var utils = require('./lib/utils');
 var env = require('./lib/env');
 
@@ -41,6 +42,7 @@ function create(preload) {
 
     Assemble.apply(this, arguments);
     this.isVerb = true;
+    this.isApp = true;
     this.verbApps = {};
 
     var opts = this.options;
@@ -49,6 +51,7 @@ function create(preload) {
     this.use(utils.middleware(opts))
       .use(utils.pipeline(opts))
       .use(utils.store())
+      .use(expand())
       .use(env())
 
     this.engine(['md', 'text'], require('engine-base'), {
