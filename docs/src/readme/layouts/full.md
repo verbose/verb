@@ -4,10 +4,11 @@
 
 {% body %}
 
-{% var list = get("verb.related.list") || [] %}{% if (list.length) { %}
+{% if (verb.related && verb.related.list && verb.related.list.length) { %}
 ## Related projects
-{%= related(list) %}  
+{%= related(verb.related.list) %}  
 {% } %}
+
 ## Running tests
 {%= include("tests") %}
 
@@ -25,7 +26,10 @@
 
 {%= include("footer") %}
 
-{% var links = get("verb.reflinks") || [] %}
-{% if (links.length) { %}
-{%= reflinks(links) %}
+{% if (verb.reflinks) { %}
+{% if (Array.isArray(verb.reflinks) && verb.reflinks.length) { %}
+{%= reflinks(verb.reflinks) %}  
+{% } else if (verb.reflinks.list && verb.reflinks.list.length) { %}
+{%= reflinks(verb.reflinks.list) %}  
+{% } %}
 {% } %}
