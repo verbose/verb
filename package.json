@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "ansi-colors": "^0.1.0",
+    "arr-flatten": "^1.0.1",
+    "array-unique": "^0.2.1",
     "assemble-core": "^0.5.0",
     "assemble-loader": "^0.2.4",
     "base-argv": "^0.3.0",
@@ -37,9 +39,12 @@
     "base-runner": "^0.4.3",
     "base-store": "^0.3.0",
     "common-middleware": "^0.2.0",
+    "composer-runtimes": "^0.7.0",
     "define-property": "^0.2.5",
     "engine-base": "^0.1.2",
+    "expand": "^0.4.0",
     "extend-shallow": "^2.0.1",
+    "falsey": "^0.2.1",
     "get-value": "^2.0.2",
     "global-modules": "^0.2.0",
     "has-glob": "^0.1.1",
@@ -94,7 +99,6 @@
     "should": "_",
     "sinon": "^1.17.2",
     "swig": "^1.4.2",
-    "template-helper-apidocs": "^0.4.4",
     "through2": "^2.0.0",
     "vinyl": "^1.1.0"
   },
@@ -115,6 +119,9 @@
   ],
   "verb": {
     "layout": "full",
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
         "base-methods",
@@ -125,17 +132,6 @@
         "micromatch",
         "assemble"
       ]
-    },
-    "plugins": {
-      "gulp-format-md": {
-        "name": "format-md"
-      }
-    },
-    "options": {
-      "toc": {
-        "render": true,
-        "insert": false
-      }
     },
     "reflinks": [
       "verb",
