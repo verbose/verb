@@ -13,6 +13,7 @@
 
 {% if (verb.related && verb.related.list && verb.related.list.length) { %}
 ## Related projects
+{%= verb.related.description || '' %} 
 {%= related(verb.related.list) %}  
 {% } %}
 
