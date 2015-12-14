@@ -477,8 +477,6 @@ describe('Item', function() {
 
       assert(copy.stat.isFile());
       assert(!copy.stat.isDirectory());
-      assert(item.stat instanceof fs.Stats);
-      assert(copy.stat instanceof fs.Stats);
       done();
     });
 
