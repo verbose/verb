@@ -41,7 +41,6 @@ function create(preload) {
     }
 
     this.env = {};
-
     Base.apply(this, arguments);
     this.isVerb = true;
     this.isApp = true;
@@ -54,7 +53,7 @@ function create(preload) {
       .use(utils.pipeline(opts))
       .use(utils.store())
       .use(expand())
-      .use(env())
+      .use(env());
 
     this.engine(['md', 'text'], require('engine-base'), {
       delims: ['{%', '%}']
@@ -69,9 +68,13 @@ function create(preload) {
 
   Base.extend(Verb);
 
+  /**
+   * Initialize verb
+   */
+
   Verb.prototype.initVerb = function(app) {
     if (typeof preload === 'function') {
-      preload.call(this, this, this.base, this.env);
+      preload.call(app, app, this.base, this.env);
     }
   };
 
@@ -187,7 +190,7 @@ function create(preload) {
   });
 
   return Verb;
-};
+}
 
 /**
  * Expose `Verb` with our baseline defaults
