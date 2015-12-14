@@ -70,6 +70,7 @@ verb.resolve('global', {pattern: 'verb-*/verbfile.js', cwd: gm});
  */
 
 verb.cli.map('apps', function(tasks) {
+
   // ensure this is run after other configuration is complete
   setImmediate(function() {
     if (verb.enabled('generate.init')) {
@@ -105,10 +106,15 @@ verb.cli.map('apps', function(tasks) {
     function run(tasks) {
       data.updateData(verb, verb.base, verb.env);
 
-      verb.runApps(tasks, function(err) {
+      verb.ask(function(err, answers) {
         if (err) return console.error(err);
-        utils.timestamp('done');
-        process.exit(0);
+        verb.data(answers);
+
+        verb.runApps(tasks, function(err) {
+          if (err) return console.error(err);
+          utils.timestamp('done');
+          process.exit(0);
+        });
       });
     }
   });
