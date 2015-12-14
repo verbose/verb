@@ -1,6 +1,6 @@
-# Contributing to Assemble
+# Contributing to Verb
 
-First and foremost, thank you! We appreciate that you want to contribute to Assemble, your time is valuable, and your contributions mean a lot to us.
+First and foremost, thank you! We appreciate that you want to contribute to Verb, your time is valuable, and your contributions mean a lot to us.
 
 **What does "contributing" mean?**
 
@@ -17,7 +17,7 @@ Creating an issue is the simplest form of contributing to a project. But there a
 Please make sure you're creating one in the right place:
 
 - do you have a template syntax question? Like how to accomplish something with handlebars? The best place to get answers for this is [stackoverflow.com][], the [handlebars docs](handlebarsjs.com), or the documentation for the template engine you're using.
-- Are you having an issue with an Assemble feature that is powered by an underlying lib? This is sometimes difficult to know, but sometimes it can be pretty easy to find out. For example, if you use a glob pattern somewhere and you found what you believe to be a matching bug, that would probably be an issue for [node-glob][] or [micromatch][]
+- Are you having an issue with an Verb feature that is powered by an underlying lib? This is sometimes difficult to know, but sometimes it can be pretty easy to find out. For example, if you use a glob pattern somewhere and you found what you believe to be a matching bug, that would probably be an issue for [node-glob][] or [micromatch][]
 
 **Creating an issue**
 
