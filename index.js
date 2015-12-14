@@ -2,7 +2,7 @@
 
 var path = require('path');
 var async = require('async');
-var Assemble = require('assemble-core');
+var Base = require('assemble-core');
 var expand = require('./lib/expand');
 var utils = require('./lib/utils');
 var env = require('./lib/env');
@@ -40,10 +40,12 @@ function create(preload) {
       return new Verb(options);
     }
 
-    Assemble.apply(this, arguments);
+    this.env = {};
+
+    Base.apply(this, arguments);
     this.isVerb = true;
     this.isApp = true;
-    this.verbApps = {};
+    this.apps = {};
 
     var opts = this.options;
     this.name = opts.name || 'verb';
@@ -58,16 +60,20 @@ function create(preload) {
       delims: ['{%', '%}']
     });
 
-    if (typeof preload === 'function') {
-      preload.call(this, this, this.base, this.env);
-    }
+    this.initVerb(this);
   }
 
   /**
    * Inherit assemble-core
    */
 
-  Assemble.extend(Verb);
+  Base.extend(Verb);
+
+  Verb.prototype.initVerb = function(app) {
+    if (typeof preload === 'function') {
+      preload.call(this, this, this.base, this.env);
+    }
+  };
 
   /**
    * Similar to [copy](#copy) but calls a plugin `pipeline` if passed
