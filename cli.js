@@ -9,7 +9,9 @@ var defaults = require('./lib/runner/defaults');
 var preload = require('./lib/runner/preload');
 var data = require('./lib/runner/data');
 var utils = require('./lib/utils');
-var create = require('./').create;
+var colors = utils.colors;
+var Verb = require('./');
+var create = Verb.create;
 
 // parse argv
 var args = minimist(process.argv.slice(2), {
@@ -22,7 +24,7 @@ var args = minimist(process.argv.slice(2), {
  * this creates a custom `Verb` constructor .
  */
 
-var Verb = create(function(app, base, env) {
+Verb = create(function(app, base, env) {
   return preload(app, base, env || app.env);
 });
 
@@ -35,7 +37,7 @@ var Verb = create(function(app, base, env) {
  * with our CLI plugins and middeware.
  */
 
-Verb.mixin(utils.runner('verb', 'verbApp', preload));
+Verb.mixin(utils.runner('verb', 'app', preload));
 
 /**
  * Get the `base` instance of verb to use for
@@ -45,61 +47,37 @@ Verb.mixin(utils.runner('verb', 'verbApp', preload));
  */
 
 var verb = Verb.getConfig('verbfile.js', __dirname);
-verb.on('error', function(err) {
-  console.log(err.stack);
-});
 
 // get `verb` property from package.json, if it exists
-var userConfig = verb.get('env.user.pkg.verb');
+var pkg = verb.get('env.user.pkg');
+var userConfig = pkg.verb;
+
 if (userConfig) {
-  verb.config.process(userConfig);
+  var config = utils.expandConfig(userConfig, pkg);
+  verb.config.process(config);
+  verb.emit('config-loaded');
 }
-
-// else if (!verb.get('env.user.pkg') || !fs.existsSync('.verb.md')) {
-//   verb.emit('config-processed');
-//   verb.enable('ask.verbmd');
-// }
-verb.emit('config-processed');
-
 
 /**
  * Resolve user config files, eg. `verbfile.js`.
  */
 
-verb.resolve({pattern: 'verb-*/verbfile.js', cwd: gm});
+verb.resolve('default', {pattern: 'verbfile.js', cwd: __dirname});
+verb.resolve('global', {pattern: 'verb-*/verbfile.js', cwd: gm});
 
 /**
- * Run verbApps and tasks
+ * Run apps and tasks
  */
 
-verb.cli.map('verbApps', function(tasks) {
+verb.cli.map('apps', function(tasks) {
   // ensure this is run after other configuration is complete
   setImmediate(function() {
-    // preload(verb, verb.base, verb.env);
-    verb.questions.set('verbmd', 'Looks like ".verb.md" is missing, want to add one?');
-    // verb.data(verb.get('env.user.pkg') || {});
+    if (verb.enabled('generate.init')) {
 
-    if (verb.enabled('ask.verbmd')) {
-      verb.ask('verbmd', function(err, answers) {
-        if (err) throw err;
-
-        if (!answers.verbmd) {
-          console.log('no worries!');
-          return;
-        }
-
-        console.log('got it! copying now.');
-
-        verb.build('verbmd', function(err) {
-          if (err) throw err;
-          console.log('done!');
-        });
-      });
-      return;
     }
 
     if (verb.enabled('tasks.display')) {
-      console.log(utils.colors.gray(' List of verbApps and their registered tasks:'));
+      console.log(colors.gray(' Verb apps and registered tasks:'));
       verb.displayTasks();
       utils.timestamp('done');
       return;
@@ -108,14 +86,14 @@ verb.cli.map('verbApps', function(tasks) {
     if (verb.enabled('tasks.choose')) {
       verb.chooseTasks(function(err, results) {
         if (err) throw err;
-        run([results.verbApps]);
+        run([results.apps]);
       });
       return;
     }
 
     if (!tasks.length) {
       if (verb.tasks.hasOwnProperty('default')) {
-        tasks = [{verb: ['default']}];
+        tasks = [{base: ['default']}];
       } else {
         console.log(' no default task is defined.');
         utils.timestamp('done');
@@ -127,12 +105,7 @@ verb.cli.map('verbApps', function(tasks) {
     function run(tasks) {
       data.updateData(verb, verb.base, verb.env);
 
-      verb.on('error', function(err) {
-        console.log(err);
-        process.exit(1);
-      });
-
-      verb.runVerbApps(tasks, function(err) {
+      verb.runApps(tasks, function(err) {
         if (err) return console.error(err);
         utils.timestamp('done');
         process.exit(0);
