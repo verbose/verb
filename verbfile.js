@@ -16,12 +16,6 @@ var argv = require('minimist')(process.argv.slice(2), {
  */
 
 module.exports = function(verb, base, env) {
-  if (argv.init) {
-    verb.questions.options.forceAll = true;
-  }
-
-  var tasks = verb.get('env.argv.tasks') || ['readme', 'package'];
-
   verb.task('a', function(cb) {
     console.log('verb base > a');
     cb();
@@ -41,26 +35,24 @@ module.exports = function(verb, base, env) {
 
   verb.task('readme', function(cb) {
     var plugins = verb.get('env.argv.plugins') || verb.plugins;
-    data.updateData(verb, verb.base, verb.env);
 
     // ask pre-configured questions, but only if
     // they don't have answers yet
-    verb.ask(function(err, answers) {
-      if (err) return cb(err);
-
-      verb.toStream('docs', function(key, view) {
-        return key === '.verb';
-      })
-        .pipe(handle(verb, 'onStream'))
-        .pipe(verb.renderFile('text', answers))
-        .on('error', handleError(verb))
-        .pipe(verb.pipeline(plugins))
-        .pipe(handle(verb, 'preWrite'))
-        .pipe(verb.dest(dest()))
-        .pipe(utils.exhaust(handle(verb, 'postWrite')))
-        .on('error', cb)
-        .on('finish', cb);
-    });
+    verb.toStream('docs', function(key, view) {
+      return key === '.verb';
+    })
+      .pipe(handle(verb, 'onStream'))
+      .on('error', cb)
+      .pipe(verb.renderFile('text'))
+      .on('error', handleError(verb))
+      .pipe(verb.pipeline(plugins))
+      .on('error', cb)
+      .pipe(handle(verb, 'preWrite'))
+      .pipe(verb.dest(rename()))
+      .on('error', cb)
+      .pipe(utils.exhaust(handle(verb, 'postWrite')))
+      .on('error', cb)
+      .on('finish', cb);
   });
 
   verb.task('package', function(cb) {
@@ -68,13 +60,13 @@ module.exports = function(verb, base, env) {
       return view.basename === 'package.json';
     })
       .pipe(handle(verb, 'preWrite'))
-      .pipe(verb.dest(dest()))
+      .pipe(verb.dest(rename()))
       .pipe(utils.exhaust(handle(verb, 'postWrite')))
       .on('error', cb)
       .on('finish', cb);
   });
 
-  verb.task('default', tasks);
+  verb.task('default', ['readme', 'package']);
 };
 
 function handle(app, stage) {
@@ -91,7 +83,7 @@ function handle(app, stage) {
  * Rename template files
  */
 
-function dest(dest) {
+function rename(dest) {
   return function(file) {
     var fp = file.dest || dest || '';
     file.base = fp ? path.dirname(fp) : file.base;
@@ -111,7 +103,11 @@ function handleError(app) {
     var m = /(\w+) is not a function/.exec(err.message);
     var msg = '';
     if (m) {
-      msg = err.message + ': "' + m[1] + '()" is defined as a helper\n' + 'in `.verb.md`, but "' + m[1] + '" is defined on ' + 'verb.cache.data as a "' + typeof app.cache.data[m[1]] + '"';
+      msg = err.message + ': "' + m[1]
+        + '()" is defined as a helper\n'
+        + 'in `.verb.md`, but "' + m[1]
+        + '" is defined on verb.cache.data as a "'
+        + typeof app.cache.data[m[1]] + '"';
     }
     if (app.options.verbose) {
       console.log(msg);
