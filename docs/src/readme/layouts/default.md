@@ -1,13 +1,20 @@
+---
+verb_docs:
+  tags: ['template', 'built-in', '.verb.md', 'layout']
+  title: Default layout
+---
 # {%= name %} {%= badge('npm') %} {%= badge('travis') %}
 
 > {%= description %}
 
-{% if (typeof options !== 'undefined' && options.toc) { %}
 <!-- toc -->
-{% } %}
 
+{%= section("install") %}
+
+{% if (verb.sections.install !== false) { %}
 ## Install
 {%= include('install-npm', {save: true}) %}
+{% } %}
 
 {% body %}
 

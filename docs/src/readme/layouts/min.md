@@ -1,3 +1,8 @@
+---
+verb_docs:
+  tags: ['template', 'built-in', '.verb.md', 'layout']
+  title: Minimal layout
+---
 # {%= name %}
 
 > {%= description %}

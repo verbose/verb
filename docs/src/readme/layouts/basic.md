@@ -1,3 +1,8 @@
+---
+verb_docs:
+  tags: ['template', 'built-in', '.verb.md', 'layout']
+  title: Basic layout
+---
 # {%= name %} {%= badge('npm') %} {%= badge('travis') %}
 
 > {%= description %}
