@@ -4,30 +4,16 @@ var path = require('path');
 var utils = require('./lib/utils');
 var data = require('./lib/runner/data');
 var argv = require('minimist')(process.argv.slice(2), {
-  alias: {
-    v: 'verbose'
-  }
+  alias: {v: 'verbose'}
 });
 
 /**
- * !HEADS UP: this is not what a normal verfile.js would look like.
+ * HEADS UP: this is not what a normal verfile.js would look like.
  * We're just trying to break everyting right now, so this has a
  * lot of stuff in it.
  */
 
 module.exports = function(verb, base, env) {
-  verb.task('a', function(cb) {
-    console.log('verb base > a');
-    cb();
-  });
-  verb.task('b', function(cb) {
-    console.log('verb base > b');
-    cb();
-  });
-  verb.task('c', function(cb) {
-    console.log('verb base > c');
-    cb();
-  });
 
   /**
    * Readme task
@@ -39,21 +25,27 @@ module.exports = function(verb, base, env) {
     // ask pre-configured questions, but only if
     // they don't have answers yet
     verb.toStream('docs', function(key, view) {
-      return key === '.verb';
+      if (view.dest === 'readme.md') {
+        // custom `sections` from package.json `verb` config
+        var sections = verb.get('cache.sections');
+        if (sections) view.content = sections;
+        return true;
+      }
     })
       .pipe(handle(verb, 'onStream'))
       .on('error', cb)
       .pipe(verb.renderFile('text'))
       .on('error', handleError(verb))
       .pipe(verb.pipeline(plugins))
-      .on('error', cb)
       .pipe(handle(verb, 'preWrite'))
       .pipe(verb.dest(rename()))
-      .on('error', cb)
       .pipe(utils.exhaust(handle(verb, 'postWrite')))
-      .on('error', cb)
       .on('finish', cb);
   });
+
+  /**
+   * Re-write package.json with any user-defined config updates
+   */
 
   verb.task('package', function(cb) {
     verb.toStream('docs', function(key, view) {
@@ -66,8 +58,20 @@ module.exports = function(verb, base, env) {
       .on('finish', cb);
   });
 
+  /**
+   * Default tasks
+   */
+
   verb.task('default', ['readme', 'package']);
 };
+
+/**
+ * Handle a middleware stage in the pipeline
+ *
+ * @param {Object} `app`
+ * @param {Object} `stage`
+ * @return {Object}
+ */
 
 function handle(app, stage) {
   return utils.through.obj(function(file, enc, next) {

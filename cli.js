@@ -2,13 +2,14 @@
 
 var fs = require('fs');
 var path = require('path');
+var async = require('async');
 var gm = require('global-modules');
-var processArgv = require('base-argv').processArgv();
 var minimist = require('minimist');
 var defaults = require('./lib/runner/defaults');
 var preload = require('./lib/runner/preload');
 var data = require('./lib/runner/data');
 var utils = require('./lib/utils');
+var pkg = require('./lib/pkg');
 var colors = utils.colors;
 var Verb = require('./');
 var create = Verb.create;
@@ -48,13 +49,26 @@ Verb.mixin(utils.runner('verb', 'app', preload));
 
 var verb = Verb.getConfig('verbfile.js', __dirname);
 
+/**
+ * Support `--emit` for debugging
+ *
+ * Example:
+ *   $ --emit data
+ */
+
+if (args.emit && typeof args.emit === 'string') {
+  verb.on(args.emit, console.log.bind(console));
+}
+
 // get `verb` property from package.json, if it exists
 var pkg = verb.get('env.user.pkg');
-var userConfig = pkg.verb;
+var verbConfig = pkg.verb;
 
-if (userConfig) {
-  var config = utils.expandConfig(userConfig, pkg);
+if (verbConfig) {
+  var config = utils.expandConfig(verbConfig, pkg);
+  verb._pkg = config;
   verb.config.process(config);
+  verb.set('cache.config', config);
   verb.emit('config-loaded');
 }
 
@@ -62,21 +76,17 @@ if (userConfig) {
  * Resolve user config files, eg. `verbfile.js`.
  */
 
-verb.resolve('default', {pattern: 'verbfile.js', cwd: __dirname});
+// verb.resolve('default', {pattern: 'verbfile.js', cwd: __dirname});
 verb.resolve('global', {pattern: 'verb-*/verbfile.js', cwd: gm});
 
 /**
- * Run apps and tasks
+ * Run verb "apps" and tasks
  */
 
 verb.cli.map('apps', function(tasks) {
 
   // ensure this is run after other configuration is complete
   setImmediate(function() {
-    if (verb.enabled('generate.init')) {
-
-    }
-
     if (verb.enabled('tasks.display')) {
       console.log(colors.gray(' Verb apps and registered tasks:'));
       verb.displayTasks();
@@ -87,7 +97,7 @@ verb.cli.map('apps', function(tasks) {
     if (verb.enabled('tasks.choose')) {
       verb.chooseTasks(function(err, results) {
         if (err) throw err;
-        run([results.apps]);
+        run(utils.arrayify(results.apps));
       });
       return;
     }
@@ -104,15 +114,29 @@ verb.cli.map('apps', function(tasks) {
 
     run(tasks);
     function run(tasks) {
-      data.updateData(verb, verb.base, verb.env);
+      verb.data(data.updateData(verb));
 
+      if (args.init) {
+        verb.questions.enqueue('author', {force: true});
+        console.log('fix me! I should output all author questions!');
+      }
+
+      // ask queued questions
       verb.ask(function(err, answers) {
         if (err) return console.error(err);
+        var fp = utils.homeRelative(verb.get('env.config.path'));
+        utils.timestamp('using verbfile ' + fp);
+
+        // emit the answers
+        verb.emit('answers', answers);
+
+        // update context for templates
         verb.data(answers);
 
+        // run apps and/or tasks
         verb.runApps(tasks, function(err) {
           if (err) return console.error(err);
-          utils.timestamp('done');
+          utils.timestamp('finished ' + utils.success());
           process.exit(0);
         });
       });
@@ -125,3 +149,4 @@ verb.cli.map('apps', function(tasks) {
  */
 
 verb.cli.processArgv(args);
+

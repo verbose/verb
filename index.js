@@ -3,8 +3,8 @@
 var path = require('path');
 var async = require('async');
 var Base = require('assemble-core');
-var expand = require('./lib/expand');
 var utils = require('./lib/utils');
+var pkg = require('./lib/pkg');
 var env = require('./lib/env');
 
 /**
@@ -52,12 +52,8 @@ function create(preload) {
     this.use(utils.middleware(opts))
       .use(utils.pipeline(opts))
       .use(utils.store())
-      .use(expand())
+      .use(pkg())
       .use(env());
-
-    this.engine(['md', 'text'], require('engine-base'), {
-      delims: ['{%', '%}']
-    });
 
     this.initVerb(this);
   }
@@ -73,6 +69,12 @@ function create(preload) {
    */
 
   Verb.prototype.initVerb = function(app) {
+    this.store.create('config');
+
+    this.engine(['md', 'text'], require('engine-base'), {
+      delims: ['{%', '%}']
+    });
+
     if (typeof preload === 'function') {
       preload.call(app, app, this.base, this.env);
     }
@@ -177,6 +179,22 @@ function create(preload) {
       this.each(target, next);
     }.bind(this), cb);
   };
+
+  /**
+   * Get the `base` instance
+   */
+
+  Object.defineProperty(Verb.prototype, '_pkg', {
+    configurable: true,
+    get: function(val) {
+      this.cache.pkg = val;
+    },
+    get: function() {
+      var user = this.env.user || {};
+      var pkg = user.pkg || {};
+      return (this.cache.pkg = pkg);
+    }
+  });
 
   /**
    * Get the `base` instance
