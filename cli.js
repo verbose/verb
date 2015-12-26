@@ -76,7 +76,6 @@ if (verbConfig) {
  * Resolve user config files, eg. `verbfile.js`.
  */
 
-// verb.resolve('default', {pattern: 'verbfile.js', cwd: __dirname});
 verb.resolve('global', {pattern: 'verb-*/verbfile.js', cwd: gm});
 
 /**
@@ -148,5 +147,5 @@ verb.cli.map('apps', function(tasks) {
  * Process args
  */
 
-verb.cli.processArgv(args);
+verb.cli.process(args);
 
