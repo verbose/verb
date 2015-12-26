@@ -3,6 +3,7 @@
 var path = require('path');
 var async = require('async');
 var Base = require('assemble-core');
+var actions = require('./lib/actions');
 var utils = require('./lib/utils');
 var pkg = require('./lib/pkg');
 var env = require('./lib/env');
@@ -52,6 +53,7 @@ function create(preload) {
     this.use(utils.middleware(opts))
       .use(utils.pipeline(opts))
       .use(utils.store())
+      .use(actions())
       .use(pkg())
       .use(env());
 
