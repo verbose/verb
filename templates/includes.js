@@ -2,6 +2,13 @@
 
 
 module.exports = {
+  'related-list': [
+    '{% if (verb.related && verb.related.list && verb.related.list.length) { %}',
+    '{%= verb.related.description || "" %} ',
+    '{%= related(verb.related.list) %}  ',
+    '{% } %}',
+  ].join('\n'),
+  
   'install-npm.md': [
     'Install with [npm](https://www.npmjs.com/):',
     '',
