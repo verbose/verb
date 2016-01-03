@@ -2,10 +2,6 @@
 
 var path = require('path');
 var utils = require('./lib/utils');
-var data = require('./lib/runner/data');
-var argv = require('minimist')(process.argv.slice(2), {
-  alias: {v: 'verbose'}
-});
 
 /**
  * HEADS UP: this is not what a normal verfile.js would look like.
@@ -35,6 +31,7 @@ module.exports = function(verb, base, env) {
       .pipe(handle(verb, 'onStream'))
       .on('error', cb)
       .pipe(verb.renderFile('text'))
+      .on('error', cb)
       .on('error', handleError(verb))
       .pipe(verb.pipeline(plugins))
       .pipe(handle(verb, 'preWrite'))

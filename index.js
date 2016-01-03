@@ -73,6 +73,7 @@ function create(preload) {
   Verb.prototype.initVerb = function(app) {
     this.store.create('config');
 
+    this.engine('hbs', require('engine-handlebars'));
     this.engine(['md', 'text'], require('engine-base'), {
       delims: ['{%', '%}']
     });
@@ -188,12 +189,15 @@ function create(preload) {
 
   Object.defineProperty(Verb.prototype, '_pkg', {
     configurable: true,
-    get: function(val) {
-      this.cache.pkg = val;
+    set: function(pkg) {
+      this.cache.pkg = pkg;
     },
     get: function() {
-      var user = this.env.user || {};
-      var pkg = user.pkg || {};
+      if (this.cache.pkg) {
+        return this.cache.pkg;
+      }
+      var pkg = this.cache.pkg
+        || this.get('env.user.pkg');
       return (this.cache.pkg = pkg);
     }
   });

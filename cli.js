@@ -1,15 +1,10 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var path = require('path');
-var async = require('async');
 var gm = require('global-modules');
 var minimist = require('minimist');
-var defaults = require('./lib/runner/defaults');
 var preload = require('./lib/runner/preload');
 var data = require('./lib/runner/data');
 var utils = require('./lib/utils');
-var pkg = require('./lib/pkg');
 var colors = utils.colors;
 var Verb = require('./');
 var create = Verb.create;
@@ -61,12 +56,14 @@ if (args.emit && typeof args.emit === 'string') {
 }
 
 // get `verb` property from package.json, if it exists
-var pkg = verb.get('env.user.pkg');
-var verbConfig = pkg.verb;
+var userPkg = verb.get('env.user.pkg');
+if (userPkg) {
+  verb.set('cache.pkg', userPkg);
+  var verbConfig = userPkg.verb;
+}
 
-if (verbConfig) {
-  var config = utils.expandConfig(verbConfig, pkg);
-  verb._pkg = config;
+if (userPkg && verbConfig) {
+  var config = utils.expandConfig(verbConfig, userPkg);
   verb.config.process(config);
   verb.set('cache.config', config);
   verb.emit('config-loaded');
@@ -103,7 +100,9 @@ verb.cli.map('apps', function(tasks) {
 
     if (!tasks.length) {
       if (verb.tasks.hasOwnProperty('default')) {
-        tasks = [{base: ['default']}];
+        var task = {};
+        task[verb.env.user.alias] = ['default'];
+        tasks = [task];
       } else {
         console.log(' no default task is defined.');
         utils.timestamp('done');
@@ -134,7 +133,7 @@ verb.cli.map('apps', function(tasks) {
 
         // run apps and/or tasks
         verb.runApps(tasks, function(err) {
-          if (err) return console.error(err);
+          if (err) throw err;
           utils.timestamp('finished ' + utils.success());
           process.exit(0);
         });
@@ -148,4 +147,3 @@ verb.cli.map('apps', function(tasks) {
  */
 
 verb.cli.process(args);
-
