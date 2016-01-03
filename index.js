@@ -20,7 +20,6 @@ var env = require('./lib/env');
  * ```
  * @param {Function} `fn`
  * @return {Function}
- * @api public
  */
 
 function create(preload) {
@@ -84,14 +83,13 @@ function create(preload) {
   };
 
   /**
-   * Similar to [copy](#copy) but calls a plugin `pipeline` if passed
-   * on the `options`. This allows plugin pipelines to be programmatically
-   * built-up and dynamically changed on-the-fly.
+   * Similar to [copy](#copy) but calls a plugin `pipeline` if defined globally
+   * or on the `.process` method `options`. This allows plugin pipelines to
+   * be programmatically built-up and dynamically changed on-the-fly.
    *
    * ```js
    * verb.process({src: ['a.txt', 'b.txt']}, options);
    * ```
-   *
    * @param {Object} `files`
    * @param {Object} `options`
    * @param {Function} `cb`
@@ -137,7 +135,8 @@ function create(preload) {
    *
    * ```js
    * verb.eachSeries(files, function(err) {
-   *   if (err) console.log(err);
+   *   if (err) throw err;
+   *   console.log('done!');
    * });
    * ```
    * @param {Object} `config`
@@ -173,7 +172,7 @@ function create(preload) {
    * });
    * ```
    * @param {Object} `scaffold` Scaffold configuration
-   * @param {Function} `cb` Callback function
+   * @param {Function} `cb` Callback function that exposes `err`, called after the scaffold is generated.
    * @api public
    */
 
@@ -184,7 +183,7 @@ function create(preload) {
   };
 
   /**
-   * Get the `base` instance
+   * Get the package.json from the current working directory.
    */
 
   Object.defineProperty(Verb.prototype, '_pkg', {

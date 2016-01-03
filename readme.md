@@ -97,25 +97,7 @@ $ verb bar
 
 ## API
 
-### [create](index.js#L26)
-
-Create a customized `Verb` constructor that calls the given `fn` when an instance is created.
-
-**Params**
-
-* `fn` **{Function}**
-* `returns` **{Function}**
-
-**Example**
-
-```js
-var Verb = create(function(verb) {
-  // add stuff to `verb`
-});
-var verb = new Verb();
-```
-
-### [Verb](index.js#L39)
+### [Verb](index.js#L38)
 
 Create an instance of `Verb` with the given `options`
 
@@ -130,9 +112,9 @@ var Verb = require('verb');
 var verb = new Verb(options);
 ```
 
-### [.process](index.js#L102)
+### [.process](index.js#L100)
 
-Similar to [copy](#copy) but calls a plugin `pipeline` if passed on the `options`. This allows plugin pipelines to be programmatically built-up and dynamically changed on-the-fly.
+Similar to [copy](#copy) but calls a plugin `pipeline` if defined globally or on the `.process` method `options`. This allows plugin pipelines to be programmatically built-up and dynamically changed on-the-fly.
 
 **Params**
 
@@ -147,7 +129,7 @@ Similar to [copy](#copy) but calls a plugin `pipeline` if passed on the `options
 verb.process({src: ['a.txt', 'b.txt']}, options);
 ```
 
-### [.each](index.js#L126)
+### [.each](index.js#L124)
 
 Verb `files` configurations in parallel.
 
@@ -164,7 +146,7 @@ verb.each(files, function(err) {
 });
 ```
 
-### [.eachSeries](index.js#L148)
+### [.eachSeries](index.js#L147)
 
 Verb `files` configurations in series.
 
@@ -177,18 +159,19 @@ Verb `files` configurations in series.
 
 ```js
 verb.eachSeries(files, function(err) {
-  if (err) console.log(err);
+  if (err) throw err;
+  console.log('done!');
 });
 ```
 
-### [.scaffold](index.js#L180)
+### [.scaffold](index.js#L179)
 
 Verb files from a declarative [scaffold][] configuration.
 
 **Params**
 
 * `scaffold` **{Object}**: Scaffold configuration
-* `cb` **{Function}**: Callback function
+* `cb` **{Function}**: Callback function that exposes `err`, called after the scaffold is generated.
 
 **Example**
 
