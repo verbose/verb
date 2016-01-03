@@ -1,16 +1,30 @@
 'use strict';
 
-var install = [
-  'Install with [npm](https://www.npmjs.com/)',
-  '',
-  '```sh',
-  '$ npm i {%= name %}{%= save === true ? " --save" : "" %}',
-  '```'
-].join('\n');
 
 module.exports = {
-  'install-npm.md': install,
-  'install.md': install,
+  'install-npm.md': [
+    'Install with [npm](https://www.npmjs.com/):',
+    '',
+    '```sh',
+    '$ npm i {%= name %}{%= ((typeof save !== "undefined" && save === true) ? " --save" : "") %}',
+    '```'
+  ].join('\n'),
+  
+  'install.md': [
+    'Install with [npm](https://www.npmjs.com/):',
+    '',
+    '```sh',
+    '$ npm i {%= name %}',
+    '```'
+  ].join('\n'),
+
+  'install-dev.md': [
+    'Install as a `devDependency` with [npm](https://www.npmjs.com/):',
+    '',
+    '```sh',
+    '$ npm i {%= name %} -D',
+    '```'
+  ].join('\n'),
 
   'install-bower.md': [
     'Install with [bower](http://bower.io/)',
