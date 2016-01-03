@@ -1,32 +1,27 @@
-> How do you differentiate between assemble and metalsmith
+---
+name: verb
+title: Plugins
+engine: hbs
+description: ""
+related: ['assemble-core']
+reflinks: []
+---
 
-There is not much similar between the two. The examples show how to build projects using a similar style to metalsmith, but that's about it.
+## Plugin types
 
-- assemble has rich support for template collections
-- assemble supports template "types": renderable, layout and partial - defined when a collection is created, to add special behavior and methods related to the type; and collections can use one or more type.
-- assemble does not limit how and where you build files
-- assemble supports instance plugins (like metalsmith), so you can augment an instance
-- assemble supports pipeline plugins (like gulp)
-- assemble collections can use plugins
-- assemble views (templates) can use plugins (assemble views are vinyl files)
-- assemble supports any template engine, and allows you to use more than one template engine during the same build.
-- assemble supports middleware, similar to express. (plugins and middleware serve very different purposes, and are used in completely different ways. more on this below)
-
-## Plugins
-
-- **instance plugins**: Instance plugins are registered with the `.use()` method and are called immediately upon instantiation. The only parameter exposed to an instance plugin is the instance of `app` (assemble), `collection`, or `view`.
-- **pipeline plugins**: Pipeline plugins are registered with `.pipe()` and are used on vinyl `file` objects in a stream (note that all assemble "views" are instances of vinyl files)
+- **instance plugins**: Instance plugins are registered with the `.use()` method and are called immediately upon instantiation. The only parameter exposed to an instance plugin is the instance of `app` ({{name}}), `collection`, or `view`.
+- **pipeline plugins**: Pipeline plugins are registered with `.pipe()` and are used on vinyl `file` objects in a stream (note that all {{name}} "views" are instances of vinyl files)
 
 ### Instance plugins
 
 **Example instance plugin**
 
 ```js
-var assemble = require('assemble');
-var app = assemble();
+var {{name}} = require('{{name}}');
+var app = {{name}}();
 
 app.use(function(app) {
-   // do stuff to app or `this` (the assemble instance)
+  // do stuff to app or `this`, which is the {{name}} instance
 });
 ```
 
@@ -37,12 +32,12 @@ Collections themselves are like mini-application instances, and collection plugi
 **Example collection plugin**
 
 ```js
-var assemble = require('assemble');
-var app = assemble();
+var {{name}} = require('{{name}}');
+var app = {{name}}();
 
 // register a plugin to be used on all collections
 app.use(function(app) {
-   // do stuff to app or `this` (the assemble instance)
+   // do stuff to app or `this` (the {{name}} instance)
 
    // return a function to be use used as a collection plugin
    return function(collection) {
@@ -74,8 +69,8 @@ app.create('posts')
 **Example view plugin**
 
 ```js
-var assemble = require('assemble');
-var app = assemble();
+var {{name}} = require('{{name}}');
+var app = {{name}}();
 
 // register a plugin to be used on all views, from all collections
 app.use(function(app) {
@@ -126,15 +121,3 @@ Here are just a few examples
 - `pagination`
 - `groups` and `lists`
 - `sorting`
-
-## Middleware
-
-(this description was inspired by express's middleware description)
-
-Middleware functions are functions that have access to the `file` object (or in assemble's case, the `view` object), and a callback function that represents the `next` middleware in the application’s build cycle.
-
-Middleware functions can perform the following tasks:
-
-- Execute any code.
-- Make changes to the `file` object.
-- Call the `next` middleware function in the stack.
