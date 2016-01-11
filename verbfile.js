@@ -32,7 +32,7 @@ module.exports = function(verb, base, env) {
       .on('error', cb)
       .pipe(verb.renderFile('text'))
       .on('error', cb)
-      .on('error', handleError(verb))
+      .on('error', utils.handleError(verb))
       .pipe(verb.pipeline(plugins))
       .pipe(handle(verb, 'preWrite'))
       .pipe(verb.dest(rename()))
@@ -92,31 +92,5 @@ function rename(dest) {
     file.basename = file.basename.replace(/^_/, '.');
     file.basename = file.basename.replace(/^\$/, '');
     return file.base;
-  };
-}
-
-/**
- * Handle render errors
- */
-
-function handleError(app) {
-  return function(err, cb) {
-    var m = /(\w+) is not a function/.exec(err.message);
-    var msg = '';
-    if (m) {
-      msg = err.message + ': "' + m[1]
-        + '()" is defined as a helper\n'
-        + 'in `.verb.md`, but "' + m[1]
-        + '" is defined on verb.cache.data as a "'
-        + typeof app.cache.data[m[1]] + '"';
-    }
-    if (app.options.verbose) {
-      console.log(msg);
-      console.log(err.stack);
-    } else {
-      console.log(err.message);
-      console.log(msg);
-    }
-    process.exit(1);
   };
 }

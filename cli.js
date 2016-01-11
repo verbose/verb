@@ -133,7 +133,11 @@ verb.cli.map('apps', function(tasks) {
 
         // run apps and/or tasks
         verb.runApps(tasks, function(err) {
-          if (err) throw err;
+          if (err) {
+            utils.handleError(verb)(err);
+            process.exit(1);
+          }
+
           utils.timestamp('finished ' + utils.success());
           process.exit(0);
         });

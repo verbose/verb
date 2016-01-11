@@ -17,7 +17,7 @@ verb_docs:
 {%= section("Author", "author") %}
 
 ## License
-{%= copyright({linkify: true}) %}
+{%= copyright({linkify: true}) %}  
 {%= license %}
 
 ***
