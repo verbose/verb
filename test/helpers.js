@@ -271,7 +271,7 @@ describe('async helpers', function () {
 });
 
 describe('built-in helpers:', function () {
-  describe('automatically verbd helpers for default view types:', function () {
+  describe('automatically created helpers for default view types:', function () {
     beforeEach(function () {
       app = new App({rethrow: false});
       app.engine('md', require('engine-base'));
@@ -352,12 +352,12 @@ describe('built-in helpers:', function () {
       });
     });
 
-    it('should return an empty string when the partial is missing.', function (cb) {
+    it('should return throw an error when a partial is missing.', function (cb) {
       app.partial('abc.md', {content: '---\nname: "AAA"\n---\n<%= name %>', locals: {name: 'BBB'}});
       app.page('xyz.md', {path: 'xyz.md', content: 'foo <%= partial("def.md", { name: "CCC" }) %> bar'});
       app.render('xyz.md', {name: 'DDD'}, function (err, res) {
-        if (err) return cb(err);
-        res.content.should.equal('foo  bar');
+        assert(err);
+        assert.equal(err.message, 'helper "partial" cannot find "def.md"');
         cb();
       });
     });
