@@ -62,7 +62,7 @@ Helpers are used when data needs to be updated dynamically, or when it needs to 
 
 ### badge
 
-This is a helper that gets badge templates from node_modules and renders them using data in package.json. There are other badges, like `travis`, but you can add your own if you want or do a pr to verb to add more.
+This is a helper that gets badge templates from node_modules and renders them using data in package.json. There are other badges, like `travis`, but you can add your own if you want or do a PR to verb to add more.
 
 ```js
 {%%= badge("fury") %}
