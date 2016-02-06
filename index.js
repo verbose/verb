@@ -10,6 +10,7 @@
 var fs = require('fs');
 var async = require('async');
 var debug = require('debug')('verb');
+var util = require('generator-util');
 var Assemble = require('assemble-core');
 var settings = require('./lib/settings');
 var plugins = require('./lib/plugins');
@@ -52,7 +53,7 @@ Verb.prototype.initVerb = function(opts) {
   this.prefix = opts.prefix || 'verb-generate';
 
   this.data({runner: require('./package')});
-  this.initPlugins();
+  this.initPlugins(this.options);
 
   this.create('files');
   this.create('docs');
@@ -60,13 +61,25 @@ Verb.prototype.initVerb = function(opts) {
   this.define('lazyCreate', function(name, opts) {
     if (!this[name]) this.create(name, opts);
   });
+
+  var plugin = this.plugin;
+  this.define('plugin', function(name) {
+    var pipeline = this.options.pipeline;
+    if (arguments.length === 1 && pipeline) {
+      var idx = pipeline.indexOf(name);
+      if (idx !== -1) {
+        pipeline.splice(idx, 1);
+      }
+    }
+    return plugin.apply(this, arguments);
+  });
 };
 
 /**
  * Initialize verb plugins
  */
 
-Verb.prototype.initPlugins = function() {
+Verb.prototype.initPlugins = function(opts) {
   this.use(plugins.generators({prefix: 'verb-generate'}));
   this.use(plugins.pipeline());
   this.use(plugins.loader());
@@ -75,6 +88,15 @@ Verb.prototype.initPlugins = function() {
   this.use(plugins.ask());
   this.use(settings());
   this.use(config());
+
+  if (opts.cli === true || process.env.VERB_CLI) {
+
+    // modify create, dest and src methods to automatically
+    // use cwd from generators unless overridden by the user
+    util.create(this);
+    util.dest(this);
+    util.src(this);
+  }
 };
 
 Verb.prototype.conflicts = function(patterns, options, cb) {
@@ -112,6 +134,12 @@ Verb.prototype.conflicts = function(patterns, options, cb) {
     });
   });
 };
+
+/**
+ * Expose static `is*` methods from Templates
+ */
+
+Assemble._.plugin.is(Verb);
 
 /**
  * Expose `Verb`
