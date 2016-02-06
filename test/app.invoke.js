@@ -29,6 +29,7 @@ describe('.invoke', function() {
 
   beforeEach(function() {
     verb = new Verb({prefix: 'generate'});
+    verb.prefix = 'generate';
   });
   
   describe('invoke generators', function(cb) {
@@ -152,6 +153,8 @@ describe('.invoke', function() {
     it('should extend with a generator invoked from node_modules by alias', function(cb) {
       verb.prefix = 'generate';
       verb.register('abc', function(app) {
+        app.prefix = 'generate';
+
         assert(!app.tasks.a);
         assert(!app.tasks.b);
         assert(!app.tasks.c);
@@ -184,6 +187,8 @@ describe('.invoke', function() {
 
     it('should extend with a generator invoked from global modules by alias', function(cb) {
       verb.register('zzz', function(app) {
+        app.prefix = 'generate';
+        
         assert(!app.tasks.a);
         assert(!app.tasks.b);
         assert(!app.tasks.c);
@@ -274,6 +279,7 @@ describe('.invoke', function() {
       });
 
       verb.register('xyz', function(app) {
+        app.prefix = 'generate';
         app.invoke('foo');
       });
 

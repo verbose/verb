@@ -63,7 +63,9 @@ describe('content', function() {
 
   it('should ask a question and use config value to answer:', function(cb) {
     app.question('a', 'b');
-    app.config.process({data: {a: 'zzz'}});
+    app.config.process({data: {a: 'zzz'}}, function(err) {
+      if (err) cb(err);
+    });
 
     app.ask('a', function(err, answer) {
       assert(!err);
@@ -75,7 +77,9 @@ describe('content', function() {
 
   it('should prefer data from config over store.data', function(cb) {
     app.question('a', 'b');
-    app.config.process({data: {a: 'zzz'}});
+    app.config.process({data: {a: 'zzz'}}, function(err) {
+      if (err) cb(err);
+    });
     app.store.set('a', 'c');
 
     app.ask('a', function(err, answer) {

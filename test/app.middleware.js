@@ -1,3 +1,5 @@
+'use strict';
+
 require('mocha');
 require('should');
 var assert = require('assert');
@@ -5,16 +7,16 @@ var support = require('./support');
 var App = support.resolve();
 var app;
 
-describe('middleware', function () {
-  beforeEach(function () {
+describe('app.middleware', function() {
+  beforeEach(function() {
     app = new App();
     app.engine('tmpl', require('engine-base'));
     app.create('pages');
   });
 
-  it('should call the all method for every middleware method:', function () {
+  it('should call the all method for every middleware method:', function() {
     var i = 0;
-    app.all(/./, function (view, next) {
+    app.all(/./, function(view, next) {
       assert(typeof view.path === 'string');
       i++;
       next();
@@ -25,9 +27,9 @@ describe('middleware', function () {
     assert(i === 1);
   });
 
-  it('should call the onLoad method when a view is loaded:', function () {
+  it('should call the onLoad method when a view is loaded:', function() {
     var i = 0;
-    app.onLoad(/./, function (view, next) {
+    app.onLoad(/./, function(view, next) {
       assert(typeof view.path === 'string');
       i++;
       next();
@@ -38,23 +40,23 @@ describe('middleware', function () {
     assert(i === 1);
   });
 
-  it('should emit an event when a handler is called:', function (done) {
+  it('should emit an event when a handler is called:', function(cb) {
     var i = 0;
-    app.on('onLoad', function () {
+    app.on('onLoad', function() {
       i++;
     });
-    app.on('preRender', function () {
+    app.on('preRender', function() {
       i++;
     });
-    app.on('preCompile', function () {
+    app.on('preCompile', function() {
       i++;
     });
 
     app.page('foo.tmpl', {content: 'foo'})
-      .render(function (err) {
-        if (err) return done(err);
+      .render(function(err) {
+        if (err) return cb(err);
         assert(i === 3);
-        done();
+        cb();
       });
   });
 });

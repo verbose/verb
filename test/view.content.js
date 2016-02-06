@@ -1,3 +1,5 @@
+'use strict';
+
 require('mocha');
 require('should');
 var fs = require('fs');
@@ -6,16 +8,16 @@ var support = require('./support');
 var App = support.resolve();
 var app;
 
-describe('content', function () {
-  beforeEach(function () {
+describe('content', function() {
+  beforeEach(function() {
     app = new App();
     app.create('page');
     app.engine('tmpl', require('engine-base'));
   });
 
-  it('should normalize the `content` property on a view to a string:', function (done) {
+  it('should normalize the `content` property on a view to a string:', function(cb) {
     app.page('abc', {path: 'test/fixtures/templates/a.tmpl'})
-      .set('read', function () {
+      .set('read', function() {
         this.contents = fs.readFileSync(this.path);
         return this;
       });
@@ -24,6 +26,6 @@ describe('content', function () {
 
     assert('content' in app.views.pages.abc);
     assert(typeof app.views.pages.abc.content === 'string');
-    done();
+    cb();
   });
 });

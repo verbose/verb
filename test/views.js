@@ -1,3 +1,5 @@
+'use strict';
+
 require('mocha');
 require('should');
 var path = require('path');
@@ -11,26 +13,26 @@ var View = App.View;
 var Views = App.Views;
 var collection;
 
-describe('views', function () {
-  describe('constructor', function () {
-    it('should create an instance of Views:', function () {
+describe('views', function() {
+  describe('constructor', function() {
+    it('should create an instance of Views:', function() {
       var collection = new Views();
       assert(collection instanceof Views);
     });
 
-    it('should instantiate without `new`:', function () {
+    it('should instantiate without `new`:', function() {
       var collection = Views();
       assert(collection instanceof Views);
     });
   });
 
-  describe('static methods', function () {
-    it('should expose `extend`:', function () {
-      assert(typeof Views.extend ==='function');
+  describe('static methods', function() {
+    it('should expose `extend`:', function() {
+      assert(typeof Views.extend === 'function');
     });
   });
 
-  describe('prototype methods', function () {
+  describe('prototype methods', function() {
     beforeEach(function() {
       collection = new Views();
     });
@@ -56,42 +58,42 @@ describe('views', function () {
       'hasListeners'
     ];
 
-    methods.forEach(function (method) {
-      it('should expose ' + method + ' method', function () {
+    methods.forEach(function(method) {
+      it('should expose ' + method + ' method', function() {
         assert(typeof collection[method] === 'function');
       });
     });
 
-    it('should expose isCollection property', function () {
+    it('should expose isCollection property', function() {
       assert(typeof collection.isCollection === 'boolean');
     });
 
-    it('should expose queue property', function () {
+    it('should expose queue property', function() {
       assert(Array.isArray(collection.queue));
     });
 
-    it('should expose views property', function () {
+    it('should expose views property', function() {
       assert(typeOf(collection.views) === 'object');
     });
 
-    it('should expose options property', function () {
+    it('should expose options property', function() {
       assert(typeOf(collection.options) === 'object');
     });
   });
 
-  describe('instance', function () {
+  describe('instance', function() {
     beforeEach(function() {
       collection = new Views();
     });
 
-    it('should set a value on the instance:', function () {
+    it('should set a value on the instance:', function() {
       collection.set('a', 'b');
-      assert(collection.a ==='b');
+      assert(collection.a === 'b');
     });
 
-    it('should get a value from the instance:', function () {
+    it('should get a value from the instance:', function() {
       collection.set('a', 'b');
-      assert(collection.get('a') ==='b');
+      assert(collection.get('a') === 'b');
     });
   });
 
@@ -100,17 +102,17 @@ describe('views', function () {
       collection = new Views();
     });
 
-    it('should set a key/value pair on options:', function () {
+    it('should set a key/value pair on options:', function() {
       collection.option('a', 'b');
       assert(collection.options.a === 'b');
     });
 
-    it('should set an object on options:', function () {
+    it('should set an object on options:', function() {
       collection.option({c: 'd'});
       assert(collection.options.c === 'd');
     });
 
-    it('should get an option:', function () {
+    it('should get an option:', function() {
       collection.option({c: 'd'});
       var c = collection.option('c');
       assert(c === 'd');
@@ -122,13 +124,13 @@ describe('views', function () {
       collection = new Views();
     });
 
-    it('should throw an error when args are invalid:', function () {
-      (function () {
+    it('should throw an error when args are invalid:', function() {
+      (function() {
         collection.addView(function() {});
       }).should.throw('expected value to be an object.');
     });
 
-    it('should add a view to `views`:', function () {
+    it('should add a view to `views`:', function() {
       collection.addView('foo');
       collection.views.should.have.property('foo');
 
@@ -137,12 +139,12 @@ describe('views', function () {
       assert(isBuffer(collection.views.one.contents));
     });
 
-    it('should create an instance of `View`:', function () {
+    it('should create an instance of `View`:', function() {
       collection.addView('one', {content: '...'});
       assert(collection.views.one instanceof collection.View);
     });
 
-    it('should allow an `View` constructor to be passed:', function () {
+    it('should allow an `View` constructor to be passed:', function() {
       View.prototype.foo = function(key, value) {
         this[key] = value;
       };
@@ -152,7 +154,7 @@ describe('views', function () {
       assert(collection.views.one.bar === 'baz');
     });
 
-    it('should allow an instance of `View` to be passed:', function () {
+    it('should allow an instance of `View` to be passed:', function() {
       var collection = new Views({View: View});
       var view = new View({content: '...'});
       collection.addView('one', view);
@@ -168,31 +170,31 @@ describe('views', function () {
       collection = new Views();
     });
 
-    it('should emit an error if a string glob pattern is passed', function (done) {
+    it('should emit an error if a string glob pattern is passed', function(cb) {
       try {
         collection.addViews('*.js');
-        done(new Error('expected an error'));
-      } catch(err) {
+        cb(new Error('expected an error'));
+      } catch (err) {
         assert(err);
         assert(err.message);
         assert(/glob/.test(err.message));
-        done();
+        cb();
       }
     });
 
-    it('should emit an error if an array glob pattern is passed', function (done) {
+    it('should emit an error if an array glob pattern is passed', function(cb) {
       try {
         collection.addViews(['*.js']);
-        done(new Error('expected an error'));
-      } catch(err) {
+        cb(new Error('expected an error'));
+      } catch (err) {
         assert(err);
         assert(err.message);
         assert(/glob/.test(err.message));
-        done();
+        cb();
       }
     });
 
-    it('should add multiple views:', function () {
+    it('should add multiple views:', function() {
       collection.addViews({
         one: {content: 'foo'},
         two: {content: 'bar'}
@@ -201,7 +203,7 @@ describe('views', function () {
       assert(isBuffer(collection.views.two.contents));
     });
 
-    it('should return the collection instance for chaining:', function () {
+    it('should return the collection instance for chaining:', function() {
       var views = collection.addViews({
         one: {content: 'foo'},
         two: {content: 'bar'}
@@ -213,7 +215,7 @@ describe('views', function () {
       assert(view.content === 'foo');
     });
 
-    it('should create views from an instance of Views', function () {
+    it('should create views from an instance of Views', function() {
       collection.addViews({
         one: {content: 'foo'},
         two: {content: 'bar'}
@@ -223,7 +225,7 @@ describe('views', function () {
       assert(isBuffer(pages.views.two.contents));
     });
 
-    it('should add an array of views:', function () {
+    it('should add an array of views:', function() {
       collection.addViews([
         {path: 'one', content: 'foo'},
         {path: 'two', content: 'bar'}
@@ -238,7 +240,7 @@ describe('views', function () {
       collection = new Views();
     });
 
-    it('should return a single collection view from a key-value pair', function () {
+    it('should return a single collection view from a key-value pair', function() {
       var one = collection.view('one', {content: 'foo'});
       var two = collection.view('two', {content: 'bar'});
 
@@ -248,7 +250,7 @@ describe('views', function () {
       assert(two.path === 'two');
     });
 
-    it('should return a single collection view from an object', function () {
+    it('should return a single collection view from an object', function() {
       var one = collection.view({path: 'one', content: 'foo'});
       var two = collection.view({path: 'two', content: 'bar'});
 
@@ -264,31 +266,31 @@ describe('views', function () {
       collection = new Views();
     });
 
-    it('should emit an error if a string glob pattern is passed', function (done) {
+    it('should emit an error if a string glob pattern is passed', function(cb) {
       try {
         collection.addList('*.js');
-        done(new Error('expected an error'));
-      } catch(err) {
+        cb(new Error('expected an error'));
+      } catch (err) {
         assert(err);
         assert(err.message);
         assert(/glob/.test(err.message));
-        done();
+        cb();
       }
     });
 
-    it('should emit an error if an array glob pattern is passed', function (done) {
+    it('should emit an error if an array glob pattern is passed', function(cb) {
       try {
         collection.addList(['*.js']);
-        done(new Error('expected an error'));
-      } catch(err) {
+        cb(new Error('expected an error'));
+      } catch (err) {
         assert(err);
         assert(err.message);
         assert(/glob/.test(err.message));
-        done();
+        cb();
       }
     });
 
-    it('should add a list of views:', function () {
+    it('should add a list of views:', function() {
       collection.addList([
         {path: 'one', content: 'foo'},
         {path: 'two', content: 'bar'}
@@ -297,7 +299,7 @@ describe('views', function () {
       assert(isBuffer(collection.views.two.contents));
     });
 
-    it('should add a list from the constructor:', function () {
+    it('should add a list from the constructor:', function() {
       var list = new List([
         {path: 'one', content: 'foo'},
         {path: 'two', content: 'bar'}
@@ -308,7 +310,7 @@ describe('views', function () {
       assert(isBuffer(collection.views.two.contents));
     });
 
-    it('should add list items from the constructor:', function () {
+    it('should add list items from the constructor:', function() {
       var list = new List([
         {path: 'one', content: 'foo'},
         {path: 'two', content: 'bar'}
@@ -319,50 +321,50 @@ describe('views', function () {
       assert(isBuffer(collection.views.two.contents));
     });
 
-    it('should throw an error when list is not an array:', function () {
+    it('should throw an error when list is not an array:', function() {
       var views = new Views();
-      (function () {
+      (function() {
         views.addList();
       }).should.throw('expected list to be an array.');
 
-      (function () {
+      (function() {
         views.addList({});
       }).should.throw('expected list to be an array.');
 
-      (function () {
+      (function() {
         views.addList('foo');
       }).should.throw('expected list to be an array.');
     });
 
-    it('should load an array of items from an event:', function () {
-      var pages = new Views();
+    it('should load an array of items from an event:', function() {
+      var collection = new Views();
 
-      pages.on('addList', function (list) {
+      collection.on('addList', function(list) {
         while (list.length) {
-          pages.addView({path: list.pop()});
+          collection.addView({path: list.pop()});
         }
         this.loaded = true;
       });
 
-      pages.addList(['a.txt', 'b.txt', 'c.txt']);
-      assert(pages.views.hasOwnProperty('a.txt'));
-      assert(pages.views['a.txt'].path === 'a.txt');
+      collection.addList(['a.txt', 'b.txt', 'c.txt']);
+      assert(collection.views.hasOwnProperty('a.txt'));
+      assert(collection.views['a.txt'].path === 'a.txt');
     });
 
-    it('should load an array of items from the addList callback:', function () {
+    it('should load an array of items from the addList callback:', function() {
       var collection = new Views();
 
-      collection.addList(['a.txt', 'b.txt', 'c.txt'], function (fp) {
+      collection.addList(['a.txt', 'b.txt', 'c.txt'], function(fp) {
         return {path: fp};
       });
       assert(collection.views.hasOwnProperty('a.txt'));
       assert(collection.views['a.txt'].path === 'a.txt');
     });
 
-    it('should load an object of views from an event:', function () {
+    it('should load an object of views from an event:', function() {
       var collection = new Views();
 
-      collection.on('addViews', function (views) {
+      collection.on('addViews', function(views) {
         for (var key in views) {
           collection.addView('foo/' + key, views[key]);
           delete views[key];
@@ -379,10 +381,10 @@ describe('views', function () {
       assert(collection.views['foo/a'].path === 'a.txt');
     });
 
-    it('should signal `loaded` when finished:', function () {
+    it('should signal `loaded` when finished:', function() {
       var collection = new Views();
 
-      collection.on('addViews', function (views) {
+      collection.on('addViews', function(views) {
         for (var key in views) {
           if (key === 'c') break;
           collection.addView('foo/' + key, views[key]);
@@ -405,7 +407,7 @@ describe('views', function () {
     beforeEach(function() {
       collection = new Views();
     });
-    it('should get a view from `views`:', function () {
+    it('should get a view from `views`:', function() {
       collection.addView('one', {content: 'aaa'});
       collection.addView('two', {content: 'zzz'});
       assert(isBuffer(collection.views.one.contents));
@@ -420,7 +422,7 @@ describe('views', function () {
       collection = new Views();
     });
 
-    it('should get the number of views:', function () {
+    it('should get the number of views:', function() {
       collection.addView('one', {content: 'aaa'});
       collection.addView('two', {content: 'zzz'});
       assert(Object.keys(collection.views).length === 2);
@@ -432,7 +434,7 @@ describe('options', function() {
   describe('options.renameKey', function() {
     beforeEach(function() {
       collection = new Views({
-        renameKey: function (key) {
+        renameKey: function(key) {
           return path.basename(key);
         }
       });
@@ -443,12 +445,12 @@ describe('options', function() {
       assert(collection.views['d.hbs'].contents.toString() === 'foo bar baz');
     });
 
-    it('should get a view with the renamed key:', function () {
+    it('should get a view with the renamed key:', function() {
       collection.addView('a/b/c/d.hbs', {content: 'foo bar baz'});
       assert(collection.getView('d.hbs').contents.toString() === 'foo bar baz');
     });
 
-    it('should get a view with the original key:', function () {
+    it('should get a view with the original key:', function() {
       collection.addView('a/b/c/d.hbs', {content: 'foo bar baz'});
       assert(collection.getView('a/b/c/d.hbs').contents.toString() === 'foo bar baz');
     });
@@ -456,25 +458,25 @@ describe('options', function() {
 });
 
 
-describe('queue', function () {
-  beforeEach(function () {
+describe('queue', function() {
+  beforeEach(function() {
     collection = new Views();
   });
 
-  it('should emit arguments on addView', function (done) {
-    collection.on('addView', function (args) {
+  it('should emit arguments on addView', function(cb) {
+    collection.on('addView', function(args) {
       assert(args[0] === 'a');
       assert(args[1] === 'b');
       assert(args[2] === 'c');
       assert(args[3] === 'd');
       assert(args[4] === 'e');
-      done();
+      cb();
     });
 
     collection.addView('a', 'b', 'c', 'd', 'e');
   });
 
-  it('should expose the `queue` property for loading views', function () {
+  it('should expose the `queue` property for loading views', function() {
     collection.queue.push(collection.view('b', {path: 'b'}));
 
     collection.addView('a', {path: 'a'});
@@ -482,8 +484,8 @@ describe('queue', function () {
     assert(collection.views.hasOwnProperty('b'));
   });
 
-  it('should load all views on the queue when addView is called', function () {
-    collection.on('addView', function (args) {
+  it('should load all views on the queue when addView is called', function() {
+    collection.on('addView', function(args) {
       var len = args.length;
       var last = args[len - 1];
       if (typeof last === 'string') {

@@ -1,17 +1,22 @@
+'use strict';
+
 require('mocha');
 require('should');
 var assert = require('assert');
 var verb = require('..');
 var app, len;
 
-describe('app', function () {
+describe('app', function() {
   beforeEach(function() {
     app = verb();
+    if (typeof app.include === 'undefined') {
+      app.create('include');
+    }
     len = Object.keys(app.views.includes).length;
   })
 
-  describe('add includes', function () {
-    it('should add includes to `app.views.includes`:', function () {
+  describe('add includes', function() {
+    it('should add includes to `app.views.includes`:', function() {
       app.includes({
         'a.hbs': {path: 'a.hbs', content: 'a'},
         'b.hbs': {path: 'b.hbs', content: 'b'},

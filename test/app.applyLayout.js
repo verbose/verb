@@ -1,3 +1,5 @@
+'use strict';
+
 require('mocha');
 require('should');
 var assert = require('assert');
@@ -12,12 +14,12 @@ var page = {
   }
 };
 
-describe('helpers', function() {
+describe('app.applyLayout', function() {
   describe('rendering', function() {
     beforeEach(function() {
       app = new App();
       app.engine('tmpl', require('engine-base'));
-      app.create('layout', {viewType: 'layout'});
+      app.create('layout', { viewType: 'layout' });
       app.create('page');
     });
 
@@ -25,7 +27,7 @@ describe('helpers', function() {
       app.layout('fofof.tmpl', {content: '..'});
       app.page('a.tmpl', page)
         .render(function(err) {
-          assert(/layouts/.test(err.message));
+          assert.equal(err.message, 'Templates#layouts layout "default.tmpl" was defined on view "a.tmpl" but cannot be not found (common causes are incorrect glob patterns, renameKey function modifying the key, and typos in search pattern)');
           cb();
         });
     });
@@ -33,7 +35,7 @@ describe('helpers', function() {
     it('should emit an error when a layout cannot be found:', function(cb) {
       app.layout('fofof.tmpl', {content: '..'});
       app.on('error', function(err) {
-        assert(/layouts/.test(err.message));
+        assert.equal(err.message, 'Templates#layouts layout "default.tmpl" was defined on view "a.tmpl" but cannot be not found (common causes are incorrect glob patterns, renameKey function modifying the key, and typos in search pattern)');
         cb();
       });
 
@@ -45,14 +47,14 @@ describe('helpers', function() {
     it('should throw an error - layout defined but no layouts registered:', function(cb) {
       app.page('a.tmpl', page)
         .render(function(err) {
-          assert(/layouts/.test(err.message));
+          assert.equal(err.message, 'Templates#layouts layout "default.tmpl" was defined on view "a.tmpl" but no layouts are registered');
           cb();
         });
     });
 
     it('should emit an error - layout defined but no layouts registered:', function(cb) {
       app.on('error', function(err) {
-        assert(/layouts/.test(err.message));
+        assert.equal(err.message, 'Templates#layouts layout "default.tmpl" was defined on view "a.tmpl" but no layouts are registered');
         cb();
       });
       app.page('a.tmpl', page)
@@ -76,7 +78,7 @@ describe('helpers', function() {
       var view = app.pages.getView('a.tmpl');
       app.render(view, function(err, res) {
         if (err) return cb(err);
-        assert.equal(res.contents.toString(), 'before Halle after');
+        assert(res.contents.toString() === 'before Halle after');
         cb();
       });
     });

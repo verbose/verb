@@ -1,3 +1,5 @@
+'use strict';
+
 require('mocha');
 var path = require('path');
 var assert = require('assert');
@@ -9,23 +11,23 @@ var fixtures = path.join(__dirname, 'fixtures/copy/*.txt');
 var actual = path.join(__dirname, 'actual');
 
 describe('copy()', function() {
-  beforeEach(function (done) {
-    rimraf(actual, done);
+  beforeEach(function(cb) {
+    rimraf(actual, cb);
     app = new App();
   });
 
-  afterEach(function (done) {
-    rimraf(actual, done);
+  afterEach(function(cb) {
+    rimraf(actual, cb);
   });
 
-  describe('streams', function () {
-    it('should copy files', function (done) {
+  describe('streams', function() {
+    it('should copy files', function(cb) {
       app.copy(fixtures, path.join(__dirname, 'actual'))
-        .on('error', done)
-        .on('data', function (file) {
+        .on('error', cb)
+        .on('data', function(file) {
           assert.equal(typeof file, 'object');
         })
-        .on('end', done);
+        .on('end', cb);
     });
   });
 });

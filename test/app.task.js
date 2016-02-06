@@ -1,48 +1,47 @@
 'use strict';
 
-require('mocha');
 var assert = require('assert');
-var Generate = require('..');
-var generate;
+var App = require('..');
+var app;
 
-describe('.generate', function() {
+describe('task()', function() {
   beforeEach(function() {
-    generate = new Generate();
+    app = new App();
   });
 
   it('should register a task', function() {
     var fn = function(cb) {
       cb();
     };
-    generate.task('default', fn);
-    assert.equal(typeof generate.tasks.default, 'object');
-    assert.equal(generate.tasks.default.fn, fn);
+    app.task('default', fn);
+    assert.equal(typeof app.tasks.default, 'object');
+    assert.equal(app.tasks.default.fn, fn);
   });
 
   it('should register a task with an array of dependencies', function() {
-    generate.task('default', ['foo', 'bar'], function(cb) {
+    app.task('default', ['foo', 'bar'], function(cb) {
       cb();
     });
-    assert.equal(typeof generate.tasks.default, 'object');
-    assert.deepEqual(generate.tasks.default.deps, ['foo', 'bar']);
+    assert.equal(typeof app.tasks.default, 'object');
+    assert.deepEqual(app.tasks.default.deps, ['foo', 'bar']);
   });
 
   it('should register a task with a list of strings as dependencies', function() {
-    generate.task('default', 'foo', 'bar', function(cb) {
+    app.task('default', 'foo', 'bar', function(cb) {
       cb();
     });
-    assert.equal(typeof generate.tasks.default, 'object');
-    assert.deepEqual(generate.tasks.default.deps, ['foo', 'bar']);
+    assert.equal(typeof app.tasks.default, 'object');
+    assert.deepEqual(app.tasks.default.deps, ['foo', 'bar']);
   });
 
   it('should run a task', function(cb) {
     var count = 0;
-    generate.task('default', function(cb) {
+    app.task('default', function(cb) {
       count++;
       cb();
     });
 
-    generate.build('default', function(err) {
+    app.build('default', function(err) {
       if (err) return cb(err);
       assert.equal(count, 1);
       cb();
@@ -50,16 +49,22 @@ describe('.generate', function() {
   });
 
   it('should throw an error when a task with unregistered dependencies is run', function(cb) {
-    generate.task('default', ['foo', 'bar']);
-    generate.build('default', function(err) {
-      assert(err);
+    var count = 0;
+    app.task('default', ['foo', 'bar'], function(cb) {
+      count++;
+      cb();
+    });
+
+    app.build('default', function(err) {
+      if (!err) return cb(new Error('Expected an error to be thrown.'));
+      assert.equal(count, 0);
       cb();
     });
   });
 
   it('should throw an error when `.build` is called without a callback function.', function() {
     try {
-      generate.build('default');
+      app.build('default');
       throw new Error('Expected an error to be thrown.');
     } catch (err) {
     }
@@ -67,23 +72,24 @@ describe('.generate', function() {
 
   it('should emit task events', function(cb) {
     var events = [];
-    generate.on('task:starting', function(task) {
+    app.on('task:starting', function(task) {
       events.push('starting.' + task.name);
     });
-    generate.on('task:finished', function(task) {
+    app.on('task:finished', function(task) {
       events.push('finished.' + task.name);
     });
-    generate.on('task:error', function(e, task) {
+    app.on('task:error', function(err, task) {
       events.push('error.' + task.name);
     });
-    generate.task('foo', function(cb) {
+
+    app.task('foo', function(cb) {
       cb();
     });
-    generate.task('bar', ['foo'], function(cb) {
+    app.task('bar', ['foo'], function(cb) {
       cb();
     });
-    generate.task('default', ['bar']);
-    generate.build('default', function(err) {
+    app.task('default', ['bar']);
+    app.build('default', function(err) {
       if (err) return cb(err);
       assert.deepEqual(events, [
         'starting.default',
@@ -98,49 +104,52 @@ describe('.generate', function() {
   });
 
   it('should emit an error event when an error is passed back in a task', function(cb) {
-    generate.on('error', function(err) {
+    app.on('error', function(err) {
       assert(err);
       assert.equal(err.message, 'This is an error');
     });
-    generate.task('default', function(cb) {
+    app.task('default', function(cb) {
       return cb(new Error('This is an error'));
     });
-    generate.build('default', function(err) {
+    app.build('default', function(err) {
       if (err) return cb();
       cb(new Error('Expected an error'));
     });
   });
 
   it('should emit an error event when an error is thrown in a task', function(cb) {
-    generate.on('error', function(err) {
+    var errors = 0;
+    app.on('error', function(err) {
+      errors++;
       assert(err);
       assert.equal(err.message, 'This is an error');
     });
-    generate.task('default', function(cb) {
+    app.task('default', function(cb) {
       cb(new Error('This is an error'));
     });
-    generate.build('default', function(err) {
-      assert(err);
-      cb();
+    app.build('default', function(err) {
+      assert.equal(errors, 1);
+      if (err) return cb();
+      cb(new Error('Expected an error'));
     });
   });
 
   it('should run dependencies before running the dependent task.', function(cb) {
     var seq = [];
-    generate.task('foo', function(cb) {
+    app.task('foo', function(cb) {
       seq.push('foo');
       cb();
     });
-    generate.task('bar', function(cb) {
+    app.task('bar', function(cb) {
       seq.push('bar');
       cb();
     });
-    generate.task('default', ['foo', 'bar'], function(cb) {
+    app.task('default', ['foo', 'bar'], function(cb) {
       seq.push('default');
       cb();
     });
 
-    generate.build('default', function(err) {
+    app.build('default', function(err) {
       if (err) return cb(err);
       assert.deepEqual(seq, ['foo', 'bar', 'default']);
       cb();
