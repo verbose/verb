@@ -5,23 +5,22 @@ var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var eslint = require('gulp-eslint');
 
-var lint = ['index.js', 'lib/*.js', 'test/*.js'];
-
-gulp.task('coverage', function () {
-  return gulp.src(lint)
-    .pipe(istanbul())
+gulp.task('coverage', function() {
+  return gulp.src(['index.js', 'lib/*.js'])
+    .pipe(istanbul({includeUntested: true}))
     .pipe(istanbul.hookRequire());
 });
 
-gulp.task('mocha', ['coverage'], function () {
+gulp.task('mocha', ['coverage'], function() {
   return gulp.src('test/*.js')
-    .pipe(mocha({reporter: 'spec'}))
+    .pipe(mocha())
     .pipe(istanbul.writeReports());
 });
 
-gulp.task('eslint', function () {
-  return gulp.src(lint)
+gulp.task('eslint', function() {
+  return gulp.src(['*.js', 'lib/*.js', 'test/*.js'])
     .pipe(eslint())
+    .pipe(eslint.format());
 });
 
 gulp.task('default', ['mocha', 'eslint']);

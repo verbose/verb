@@ -1,7 +1,7 @@
 {
   "name": "verb",
-  "description": "Powerful, highly pluggable and easy-to-use documentation generator with an expressive API. Use any docs parser or template engine, supports gulp plugins, middleware...",
-  "version": "0.9.0",
+  "description": "Documentation generator for GitHub projects.",
+  "version": "0.1.0",
   "homepage": "https://github.com/verbose/verb",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "verbose/verb",
@@ -10,152 +10,66 @@
   },
   "license": "MIT",
   "files": [
-    "cli.js",
-    "index.js",
-    "lib/",
-    "verbfile.js"
+    "index.js"
   ],
   "main": "index.js",
+  "bin": {
+    "verb": "bin/verb.js"
+  },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
     "test": "mocha"
   },
-  "preferGlobal": true,
-  "bin": {
-    "verb": "cli.js"
-  },
   "dependencies": {
-    "JSONStream": "^1.0.7",
-    "ansi-colors": "^0.1.0",
-    "arr-flatten": "^1.0.1",
-    "array-unique": "^0.2.1",
-    "assemble-core": "^0.8.0",
-    "assemble-loader": "^0.2.4",
-    "base-diff": "^0.1.0",
-    "base-list": "^0.1.4",
-    "base-pipeline": "^0.1.4",
-    "base-questions": "^0.2.2",
-    "base-runner": "^0.4.4",
-    "base-store": "^0.3.1",
-    "common-middleware": "^0.2.1",
-    "composer-runtimes": "^0.7.0",
-    "define-property": "^0.2.5",
-    "engine-base": "^0.1.2",
-    "engine-handlebars": "^0.8.0",
-    "expand": "^0.4.0",
-    "export-files": "^2.1.0",
+    "assemble-core": "^0.11.2",
+    "assemble-loader": "^0.3.0",
+    "async": "^1.5.2",
+    "base-config": "^0.4.0",
+    "base-fs-rename": "^0.1.0",
+    "base-generators": "^0.1.4",
+    "base-pipeline": "^0.2.1",
+    "base-questions": "^0.3.0",
+    "base-runner": "^0.5.6",
+    "base-runtimes": "^0.1.2",
+    "debug": "^2.2.0",
+    "export-files": "^2.1.1",
     "extend-shallow": "^2.0.1",
-    "get-value": "^2.0.2",
-    "gfm-code-blocks": "^0.3.0",
-    "global-modules": "^0.2.0",
-    "has-glob": "^0.1.1",
-    "has-value": "^0.3.0",
-    "helper-apidocs": "^0.5.0",
-    "helper-copyright": "^2.0.0",
-    "helper-date": "^0.2.2",
-    "helper-issue": "^0.2.0",
-    "helper-reflinks": "^3.0.1",
-    "helper-related": "^0.12.1",
-    "is-primitive": "^2.0.0",
-    "is-valid-glob": "^0.3.0",
-    "isobject": "^2.0.0",
+    "is-affirmative": "^0.1.0",
     "kind-of": "^3.0.2",
-    "lazy-cache": "^1.0.2",
-    "map-config": "^0.3.0",
-    "markdown-toc": "^0.12.2",
-    "matched": "^0.3.2",
-    "middleware-utils": "^0.1.4",
-    "minimist": "^1.2.0",
+    "lazy-cache": "^1.0.3",
+    "map-schema": "^0.1.1",
+    "matched": "^0.4.1",
+    "merge-settings": "^0.1.0",
     "mixin-deep": "^1.1.3",
-    "object-visit": "^0.3.4",
-    "opn": "^3.0.3",
-    "parse-author": "^0.2.0",
-    "parse-github-url": "^0.2.1",
-    "request": "^2.67.0",
-    "resolve": "^1.1.6",
-    "resolve-dir": "^0.1.0",
-    "set-value": "^0.3.2",
-    "stream-exhaust": "^1.0.1",
-    "success-symbol": "^0.1.0",
-    "template-toc": "^0.6.2",
-    "time-stamp": "^0.1.3",
-    "unset-value": "^0.1.1",
-    "word-wrap": "^1.1.0"
+    "resolve-glob": "^0.1.8",
+    "try-open": "^0.1.0"
   },
   "devDependencies": {
-    "async": "^1.5.0",
-    "base-config": "^0.3.2",
-    "base-methods": "^0.6.1",
-    "buffer-equal": "0.0.1",
-    "consolidate": "^0.13.1",
-    "coveralls": "^2.11.4",
-    "data-store": "^0.12.0",
-    "event-stream": "^3.3.2",
-    "graceful-fs": "^4.1.2",
+    "generate-foo": "^0.1.5",
+    "generator-util": "^0.2.0",
+    "global-modules": "^0.2.0",
     "gulp": "^3.9.0",
     "gulp-eslint": "^1.1.1",
-    "gulp-format-md": "^0.1.4",
+    "gulp-format-md": "*",
     "gulp-istanbul": "^0.10.3",
     "gulp-mocha": "^2.2.0",
-    "is-buffer": "^1.1.0",
-    "istanbul": "^0.4.1",
-    "load-pkg": "^3.0.0",
+    "inflection": "^1.8.0",
     "mocha": "*",
-    "parser-front-matter": "^1.3.0",
-    "resolve-glob": "^0.1.7",
-    "rimraf": "^2.4.4",
-    "scaffold": "^0.2.1",
-    "should": "*",
-    "sinon": "^1.17.2",
-    "swig": "^1.4.2",
-    "through2": "^2.0.0",
-    "vinyl": "^1.1.0"
+    "spawn-commands": "^0.3.1"
   },
-  "keywords": [
-    "app",
-    "boilerplate",
-    "create",
-    "init",
-    "initialize",
-    "project",
-    "scaffold",
-    "template",
-    "templates",
-    "verb",
-    "verbApp",
-    "webapp",
-    "yeoman"
-  ],
+  "keywords": [],
+  "lintDeps": {
+    "ignore": []
+  },
   "verb": {
-    "related": {
-      "list": [
-        "assemble",
-        "assemble-core",
-        "base-methods",
-        "base-resolver",
-        "base-runner",
-        "resolve-modules"
-      ]
-    },
-    "layout": {
-      "name": "default",
-      "sections": {
-        "install-npm": false
-      }
-    },
+    "layout": "default",
     "plugins": [
       "gulp-format-md"
     ],
-    "reflinks": [
-      "assemble",
-      "assemble-core",
-      "base-methods",
-      "gulp",
-      "scaffold",
-      "verb",
-      "vinyl"
-    ]
+    "related": {
+      "list": []
+    }
   }
 }
