@@ -16,8 +16,6 @@ verb.runner('verbfile.js', function(err, argv, app) {
     app.register('default', require('../lib/generators/default'));
   }
 
-  var config = app.get('cache.config');
-
   app.on('error', function(err) {
     console.log(app.env);
     console.log();
@@ -27,6 +25,8 @@ verb.runner('verbfile.js', function(err, argv, app) {
       process.exit(1);
     }
   });
+
+  var config = app.get('cache.config');
 
   app.config.process(config, function(err) {
     if (err) throw err;
