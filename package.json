@@ -24,23 +24,16 @@
     "verb": "bin/verb.js"
   },
   "dependencies": {
-    "assemble-core": "^0.11.2",
-    "assemble-loader": "^0.3.0",
-    "async": "^1.5.2",
-    "base-fs-rename": "^0.1.1",
-    "base-generators": "^0.1.6",
-    "base-pipeline": "^0.2.3",
     "base-questions": "^0.3.2",
-    "base-runner": "^0.5.8",
-    "base-runtimes": "^0.1.3",
     "debug": "^2.2.0",
     "extend-shallow": "^2.0.1",
+    "generate": "^0.3.6",
     "generator-util": "^0.2.5",
     "is-affirmative": "^0.1.0",
-    "lazy-cache": "^1.0.3",
     "try-open": "^0.1.0"
   },
   "devDependencies": {
+    "async": "^1.5.2",
     "base-config": "^0.4.0",
     "base-store": "^0.3.6",
     "buffer-equal": "^1.0.0",
@@ -54,7 +47,7 @@
     "get-value": "^2.0.3",
     "global-modules": "^0.2.0",
     "graceful-fs": "^4.1.3",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "gulp-eslint": "^1.1.1",
     "gulp-format-md": "^0.1.5",
     "gulp-istanbul": "^0.10.3",
@@ -67,11 +60,11 @@
     "parser-front-matter": "^1.3.0",
     "resolve-glob": "^0.1.8",
     "rimraf": "^2.5.1",
-    "should": "*",
+    "should": "^8.2.2",
     "sinon": "^1.17.3",
     "spawn-commands": "^0.3.1",
     "swig": "^1.4.2",
-    "through2": "^2.0.0",
+    "through2": "^2.0.1",
     "vinyl": "^1.1.1"
   },
   "verb": {

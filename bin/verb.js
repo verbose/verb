@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-process.env.VERB_CLI = true;
+process.env.GENERATE_CLI = true;
 
 var Verb = require('..');
 var verb = new Verb();
@@ -12,7 +12,7 @@ verb.runner('verbfile.js', function(err, argv, app) {
     process.exit(1);
   }
 
-  if (!app.hasConfigfile) {
+  if (!app.hasConfigfile && app.isDefaultTask) {
     app.register('default', require('../lib/generators/default'));
   }
 

@@ -9,6 +9,7 @@ var app;
 describe('app', function() {
   beforeEach(function() {
     app = verb();
+    app.create('docs');
   });
 
   describe('add docs', function() {
