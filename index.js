@@ -9,12 +9,9 @@
 
 var fs = require('fs');
 var async = require('async');
-var debug = require('debug')('verb');
-var util = require('generator-util');
+var debug = require('debug')('base:verb');
 var Assemble = require('assemble-core');
-var settings = require('./lib/settings');
 var plugins = require('./lib/plugins');
-var config = require('./lib/config');
 var utils = require('./lib/utils');
 
 /**
@@ -34,7 +31,6 @@ function Verb(options) {
   }
   this.options = utils.extend({}, this.options, options);
   Assemble.call(this, options);
-  this.is('Verb');
   this.initVerb(this.options);
 }
 
@@ -49,10 +45,13 @@ Assemble.extend(Verb);
  */
 
 Verb.prototype.initVerb = function(opts) {
+  this.is('Verb');
+  this.name = 'verb';
   this.configfile = opts.configfile || 'verbfile.js';
   this.prefix = opts.prefix || 'verb-generate';
 
   this.data({runner: require('./package')});
+  this.data({verb: {related: {}, reflinks: []}});
   this.initPlugins(this.options);
 
   this.create('files');
@@ -64,14 +63,17 @@ Verb.prototype.initVerb = function(opts) {
 
   var plugin = this.plugin;
   this.define('plugin', function(name) {
-    var pipeline = this.options.pipeline;
-    if (arguments.length === 1 && pipeline) {
+    var pipeline = this.options.pipeline || [];
+    if (arguments.length === 1 && pipeline.length) {
       var idx = pipeline.indexOf(name);
       if (idx !== -1) {
         pipeline.splice(idx, 1);
       }
+    } else if (!~pipeline.indexOf(name)) {
+      pipeline.push(name);
     }
-    return plugin.apply(this, arguments);
+    plugin.apply(this, arguments);
+    return this;
   });
 };
 
@@ -86,53 +88,16 @@ Verb.prototype.initPlugins = function(opts) {
   this.use(plugins.runner());
   this.use(plugins.rename({replace: true}));
   this.use(plugins.ask());
-  this.use(settings());
-  this.use(config());
 
   if (opts.cli === true || process.env.VERB_CLI) {
+    this.use(plugins.runtimes(opts));
 
     // modify create, dest and src methods to automatically
     // use cwd from generators unless overridden by the user
-    util.create(this);
-    util.dest(this);
-    util.src(this);
+    this.use(utils.create());
+    utils.dest(this);
+    utils.src(this);
   }
-};
-
-Verb.prototype.conflicts = function(patterns, options, cb) {
-  if (typeof options === 'function') {
-    cb = options;
-    options = {};
-  }
-
-  this.overwrite = false;
-  var app = this;
-
-  // function overwrite(filename, cb) {
-  //   var msg = filename + ' already exists. Do you want to overwrite it?';
-  //   app.questions.set('conflict', msg, { save: false });
-
-  //   app.ask('conflict', function(err, answers) {
-
-  //   });
-  // }
-
-  var views = this.collection();
-
-  utils.glob(patterns, options, function(err, files) {
-    if (err) return cb(err);
-
-    async.each(files, function(fp, next) {
-      views.addView(fp);
-      next();
-    }, function(err) {
-      if (err) {
-        cb(err);
-      } else {
-        cb(null, views);
-      }
-    });
-  });
 };
 
 /**
