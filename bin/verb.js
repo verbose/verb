@@ -1,68 +1,24 @@
 #!/usr/bin/env node
 
 process.env.GENERATE_CLI = true;
-var Verb = require('..');
-var verb = new Verb();
+var generator = require('../lib/generators');
+var verb = require('..');
 
 /**
- * Run verb generators and tasks
+ * Create verb "runner"
  */
 
-verb.runner('verbfile.js', function(err, argv, app) {
-  if (err) handleError(err);
+var run = verb.runner('verbfile.js', generator);
+var app = verb();
 
-  /**
-   * If the user does not have a `verbfile.js`, and the `default`
-   * task is defined, register a default fallback.
-   */
+/**
+ * Run generators and tasks
+ */
 
-  if (!app.hasConfigfile && app.isDefaultTask) {
-    app.register('default', require('../lib/generators/default'));
+run(app, function(err, argv, app) {
+  if (err) {
+    console.log(err);
+    process.exit(1);
   }
-
-  /**
-   * Listen for errors
-   */
-
-  app.on('error', function(err) {
-    console.log(app.env);
-    console.log();
-
-    if (err.reason) {
-      console.log(err.reason);
-      process.exit(1);
-    }
-  });
-
-  /**
-   * Get the `config` object created by base-runner. This object
-   * is created by merging any or all of the following objects after
-   * normalizing them against a a schema:
-   *
-   * - globally stored settings, defined via `app.store.set()` or `--save=foo:bar`
-   * - options defined on verb's API
-   * - the `verb` object in package.json
-   * - argv, command line arguments
-   */
-
-  var config = app.get('cache.config');
-
-  // Map over config values
-  app.config.process(config, function(err) {
-    if (err) handleError(err);
-
-    // Process command line arguments
-    app.cli.process(argv, function(err) {
-      if (err) handleError(err);
-
-      verb.emit('done');
-      process.exit(0);
-    });
-  });
+  app.emit('done');
 });
-
-// placeholder
-function handleError(err) {
-  console.log(err);
-  process.exit(1);
-}
