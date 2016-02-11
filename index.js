@@ -44,7 +44,7 @@ Generate.extend(Verb);
 
 Verb.prototype.verbDefaults = function(options) {
   debug('initializing verb defaults');
-  var defaults = {prefix: 'verb-generate', configfile: 'verbfile.js'};
+  var defaults = { prefix: 'verb-generate', configfile: 'verbfile.js' };
   return utils.extend({}, defaults, this.options, options);
 };
 
@@ -54,12 +54,16 @@ Verb.prototype.verbDefaults = function(options) {
 
 Verb.prototype.initVerb = function(opts) {
   debug('initializing verb data');
+
   this.is('verb');
   this.name = 'verb';
   this.data({runner: pkg});
   this.data({verb: {related: {}, reflinks: []}});
-  // this.create('files');
-  // this.create('docs');
+
+  if (process.env.GENERATE_CLI) {
+    this.create('files');
+    this.create('docs');
+  }
 };
 
 /**
