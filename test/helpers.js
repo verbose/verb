@@ -794,12 +794,11 @@ describe('collection helpers', function() {
 
     it('should handle engine errors2', function(cb) {
       app.engine('tmpl', require('engine-base'));
-      app.create('foo', {engine: 'tmpl'});
+      app.create('foo', {viewType: 'partial', engine: 'tmpl'});
       app.create('bar', {engine: 'tmpl'});
 
-      app.create('foo', {viewType: 'partial'});
-      app.foo('foo.tmpl', {path: 'foo.tmpl', content: '<%= blah.bar %>'});
-      app.bar('one.tmpl', {content: '<%= foo("foo.tmpl") %>'})
+      app.foo('a.tmpl', {path: 'a.tmpl', content: '<%= blah.bar %>'});
+      app.bar('one.tmpl', {content: '<%= foo("a.tmpl") %>'})
         .render(function(err) {
           assert(err);
           assert.equal(typeof err, 'object');
