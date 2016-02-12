@@ -21,7 +21,7 @@ Some really useful information, that you can use - because it's so useful.
 
 Verb uses [falsey][] to check values for just a few different properties, including `toc`. So any value that the falsey lib evaluates as `falsey` will disable the `toc`.
 
-**2: {{name}} config**
+**2: verb config**
 
 Disable the TOC by defining it on an `options` property in your [local verb config](./settings.md):
 
@@ -37,12 +37,12 @@ Disable the TOC by defining it on an `options` property in your [local verb conf
 }
 ```
 
-**3: {{name}}.option()**
+**3: verb.option()**
 
 Use the `option` API to disable the TOC:
 
 ```js
-{{name}}.option('toc', false);
+verb.option('toc', false);
 ```
 
 [falsey]: https://github.com/jonschlinkert/falsey

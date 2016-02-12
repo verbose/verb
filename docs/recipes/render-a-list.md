@@ -4,7 +4,7 @@
 
 ## Preparation
 
-First, create an `assemblefile.js`.  The rest of this recipe assumes that you have the following defined:
+First, create an `verbfile.js`.  The rest of this recipe assumes that you have the following defined:
 
 ```js
 var assemble = require('assemble');
@@ -108,7 +108,7 @@ Since views are vinyl files, you'll need to inspect them to see what's available
 
 **Example**
 
-Create a helper, arbitrarily named `ctx` (for context) or whatever you want, and add it to your `assemblefile.js`:
+Create a helper, arbitrarily named `ctx` (for context) or whatever you want, and add it to your `verbfile.js`:
 
 ```js
 app.helper('ctx', function(context) {

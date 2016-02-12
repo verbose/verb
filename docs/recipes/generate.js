@@ -24,7 +24,10 @@ module.exports = function(verb, base, env) {
   });
 
   verb.register('docs', function(app) {
-    app.task('x', function() {});
+    app.task('x', function(cb) {
+      console.log('docs > x');
+      cb();
+    });
     app.task('y', function() {});
     app.task('z', function() {});
 
@@ -33,5 +36,9 @@ module.exports = function(verb, base, env) {
       app.task('y', function() {});
       app.task('z', function() {});
     });
+  });
+
+  verb.task('default', function(cb) {
+    verb.generate('docs:x', cb);
   });
 };

@@ -8,7 +8,7 @@ The context object is created in-memory at render time, and to inspect it we nee
 
 **Create a helper**
 
-A simple `log` helper can be used to show any object we pass to it in the console. Add the following to your `{{configfile}}.js`:
+A simple `log` helper can be used to show any object we pass to it in the console. Add the following to your `verbfile.js`:
 
 ```js
 app.helper('log', function(context) {
