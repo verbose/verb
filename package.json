@@ -80,7 +80,13 @@
         "base",
         "generate"
       ]
-    }
+    },
+    "reflinks": [
+      "assemble",
+      "base",
+      "generate",
+      "verb"
+    ]
   },
   "lintDeps": {
     "ignore": []
