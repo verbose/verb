@@ -11,6 +11,10 @@ var verb = require('..');
 var run = verb.runner('verbfile.js', generator);
 var app = verb();
 
+app.on('done', function() {
+  process.exit(0);
+});
+
 /**
  * Run generators and tasks
  */
