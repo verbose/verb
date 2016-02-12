@@ -13,11 +13,11 @@ var utils = require('./lib/utils');
 var pkg = require('./package');
 
 /**
- * Create an instance of `Verb` with the given `options`
+ * Create a verb application with `options`.
  *
  * ```js
- * var Verb = require('verb');
- * var verb = new Verb();
+ * var verb = require('verb');
+ * var app = verb();
  * ```
  * @param {Object} `options` Settings to initialize with.
  * @api public
@@ -39,16 +39,6 @@ function Verb(options) {
 Generate.extend(Verb);
 
 /**
- * Initialize verb defaults
- */
-
-Verb.prototype.verbDefaults = function(options) {
-  debug('initializing verb defaults');
-  var defaults = { prefix: 'verb-generate', configfile: 'verbfile.js' };
-  return utils.extend({}, defaults, this.options, options);
-};
-
-/**
  * Initialize verb data
  */
 
@@ -60,10 +50,27 @@ Verb.prototype.initVerb = function(opts) {
   this.data({runner: pkg});
   this.data({verb: {related: {}, reflinks: []}});
 
+  // temporary, there is an easier way to do this
+  this.toFullname = function(str) {
+    var re = /(^verb-?|-?generat(e|or)-?)/g;
+    var alias = str.replace(re, '');
+    return 'verb-' + alias + '-generator';
+  };
+
   if (process.env.GENERATE_CLI) {
     this.create('files');
     this.create('docs');
   }
+};
+
+/**
+ * Initialize verb defaults
+ */
+
+Verb.prototype.verbDefaults = function(options) {
+  debug('initializing verb defaults');
+  var defaults = { prefix: 'verb', configfile: 'verbfile.js' };
+  return utils.extend({}, defaults, this.options, options);
 };
 
 /**
