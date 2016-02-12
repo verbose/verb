@@ -1,12 +1,14 @@
 'use strict';
 
-module.exports = function(verb) {
-  verb.extendWith('readme');
+/**
+ * Example verbfile.js, extends `verb-readme-generator`, which
+ * provides the `readme` task for building the readme.
+ */
 
-  verb.task('foo', function(cb) {
-    console.log('verb > verbfile >', this.name, 'task');
-    cb();
-  });
+module.exports = function(verb) {
+  verb.extendWith('verb-readme-generator');
+
+  // do anything here!
 
   verb.task('default', ['readme']);
 };
