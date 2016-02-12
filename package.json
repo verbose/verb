@@ -10,7 +10,9 @@
   },
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "bin/",
+    "lib/"
   ],
   "main": "index.js",
   "engines": {
