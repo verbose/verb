@@ -21,14 +21,14 @@ describe('.generator', function() {
     });
 
     it('should register a generator function by alias', function() {
-      verb.generator('verb-generate-abc', function() {});
+      verb.generator('verb-abc-generator', function() {});
       assert(verb.generators.hasOwnProperty('abc'));
     });
   });
 
   describe('get > alias', function() {
     it('should get a generator by alias', function() {
-      verb.generator('verb-generate-abc', function() {});
+      verb.generator('verb-abc-generator', function() {});
       var abc = verb.generator('abc');
       assert(abc);
       assert.equal(typeof abc, 'object');
@@ -37,8 +37,8 @@ describe('.generator', function() {
 
   describe('get > name', function() {
     it('should get a generator by name', function() {
-      verb.generator('verb-generate-abc', function() {});
-      var abc = verb.generator('verb-generate-abc');
+      verb.generator('verb-abc-generator', function() {});
+      var abc = verb.generator('verb-abc-generator');
       assert(abc);
       assert.equal(typeof abc, 'object');
     });
