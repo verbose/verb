@@ -10,7 +10,7 @@
 
 **What is a "view collection"?**
 
-A view collection has all of the features of a "generic" {{appname}} collection, along with special features and methods that are specific to managing views (templates). 
+A view collection has all of the features of a "generic" verb collection, along with special features and methods that are specific to managing views (templates). 
 
 **Special features**
 
@@ -25,11 +25,11 @@ View collections have methods getting, setting and finding views, as well as ass
 
 ## Create
 
-The `create` method is used for adding custom "view collections" to {{appname}}. A few things happen when the method is used:
+The `create` method is used for adding custom "view collections" to verb. A few things happen when the method is used:
 
 - 
 
-- This exposed `page` and `pages` methods on {{appname}} ({{appname}} automatically detects inflections - plural and singular forms)
+- This exposed `page` and `pages` methods on verb (verb automatically detects inflections - plural and singular forms)
 - A `pages`
 
 
@@ -56,7 +56,7 @@ View collections have methods for adding, finding and getting views, such as:
 
 Views (templates) are stored on the `views` object of a collection, allowing views to be looked up by key. 
 
-Keys can be customized and renamed using a `renameKey` function passed on the options of the collection, or to rename all keys in all collections, you may pass a `renameKey` function on the {{appname}} options. 
+Keys can be customized and renamed using a `renameKey` function passed on the options of the collection, or to rename all keys in all collections, you may pass a `renameKey` function on the verb options. 
 
 Ultimately this gives you full control over how views are named and how lookups are done.
 
@@ -74,9 +74,9 @@ Lists are similar to collections but instead of storing an object of views, `ite
   * [sorting](https://github.com/jonschlinkert/templates/blob/master/lib/list.js#L359), and
   * [grouping](https://github.com/jonschlinkert/templates/blob/master/lib/list.js#L333)
 
-_(the above links go to [templates](https://github.com/jonschlinkert/templates), which is the underlying library that provides {{appname}} with methods for managing views, collections, rendering, engines, and so on. This lib could be used to create your own static site generator if you need something different)_
+_(the above links go to [templates](https://github.com/jonschlinkert/templates), which is the underlying library that provides verb with methods for managing views, collections, rendering, engines, and so on. This lib could be used to create your own static site generator if you need something different)_
 
-Last, keep in mind that {{appname}} is highly pluggable, so you can extend it to do whatever you need (plugins can be used on {{appname}} itself, a collection, or even a specific view). Let us know if you want to do something that you think ought to be in {{appname}} itself and we can discuss ways to implement it.
+Last, keep in mind that verb is highly pluggable, so you can extend it to do whatever you need (plugins can be used on verb itself, a collection, or even a specific view). Let us know if you want to do something that you think ought to be in verb itself and we can discuss ways to implement it.
 
 [lists-from-collections]: https://github.com/jonschlinkert/templates/blob/master/lib/list.js#L77-L83
 [collections-from-lists]: https://github.com/jonschlinkert/templates/blob/master/lib/views.js#L75-L81
