@@ -5,7 +5,6 @@ require('should');
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
-var store = require('base-store');
 var support = require('./support');
 var verb = support.resolve();
 var app;
@@ -14,7 +13,6 @@ describe('store', function() {
   describe('methods', function() {
     beforeEach(function() {
       app = verb({cli: true});
-      app.use(store());
       app.store.create('app-data-tests');
     });
 
@@ -155,7 +153,6 @@ describe('store', function() {
 describe('create', function() {
   beforeEach(function() {
     app = verb({cli: true});
-    app.use(store());
     app.store.create('abc');
 
     // init the actual store json file
@@ -226,7 +223,6 @@ describe('create', function() {
 describe('events', function() {
   beforeEach(function() {
     app = verb({cli: true});
-    app.use(store());
     app.store.create('abc');
   });
 

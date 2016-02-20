@@ -4,7 +4,6 @@ require('mocha');
 require('should');
 var fs = require('fs');
 var path = require('path');
-var Store = require('data-store');
 var assert = require('assert');
 var App = require('../');
 var app;
@@ -160,7 +159,6 @@ describe('store', function() {
 describe('events', function() {
   beforeEach(function() {
     app = new App();
-    app.store = new Store('verb-tests');
   });
 
   afterEach(function(cb) {

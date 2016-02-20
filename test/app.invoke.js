@@ -109,7 +109,7 @@ describe('.invoke', function() {
         cb();
       });
 
-      verb.register('generate-qux', function(app) {
+      verb.register('verb-qux-generator', function(app) {
         app.task('a', function() {});
         app.task('b', function() {});
         app.task('c', function() {});

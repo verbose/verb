@@ -15,14 +15,14 @@ describe('.generator', function() {
   });
 
   describe('register > function', function() {
-    it('should register a generator function by name', function() {
+    it('should register a generator function by alias', function() {
       verb.generator('foo', function() {});
       assert(verb.generators.hasOwnProperty('foo'));
     });
 
-    it('should register a generator function by alias', function() {
+    it('should register a generator function by full name', function() {
       verb.generator('verb-abc-generator', function() {});
-      assert(verb.generators.hasOwnProperty('abc'));
+      assert(verb.generators.hasOwnProperty('verb-abc-generator'));
     });
   });
 

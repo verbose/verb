@@ -18,7 +18,6 @@ describe('.register plugin', function() {
 describe('.register', function() {
   beforeEach(function() {
     app = new Verb();
-    app.initVerb({});
   });
 
   describe('properties', function() {
@@ -149,7 +148,13 @@ describe('.register', function() {
       app.getGenerator('bar');
     });
   });
+});
   
+describe('naming', function() {
+  beforeEach(function() {
+    app = new Verb();
+  });
+
   describe('alias', function() {
     it('should use a custom function to create the alias', function() {
       app.option('alias', function(name) {
@@ -157,7 +162,7 @@ describe('.register', function() {
       });
 
       app.register('base-abc-xyz', function() {});
-      assert(app.generators.hasOwnProperty('xyz'));
+      assert(app.generators.hasOwnProperty('base-abc-xyz'));
     });
   });
 
@@ -167,9 +172,9 @@ describe('.register', function() {
       assert(app.generators.hasOwnProperty('foo'));
     });
 
-    it('should register a generator function by alias', function() {
+    it('should register a generator function by its given name', function() {
       app.register('verb-generate-abc', function() {});
-      assert(app.generators.hasOwnProperty('abc'));
+      assert(app.generators.hasOwnProperty('verb-generate-abc'));
     });
 
     it('should register a generator by dirname', function() {
@@ -177,9 +182,9 @@ describe('.register', function() {
       assert(app.generators.hasOwnProperty('a'));
     });
 
-    it('should register a generator from a configfile filepath', function() {
+    it('should register a generator filepath by the given name', function() {
       app.register('verb-generate-abc', fixtures('generators/a/verbfile.js'));
-      assert(app.generators.hasOwnProperty('abc'));
+      assert(app.generators.hasOwnProperty('verb-generate-abc'));
     });
 
     it('should throw when a generator does not expose the instance', function(cb) {
@@ -194,9 +199,9 @@ describe('.register', function() {
   });
 
   describe('instance', function() {
-    it('should register an instance', function() {
+    it('should register an instance by the given name', function() {
       app.register('verb-generate-inst', new Verb());
-      assert(app.generators.hasOwnProperty('inst'));
+      assert(app.generators.hasOwnProperty('verb-generate-inst'));
     });
 
     it('should get a generator that was registered as an instance', function() {
