@@ -8,8 +8,8 @@
 'use strict';
 
 var debug = require('debug')('base:verb');
+var utils = require('generator-util');
 var Generate = require('generate');
-var utils = require('./lib/utils');
 var pkg = require('./package');
 
 /**
@@ -47,17 +47,24 @@ Verb.prototype.initVerb = function(opts) {
 
   this.is('verb');
   this.name = 'verb';
+  this.isApp = true;
+
   this.data({runner: pkg});
   this.data({verb: {related: {}, reflinks: []}});
+  var aliasRegex = /(^verb-?|-?generat(e|or)-?)/g;
 
   // temporary, there is an easier way to do this
   this.toFullname = function(str) {
-    var re = /(^verb-?|-?generat(e|or)-?)/g;
-    var alias = str.replace(re, '');
-    return 'verb-' + alias + '-generator';
+    return 'verb-' + this.toAlias(str) + '-generator';
+  };
+
+  // temporary, there is an easier way to do this
+  this.toAlias = function(str) {
+    return str.replace(aliasRegex, '');
   };
 
   if (process.env.GENERATE_CLI) {
+    this.use(utils.create(this.options));
     this.create('files');
     this.create('docs');
   }
