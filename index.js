@@ -27,8 +27,15 @@ function Verb(options) {
   if (!(this instanceof Verb)) {
     return new Verb(options);
   }
-  this.options = this.verbDefaults(options);
+
+  this.options = this.options || {};
+  this.verbDefaults(options);
+
   Generate.call(this, this.options);
+
+  this.is('verb');
+  this.define('isApp', true);
+
   this.initVerb(this.options);
 }
 
@@ -43,11 +50,7 @@ Generate.extend(Verb);
  */
 
 Verb.prototype.initVerb = function(opts) {
-  debug('initializing verb data');
-
-  this.is('verb');
-  this.name = 'verb';
-  this.isApp = true;
+  this.debug('initializing verb data');
 
   this.data({runner: pkg});
   this.data({verb: {related: {}, reflinks: []}});
@@ -77,7 +80,7 @@ Verb.prototype.initVerb = function(opts) {
 Verb.prototype.verbDefaults = function(options) {
   debug('initializing verb defaults');
   var defaults = { prefix: 'verb', configfile: 'verbfile.js' };
-  return utils.extend({}, defaults, this.options, options);
+  this.options = utils.extend(defaults, this.options, options);
 };
 
 /**
