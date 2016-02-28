@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 process.env.GENERATE_CLI = true;
-var generator = require('../lib/generators');
+var generator = require('../lib/generator');
 var verb = require('..');
 
 /**
