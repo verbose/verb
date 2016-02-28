@@ -27,13 +27,12 @@
   },
   "dependencies": {
     "debug": "^2.2.0",
-    "generate": "^0.4.5",
+    "generate": "^0.4.7",
     "generator-util": "^0.2.7"
   },
   "devDependencies": {
     "async": "^1.5.2",
-    "base-config": "^0.4.2",
-    "base-questions": "^0.3.2",
+    "base-store": "^0.3.6",
     "buffer-equal": "^1.0.0",
     "consolidate": "^0.14.0",
     "define-property": "^0.2.5",
@@ -66,7 +65,7 @@
   },
   "verb": {
     "run": true,
-    "toc": false,
+    "toc": true,
     "layout": "default",
     "tasks": [
       "readme"
