@@ -7,9 +7,9 @@
 
 'use strict';
 
-var debug = require('debug')('base:verb');
 var utils = require('generator-util');
 var Generate = require('generate');
+var debug = Generate.debug;
 var pkg = require('./package');
 
 /**
@@ -29,13 +29,13 @@ function Verb(options) {
   }
 
   this.options = this.options || {};
-  this.verbDefaults(options);
-
   Generate.call(this, this.options);
 
   this.is('verb');
   this.define('isApp', true);
+  debug(this);
 
+  this.verbDefaults(options);
   this.initVerb(this.options);
 }
 
@@ -78,7 +78,7 @@ Verb.prototype.initVerb = function(opts) {
  */
 
 Verb.prototype.verbDefaults = function(options) {
-  debug('initializing verb defaults');
+  this.debug('initializing verb defaults');
   var defaults = { prefix: 'verb', configfile: 'verbfile.js' };
   this.options = utils.extend(defaults, this.options, options);
 };
