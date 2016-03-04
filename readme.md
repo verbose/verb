@@ -15,6 +15,7 @@
   * [cwd](#cwd)
     + [tasks](#tasks)
 - [API](#api)
+- [Upgrading](#upgrading)
 - [Related projects](#related-projects)
 - [Contributing](#contributing)
 - [Building docs](#building-docs)
@@ -190,6 +191,16 @@ Create a verb application with `options`.
 ```js
 var verb = require('verb');
 var app = verb();
+```
+
+## Upgrading
+
+**Clear your cache and re-install**
+
+If you're currently running verb v0.8.0 or lower, please do the following to clear out old versions of verb, so that the latest version of verb will install properly:
+
+```bash
+$ npm cache clean && npm i -g verb
 ```
 
 ## Related projects
