@@ -26,19 +26,21 @@
     "verb": "bin/verb.js"
   },
   "dependencies": {
-    "debug": "^2.2.0",
-    "generate": "^0.4.7",
-    "generator-util": "^0.2.7"
+    "generate": "^0.4.9",
+    "generator-util": "^0.2.7",
+    "word-wrap": "^1.1.0"
   },
   "devDependencies": {
     "async": "^1.5.2",
-    "base-store": "^0.3.6",
+    "base-option": "^0.6.1",
+    "base-store": "^0.4.1",
     "buffer-equal": "^1.0.0",
     "consolidate": "^0.14.0",
     "define-property": "^0.2.5",
     "engine-base": "^0.1.2",
     "engine-handlebars": "^0.8.0",
     "event-stream": "^3.3.2",
+    "expect": "^1.14.0",
     "generate-foo": "^0.1.5",
     "get-value": "^2.0.3",
     "global-modules": "^0.2.0",
