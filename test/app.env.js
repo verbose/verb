@@ -39,14 +39,14 @@ describe('env', function() {
       assert.equal(generate.env.alias, 'foo');
     });
 
-    it('should not use prefix when a function is passed', function() {
+    it('should not use `prefix` when function is passed', function() {
       var fn = function() {};
-      generate.prefix = 'generate';
+      delete generate.prefix;
       generate.createEnv('foo', {}, fn);
       assert.equal(generate.env.name, 'foo');
     });
 
-    it('should not use custom prefix when a function is passed', function() {
+    it('should use not use custom `prefix` when function is passed', function() {
       var fn = function() {};
       generate.prefix = 'whatever';
       generate.createEnv('foo', {}, fn);
@@ -54,7 +54,7 @@ describe('env', function() {
     });
 
     it('should try to resolve a path passed as the second arg', function() {
-      generate.createEnv('foo', 'generate-foo/verbfile.js');
+      generate.createEnv('generate-foo', fixtures('verbfile.js'));
       assert.equal(generate.env.alias, 'foo');
       assert.equal(generate.env.name, 'generate-foo');
     });

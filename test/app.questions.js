@@ -49,7 +49,7 @@ describe('app.questions', function() {
 
     afterEach(function() {
       app.store.del({force: true});
-      app.questions.clearCache();
+      app.questions.clear();
       app.cache.data = {};
     });
 
@@ -67,7 +67,7 @@ describe('app.questions', function() {
       assert(app.questions.cache);
       assert(app.questions.cache.a);
       assert.equal(app.questions.cache.a.name, 'a');
-      assert.equal(app.questions.cache.a.options.message, 'b');
+      assert.equal(app.questions.cache.a.message, 'b');
     });
 
     it.skip('should re-init a specific question:', function(cb) {
@@ -182,10 +182,10 @@ describe('app.questions', function() {
 
     after(function() {
       site.store.del({force: true});
-      site.questions.clearCache();
+      site.questions.clear();
 
       app.store.del({force: true});
-      app.questions.clearCache();
+      app.questions.clear();
     });
 
     it('[app] should ask a question and use a `cache.data` value to answer:', function(cb) {

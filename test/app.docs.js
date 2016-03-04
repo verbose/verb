@@ -3,12 +3,12 @@
 require('mocha');
 require('should');
 var assert = require('assert');
-var verb = require('..');
+var generate = require('..');
 var app;
 
 describe('app', function() {
   beforeEach(function() {
-    app = verb();
+    app = generate();
     app.create('docs');
   });
 

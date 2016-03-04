@@ -5,7 +5,7 @@ var app = new Generate({foo: 'bar'});
 
 app.register('a', function(a, base) {
   a.register('a1', function(aa) {
-    aa.register('aaa', require('./generators/f/generator.js'));
+    aa.register('aaa', require('./generators/f/verbfile.js'));
     aa.task('default', function(cb) {
       console.log('aa > default');
       cb();

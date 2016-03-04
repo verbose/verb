@@ -5,14 +5,16 @@ require('should');
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
+var store = require('base-store');
 var support = require('./support');
-var verb = support.resolve();
+var generate = support.resolve();
 var app;
 
 describe('store', function() {
   describe('methods', function() {
     beforeEach(function() {
-      app = verb({cli: true});
+      app = generate({cli: true});
+      app.use(store());
       app.store.create('app-data-tests');
     });
 
@@ -152,7 +154,8 @@ describe('store', function() {
 
 describe('create', function() {
   beforeEach(function() {
-    app = verb({cli: true});
+    app = generate({cli: true});
+    app.use(store());
     app.store.create('abc');
 
     // init the actual store json file
@@ -200,7 +203,7 @@ describe('create', function() {
     app.store.create('foo');
     var dir = path.dirname(app.store.path);
 
-    assert.equal(app.store.foo.path, path.join(dir, 'verb/foo.json'));
+    assert.equal(app.store.foo.path, path.join(dir, 'generate/foo.json'));
     app.store.foo.set('a', 'b');
     app.store.foo.del({force: true});
   });
@@ -222,7 +225,8 @@ describe('create', function() {
 
 describe('events', function() {
   beforeEach(function() {
-    app = verb({cli: true});
+    app = generate({cli: true});
+    app.use(store());
     app.store.create('abc');
   });
 

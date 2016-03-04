@@ -2,13 +2,12 @@
 
 require('mocha');
 var assert = require('assert');
-var Verb = require('..');
+var Generate = require('..');
 var generate;
 
-describe('.generate', function() {
+describe('.generateEach', function() {
   beforeEach(function() {
-    generate = new Verb();
-    generate.initVerb({});
+    generate = new Generate();
   });
 
   describe('generators', function(cb) {

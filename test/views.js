@@ -457,7 +457,6 @@ describe('options', function() {
   });
 });
 
-
 describe('queue', function() {
   beforeEach(function() {
     collection = new Views();

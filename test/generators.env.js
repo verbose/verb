@@ -9,6 +9,45 @@ var generate;
 var fixtures = path.resolve.bind(path, __dirname + '/fixtures');
 
 describe('env', function() {
+  describe('createEnv paths', function() {
+    beforeEach(function() {
+      generate = new Generate();
+    });
+
+    describe('alias and function', function() {
+      it('should make the alias the exact name when the second arg is a function', function() {
+        var fn = function() {};
+        generate.createEnv('foo-bar-baz', fn);
+        assert(generate.env);
+        assert(generate.env.alias);
+        assert.equal(generate.env.alias, 'foo-bar-baz');
+      });
+
+      it('should not change the name when the second arg is a function', function() {
+        var fn = function() {};
+        generate.createEnv('foo-bar-baz', fn);
+        assert(generate.env);
+        assert(generate.env.name);
+        assert.equal(generate.env.name, 'foo-bar-baz');
+      });
+    });
+
+    describe('alias and path', function() {
+      it('should set the name to the basename of a generator\'s dirname', function() {
+        generate.createEnv('foo', 'generate-foo/verbfile.js');
+        assert.equal(generate.env.name, 'generate-foo');
+      });
+
+      it('should not change the name when the second arg is a function', function() {
+        var fn = function() {};
+        generate.createEnv('foo-bar-baz', fn);
+        assert(generate.env);
+        assert(generate.env.name);
+        assert.equal(generate.env.name, 'foo-bar-baz');
+      });
+    });
+  });
+
   describe('createEnv', function() {
     beforeEach(function() {
       generate = new Generate();
@@ -39,14 +78,14 @@ describe('env', function() {
       assert.equal(generate.env.alias, 'foo');
     });
 
-    it('should not use prefix when a function is passed', function() {
+    it('should not prefix the alias when a function is passed', function() {
       var fn = function() {};
-      generate.prefix = 'generate';
+      delete generate.prefix;
       generate.createEnv('foo', {}, fn);
       assert.equal(generate.env.name, 'foo');
     });
 
-    it('should not use custom prefix when a function is passed', function() {
+    it('should not prefix a custom alias when a function is passed', function() {
       var fn = function() {};
       generate.prefix = 'whatever';
       generate.createEnv('foo', {}, fn);
@@ -54,7 +93,13 @@ describe('env', function() {
     });
 
     it('should try to resolve a path passed as the second arg', function() {
-      generate.createEnv('foo', 'generate-foo/verbfile.js');
+      generate.createEnv('generate-foo', fixtures('verbfile.js'));
+      assert.equal(generate.env.alias, 'foo');
+      assert.equal(generate.env.name, 'generate-foo');
+    });
+
+    it('should try to resolve a path passed as the second arg', function() {
+      generate.createEnv('generate-foo', 'generate-foo/verbfile.js');
       assert.equal(generate.env.alias, 'foo');
       assert.equal(generate.env.name, 'generate-foo');
     });

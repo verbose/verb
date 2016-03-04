@@ -1,21 +1,21 @@
 'use strict';
 
-var Verb = require('../..');
-var verb = new Verb();
+var Generate = require('../..');
+var generate = new Generate();
 
-verb.task('default', function() {});
-verb.task('a', function() {});
-verb.task('b', function() {});
-verb.task('c', function() {});
+generate.task('default', function() {});
+generate.task('a', function() {});
+generate.task('b', function() {});
+generate.task('c', function() {});
 
-verb.register('foo', function(app) {
+generate.register('foo', function(app) {
   app.task('x', function() {});
   app.task('y', function() {});
   app.task('z', function() {});
 });
 
 /**
- * Expose this instance of `Verb`
+ * Expose this instance of `Generate`
  */
 
-module.exports = verb;
+module.exports = generate;

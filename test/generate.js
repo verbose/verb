@@ -3,13 +3,13 @@
 require('mocha');
 var path = require('path');
 var assert = require('assert');
-var Verb = require('..');
+var Generate = require('..');
 var generate;
 
 describe('generate', function() {
   describe('cwd', function() {
     beforeEach(function() {
-      generate = new Verb();
+      generate = new Generate();
     });
 
     it('should get the current working directory', function() {
@@ -24,11 +24,11 @@ describe('generate', function() {
 
   describe('generator', function() {
     beforeEach(function() {
-      generate = new Verb();
+      generate = new Generate();
     });
 
     it('should register the default generator', function() {
-      generate.register('default', require('../lib/generators/default'));
+      generate.register('default', require('./fixtures/def-gen'));
       assert(generate.hasGenerator('default'));
     });
   });
