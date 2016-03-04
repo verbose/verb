@@ -9,19 +9,21 @@ reflinks: []
 
 ## Plugin types
 
-- **instance plugins**: Instance plugins are registered with the `.use()` method and are called immediately upon instantiation. The only parameter exposed to an instance plugin is the instance of `app` ({{name}}), `collection`, or `view`.
-- **pipeline plugins**: Pipeline plugins are registered with `.pipe()` and are used on vinyl `file` objects in a stream (note that all {{name}} "views" are instances of vinyl files)
+- **instance plugins**: Instance plugins are functions that are invoked by the `.use()` method and have access to `app`, `collection`, or `view`, depending on where and how the plugin is registered.
+- **pipeline plugins**: Pipeline plugins are registered with `.pipe()` and are used on vinyl `file` objects in a stream (note that all verb "views" are instances of vinyl files)
 
 ### Instance plugins
+
+
 
 **Example instance plugin**
 
 ```js
-var {{name}} = require('{{name}}');
-var app = {{name}}();
+var verb = require('verb');
+var app = verb();
 
 app.use(function(app) {
-  // do stuff to app or `this`, which is the {{name}} instance
+  // do stuff to app (verb instance, also exposed as `this)
 });
 ```
 
@@ -32,12 +34,12 @@ Collections themselves are like mini-application instances, and collection plugi
 **Example collection plugin**
 
 ```js
-var {{name}} = require('{{name}}');
-var app = {{name}}();
+var verb = require('verb');
+var app = verb();
 
 // register a plugin to be used on all collections
 app.use(function(app) {
-   // do stuff to app or `this` (the {{name}} instance)
+   // do stuff to app or `this` (the verb instance)
 
    // return a function to be use used as a collection plugin
    return function(collection) {
@@ -69,8 +71,8 @@ app.create('posts')
 **Example view plugin**
 
 ```js
-var {{name}} = require('{{name}}');
-var app = {{name}}();
+var verb = require('verb');
+var app = verb();
 
 // register a plugin to be used on all views, from all collections
 app.use(function(app) {
@@ -121,3 +123,47 @@ Here are just a few examples
 - `pagination`
 - `groups` and `lists`
 - `sorting`
+
+_(this is for the `templates` docs, but it will help explain how plugins work in `base`. you obviously already know a lot about plugins, so this is for anyone who might find it useful)_
+
+# Plugins
+
+> Overview of how `Templates` plugins work
+
+## App
+
+The following example shows a `plugin` that will be invoked by the `.use` method. Example: `app.use(plugin)`. When invoked, the plugin function is passed the application instance (`app`) as its only argument.
+
+![plugins-app](https://cloud.githubusercontent.com/assets/383994/13402852/311b9d88-dee0-11e5-944b-200ba56f42fe.png)
+
+The plugin stops there and will not be called again, **unless the plugin returns a function**. If a function is returned it will be pushed onto the `app.fns` array and then called on each collection that is created using the `app.create`, `app.collection`, or `app.list` methods.
+
+In the next example, a function is returned from the plugin so that it can be called again later.
+
+## Collection
+
+![plugins-collection](https://cloud.githubusercontent.com/assets/383994/13402856/34dd996c-dee0-11e5-8def-f0b739ff10ca.png)
+
+The plugin stops there and will not be called again, **unless the plugin returns a function**. If a function is returned it will be pushed onto the `collection.fns` array and then called on each view that is added to the collection.
+
+In the next example, we'll return a function inside the `collection` plugin, so that it can be called again later.
+
+## View
+
+![plugins-view](https://cloud.githubusercontent.com/assets/383994/13402861/37fc7032-dee0-11e5-8489-04f392cb9370.png)
+
+End of the line...
+
+# Short-circuit: "smart plugins"
+
+> Don't like all the function nesting? Want to register your plugin with `app` but only have it run on specific objects? No problem, just short-circuit the plugin!
+
+Every class has a boolean `.is*` property that is useful for checking the instance name. For example, the `Templates` class has an `isTemplates` property, view collections have `isViews`, and views have `isView`. (all "apps", like `Templates`, `Assemble`, `Generate`, etc. also have `isApp` as a convenience).
+
+To make your plugins "smarter" and eliminate the nesting, try the following:
+
+![plugins-short-circuit](https://cloud.githubusercontent.com/assets/383994/13405180/33cea2a4-deeb-11e5-864d-4fbab7510c22.png)
+
+## Generators
+
+![plugins-generators](https://cloud.githubusercontent.com/assets/383994/13413383/184bc5de-df18-11e5-815c-b968d5c676a4.png)
