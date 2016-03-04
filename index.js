@@ -28,22 +28,33 @@ function Verb(options) {
     return new Verb(options);
   }
 
-  this.options = this.options || {};
+  this.options = utils.extend({}, this.options, options);
   Generate.call(this, this.options);
 
   this.is('verb');
   this.define('isApp', true);
   debug(this);
 
+  this.debug('initializing');
   this.verbDefaults(options);
   this.initVerb(this.options);
 }
 
 /**
- * Extend `Generate`
+ * Extend `Verb`
  */
 
 Generate.extend(Verb);
+
+/**
+ * Initialize verb defaults
+ */
+
+Verb.prototype.verbDefaults = function(options) {
+  this.debug('initializing verb defaults');
+  var defaults = { prefix: 'verb', configfile: 'verbfile.js' };
+  this.options = utils.extend(defaults, this.options, options);
+};
 
 /**
  * Initialize verb data
@@ -56,31 +67,24 @@ Verb.prototype.initVerb = function(opts) {
   this.data({verb: {related: {}, reflinks: []}});
   var aliasRegex = /(^verb-?|-?generat(e|or)-?)/g;
 
-  // temporary, there is an easier way to do this
-  this.toFullname = function(str) {
-    return 'verb-' + this.toAlias(str) + '-generator';
+  this.toFullname = function(name) {
+    return 'verb-' + this.toAlias(name) + '-generator';
   };
 
-  // temporary, there is an easier way to do this
-  this.toAlias = function(str) {
-    return str.replace(aliasRegex, '');
+  this.isGeneratorPath = function(fp) {
+    return aliasRegex.test(fp) || /^generate-/.test(fp);
   };
 
+  this.toAlias = function(name) {
+    return name.replace(aliasRegex, '');
+  };
+
+  // if run via CLI, add defaults
   if (process.env.GENERATE_CLI) {
     this.use(utils.create(this.options));
     this.create('files');
     this.create('docs');
   }
-};
-
-/**
- * Initialize verb defaults
- */
-
-Verb.prototype.verbDefaults = function(options) {
-  this.debug('initializing verb defaults');
-  var defaults = { prefix: 'verb', configfile: 'verbfile.js' };
-  this.options = utils.extend(defaults, this.options, options);
 };
 
 /**
