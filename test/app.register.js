@@ -41,7 +41,7 @@ describe('.register', function() {
     });
 
     it('should set configname to generator by default', function() {
-      assert.equal(base.configname, 'generator');
+      assert.equal(base.configname, 'verbfile');
     });
 
     it('should set configname', function() {

@@ -104,7 +104,7 @@ describe('app', function() {
     it('should not re-add `_` in init:', function() {
       app = new App();
       app._.foo = 'bar';
-      app.defaultConfig();
+      app.initTemplates();
       assert(app._.foo === 'bar');
     });
   });

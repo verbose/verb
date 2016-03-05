@@ -161,7 +161,7 @@ describe('.extendWith', function() {
       generate.getGenerator('foo');
     });
 
-    it.only('should extend a generator with a generator invoked by alias', function(cb) {
+    it('should extend a generator with a generator invoked by alias', function(cb) {
       generate.register('foo', function(app) {
         assert(!app.tasks.a);
         assert(!app.tasks.b);
