@@ -26,9 +26,8 @@
     "verb": "bin/verb.js"
   },
   "dependencies": {
-    "generate": "^0.4.9",
-    "generator-util": "^0.2.7",
-    "word-wrap": "^1.1.0"
+    "generate": "^0.4.11",
+    "generator-util": "^0.2.9"
   },
   "devDependencies": {
     "async": "^1.5.2",
