@@ -26,12 +26,12 @@
     "verb": "bin/verb.js"
   },
   "dependencies": {
-    "generate": "^0.4.11",
+    "generate": "^0.4.12",
     "generator-util": "^0.2.9"
   },
   "devDependencies": {
     "async": "^1.5.2",
-    "base-option": "^0.6.1",
+    "base-option": "^0.6.2",
     "base-store": "^0.4.1",
     "buffer-equal": "^1.0.0",
     "consolidate": "^0.14.0",
