@@ -83,7 +83,6 @@ Verb.prototype.initVerb = function(opts) {
   if (process.env.GENERATE_CLI) {
     this.use(utils.create(this.options));
     this.create('files');
-    this.create('docs');
   }
 };
 
