@@ -1,13 +1,13 @@
 ---
-title: <%= upper(name) %> CLI
-description: "Using the <%= name %> command line."
+title: <%= proper(name) %> CLI
+description: "Working with <%= name %> from the command line."
 related: ["terminology", "tasks", "features"]
 tags: ['config', 'cli', 'command line', 'options', 'flags']
 ---
 
-**FAQ**
+**CLI FAQ**
 
-- object paths (dot notation) may be used for most command line arguments
+- Dot-notation may be used for most command line arguments
 - In cases where dots should not be expanded to an object, you may escape the dot with a single backslash
 
 

@@ -1,6 +1,8 @@
-# Collections
+---
+title: Collections
+---
 
-> Collections are first-class citizens in Assemble, with three different collection types to choose from. This document describes each collection type and provides the information you need to start using them.
+> Collections are first-class citizens in {%= name %}, with three different collection types to choose from. This document describes each collection type and provides the information you need to start using them.
 
 - `create`
 - `collection`
@@ -25,13 +27,21 @@ View collections have methods getting, setting and finding views, as well as ass
 
 ## Create
 
-The `create` method is used for adding custom "view collections" to verb. A few things happen when the method is used:
+The `create` method is used for adding custom "view collections" to verb. 
 
-- 
+**Example**
 
-- This exposed `page` and `pages` methods on verb (verb automatically detects inflections - plural and singular forms)
-- A `pages`
+To create a "pages" collection:
 
+```js
+app.create('pages');
+```
+
+A few things happened when the `.create` method was used:
+
+1. The `page` and `pages` methods were decorated onto verb (verb automatically detects inflections - plural and singular forms)
+2. A `pages` object was added to `verb.views` for caching views, so when pages are created they can be found on `verb.views.pages`
+3. ~~A `page` helper was created~~ (helpers are only created for `partial` [view types](view-types.md))
 
 ## Collections types
 
@@ -41,7 +51,7 @@ Assemble 0.6.0 supports **3 different collection types**:
 | --- | --- | --- | ---|
 | **collections** | `item` | `items` | generic collections, with methods for setting and getting `items` |
 | **view collections** | `view` | `views` | Methods for working with template collections, like pages, posts, layouts, partials, etc. |
-| **lists** | `item` | `items` | Stored as an array, has methods for getting, setting, [sorting](https://github.com/jonschlinkert/templates/blob/master/lib/list.js#L359), [grouping](https://github.com/jonschlinkert/templates/blob/master/lib/list.js#L333). etc |
+| **lists** | `item` | `items` | Stored as an array, has methods for getting, setting, [sorting][], [grouping][]. etc |
 
 _(sidenote: views and items are also [vinyl](https://github.com/gulpjs/vinyl) files)_
 
@@ -63,7 +73,6 @@ Ultimately this gives you full control over how views are named and how lookups 
 ## Lists
 
 Lists are similar to collections but instead of storing an object of views, `items` are stored as an array. 
-
 
 **Nice to know**
 
