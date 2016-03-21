@@ -42,8 +42,7 @@ Config stores are persisted according the following conventions:
 
 - **globals**: `~/.data-store/globals/defaults.json`
 - **app**: `~/.data-store/app/{app-name}.json`
-- **app**: `~/.data-store/app/{app-name}/projects/{project-name}.json`
-
+- **project**: `~/.data-store/app/{app-name}/projects/{project-name}.json`
 
 
 **Examples**
