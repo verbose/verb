@@ -2,7 +2,7 @@
 title: Stores 
 ---
 
-Verb supports 3 "types" of stores for persisting config values, each is persisted to the `~/.data-store` directory, and all three have API methods for getting/setting data:
+Verb supports 4 "types" of stores for persisting config values, each is persisted to the `~/.data-store` directory, and all three have API methods for getting/setting data:
 
 ## Store comparison
 
@@ -11,13 +11,7 @@ Verb supports 3 "types" of stores for persisting config values, each is persiste
 Global defaults | `app.globals` | Generic global defaults, persisted to `~/.data-store/globals/defaults.json`. These defaults are shared by `verb`, `assemble`, `update` and `generate`. 
 Verb defaults | `app.store` | Verb-specific defaults, persisted to `~/.data-store/app/verb.json`
 Project defaults | `app.locals` | Project-specific defaults, persisted to `~/.data-store/project/foo-bar.json`. 
-
-**2 bonus types**
-
-In addition to the stores exposed on the API, there are two `config` stores used for defining options/configuration settings.
-
-- `package.json`: config object with the name of the "app". `verb`, `assemble` etc
-- `verb.json`: where `app` is the name of the app. You should be able to use `verb.json`, this was implemented a while ago.  
+Local configs | N/A | Project-specific configuration settings in `verb.json` or the `verb` object in package.json. 
 
 ## How config works
 
@@ -119,7 +113,7 @@ Project stores are specific to the "app" being run. In this case, `verb` is the 
 ~/.data-store/app/verb/projects/baz.json
 ```
 
-## Project (local) configs
+## Local configs
 
 ### verb.json
 
