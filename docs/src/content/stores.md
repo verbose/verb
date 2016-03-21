@@ -4,13 +4,13 @@ title: Stores
 
 Verb supports 3 "types" of stores for persisting config values, each is persisted to the `~/.data-store` directory, and all three have API methods for getting/setting data:
 
-**Store comparison**
+## Store comparison
 
-Type | API | Description
+**Type** | **API** | **Description**
 --- | --- | ---
-Global | `app.globals` | Generic global defaults, persisted to `~/.data-store/globals/defaults.json`. These defaults are shared by `verb`, `assemble`, `update` and `generate`. 
-Verb | `app.store` | Verb-specific defaults, persisted to `~/.data-store/app/verb.json`
-Project | `app.locals` | Project-specific defaults, persisted to `~/.data-store/project/foo-bar.json`. 
+Global defaults | `app.globals` | Generic global defaults, persisted to `~/.data-store/globals/defaults.json`. These defaults are shared by `verb`, `assemble`, `update` and `generate`. 
+Verb defaults | `app.store` | Verb-specific defaults, persisted to `~/.data-store/app/verb.json`
+Project defaults | `app.locals` | Project-specific defaults, persisted to `~/.data-store/project/foo-bar.json`. 
 
 **2 bonus types**
 
