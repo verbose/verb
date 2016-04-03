@@ -6,6 +6,8 @@ Verb supports 4 "types" of stores for persisting config values, each is persiste
 
 ## Store comparison
 
+The first 3 types are stored in user home: `~/.data-store`, the last type "local configs", is stored locally to a project.
+
 **Type** | **API** | **Description**
 --- | --- | ---
 Global defaults | `app.globals` | Generic global defaults, persisted to `~/.data-store/globals/defaults.json`. These defaults are shared by `verb`, `assemble`, `update` and `generate`. 
