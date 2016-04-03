@@ -10,10 +10,6 @@ var verb = require('..');
 var cli = verb.runner('verbfile.js', require('../lib/generator'));
 var app = verb();
 
-app.on('done', function() {
-  process.exit(0);
-});
-
 /**
  * Run generators and tasks
  */
@@ -24,4 +20,5 @@ cli(app, function(err, argv, app) {
     process.exit(1);
   }
   app.emit('done');
+  process.exit();
 });
