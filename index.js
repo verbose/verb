@@ -8,8 +8,8 @@
 'use strict';
 
 var utils = require('generator-util');
+var define = require('define-property');
 var Generate = require('generate');
-var debug = Generate.debug;
 var pkg = require('./package');
 
 /**
@@ -30,14 +30,16 @@ function Verb(options) {
 
   this.options = utils.extend({}, this.options, options);
   Generate.call(this, this.options);
+  delete this.cache.data.runner;
 
   this.is('verb');
-  this.define('isApp', true);
-  debug(this);
+  Generate.debug(this);
 
+  Verb.emit('preInit', this, this.base);
   this.debug('initializing');
   this.verbDefaults(options);
   this.initVerb(this.options);
+  Verb.emit('init', this, this.base);
 }
 
 /**
@@ -63,9 +65,9 @@ Verb.prototype.verbDefaults = function(options) {
 Verb.prototype.initVerb = function(opts) {
   this.debug('initializing verb data');
 
-  this.data({runner: pkg});
-  this.data({verb: {related: {}, reflinks: []}});
-  var aliasRegex = /(^verb-?|-?generat(e|or)-?)/g;
+  this.set('appname', 'verb');
+  this.data({runner: {name: 'verb', url: 'https://github.com/verbose/verb'}});
+  var aliasRegex = /^verb-([^-]+)-generator$/g;
 
   this.toFullname = function(name) {
     return 'verb-' + this.toAlias(name) + '-generator';
@@ -76,7 +78,7 @@ Verb.prototype.initVerb = function(opts) {
   };
 
   this.toAlias = function(name) {
-    return name.replace(aliasRegex, '');
+    return name.replace(aliasRegex, '$1');
   };
 
   // if run via CLI, add defaults
