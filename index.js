@@ -41,12 +41,6 @@ Generate.extend(Verb);
 
 Verb.prototype.initVerb = function(opts) {
   this.debug('initializing', __filename);
-
-  delete this.cache.data.runner;
-  if (this.options.namespace === true) {
-    delete this.options.namespace;
-  }
-
   Verb.emit('preInit', this, this.base);
   this.data({runner: require('./package')});
   Verb.emit('init', this, this.base);

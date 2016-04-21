@@ -1,6 +1,6 @@
 {
   "name": "verb",
-  "description": "Documentation system for GitHub projects.",
+  "description": "Documentation build system for GitHub projects.",
   "version": "0.9.0",
   "homepage": "https://github.com/verbose/verb",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
@@ -10,63 +10,74 @@
   },
   "license": "MIT",
   "files": [
+    "bin",
     "index.js",
-    "bin/",
-    "lib/"
+    "lib"
   ],
   "main": "index.js",
+  "preferGlobal": true,
+  "bin": {
+    "verb": "bin/verb.js"
+  },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
     "test": "mocha"
   },
-  "preferGlobal": true,
-  "bin": {
-    "verb": "bin/verb.js"
-  },
   "dependencies": {
-    "generate": "^0.4.12",
-    "generator-util": "^0.2.9"
+    "ansi-colors": "^0.1.0",
+    "base-runner": "^0.6.3",
+    "debug": "^2.2.0",
+    "export-files": "^2.1.1",
+    "extend-shallow": "^2.0.1",
+    "fs-exists-sync": "^0.1.0",
+    "generate": "^0.5.1",
+    "isobject": "^2.0.0",
+    "memoize-path": "^0.1.2",
+    "minimist": "^1.2.0"
   },
   "devDependencies": {
     "async": "^1.5.2",
-    "base-option": "^0.6.2",
-    "base-store": "^0.4.1",
+    "base-store": "^0.4.2",
     "buffer-equal": "^1.0.0",
     "consolidate": "^0.14.0",
     "define-property": "^0.2.5",
     "engine-base": "^0.1.2",
     "engine-handlebars": "^0.8.0",
     "event-stream": "^3.3.2",
-    "expect": "^1.14.0",
+    "expect": "^1.18.0",
     "generate-foo": "^0.1.5",
-    "get-value": "^2.0.3",
-    "global-modules": "^0.2.0",
+    "generator-util": "^0.2.9",
+    "get-value": "^2.0.5",
+    "global-modules": "^0.2.1",
     "graceful-fs": "^4.1.3",
     "gulp": "^3.9.1",
     "gulp-eslint": "^2.0.0",
-    "gulp-format-md": "^0.1.7",
-    "gulp-istanbul": "^0.10.3",
+    "gulp-format-md": "^0.1.8",
+    "gulp-istanbul": "^0.10.4",
     "gulp-mocha": "^2.2.0",
-    "is-buffer": "^1.1.2",
+    "helper-example": "^0.1.0",
+    "is-buffer": "^1.1.3",
     "kind-of": "^3.0.2",
     "load-pkg": "^3.0.1",
-    "matched": "^0.4.1",
     "mocha": "^2.4.5",
     "parser-front-matter": "^1.3.0",
     "resolve-glob": "^0.1.8",
     "rimraf": "^2.5.2",
-    "should": "^8.2.2",
+    "should": "^8.3.1",
     "sinon": "^1.17.3",
     "spawn-commands": "^0.3.1",
     "swig": "^1.4.2",
     "through2": "^2.0.1",
     "vinyl": "^1.1.1"
   },
+  "keywords": [
+    "verb"
+  ],
   "verb": {
     "run": true,
-    "toc": true,
+    "toc": false,
     "layout": "default",
     "tasks": [
       "readme"
@@ -82,10 +93,10 @@
       ]
     },
     "reflinks": [
-      "assemble",
-      "base",
-      "generate",
+      "verb-readme-generator",
       "verb",
+      "assemble",
+      "generate",
       "update"
     ],
     "lint": {
