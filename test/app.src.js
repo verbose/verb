@@ -6,7 +6,7 @@ var should = require('should');
 var join = require('path').join;
 var app;
 
-describe('src()', function() {
+describe('app.src', function() {
   beforeEach(function() {
     app = new App();
   });

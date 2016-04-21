@@ -8,7 +8,7 @@ var generate;
 
 var fixtures = path.resolve.bind(path, __dirname, 'fixtures');
 
-describe('.generator', function() {
+describe('app.generator', function() {
   beforeEach(function() {
     generate = new Generate();
   });
@@ -189,16 +189,16 @@ describe('.generator', function() {
       assert.deepEqual(generate.generators.one, one);
     });
 
-    it('should register a Generate instance from a file path', function() {
-      var two = generate.generator('two', fixtures('two/generate.js'));
+    it('should register an instance from a file path', function() {
+      var two = generate.generator('two', fixtures('two/generator.js'));
       assert(generate.generators.hasOwnProperty('two'));
       assert(typeof generate.generators.two === 'object');
       assert.deepEqual(generate.generators.two, two);
     });
 
     it('should get a registered generator by name', function() {
-      var one = generate.generator('one', fixtures('one/verbfile.js'));
-      var two = generate.generator('two', fixtures('two/generate.js'));
+      var one = generate.generator('one', fixtures('one/generator.js'));
+      var two = generate.generator('two', fixtures('two/generator.js'));
       assert.deepEqual(generate.generator('one'), one);
       assert.deepEqual(generate.generator('two'), two);
     });

@@ -10,7 +10,7 @@ var support = require('./support');
 var generate = support.resolve();
 var app;
 
-describe('store', function() {
+describe('app.store', function() {
   describe('methods', function() {
     beforeEach(function() {
       app = generate({cli: true});
@@ -152,7 +152,7 @@ describe('store', function() {
   });
 });
 
-describe('create', function() {
+describe('app.store.create', function() {
   beforeEach(function() {
     app = generate({cli: true});
     app.use(store());
@@ -203,7 +203,7 @@ describe('create', function() {
     app.store.create('foo');
     var dir = path.dirname(app.store.path);
 
-    assert.equal(app.store.foo.path, path.join(dir, 'generate/foo.json'));
+    assert.equal(app.store.foo.path, path.join(dir, 'verb/foo.json'));
     app.store.foo.set('a', 'b');
     app.store.foo.del({force: true});
   });

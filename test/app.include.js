@@ -6,7 +6,7 @@ var assert = require('assert');
 var generate = require('..');
 var app, len;
 
-describe('app', function() {
+describe('app.include', function() {
   beforeEach(function() {
     app = generate();
     if (typeof app.include === 'undefined') {

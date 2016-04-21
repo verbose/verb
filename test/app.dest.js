@@ -47,7 +47,7 @@ function masked(mode) {
   return mode & MASK_MODE;
 }
 
-describe('dest stream', function() {
+describe('app.dest', function() {
   beforeEach(wipeOut);
   afterEach(wipeOut);
 
@@ -55,7 +55,7 @@ describe('dest stream', function() {
     var stream;
     try {
       stream = app.dest();
-    }catch (err) {
+    } catch (err) {
       assert(err && typeof err === 'object');
       should.not.exist(stream);
       cb();
@@ -66,7 +66,7 @@ describe('dest stream', function() {
     var stream;
     try {
       stream = app.dest('');
-    }catch (err) {
+    } catch (err) {
       assert(err && typeof err === 'object');
       should.not.exist(stream);
       cb();
@@ -469,9 +469,9 @@ describe('dest stream', function() {
 
     var inputPath = path.join(__dirname, 'fixtures/test.coffee');
     var inputBase = path.join(__dirname, 'fixtures/');
-    var expectedPath = path.join(__dirname, './actual/test.coffee');
+    var expectedPath = path.join(__dirname, 'actual/test.coffee');
     var expectedContents = fs.readFileSync(inputPath);
-    var expectedBase = path.join(__dirname, './actual');
+    var expectedBase = path.join(__dirname, 'actual');
     var startMode = parseInt('0655', 8);
     var expectedMode = parseInt('0722', 8);
 
@@ -683,8 +683,8 @@ describe('dest stream', function() {
       path: inputPath,
       contents: expectedContents,
       stat: {
-        mode: expectedMode,
-      },
+        mode: expectedMode
+      }
     });
 
     fs.mkdirSync(expectedBase);
@@ -899,8 +899,8 @@ describe('dest stream', function() {
 
 describe('dest', function() {
   beforeEach(function(cb) {
-    rimraf(actual, cb);
     app = new App();
+    rimraf(actual, cb);
   });
 
   afterEach(function(cb) {

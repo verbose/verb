@@ -10,7 +10,7 @@ var List = App.List;
 var Views = App.Views;
 var pages;
 
-describe('render', function() {
+describe('collection.render', function() {
   describe('rendering', function() {
     beforeEach(function() {
       pages = new Views();

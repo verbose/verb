@@ -5,7 +5,7 @@ var assert = require('assert');
 var Generate = require('..');
 var generate;
 
-describe('.tasks plugin', function() {
+describe('app.tasks', function() {
   it('should register as a plugin', function() {
     var generate = new Generate();
     assert(generate.registered.hasOwnProperty('base-generators-tasks'));

@@ -1,4 +1,3 @@
-
 'use strict';
 
 require('mocha');
@@ -19,7 +18,7 @@ function install(name, cb) {
   }, cb);
 }
 
-describe('.extendWith', function() {
+describe('app.extendWith', function() {
   before(function(cb) {
     if (!utils.exists(path.resolve(gm, 'generate-bar'))) {
       install('generate-bar', cb);
@@ -30,12 +29,30 @@ describe('.extendWith', function() {
 
   beforeEach(function() {
     generate = new Generate();
+    generate.option('alias', function(name) {
+      return name.replace(/^generate-/, '');
+    });
+  });
+
+  it('should throw an error when a generator is not found', function(cb) {
+    generate.register('foo', function(app) {
+      app.extendWith('fofoofofofofof');
+    });
+
+    try {
+      generate.getGenerator('foo');
+      cb(new Error('expected an error'));
+    } catch (err) {
+      assert.equal(err.message, 'cannot find generator fofoofofofofof');
+      cb();
+    }
   });
 
   it('should get a named generator', function(cb) {
+    var count = 0;
     generate.register('foo', function(app) {
       app.extendWith('bar');
-      cb();
+      count++;
     });
 
     generate.register('bar', function(app) {
@@ -45,6 +62,8 @@ describe('.extendWith', function() {
     });
 
     generate.getGenerator('foo');
+    assert.equal(count, 1);
+    cb();
   });
 
   it('should extend a generator with a named generator', function(cb) {
@@ -98,7 +117,7 @@ describe('.extendWith', function() {
   });
 
   describe('invoke generators', function(cb) {
-    it('should invoke an instance', function(cb) {
+    it('should extend with a generator instance', function(cb) {
       generate.register('foo', function(app) {
         var bar = app.getGenerator('bar');
         app.extendWith(bar);
@@ -110,6 +129,7 @@ describe('.extendWith', function() {
       });
 
       generate.register('bar', function(app) {
+        app.isBar = true;
         app.task('a', function() {});
         app.task('b', function() {});
         app.task('c', function() {});
@@ -180,6 +200,7 @@ describe('.extendWith', function() {
         app.task('c', function() {});
       });
 
+      var qux = generate.getGenerator('qux');
       generate.getGenerator('foo');
     });
 
@@ -215,22 +236,6 @@ describe('.extendWith', function() {
       generate.getGenerator('abc');
     });
 
-    it('should extend with a generator invoked from node_modules by alias', function(cb) {
-      generate.register('abc', function(app) {
-        assert(!app.tasks.a);
-        assert(!app.tasks.b);
-        assert(!app.tasks.c);
-
-        app.extendWith('foo');
-        assert(app.tasks.a);
-        assert(app.tasks.b);
-        assert(app.tasks.c);
-        cb();
-      });
-
-      generate.getGenerator('abc');
-    });
-
     it('should extend with a generator invoked from global modules by name', function(cb) {
       generate.register('zzz', function(app) {
         assert(!app.tasks.a);
@@ -248,6 +253,8 @@ describe('.extendWith', function() {
     });
 
     it('should extend with a generator invoked from global modules by alias', function(cb) {
+      generate.register('generate-bar');
+
       generate.register('zzz', function(app) {
         assert(!app.tasks.a);
         assert(!app.tasks.b);
@@ -326,6 +333,8 @@ describe('.extendWith', function() {
     });
 
     it('should invoke a sub-generator from node_modules by alias', function(cb) {
+      generate.register('generate-foo');
+
       generate.register('abc', function(app) {
         assert(!app.tasks.a);
         assert(!app.tasks.b);

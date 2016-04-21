@@ -6,7 +6,7 @@ var assert = require('assert');
 var assemble = require('..');
 var app;
 
-describe('.pages()', function() {
+describe('app.pages', function() {
   beforeEach(function() {
     app = assemble();
     if (!app.pages) {

@@ -29,7 +29,7 @@ describe('generate', function() {
 
     it('should register the default generator', function() {
       generate.register('default', require('./fixtures/def-gen'));
-      assert(generate.hasGenerator('default'));
+      assert(generate.getGenerator('default'));
     });
   });
 });

@@ -7,7 +7,7 @@ var generate
 
 var fixtures = path.resolve.bind(path, __dirname + '/fixtures');
 
-describe('.generator', function() {
+describe('app.getGenerator', function() {
   beforeEach(function() {
     generate = new Generate();
   });

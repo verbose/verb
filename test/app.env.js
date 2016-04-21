@@ -8,7 +8,7 @@ var generate;
 
 var fixtures = path.resolve.bind(path, __dirname + '/fixtures');
 
-describe('env', function() {
+describe('app.env', function() {
   describe('createEnv', function() {
     beforeEach(function() {
       generate = new Generate();
@@ -57,16 +57,6 @@ describe('env', function() {
       generate.createEnv('generate-foo', fixtures('verbfile.js'));
       assert.equal(generate.env.alias, 'foo');
       assert.equal(generate.env.name, 'generate-foo');
-    });
-
-    it('should throw an error when the path is not resolved', function(cb) {
-      try {
-        generate.createEnv('foo', fixtures('whatever.js'));
-        cb(new Error('expected an error'));
-      } catch (err) {
-        assert.equal(err.message, 'cannot find generator: ' + fixtures('whatever.js'));
-        cb();
-      }
     });
   });
 });

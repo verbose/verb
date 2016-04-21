@@ -5,7 +5,7 @@ var assert = require('assert');
 var Generate = require('..');
 var generate;
 
-describe('.generate', function() {
+describe('app.task', function() {
   beforeEach(function() {
     generate = new Generate();
   });

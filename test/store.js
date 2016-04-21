@@ -21,16 +21,16 @@ describe('store', function() {
   it('should create a store at the given `cwd`', function() {
     app = new App({store: {cwd: __dirname + '/actual'}});
     app.store.set('foo', 'bar');
-    assert(path.basename(app.store.path) === 'generate.json');
+    assert(path.basename(app.store.path) === 'verb.json');
     assert(app.store.data.hasOwnProperty('foo'));
     assert(app.store.data.foo === 'bar');
-    assert(fs.existsSync(path.join(__dirname, 'actual', 'generate.json')));
+    assert(fs.existsSync(path.join(__dirname, 'actual', 'verb.json')));
   });
 
   it('should create a store using the given `indent` value', function() {
     app = new App({store: {cwd: __dirname + '/actual', indent: 0}});
     app.store.set('foo', 'bar');
-    var contents = fs.readFileSync(path.join(__dirname, 'actual', 'generate.json'), 'utf8');
+    var contents = fs.readFileSync(path.join(__dirname, 'actual', 'verb.json'), 'utf8');
     assert(contents === '{"foo":"bar"}');
   });
 

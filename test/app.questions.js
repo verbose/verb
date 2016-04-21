@@ -53,14 +53,6 @@ describe('app.questions', function() {
       app.cache.data = {};
     });
 
-    it.skip('should force all questions to be asked', function(cb) {
-      app.questions.option('init', 'author');
-      app.ask({force: true}, function(err, answers) {
-        console.log(answers)
-        cb();
-      });
-    });
-
     it('should store a question:', function() {
       app.question('a', 'b');
       assert(app.questions);
@@ -68,22 +60,6 @@ describe('app.questions', function() {
       assert(app.questions.cache.a);
       assert.equal(app.questions.cache.a.name, 'a');
       assert.equal(app.questions.cache.a.message, 'b');
-    });
-
-    it.skip('should re-init a specific question:', function(cb) {
-      this.timeout(20000);
-      app.question('a', 'b');
-      app.question('c', 'd');
-      app.question('e', 'f');
-      app.data({a: 'b'});
-
-      app.questions.get('e')
-        .force()
-
-      app.ask(function(err, answers) {
-        console.log(answers);
-        cb();
-      });
     });
 
     it('should ask a question defined on `ask`', function(cb) {

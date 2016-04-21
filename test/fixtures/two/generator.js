@@ -1,6 +1,6 @@
 'use strict';
 
-var Generate = require('../..');
+var Generate = require('../../..');
 var generate = new Generate();
 
 generate.task('default', function() {});

@@ -7,7 +7,7 @@ var App = support.resolve();
 var View = App.View;
 var view, app;
 
-describe('helpers', function() {
+describe('view.render', function() {
   describe('rendering', function() {
     beforeEach(function() {
       app = new App();

@@ -6,7 +6,7 @@ var assert = require('assert');
 var assemble = require('..');
 var app;
 
-describe('.partial()', function() {
+describe('app.partial', function() {
   beforeEach(function() {
     app = assemble();
     if (!app.partials) {

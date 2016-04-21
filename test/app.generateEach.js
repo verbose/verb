@@ -5,7 +5,7 @@ var assert = require('assert');
 var Generate = require('..');
 var generate;
 
-describe('.generateEach', function() {
+describe('app.generateEach', function() {
   beforeEach(function() {
     generate = new Generate();
   });
@@ -24,7 +24,7 @@ describe('.generateEach', function() {
       generate.option('cwd', 'foo/bar/baz');
       generate.generateEach('sflsjljskksl', function(err) {
         assert(err);
-        assert.equal('Cannot find generator: "sflsjljskksl" in "foo/bar/baz/verbfile.js"', err.message);
+        assert.equal(err.message, 'Cannot find generator: "sflsjljskksl" in "foo/bar/baz"');
         cb();
       });
     });

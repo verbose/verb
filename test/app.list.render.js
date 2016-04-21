@@ -9,7 +9,7 @@ var App = support.resolve();
 var List = App.List;
 var pages, app;
 
-describe('render', function() {
+describe('app.list.render', function() {
   describe('rendering', function() {
     beforeEach(function() {
       app = App();
