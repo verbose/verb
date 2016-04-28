@@ -32,10 +32,11 @@
     "export-files": "^2.1.1",
     "extend-shallow": "^2.0.1",
     "fs-exists-sync": "^0.1.0",
-    "generate": "^0.5.1",
+    "generate": "^0.5.4",
     "isobject": "^2.0.0",
     "memoize-path": "^0.1.2",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "reflinks": "^0.2.1"
   },
   "devDependencies": {
     "async": "^1.5.2",
@@ -93,11 +94,15 @@
       ]
     },
     "reflinks": [
-      "verb-readme-generator",
-      "verb",
       "assemble",
       "generate",
-      "update"
+      "update",
+      "verb",
+      "verb-readme-generator",
+      "handlebars",
+      "lodash",
+      "swig",
+      "gulp"
     ],
     "lint": {
       "reflinks": true
