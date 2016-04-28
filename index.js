@@ -40,10 +40,33 @@ Generate.extend(Verb);
  */
 
 Verb.prototype.initVerb = function(opts) {
-  this.debug('initializing', __filename);
   Verb.emit('preInit', this, this.base);
+  this.data({before: {}, after: {}});
+
+  this.debug('initializing', __filename);
+
+  this.option('toAlias', function(name) {
+    return name.replace( /^verb-([^-]+)-generator$/, '$1');
+  });
+
   this.data({runner: require('./package')});
   Verb.emit('init', this, this.base);
+};
+
+/**
+ * Add a generator and its tasks to the tree object.
+ * Mostly used for debugging, but also useful for
+ * creating custom-formatted visual trees.
+ *
+ * @param {String} `name`
+ * @param {Object} `app`
+ */
+
+Verb.prototype.addLeaf = function(name, app) {
+  this.tree[name] = {};
+  this.tree[name].tasks = Object.keys(app.tasks || {});
+  this.tree[name].generators = app.tree;
+  return this;
 };
 
 /**
