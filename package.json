@@ -1,6 +1,6 @@
 {
   "name": "verb",
-  "description": "Documentation build system for GitHub projects.",
+  "description": "Documentation build system for GitHub projects, with full support for gulp and assemble plugins. Built verb can be used to create documentation generators, themes, documentation websites and much more!",
   "version": "0.9.0",
   "homepage": "https://github.com/verbose/verb",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
@@ -27,27 +27,32 @@
   },
   "dependencies": {
     "ansi-colors": "^0.1.0",
-    "base-runner": "^0.6.3",
+    "base-runner": "^0.7.0",
     "debug": "^2.2.0",
     "export-files": "^2.1.1",
     "extend-shallow": "^2.0.1",
     "fs-exists-sync": "^0.1.0",
     "generate": "^0.5.4",
-    "isobject": "^2.0.0",
+    "gulp-format-md": "^0.1.9",
+    "isobject": "^2.1.0",
+    "lazy-cache": "^2.0.1",
     "memoize-path": "^0.1.2",
-    "minimist": "^1.2.0",
-    "reflinks": "^0.2.1"
+    "reflinks": "^0.2.6",
+    "set-value": "^0.3.3",
+    "through2": "^2.0.1",
+    "unset-value": "^0.1.1",
+    "yargs-parser": "^2.4.0"
   },
   "devDependencies": {
     "async": "^1.5.2",
     "base-store": "^0.4.2",
     "buffer-equal": "^1.0.0",
-    "consolidate": "^0.14.0",
+    "consolidate": "^0.14.1",
     "define-property": "^0.2.5",
     "engine-base": "^0.1.2",
     "engine-handlebars": "^0.8.0",
     "event-stream": "^3.3.2",
-    "expect": "^1.18.0",
+    "expect": "^1.19.0",
     "generate-foo": "^0.1.5",
     "generator-util": "^0.2.9",
     "get-value": "^2.0.5",
@@ -55,34 +60,34 @@
     "graceful-fs": "^4.1.3",
     "gulp": "^3.9.1",
     "gulp-eslint": "^2.0.0",
-    "gulp-format-md": "^0.1.8",
     "gulp-istanbul": "^0.10.4",
     "gulp-mocha": "^2.2.0",
     "helper-example": "^0.1.0",
     "is-buffer": "^1.1.3",
-    "kind-of": "^3.0.2",
+    "kind-of": "^3.0.3",
     "load-pkg": "^3.0.1",
     "mocha": "^2.4.5",
     "parser-front-matter": "^1.3.0",
     "resolve-glob": "^0.1.8",
     "rimraf": "^2.5.2",
     "should": "^8.3.1",
-    "sinon": "^1.17.3",
+    "sinon": "^1.17.4",
     "spawn-commands": "^0.3.1",
     "swig": "^1.4.2",
-    "through2": "^2.0.1",
     "vinyl": "^1.1.1"
   },
   "keywords": [
     "verb"
   ],
+  "lintDeps": {
+    "ignore": [
+      "coverage",
+      "docs"
+    ]
+  },
   "verb": {
-    "run": true,
     "toc": false,
-    "layout": "default",
-    "tasks": [
-      "readme"
-    ],
+    "layout": "default-dev",
     "plugins": [
       "gulp-format-md"
     ],
@@ -95,20 +100,23 @@
     },
     "reflinks": [
       "assemble",
+      "base-runner",
       "generate",
-      "update",
-      "verb",
-      "verb-readme-generator",
+      "gulp",
       "handlebars",
       "lodash",
+      "pretty-remarkable",
       "swig",
-      "gulp"
+      "update",
+      "verb",
+      "verb-readme-generator"
     ],
+    "task": [
+      "readme"
+    ],
+    "sections": false,
     "lint": {
       "reflinks": true
     }
-  },
-  "lintDeps": {
-    "ignore": []
   }
 }
