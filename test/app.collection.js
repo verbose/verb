@@ -54,7 +54,7 @@ describe('app.collection', function() {
 
     it('should load a view onto the respective collection:', function() {
       app.pages('test/fixtures/pages/a.hbs');
-      app.views.pages.should.have.property(path.resolve('test/fixtures/pages/a.hbs'));
+      app.views.pages.should.have.property('test/fixtures/pages/a.hbs');
     });
 
     it('should allow collection methods to be chained:', function() {
@@ -64,9 +64,9 @@ describe('app.collection', function() {
         .pages('test/fixtures/pages/c.hbs');
 
       app.views.pages.should.have.properties([
-        path.resolve('test/fixtures/pages/a.hbs'),
-        path.resolve('test/fixtures/pages/b.hbs'),
-        path.resolve('test/fixtures/pages/c.hbs')
+        'test/fixtures/pages/a.hbs',
+        'test/fixtures/pages/b.hbs',
+        'test/fixtures/pages/c.hbs',
       ]);
     });
 
@@ -79,9 +79,9 @@ describe('app.collection', function() {
       app.pages.options.should.have.property('foo', 'bar');
 
       app.views.pages.should.have.properties([
-        path.resolve('test/fixtures/pages/a.hbs'),
-        path.resolve('test/fixtures/pages/b.hbs'),
-        path.resolve('test/fixtures/pages/c.hbs')
+        'test/fixtures/pages/a.hbs',
+        'test/fixtures/pages/b.hbs',
+        'test/fixtures/pages/c.hbs'
       ]);
     });
 
@@ -168,7 +168,7 @@ describe('collection singular method', function() {
 
     it('should add a view to the created collection:', function() {
       app.page('test/fixtures/pages/a.hbs');
-      assert(typeof app.views.pages[path.resolve('test/fixtures/pages/a.hbs')] === 'object');
+      assert(typeof app.views.pages['test/fixtures/pages/a.hbs'] === 'object');
     });
 
     it('should expose the `option` method:', function() {

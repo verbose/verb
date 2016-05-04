@@ -12,10 +12,10 @@ var app, base, site;
 describe('app.questions', function() {
   describe('plugin', function() {
     beforeEach(function() {
-      base = new App();
+      base = new App({cli: true});
       base.use(store('base-questions-tests/base'));
 
-      app = new App();
+      app = new App({cli: true});
       app.use(store('base-questions-tests/app'));
     });
 
@@ -43,7 +43,7 @@ describe('app.questions', function() {
 
   describe('app.ask', function() {
     beforeEach(function() {
-      app = new App();
+      app = new App({cli: true});
       app.use(store('base-questions-tests/ask'));
     });
 
@@ -149,10 +149,10 @@ describe('app.questions', function() {
 
   describe('session data', function() {
     before(function() {
-      site = new App();
+      site = new App({cli: true});
       site.use(store('base-questions-tests/site'));
 
-      app = new App();
+      app = new App({cli: true});
       app.use(store('base-questions-tests/ask'));
     });
 

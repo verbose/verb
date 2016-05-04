@@ -9,7 +9,7 @@ var app;
 
 describe('app.cli', function() {
   beforeEach(function() {
-    app = new App();
+    app = new App({cli: true});
   });
 
   describe('app.cli.map', function() {

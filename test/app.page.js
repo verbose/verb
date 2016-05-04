@@ -1,7 +1,7 @@
 'use strict';
 
 require('mocha');
-require('should');
+var path = require('path');
 var assert = require('assert');
 var assemble = require('..');
 var app;
@@ -19,28 +19,14 @@ describe('app.page', function() {
       app.page('a.hbs', {path: 'a.hbs', contents: new Buffer('a')});
       app.page('b.hbs', {path: 'b.hbs', contents: new Buffer('b')});
       app.page('c.hbs', {path: 'c.hbs', contents: new Buffer('c')});
-      assert(Object.keys(app.views.pages).length === 3);
-    });
-  });
-
-  describe('load', function() {
-    it('should throw an error if a glob is passed', function(cb) {
-      try {
-        app.page('test/fixtures/pages/*.hbs');
-        cb(new Error('expected an error'));
-      } catch (err) {
-        assert(err);
-        assert(err.message);
-        assert(err.message === 'loadView does not support globs, only filepaths.');
-        cb();
-      }
+      assert.equal(Object.keys(app.views.pages).length, 3);
     });
   });
 
   describe('load', function() {
     it('should load a page from a non-glob filepath', function() {
       app.page('test/fixtures/pages/a.hbs');
-      assert(Object.keys(app.views.pages).length === 1);
+      assert.equal(Object.keys(app.views.pages).length, 1);
     });
   });
 });

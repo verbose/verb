@@ -93,15 +93,9 @@ describe('generators.env', function() {
     });
 
     it('should try to resolve a path passed as the second arg', function() {
-      app.createEnv('generate-foo', fixtures('verbfile.js'));
+      app.createEnv('verb-foo-generator', fixtures('verbfile.js'));
       assert.equal(app.env.alias, 'foo');
-      assert.equal(app.env.name, 'generate-foo');
-    });
-
-    it('should try to resolve a path passed as the second arg', function() {
-      app.createEnv('generate-foo', 'generate-foo/verbfile.js');
-      assert.equal(app.env.alias, 'foo');
-      assert.equal(app.env.name, 'generate-foo');
+      assert.equal(app.env.name, 'verb-foo-generator');
     });
 
     it('should throw an error when the path is not resolved', function(cb) {

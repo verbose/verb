@@ -4,11 +4,11 @@ require('mocha');
 var path = require('path');
 var assert = require('assert');
 var gm = require('global-modules');
-var commands = require('spawn-commands');
 var utils = require('generator-util');
-require('generate-foo/verbfile.js');
+var commands = require('spawn-commands');
 var Generate = require('..');
 var generate;
+require('generate-foo');
 
 var fixture = path.resolve.bind(path, __dirname, 'fixtures/generators');
 function install(name, cb) {
@@ -29,7 +29,7 @@ describe('app.extendWith', function() {
 
   beforeEach(function() {
     generate = new Generate();
-    generate.option('alias', function(name) {
+    generate.option('toAlias', function(name) {
       return name.replace(/^generate-/, '');
     });
   });

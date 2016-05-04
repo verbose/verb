@@ -12,6 +12,9 @@ describe('app.env', function() {
   describe('createEnv', function() {
     beforeEach(function() {
       generate = new Generate();
+      generate.option('toAlias', function(name) {
+        return name.replace(/^generate-/, '');
+      });
     });
 
     it('should add an env object to the instance', function() {
