@@ -28,5 +28,5 @@ module.exports = {
   fchmodSpy: maybeCallAsync(fs, 'fchmod'),
   futimesSpy: maybeCallAsync(fs, 'futimes'),
   statSpy: maybeCallAsync(fs, 'stat'),
-  fstatSpy: maybeCallAsync(fs, 'fstat')
+  fstatSpy: maybeCallAsync(fs, 'fstat'),
 };

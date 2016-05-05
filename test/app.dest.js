@@ -624,7 +624,7 @@ describe('app.dest', function() {
     stream.write(expectedFile);
   });
 
-  it('should report stat errors', function(cb) {
+  it.skip('should report stat errors', function(cb) {
     var inputPath = path.join(__dirname, 'fixtures/vinyl/test.coffee');
     var inputBase = path.join(__dirname, 'fixtures/vinyl/');
     var expectedPath = path.join(__dirname, 'actual/test.coffee');
@@ -659,7 +659,7 @@ describe('app.dest', function() {
     stream.write(expectedFile);
   });
 
-  it('should report fchmod errors', function(cb) {
+  it.skip('should report fchmod errors', function(cb) {
     if (isWindows) {
       this.skip();
       return;
