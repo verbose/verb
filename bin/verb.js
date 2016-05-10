@@ -24,7 +24,7 @@ utils.runner(Verb, {name: 'verb'}, argv, function(err, app, ctx) {
   });
 
   commands(app, ctx);
-  app.register('verb', require('../lib/generator'));
+  app.register('defaults', require('../lib/generator'));
   app.option('lookup', lookup(app));
 
   app.cli.process(ctx.argv, function(err) {
@@ -40,7 +40,11 @@ utils.runner(Verb, {name: 'verb'}, argv, function(err, app, ctx) {
 
 function lookup(app) {
   return function(key) {
-    var patterns = [`verb-${key}-generator`, key];
+    var patterns = [key];
+    if (!/^verb-([^-]+)-generator/.test(key)) {
+      patterns.unshift(`verb-${key}-generator`);
+    }
+
     if (app.enabled('generators')) {
       patterns.push(`generate-${key}`);
     }
