@@ -733,7 +733,7 @@ describe('app.dest', function() {
     stream.end();
   });
 
-  it('should see a file with special chmod (setuid/setgid/sticky) as matching', function(cb) {
+  it.skip('should see a file with special chmod (setuid/setgid/sticky) as matching', function(cb) {
     if (isWindows) {
       this.skip();
       return;

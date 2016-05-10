@@ -104,7 +104,7 @@ describe('generators.env', function() {
         env.fn();
         cb(new Error('expected an error'));
       } catch (err) {
-        assert.equal(err.message, 'Cannot find module \'' + fixtures('whatever.js') + '\'');
+        assert.equal(err.message, 'Cannot find module \'' + fixtures('whatever.js/generator.js') + '\'');
         cb();
       }
     });

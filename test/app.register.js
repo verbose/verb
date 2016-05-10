@@ -173,7 +173,7 @@ describe('.register', function() {
         base.register('not-exposed', require(fixtures('not-exposed.js')));
         cb(new Error('expected an error'));
       } catch (err) {
-        var fp = path.resolve(__dirname, '../node_modules/not-exposed');
+        var fp = path.resolve(__dirname, '../node_modules/not-exposed/generator.js');
         assert.equal(err.message, 'Cannot find module \'' + fp + '\'');
         cb();
       }
