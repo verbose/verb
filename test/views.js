@@ -163,6 +163,58 @@ describe('views', function() {
       assert(isBuffer(collection.views.one.contents));
       assert(collection.views.one.abc === 'xyz');
     });
+
+    it('should expose the `isType` method on items', function() {
+      var collection = new Views({View: View});
+      var view = new View({content: '...'});
+      collection.setView('one', view);
+
+      var one = collection.getView('one');
+      assert(one.isType('renderable'));
+    });
+
+    it('should set viewTypes on a collection', function() {
+      var collection = new Views({View: View});
+      collection.viewType(['partial']);
+
+      var view = new View({content: '...'});
+      collection.setView('one', view);
+
+      var one = collection.getView('one');
+      assert(!one.isType('renderable'));
+      assert(one.isType('partial'));
+    });
+  });
+
+  describe('deleteView', function() {
+    beforeEach(function() {
+      collection = new Views();
+    });
+
+    it('should delete an view from `views` by view instance', function() {
+      collection.addView('foo');
+      assert(collection.views.hasOwnProperty('foo'));
+
+      collection.addView('one', {content: '...'});
+      assert(collection.views.hasOwnProperty('one'));
+      assert.equal(Object.keys(collection.views).length, 2);
+
+      var foo = collection.getView('foo');
+      collection.deleteView(foo);
+      assert.equal(Object.keys(collection.views).length, 1);
+    });
+
+    it('should delete an view from `views` by view `key`', function() {
+      collection.addView('foo');
+      assert(collection.views.hasOwnProperty('foo'));
+
+      collection.addView('one', {content: '...'});
+      assert(collection.views.hasOwnProperty('one'));
+      assert.equal(Object.keys(collection.views).length, 2);
+
+      collection.deleteView('foo');
+      assert.equal(Object.keys(collection.views).length, 1);
+    });
   });
 
   describe('addViews', function() {
@@ -337,18 +389,18 @@ describe('views', function() {
     });
 
     it('should load an array of items from an event:', function() {
-      var collection = new Views();
+      var pages = new Views();
 
-      collection.on('addList', function(list) {
+      pages.on('addList', function(list) {
         while (list.length) {
-          collection.addView({path: list.pop()});
+          pages.addView({path: list.pop()});
         }
         this.loaded = true;
       });
 
-      collection.addList(['a.txt', 'b.txt', 'c.txt']);
-      assert(collection.views.hasOwnProperty('a.txt'));
-      assert(collection.views['a.txt'].path === 'a.txt');
+      pages.addList(['a.txt', 'b.txt', 'c.txt']);
+      assert(pages.views.hasOwnProperty('a.txt'));
+      assert(pages.views['a.txt'].path === 'a.txt');
     });
 
     it('should load an array of items from the addList callback:', function() {

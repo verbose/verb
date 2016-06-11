@@ -6,7 +6,6 @@ var path = require('path');
 var assert = require('assert');
 var typeOf = require('kind-of');
 var isBuffer = require('is-buffer');
-
 var support = require('./support');
 var App = support.resolve();
 var List = App.List;
@@ -230,7 +229,42 @@ describe('methods', function() {
     });
   });
 
+  describe('deleteItem', function() {
+    beforeEach(function() {
+      collection = new Collection();
+    });
+
+    it('should delete an item from `items` by item instance', function() {
+      collection.addItem('foo');
+      assert(collection.items.hasOwnProperty('foo'));
+
+      collection.addItem('one', {content: '...'});
+      assert(collection.items.hasOwnProperty('one'));
+      assert.equal(Object.keys(collection.items).length, 2);
+
+      var foo = collection.getItem('foo');
+      collection.deleteItem(foo);
+      assert.equal(Object.keys(collection.items).length, 1);
+    });
+
+    it('should delete an item from `items` by item `key`', function() {
+      collection.addItem('foo');
+      assert(collection.items.hasOwnProperty('foo'));
+
+      collection.addItem('one', {content: '...'});
+      assert(collection.items.hasOwnProperty('one'));
+      assert.equal(Object.keys(collection.items).length, 2);
+
+      collection.deleteItem('foo');
+      assert.equal(Object.keys(collection.items).length, 1);
+    });
+  });
+
   describe('addItems', function() {
+    beforeEach(function() {
+      collection = new Collection();
+    });
+
     it('should add multiple items', function() {
       collection.addItems({
         one: {content: 'foo'},

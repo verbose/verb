@@ -89,7 +89,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -147,7 +147,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -182,7 +182,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {cwd: path.relative(process.cwd(), __dirname)});
+    var stream = app.dest('actual/', {cwd: path.relative(process.cwd(), __dirname)});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -261,7 +261,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -302,7 +302,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -348,7 +348,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -362,8 +362,8 @@ describe('app.dest', function() {
     var inputPath2 = path.join(__dirname, 'actual/multiple-second');
     var inputBase = path.join(__dirname, 'actual/');
     var srcPath = path.join(__dirname, 'fixtures/vinyl/test.coffee');
-    var stream1 = app.dest('./actual/', {cwd: __dirname});
-    var stream2 = app.dest('./actual/', {cwd: __dirname});
+    var stream1 = app.dest('actual/', {cwd: __dirname});
+    var stream2 = app.dest('actual/', {cwd: __dirname});
     var content = fs.readFileSync(srcPath);
     var rename = through.obj(function(file, _, next) {
       file.path = inputPath2;
@@ -418,7 +418,7 @@ describe('app.dest', function() {
     };
 
     chmodSpy.reset();
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -451,7 +451,7 @@ describe('app.dest', function() {
     };
 
     chmodSpy.reset();
-    var stream = app.dest('./actual/', { cwd: __dirname, mode: expectedMode });
+    var stream = app.dest('actual/', { cwd: __dirname, mode: expectedMode });
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -469,9 +469,9 @@ describe('app.dest', function() {
 
     var inputPath = path.join(__dirname, 'fixtures/test.coffee');
     var inputBase = path.join(__dirname, 'fixtures/');
-    var expectedPath = path.join(__dirname, 'actual/test.coffee');
+    var expectedPath = path.join(__dirname, './actual/test.coffee');
     var expectedContents = fs.readFileSync(inputPath);
-    var expectedBase = path.join(__dirname, 'actual');
+    var expectedBase = path.join(__dirname, './actual');
     var startMode = parseInt('0655', 8);
     var expectedMode = parseInt('0722', 8);
 
@@ -520,7 +520,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {
+    var stream = app.dest('actual/', {
       cwd: __dirname,
       mode: expectedFileMode,
       dirMode: expectedDirMode
@@ -549,7 +549,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {
+    var stream = app.dest('actual/', {
       cwd: __dirname,
       base: inputBase
     });
@@ -577,7 +577,7 @@ describe('app.dest', function() {
       cb();
     };
 
-    var stream = app.dest('./actual/', {
+    var stream = app.dest('actual/', {
       cwd: __dirname,
       base: function(file) {
         should.exist(file);
@@ -616,7 +616,7 @@ describe('app.dest', function() {
     fs.closeSync(fs.openSync(expectedPath, 'w'));
     fs.chmodSync(expectedPath, 0);
 
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
     stream.on('error', function(err) {
       err.code.should.equal('EACCES');
       cb();
@@ -624,7 +624,7 @@ describe('app.dest', function() {
     stream.write(expectedFile);
   });
 
-  it.skip('should report stat errors', function(cb) {
+  it('should report stat errors', function(cb) {
     var inputPath = path.join(__dirname, 'fixtures/vinyl/test.coffee');
     var inputBase = path.join(__dirname, 'fixtures/vinyl/');
     var expectedPath = path.join(__dirname, 'actual/test.coffee');
@@ -651,7 +651,7 @@ describe('app.dest', function() {
       }
     });
 
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
     stream.on('error', function(err) {
       err.message.should.equal('stat error');
       cb();
@@ -659,7 +659,7 @@ describe('app.dest', function() {
     stream.write(expectedFile);
   });
 
-  it.skip('should report fchmod errors', function(cb) {
+  it('should report fchmod errors', function(cb) {
     if (isWindows) {
       this.skip();
       return;
@@ -692,8 +692,8 @@ describe('app.dest', function() {
 
     var stream = app.dest('actual/', { cwd: __dirname });
     stream.on('error', function(err) {
-      expect(err).toExist();
-      expect(fchmodSpy.calls.length).toEqual(1);
+      assert(err);
+      assert.equal(fchmodSpy.calls.length, 1);
       cb();
     });
     stream.write(expectedFile);
@@ -733,7 +733,7 @@ describe('app.dest', function() {
     stream.end();
   });
 
-  it.skip('should see a file with special chmod (setuid/setgid/sticky) as matching', function(cb) {
+  it('should see a file with special chmod (setuid/setgid/sticky) as matching', function(cb) {
     if (isWindows) {
       this.skip();
       return;
@@ -755,12 +755,12 @@ describe('app.dest', function() {
       path: inputPath,
       contents: expectedContents,
       stat: {
-        mode: normalMode,
-      },
+        mode: normalMode
+      }
     });
 
     var onEnd = function() {
-      expect(fchmodSpy.calls.length).toEqual(0);
+      assert.equal(fchmodSpy.calls.length, 0);
       cb();
     };
 
@@ -800,7 +800,7 @@ describe('app.dest', function() {
     fs.mkdirSync(expectedBase);
     fs.writeFileSync(expectedPath, existingContents);
 
-    var stream = app.dest('./actual/', {cwd: __dirname, overwrite: false});
+    var stream = app.dest('actual/', {cwd: __dirname, overwrite: false});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -835,7 +835,7 @@ describe('app.dest', function() {
     fs.mkdirSync(expectedBase);
     fs.writeFileSync(expectedPath, existingContents);
 
-    var stream = app.dest('./actual/', {cwd: __dirname, overwrite: true});
+    var stream = app.dest('actual/', {cwd: __dirname, overwrite: true});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -869,7 +869,7 @@ describe('app.dest', function() {
       });
     };
 
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -880,7 +880,7 @@ describe('app.dest', function() {
 
   it('should emit finish event', function(cb) {
     var srcPath = path.join(__dirname, 'fixtures/vinyl/test.coffee');
-    var stream = app.dest('./actual/', {cwd: __dirname});
+    var stream = app.dest('actual/', {cwd: __dirname});
 
     stream.once('finish', function() {
       cb();

@@ -2,7 +2,7 @@
 
 require('mocha');
 require('should');
-var async = require('async');
+var each = require('async-each');
 var assert = require('assert');
 var support = require('./support');
 var App = support.resolve();
@@ -17,10 +17,14 @@ describe('collection.render', function() {
       pages.engine('tmpl', require('engine-base'));
     });
 
-    it('should throw an error when no callback is given:', function() {
-      (function() {
-        pages.render({});
-      }).should.throw('Views#render is async and expects a callback function');
+    it('should throw an error when no callback is given:', function(cb) {
+      try {
+        pages.render();
+        cb(new Error('expected an error'));
+      } catch (err) {
+        assert.equal(err.message, 'Views#render is async and expects a callback function');
+        cb();
+      }
     });
 
     it('should throw an error when an engine is not defined:', function(cb) {
@@ -28,7 +32,7 @@ describe('collection.render', function() {
       var page = pages.getView('foo.bar');
 
       pages.render(page, function(err) {
-        assert(err.message === 'Views#render cannot find an engine for: .bar');
+        assert.equal(err.message, 'Views#render cannot find an engine for: .bar');
         cb();
       });
     });
@@ -41,6 +45,24 @@ describe('collection.render', function() {
       });
 
       pages.addView('a.tmpl', {content: 'a <%= upper(name) %> b', locals: locals});
+      var page = pages.getView('a.tmpl');
+
+      pages.render(page, function(err, res) {
+        if (err) return cb(err);
+
+        assert.equal(res.content, 'a HALLE b');
+        cb();
+      });
+    });
+
+    it('should use globally defined data to render a view', function(cb) {
+      pages.data({name: 'Halle'});
+
+      pages.helper('upper', function(str) {
+        return str.toUpperCase(str);
+      });
+
+      pages.addView('a.tmpl', {content: 'a <%= upper(name) %> b'});
       var page = pages.getView('a.tmpl');
 
       pages.render(page, function(err, res) {
@@ -62,7 +84,7 @@ describe('collection.render', function() {
 
       pages.render(page, function(err, res) {
         if (err) return cb(err);
-        assert(res.content === 'a HALLE b');
+        assert.equal(res.content, 'a HALLE b');
         cb();
       });
     });
@@ -73,7 +95,7 @@ describe('collection.render', function() {
 
       pages.render(view, function(err, view) {
         if (err) return cb(err);
-        assert(view.contents.toString() === 'b');
+        assert.equal(view.contents.toString(), 'b');
         cb();
       });
     });
@@ -84,7 +106,7 @@ describe('collection.render', function() {
 
       pages.render(view, function(err, view) {
         if (err) return cb(err);
-        assert(view.contents.toString() === 'b');
+        assert.equal(view.contents.toString(), 'b');
         cb();
       });
     });
@@ -94,7 +116,7 @@ describe('collection.render', function() {
 
       pages.render('a.tmpl', function(err, view) {
         if (err) return cb(err);
-        assert(view.content === 'b');
+        assert.equal(view.content, 'b');
         cb();
       });
     });
@@ -113,26 +135,26 @@ describe('collection.render', function() {
         'g': {content: '<%= title %>', locals: {title: 'ggg'}},
         'h': {content: '<%= title %>', locals: {title: 'hhh'}},
         'i': {content: '<%= title %>', locals: {title: 'iii'}},
-        'j': {content: '<%= title %>', locals: {title: 'jjj'}},
+        'j': {content: '<%= title %>', locals: {title: 'jjj'}}
       });
 
       pages.use(function(collection) {
         collection.option('pager', false);
 
-        collection.renderEach = function(cb) {
+        collection.renderEach = function(done) {
           var list = new List(collection);
 
-          async.map(list.items, function(item, next) {
+          each(list.items, function(item, next) {
             collection.render(item, next);
-          }, cb);
+          }, done);
         };
       });
 
       pages.renderEach(function(err, items) {
         if (err) return cb(err);
-        assert(items[0].content === 'aaa');
-        assert(items[9].content === 'jjj');
-        assert(items.length === 10);
+        assert.equal(items[0].content, 'aaa');
+        assert.equal(items[9].content, 'jjj');
+        assert.equal(items.length, 10);
         cb();
       });
     });

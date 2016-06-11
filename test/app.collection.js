@@ -3,7 +3,6 @@
 require('mocha');
 require('should');
 var fs = require('fs');
-var path = require('path');
 var assert = require('assert');
 var define = require('define-property');
 var support = require('./support');
@@ -18,17 +17,17 @@ describe('app.collection', function() {
     });
 
     it('should expose the collection method', function() {
-      assert(typeof app.collection === 'function');
+      assert.equal(typeof app.collection, 'function');
     });
 
     it('should return a new collection', function() {
       var collection = app.collection();
-      assert(typeof collection === 'object');
+      assert.equal(typeof collection, 'object');
     });
 
     it('should have isCollection property', function() {
       var collection = app.collection();
-      assert(collection.isCollection === true);
+      assert.equal(collection.isCollection, true);
     });
   });
 
@@ -66,7 +65,7 @@ describe('app.collection', function() {
       app.views.pages.should.have.properties([
         'test/fixtures/pages/a.hbs',
         'test/fixtures/pages/b.hbs',
-        'test/fixtures/pages/c.hbs',
+        'test/fixtures/pages/c.hbs'
       ]);
     });
 
@@ -77,7 +76,6 @@ describe('app.collection', function() {
         .pages('test/fixtures/pages/c.hbs');
 
       app.pages.options.should.have.property('foo', 'bar');
-
       app.views.pages.should.have.properties([
         'test/fixtures/pages/a.hbs',
         'test/fixtures/pages/b.hbs',
@@ -91,7 +89,7 @@ describe('app.collection', function() {
         .pages('test/fixtures/pages/b.hbs')
         .pages('test/fixtures/pages/c.hbs');
 
-      assert(app.pages.count === 3);
+      assert.equal(app.pages.count, 3);
     });
   });
 
@@ -140,7 +138,7 @@ describe('app.collection', function() {
         .set('data.name', 'Brian')
         .render(function(err, res) {
           if (err) return cb(err);
-          assert(res.content === 'Brian');
+          assert.equal(res.content, 'Brian');
           cb();
         });
     });
@@ -155,7 +153,7 @@ describe('collection singular method', function() {
 
     it('should add a pluralized collection from singular name', function() {
       app.create('page');
-      assert(typeof app.views.pages === 'object');
+      assert.equal(typeof app.views.pages, 'object');
     });
   });
 
@@ -168,7 +166,7 @@ describe('collection singular method', function() {
 
     it('should add a view to the created collection:', function() {
       app.page('test/fixtures/pages/a.hbs');
-      assert(typeof app.views.pages['test/fixtures/pages/a.hbs'] === 'object');
+      assert.equal(typeof app.views.pages['test/fixtures/pages/a.hbs'], 'object');
     });
 
     it('should expose the `option` method:', function() {

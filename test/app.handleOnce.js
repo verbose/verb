@@ -17,9 +17,10 @@ describe('app.handle', function() {
   it('should support custom handle methods:', function(cb) {
     var page = app.page('foo', {contents: null});
 
-    app.handle('foo', page, function(err, view) {
+    app.handleOnce('foo', page, function(err, view) {
       if (err) return cb(err);
-      assert.equal(typeof view.path, 'string');
+      
+      assert(typeof view.path === 'string');
       cb();
     });
   });
@@ -28,9 +29,10 @@ describe('app.handle', function() {
     var page = app.page('foo', {contents: null});
     delete page.options.handled;
 
-    app.handle('foo', page, function(err, view) {
+    app.handleOnce('foo', page, function(err, view) {
       if (err) return cb(err);
-      assert.equal(typeof view.path, 'string');
+      
+      assert(typeof view.path === 'string');
       cb();
     });
   });

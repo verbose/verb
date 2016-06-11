@@ -8,7 +8,7 @@ var App = support.resolve();
 var Views = App.Views;
 var collection, pages;
 
-describe('collection engines', function() {
+describe('collection.engines', function() {
   beforeEach(function() {
     pages = new Views();
   });
@@ -49,7 +49,7 @@ describe('collection engines', function() {
   });
 });
 
-describe('engines', function() {
+describe('collection.engines', function() {
   beforeEach(function() {
     pages = new Views();
     pages.addView('foo.tmpl', {content: 'A <%= letter %> {{= letter }} C'});
@@ -79,6 +79,7 @@ describe('engines', function() {
       evaluate: /\{{([^}]+)}}/g,
       escape: /\{{-([^}]+)}}/g
     });
+
     pages.render('bar.tmpl', {letter: 'B'}, function(err, res) {
       if (err) return cb(err);
       res.content.should.equal('A <%= letter %> B C');

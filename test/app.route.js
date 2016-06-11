@@ -18,7 +18,7 @@ describe('app.route', function() {
       app.create('posts');
 
       app.on('all', function(msg) {
-        assert(msg === 'cb');
+        assert.equal(msg, 'cb');
         cb();
       });
 
@@ -36,17 +36,17 @@ describe('app.route', function() {
       app.create('posts');
 
       app.on('onLoad', function(view) {
-        assert(view.path === 'blog/foo.js');
+        assert.equal(view.path, 'blog/foo.js');
         cb();
       });
 
       app.param('title', function(view, next, title) {
-        assert(title === 'foo.js');
+        assert.equal(title, 'foo.js');
         next();
       });
 
       app.onLoad('blog/:title', function(view, next) {
-        assert(view.path === 'blog/foo.js');
+        assert.equal(view.path, 'blog/foo.js');
         next();
       });
 
@@ -58,18 +58,18 @@ describe('app.route', function() {
       app.create('posts');
 
       app.on('error', function(err) {
-        assert(err.message === 'false == true');
+        assert.equal(err.message, "'foo.js' == 'fo.js'");
         cb();
       });
 
       // wrong...
       app.param('title', function(view, next, title) {
-        assert(title === 'fo.js');
+        assert.equal(title, 'fo.js');
         next();
       });
 
       app.onLoad('/blog/:title', function(view, next) {
-        assert(view.path === '/blog/foo.js');
+        assert.equal(view.path, '/blog/foo.js');
         next();
       });
 

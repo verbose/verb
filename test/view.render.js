@@ -8,7 +8,19 @@ var View = App.View;
 var view, app;
 
 describe('view.render', function() {
-  describe('rendering', function() {
+  describe('views', function() {
+    it('should expose `.render` for rendering a view:', function(cb) {
+      view = new View({path: 'a.tmpl', content: '<%= a %>'});
+
+      view.render({a: 'bbb'}, function(err, res) {
+        if (err) return cb(err);
+        res.content.should.equal('bbb');
+        cb();
+      });
+    });
+  });
+
+  describe('views created by collection and app', function() {
     beforeEach(function() {
       app = new App();
       view = new View();

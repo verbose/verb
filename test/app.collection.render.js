@@ -2,7 +2,7 @@
 
 require('mocha');
 require('should');
-var async = require('async');
+var each = require('async-each');
 var assert = require('assert');
 var support = require('./support');
 var App = support.resolve();
@@ -18,10 +18,14 @@ describe('app.collection.render', function() {
       pages.engine('tmpl', require('engine-base'));
     });
 
-    it('should throw an error when no callback is given:', function() {
-      (function() {
+    it('should throw an error when no callback is given:', function(cb) {
+      try {
         app.pages.render({});
-      }).should.throw('Views#render is async and expects a callback function');
+        cb(new Error('expected an error'));
+      } catch (err) {
+        assert.equal(err.message, 'Views#render is async and expects a callback function');
+        cb();
+      }
     });
 
     it('should throw an error when an engine is not defined:', function(cb) {
@@ -139,7 +143,7 @@ describe('app.collection.render', function() {
 
         collection.renderEach = function(cb) {
           var list = new List(collection);
-          async.map(list.items, function(item, next) {
+          each(list.items, function(item, next) {
             collection.render(item, next);
           }, cb);
         };

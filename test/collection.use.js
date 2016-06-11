@@ -156,3 +156,90 @@ describe('collection.use', function() {
     assert(collection.items.hasOwnProperty('d'));
   });
 });
+
+describe('app > collection .use', function() {
+  var app;
+  beforeEach(function() {
+    app = new App();
+  });
+
+  it('should pass plugins down to collections', function(cb) {
+    var count = 0;
+    app.use(function(inst) {
+      return function(collection) {
+        count++;
+      };
+    });
+
+    app.create('pages');
+    assert.equal(count, 1);
+    cb();
+  });
+
+  it('should pass plugins down to collections after a collection is created', function(cb) {
+    var count = 0;
+    app.create('pages');
+
+    app.use(function(inst) {
+      return function(collection) {
+        count++;
+      };
+    });
+
+    assert.equal(count, 1);
+    cb();
+  });
+
+  it('should pass plugins down to every collections', function(cb) {
+    var count = 0;
+    app.create('pages');
+    app.create('posts');
+    app.create('docs');
+
+    app.use(function(inst) {
+      return function(collection) {
+        count++;
+      };
+    });
+
+    assert.equal(count, 3);
+    cb();
+  });
+
+  it('should pass plugins all the way down to views', function(cb) {
+    var count = {pages: 0, posts: 0};
+
+    app.create('pages');
+    app.create('posts');
+
+    app.pages.addView('foo', {content: 'this is content'});
+    app.pages.addView('bar', {content: 'this is content'});
+    app.pages.addView('baz', {content: 'this is content'});
+
+    app.posts.addView('foo', {content: 'this is content'});
+    app.posts.addView('bar', {content: 'this is content'});
+    app.posts.addView('baz', {content: 'this is content'});
+
+    // add plugin after adding views and collections
+    app.use(function(inst) {
+      return function(collection) {
+        var name = collection.options.plural;
+        return function(view) {
+          count[name]++;
+          view.count = count[name];
+        };
+      };
+    });
+
+    assert.equal(app.pages.getView('foo').count, 1);
+    assert.equal(app.pages.getView('bar').count, 2);
+    assert.equal(app.pages.getView('baz').count, 3);
+    assert.equal(count.pages, 3);
+
+    assert.equal(app.posts.getView('foo').count, 1);
+    assert.equal(app.posts.getView('bar').count, 2);
+    assert.equal(app.posts.getView('baz').count, 3);
+    assert.equal(count.posts, 3);
+    cb();
+  });
+});

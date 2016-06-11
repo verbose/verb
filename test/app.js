@@ -96,6 +96,16 @@ describe('app', function() {
       assert.equal(app.get('Group'), MyGroup);
     });
 
+    it('should mixin prototype methods defined on options:', function() {
+      app = new App({
+        mixins: {
+          foo: function() {}
+        }
+      });
+      assert(typeof app.foo === 'function');
+      delete App.prototype.foo;
+    });
+
     it('should expose `_` on app:', function() {
       app = new App();
       assert(typeof app._ === 'object');

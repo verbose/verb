@@ -55,7 +55,7 @@ describe('app.middleware', function() {
     app.page('foo.tmpl', {content: 'foo'})
       .render(function(err) {
         if (err) return cb(err);
-        assert(i === 3);
+        assert.equal(i, 3);
         cb();
       });
   });

@@ -19,7 +19,7 @@ describe('app.applyLayout', function() {
     beforeEach(function() {
       app = new App();
       app.engine('tmpl', require('engine-base'));
-      app.create('layout', {viewType: 'layout'});
+      app.create('layout', { viewType: 'layout' });
       app.create('page');
     });
 

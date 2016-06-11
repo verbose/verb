@@ -2,7 +2,7 @@
 
 require('mocha');
 require('should');
-var async = require('async');
+var each = require('async-each');
 var assert = require('assert');
 var support = require('./support');
 var App = support.resolve();
@@ -131,15 +131,15 @@ describe('app.list.render', function() {
         'g': {content: '<%= title %>', locals: {title: 'ggg'}},
         'h': {content: '<%= title %>', locals: {title: 'hhh'}},
         'i': {content: '<%= title %>', locals: {title: 'iii'}},
-        'j': {content: '<%= title %>', locals: {title: 'jjj'}},
+        'j': {content: '<%= title %>', locals: {title: 'jjj'}}
       });
 
       pages.use(function(collection) {
         collection.option('pager', false);
-        
+
         collection.renderEach = function(cb) {
           var list = new List(collection);
-          async.map(list.items, function(item, next) {
+          each(list.items, function(item, next) {
             collection.render(item, next);
           }, cb);
         };

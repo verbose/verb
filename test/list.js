@@ -4,13 +4,12 @@ require('mocha');
 require('should');
 var path = require('path');
 var get = require('get-value');
-var isBuffer = require('is-buffer');
 var assert = require('assert');
+var each = require('async-each');
 var typeOf = require('kind-of');
 var support = require('./support/');
+var isBuffer = require('is-buffer');
 assert.containEql = support.containEql;
-
-var support = require('./support');
 var App = support.resolve();
 var List = App.List;
 var Views = App.Views;
@@ -149,7 +148,7 @@ describe('list', function() {
     });
   });
 
-  describe('removeItem', function() {
+  describe('deleteItem', function() {
     beforeEach(function() {
       list = new List();
     });
@@ -238,7 +237,7 @@ describe('list', function() {
       list.addList([
         { path: 'a.md', locals: { date: '2014-01-01', foo: 'zzz', bar: 1 } },
         { path: 'f.md', locals: { date: '2014-01-01', foo: 'mmm', bar: 2 } },
-        { path: 'd.md', locals: { date: '2014-01-01', foo: 'xxx', bar: 3 } },
+        { path: 'd.md', locals: { date: '2014-01-01', foo: 'xxx', bar: 3 } }
       ], addContents);
 
       assert(isBuffer(list.items[0].contents));
@@ -255,7 +254,7 @@ describe('list', function() {
         list.addList({
           'a.md': {locals: { date: '2014-01-01', foo: 'zzz', bar: 1 }},
           'f.md': {locals: { date: '2014-01-01', foo: 'mmm', bar: 2 }},
-          'd.md': {locals: { date: '2014-01-01', foo: 'xxx', bar: 3 }},
+          'd.md': {locals: { date: '2014-01-01', foo: 'xxx', bar: 3 }}
         }, addContents);
 
         assert(isBuffer(list.items[0].contents));
@@ -266,7 +265,9 @@ describe('list', function() {
 
     it('should signal `loaded` when finished (addList)', function() {
       list.on('addList', function(items) {
-        var len = items.length, i = -1;
+        var len = items.length;
+        var i = -1;
+
         while (++i < len) {
           if (items[i].path === 'd.md') {
             list.loaded = true;
@@ -279,7 +280,7 @@ describe('list', function() {
       list.addList([
         { path: 'a.md', locals: { date: '2014-01-01', foo: 'zzz', bar: 1 } },
         { path: 'f.md', locals: { date: '2014-01-01', foo: 'mmm', bar: 2 } },
-        { path: 'd.md', locals: { date: '2014-01-01', foo: 'xxx', bar: 3 } },
+        { path: 'd.md', locals: { date: '2014-01-01', foo: 'xxx', bar: 3 } }
       ]);
 
       assert.equal(list.items.length, 2);
@@ -349,7 +350,7 @@ describe('list', function() {
       { path: 'b.md', locals: { date: '2012-01-02', foo: 'ccc', bar: 9 } },
       { path: 'f.md', locals: { date: '2014-06-01', foo: 'rrr', bar: 10 } },
       { path: 'c.md', locals: { date: '2015-04-12', foo: 'ttt', bar: 11 } },
-      { path: 'g.md', locals: { date: '2014-02-02', foo: 'yyy', bar: 12 } },
+      { path: 'g.md', locals: { date: '2014-02-02', foo: 'yyy', bar: 12 } }
     ];
 
     it('should sort a list', function() {
@@ -504,10 +505,10 @@ describe('list', function() {
       { path: 'h.md', locals: { date: '2014-01-01', foo: 'xxx', bar: 6 } },
       { path: 'l.md', locals: { date: '2014-01-01', foo: 'xxx', bar: 7 } },
       { path: 'e.md', locals: { date: '2015-01-02', foo: 'aaa', bar: 8 } },
-      { path: 'b.md', locals: { date: '2012-01-02', foo: 'ccc', bar: 9 } },
-      { path: 'f.md', locals: { date: '2014-06-01', foo: 'rrr', bar: 10 } },
+      { path: 'm.md', locals: { date: '2012-01-02', foo: 'ccc', bar: 9 } },
+      { path: 'b.md', locals: { date: '2014-06-01', foo: 'rrr', bar: 10 } },
       { path: 'c.md', locals: { date: '2015-04-12', foo: 'ttt', bar: 11 } },
-      { path: 'g.md', locals: { date: '2014-02-02', foo: 'yyy', bar: 12 } },
+      { path: 'g.md', locals: { date: '2014-02-02', foo: 'yyy', bar: 12 } }
     ];
 
     it('should group a list by a property', function() {
@@ -515,6 +516,16 @@ describe('list', function() {
       list.addList(items);
 
       var res = list.groupBy('locals.foo');
+      var keys = ['zzz', 'mmm', 'xxx', 'aaa', 'ccc', 'rrr', 'ttt', 'yyy'];
+      assert.deepEqual(Object.keys(res), keys);
+    });
+
+    it('should group a collection by a property', function() {
+      list = new List();
+      list.addList(items);
+
+      var views = new Views(list);
+      var res = views.groupBy('locals.foo');
       var keys = ['zzz', 'mmm', 'xxx', 'aaa', 'ccc', 'rrr', 'ttt', 'yyy'];
       assert.deepEqual(Object.keys(res), keys);
     });
@@ -538,7 +549,7 @@ describe('list', function() {
       { path: 'b.md', locals: { date: '2012-01-02', foo: 'ccc', bar: 9 } },
       { path: 'f.md', locals: { date: '2014-06-01', foo: 'rrr', bar: 10 } },
       { path: 'c.md', locals: { date: '2015-04-12', foo: 'ttt', bar: 11 } },
-      { path: 'g.md', locals: { date: '2014-02-02', foo: 'yyy', bar: 12 } },
+      { path: 'g.md', locals: { date: '2014-02-02', foo: 'yyy', bar: 12 } }
     ];
 
     it('should group a list by a property', function() {
@@ -576,7 +587,7 @@ describe('list', function() {
       { path: 'b.md', locals: { date: '2012-01-02', foo: 'ccc', bar: 9 } },
       { path: 'f.md', locals: { date: '2014-06-01', foo: 'rrr', bar: 10 } },
       { path: 'c.md', locals: { date: '2015-04-12', foo: 'ttt', bar: 11 } },
-      { path: 'g.md', locals: { date: '2014-02-02', foo: 'yyy', bar: 12 } },
+      { path: 'g.md', locals: { date: '2014-02-02', foo: 'yyy', bar: 12 } }
     ];
 
     it('should paginate a list', function() {
@@ -594,6 +605,15 @@ describe('list', function() {
       list.items.forEach(function(item, i) {
         assert.equal(item.data.pager.index, i);
       });
+    });
+
+    it('should render items when pager is `true`', function(cb) {
+      list = new List({pager: true});
+      list.engine('.md', require('engine-base'));
+      list.addList(items);
+      each(list.items, function(item, next) {
+        item.render(next);
+      }, cb);
     });
 
     it('should paginate a list with given options', function() {
@@ -655,7 +675,7 @@ describe('list', function() {
       list = new List();
     });
 
-    it('should get an view from `views`', function() {
+    it('should get an item from `items`', function() {
       list.addItem('one', {content: 'aaa'});
       list.addItem('two', {content: 'zzz'});
       assert(list.items.length === 2);
@@ -663,6 +683,10 @@ describe('list', function() {
       assert(isBuffer(list.getItem('one').contents));
       assert(list.getItem('one').contents.toString() === 'aaa');
       assert(list.getItem('two').contents.toString() === 'zzz');
+    });
+
+    it('should return `undefined` when the item is not found', function() {
+      assert.equal(typeof list.getItem('flflflfl'), 'undefined');
     });
   });
 

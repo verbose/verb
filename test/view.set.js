@@ -13,8 +13,6 @@ describe('view.set', function() {
     app = new App();
     app.create('page');
     app.engine('tmpl', require('engine-base'));
-
-    app.cache.data = {};
   });
 
   it('should set a property on a view:', function(cb) {

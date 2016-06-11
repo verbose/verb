@@ -15,7 +15,7 @@ var statSpy = spies.statSpy;
 var app, bufferStream;
 
 var wipeOut = function(cb) {
-  rimraf(path.join(__dirname, 'actual/'), cb);
+  rimraf(path.join(__dirname, './actual/'), cb);
   spies.setError('false');
   statSpy.reset();
   chmodSpy.reset();
@@ -30,7 +30,7 @@ var dataWrap = function(fn) {
 };
 
 var realMode = function(n) {
-  return parseInt('777', 8);
+  return n & parseInt('777', 8);
 };
 
 describe('app.symlink', function() {
@@ -38,7 +38,7 @@ describe('app.symlink', function() {
   afterEach(wipeOut);
 
   it('should pass through writes with cwd', function(cb) {
-    var inputPath = path.join(__dirname, 'fixtures/test.coffee');
+    var inputPath = path.join(__dirname, './fixtures/test.coffee');
 
     var expectedFile = new File({
       base: __dirname,
@@ -53,7 +53,7 @@ describe('app.symlink', function() {
       cb();
     };
 
-    var stream = app.symlink('actual/', {cwd: __dirname});
+    var stream = app.symlink('./actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -63,7 +63,7 @@ describe('app.symlink', function() {
   });
 
   it('should pass through writes with default cwd', function(cb) {
-    var inputPath = path.join(__dirname, 'fixtures/test.coffee');
+    var inputPath = path.join(__dirname, './fixtures/test.coffee');
 
     var expectedFile = new File({
       base: __dirname,
@@ -78,7 +78,7 @@ describe('app.symlink', function() {
       cb();
     };
 
-    var stream = app.symlink(path.join(__dirname, 'actual/'));
+    var stream = app.symlink(path.join(__dirname, './actual/'));
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -88,10 +88,10 @@ describe('app.symlink', function() {
   });
 
   it('should make link to the right folder with relative cwd', function(cb) {
-    var inputPath = path.join(__dirname, 'fixtures/test.coffee');
-    var inputBase = path.join(__dirname, 'fixtures/');
-    var expectedPath = path.join(__dirname, 'actual/test.coffee');
-    var expectedBase = path.join(__dirname, 'actual');
+    var inputPath = path.join(__dirname, './fixtures/test.coffee');
+    var inputBase = path.join(__dirname, './fixtures/');
+    var expectedPath = path.join(__dirname, './actual/test.coffee');
+    var expectedBase = path.join(__dirname, './actual');
     var expectedContents = fs.readFileSync(inputPath);
 
     var expectedFile = new File({
@@ -113,7 +113,7 @@ describe('app.symlink', function() {
       cb();
     };
 
-    var stream = app.symlink('actual/', {cwd: path.relative(process.cwd(), __dirname)});
+    var stream = app.symlink('./actual/', {cwd: path.relative(process.cwd(), __dirname)});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -123,10 +123,10 @@ describe('app.symlink', function() {
   });
 
   it('should write buffer files to the right folder with function and relative cwd', function(cb) {
-    var inputPath = path.join(__dirname, 'fixtures/test.coffee');
-    var inputBase = path.join(__dirname, 'fixtures/');
-    var expectedPath = path.join(__dirname, 'actual/test.coffee');
-    var expectedBase = path.join(__dirname, 'actual');
+    var inputPath = path.join(__dirname, './fixtures/test.coffee');
+    var inputBase = path.join(__dirname, './fixtures/');
+    var expectedPath = path.join(__dirname, './actual/test.coffee');
+    var expectedBase = path.join(__dirname, './actual');
     var expectedContents = fs.readFileSync(inputPath);
 
     var expectedFile = new File({
@@ -151,7 +151,7 @@ describe('app.symlink', function() {
     var stream = app.symlink(function(file) {
       should.exist(file);
       file.should.equal(expectedFile);
-      return 'actual';
+      return './actual';
     }, {cwd: path.relative(process.cwd(), __dirname)});
 
     var buffered = [];
@@ -162,12 +162,12 @@ describe('app.symlink', function() {
   });
 
   it('should write buffer files to the right folder', function(cb) {
-    var inputPath = path.join(__dirname, 'fixtures/test.coffee');
-    var inputBase = path.join(__dirname, 'fixtures/');
-    var expectedPath = path.join(__dirname, 'actual/test.coffee');
+    var inputPath = path.join(__dirname, './fixtures/test.coffee');
+    var inputBase = path.join(__dirname, './fixtures/');
+    var expectedPath = path.join(__dirname, './actual/test.coffee');
     var expectedContents = fs.readFileSync(inputPath);
-    var expectedBase = path.join(__dirname, 'actual');
-    var expectedMode = parseInt('0655', 8);
+    var expectedBase = path.join(__dirname, './actual');
+    var expectedMode = parseInt('655', 8);
 
     var expectedFile = new File({
       base: inputBase,
@@ -191,7 +191,7 @@ describe('app.symlink', function() {
       cb();
     };
 
-    var stream = app.symlink('actual/', {cwd: __dirname});
+    var stream = app.symlink('./actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -201,12 +201,12 @@ describe('app.symlink', function() {
   });
 
   it('should write streaming files to the right folder', function(cb) {
-    var inputPath = path.join(__dirname, 'fixtures/test.coffee');
-    var inputBase = path.join(__dirname, 'fixtures/');
-    var expectedPath = path.join(__dirname, 'actual/test.coffee');
+    var inputPath = path.join(__dirname, './fixtures/test.coffee');
+    var inputBase = path.join(__dirname, './fixtures/');
+    var expectedPath = path.join(__dirname, './actual/test.coffee');
     var expectedContents = fs.readFileSync(inputPath);
-    var expectedBase = path.join(__dirname, 'actual');
-    var expectedMode = parseInt('0655', 8);
+    var expectedBase = path.join(__dirname, './actual');
+    var expectedMode = parseInt('655', 8);
 
     var contentStream = through.obj();
     var expectedFile = new File({
@@ -231,25 +231,25 @@ describe('app.symlink', function() {
       cb();
     };
 
-    var stream = app.symlink('actual/', {cwd: __dirname});
+    var stream = app.symlink('./actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
     stream.pipe(bufferStream);
     stream.write(expectedFile);
-    setTimeout(function() {
+    setImmediate(function() {
       contentStream.write(expectedContents);
       contentStream.end();
-    }, 100);
+    });
     stream.end();
   });
 
   it('should write directories to the right folder', function(cb) {
-    var inputPath = path.join(__dirname, 'fixtures/wow');
-    var inputBase = path.join(__dirname, 'fixtures/');
-    var expectedPath = path.join(__dirname, 'actual/wow');
-    var expectedBase = path.join(__dirname, 'actual');
-    var expectedMode = parseInt('0655', 8);
+    var inputPath = path.join(__dirname, './fixtures/wow');
+    var inputBase = path.join(__dirname, './fixtures/');
+    var expectedPath = path.join(__dirname, './actual/wow');
+    var expectedBase = path.join(__dirname, './actual');
+    var expectedMode = parseInt('655', 8);
 
     var expectedFile = new File({
       base: inputBase,
@@ -276,7 +276,7 @@ describe('app.symlink', function() {
       cb();
     };
 
-    var stream = app.symlink('actual/', {cwd: __dirname});
+    var stream = app.symlink('./actual/', {cwd: __dirname});
 
     var buffered = [];
     bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
@@ -285,9 +285,43 @@ describe('app.symlink', function() {
     stream.end();
   });
 
+  it('should use different modes for files and directories', function(cb) {
+    var inputBase = path.join(__dirname, './fixtures');
+    var inputPath = path.join(__dirname, './fixtures/wow/suchempty');
+    var expectedBase = path.join(__dirname, './actual/wow');
+    var expectedDirMode = parseInt('755', 8);
+    var expectedFileMode = parseInt('655', 8);
+
+    var firstFile = new File({
+      base: inputBase,
+      cwd: __dirname,
+      path: inputPath,
+      stat: fs.statSync(inputPath)
+    });
+
+    var onEnd = function() {
+      realMode(fs.lstatSync(expectedBase).mode).should.equal(expectedDirMode);
+      realMode(buffered[0].stat.mode).should.equal(expectedFileMode);
+      cb();
+    };
+
+    var stream = app.symlink('./actual/', {
+      cwd: __dirname,
+      mode: expectedFileMode,
+      dirMode: expectedDirMode
+    });
+
+    var buffered = [];
+    bufferStream = through.obj(dataWrap(buffered.push.bind(buffered)), onEnd);
+
+    stream.pipe(bufferStream);
+    stream.write(firstFile);
+    stream.end();
+  });
+
   it('should change to the specified base', function(cb) {
-    var inputBase = path.join(__dirname, 'fixtures');
-    var inputPath = path.join(__dirname, 'fixtures/wow/suchempty');
+    var inputBase = path.join(__dirname, './fixtures');
+    var inputPath = path.join(__dirname, './fixtures/wow/suchempty');
 
     var firstFile = new File({
       base: inputBase,
@@ -301,7 +335,7 @@ describe('app.symlink', function() {
       cb();
     };
 
-    var stream = app.symlink('actual/', {
+    var stream = app.symlink('./actual/', {
       cwd: __dirname,
       base: inputBase
     });
@@ -315,10 +349,10 @@ describe('app.symlink', function() {
   });
 
   it('should report IO errors', function(cb) {
-    var inputPath = path.join(__dirname, 'fixtures/test.coffee');
-    var inputBase = path.join(__dirname, 'fixtures/');
+    var inputPath = path.join(__dirname, './fixtures/test.coffee');
+    var inputBase = path.join(__dirname, './fixtures/');
     var expectedContents = fs.readFileSync(inputPath);
-    var expectedBase = path.join(__dirname, 'actual');
+    var expectedBase = path.join(__dirname, './actual');
     var expectedMode = parseInt('722', 8);
 
     var expectedFile = new File({
@@ -334,7 +368,7 @@ describe('app.symlink', function() {
     fs.mkdirSync(expectedBase);
     fs.chmodSync(expectedBase, 0);
 
-    var stream = app.symlink('actual/', {cwd: __dirname});
+    var stream = app.symlink('./actual/', {cwd: __dirname});
     stream.on('error', function(err) {
       err.code.should.equal('EACCES');
       cb();
@@ -344,8 +378,8 @@ describe('app.symlink', function() {
 
   ['end', 'finish'].forEach(function(eventName) {
     it('should emit ' + eventName + ' event', function(cb) {
-      var srcPath = path.join(__dirname, 'fixtures/test.coffee');
-      var stream = app.symlink('actual/', {cwd: __dirname});
+      var srcPath = path.join(__dirname, './fixtures/test.coffee');
+      var stream = app.symlink('./actual/', {cwd: __dirname});
 
       stream.on(eventName, function() {
         cb();
@@ -354,7 +388,7 @@ describe('app.symlink', function() {
       var file = new File({
         path: srcPath,
         cwd: __dirname,
-        contents: new Buffer("1234567890")
+        contents: new Buffer('1234567890')
       });
 
       stream.write(file);
