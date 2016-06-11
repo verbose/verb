@@ -9,6 +9,22 @@ var argv = utils.yargs(process.argv.slice(2));
 var Verb = require('..');
 
 /**
+ * Listen for errors on all instances
+ */
+
+Verb.on('generate.preInit', function(app) {
+  app.on('error', function(err) {
+    console.log(err.stack);
+    process.exit(1);
+  });
+});
+
+Verb.on('verb.finished', function(app) {
+  app.emit('done');
+  process.exit();
+});
+
+/**
  * Initialize verb CLI
  */
 
@@ -24,30 +40,22 @@ utils.runner(Verb, {name: 'verb'}, argv, function(err, app, ctx) {
   });
 
   commands(app, ctx);
-  app.register('defaults', require('../lib/generator'));
-  app.option('lookup', lookup(app));
+  var config = app.base.get('cache.config') || {};
 
-  app.cli.process(ctx.argv, function(err) {
+  if (!app.generators.defaults) {
+    app.register('defaults', require('../lib/generator'));
+  }
+
+  app.config.process(config, function(err, config) {
     if (err) app.emit('error', err);
-    app.emit('done');
-    process.exit();
+
+    app.base.del('cache.config');
+    app.base.set('cache.config', config);
+
+    app.cli.process(ctx.argv, function(err) {
+      if (err) app.emit('error', err);
+      Verb.emit('verb.finished', app);
+    });
   });
 });
 
-/**
- * Custom lookup function for resolving generators
- */
-
-function lookup(app) {
-  return function(key) {
-    var patterns = [key];
-    if (!/^verb-([^-]+)-generator/.test(key)) {
-      patterns.unshift(`verb-${key}-generator`);
-    }
-
-    if (app.enabled('generators')) {
-      patterns.push(`generate-${key}`);
-    }
-    return patterns;
-  }
-}

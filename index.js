@@ -8,6 +8,7 @@
 'use strict';
 
 var Generate = require('generate');
+var utils = require('./lib/utils');
 
 /**
  * Create a verb application with `options`.
@@ -34,22 +35,45 @@ function Verb(options) {
  */
 
 Generate.extend(Verb);
+Generate.on('generate.init', function(app) {
+  Verb.emit('generate.init', app);
+});
+
+/**
+ * Expose custom lookup function for resolving generators
+ */
+
+Verb.lookup = function(app) {
+  return function(key) {
+    var patterns = [key];
+    if (!/^verb-([^-]+)-generator/.test(key)) {
+      patterns.unshift(`verb-${key}-generator`);
+    }
+
+    if (app.enabled('generators')) {
+      patterns.push(`generate-${key}`);
+    }
+    return patterns;
+  };
+};
 
 /**
  * Initialize verb data
  */
 
 Verb.prototype.initVerb = function(opts) {
-  Verb.emit('preInit', this, this.base);
+  this.debug('initializing', __filename);
+
+  Verb.emit('verb.preInit', this, this.base);
   this.data({before: {}, after: {}});
 
-  this.debug('initializing', __filename);
   this.option('toAlias', function(name) {
-    return name.replace(/^verb-([^-]+)-generator$/, '$1');
+    return name.replace(/^(?:verb-([^-]+)-generator$)|(?:generate-)/, '$1');
   });
 
+  this.option('lookup', Verb.lookup(this));
   this.data({runner: require('./package')});
-  Verb.emit('init', this, this.base);
+  Verb.emit('verb.postInit', this, this.base);
 };
 
 /**
