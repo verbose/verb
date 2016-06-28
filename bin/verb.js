@@ -4,7 +4,6 @@ process.env.GENERATE_CLI = true;
 require('set-blocking')(true);
 
 var util = require('util');
-var path = require('path');
 var Verb = require('..');
 var commands = require('../lib/commands');
 var tasks = require('../lib/tasks');
