@@ -12,8 +12,7 @@
   "files": [
     "bin",
     "index.js",
-    "lib",
-    "utils.js"
+    "lib"
   ],
   "main": "index.js",
   "preferGlobal": true,
@@ -46,20 +45,16 @@
     "set-blocking": "^2.0.0",
     "set-value": "^0.3.3",
     "through2": "^2.0.1",
-    "vinyl": "^1.1.1",
     "yargs-parser": "^2.4.0"
   },
   "devDependencies": {
-    "async-each": "^1.0.0",
+    "base-config-process": "^0.1.7",
+    "base-generators": "^0.4.1",
+    "base-questions": "^0.6.6",
     "base-store": "^0.4.4",
-    "buffer-equal": "^1.0.0",
-    "consolidate": "^0.14.1",
-    "default-resolution": "^2.0.0",
-    "define-property": "^0.2.5",
-    "delete": "^0.3.2",
-    "engine-handlebars": "^0.8.0",
-    "event-stream": "^3.3.3",
-    "expect": "^1.20.1",
+    "base-test-runner": "^0.2.0",
+    "base-test-suite": "^0.1.11",
+    "cross-spawn": "^4.0.0",
     "generate-foo": "^0.1.5",
     "generator-util": "^0.2.9",
     "global-modules": "^0.2.2",
@@ -70,22 +65,14 @@
     "gulp-mocha": "^2.2.0",
     "gulp-reflinks": "^0.1.0",
     "gulp-unused": "^0.1.2",
-    "helper-example": "^0.1.0",
-    "is-buffer": "^1.1.3",
-    "kind-of": "^3.0.3",
+    "is-absolute": "^0.2.5",
     "load-pkg": "^3.0.1",
     "mocha": "^2.5.3",
-    "parser-front-matter": "^1.3.0",
-    "readable-stream": "^2.1.4",
-    "resolve-glob": "^0.1.8",
-    "rimraf": "^2.5.2",
+    "npm-install-global": "^0.1.2",
+    "resolve": "^1.1.7",
     "should": "^9.0.2",
     "sinon": "^1.17.4",
-    "spawn-commands": "^0.3.1",
-    "swig": "^1.4.2",
-    "templates": "^0.22.5",
-    "verb-readme-generator": "^0.1.14",
-    "vinyl-fs": "^2.4.3"
+    "verb-readme-generator": "^0.1.14"
   },
   "keywords": [
     "verb"
@@ -110,21 +97,21 @@
       ]
     },
     "reflinks": [
-      "gulp",
-      "bach",
-      "generate",
-      "base",
       "assemble",
-      "update",
+      "bach",
+      "base",
+      "consolidate",
+      "generate",
+      "gulp",
       "handlebars",
+      "handlebars-helpers",
       "lodash",
       "swig",
-      "consolidate",
-      "templates",
       "template-helpers",
-      "handlebars-helpers",
-      "verb-readme-generator",
-      "verb"
+      "templates",
+      "update",
+      "verb",
+      "verb-readme-generator"
     ],
     "tasks": [
       "readme"
