@@ -9,6 +9,7 @@
 
 var Generate = require('generate');
 var utils = require('./lib/utils');
+var pkg = require('./package');
 
 /**
  * Create a verb application with `options`.
@@ -35,8 +36,105 @@ function Verb(options) {
  */
 
 Generate.extend(Verb);
-Generate.on('generate.init', function(app) {
-  Verb.emit('generate.init', app);
+
+Generate.on('generate.preInit', function(app) {
+  Verb.emit('generate.preInit', app);
+});
+
+Generate.on('generate.postInit', function(app) {
+  Verb.emit('generate.postInit', app);
+});
+
+/**
+ * Initialize verb data
+ */
+
+Verb.prototype.initVerb = function(opts) {
+  Verb.emit('verb.preInit', this, this.base);
+  var self = this;
+
+  /**
+   * Data
+   */
+
+  this.data('before', {});
+  this.data('after', {});
+  this.data('runner', {
+    name: 'verb',
+    version: pkg.version,
+    homepage: pkg.homepage
+  });
+
+  /**
+   * Options
+   */
+
+  this.option('lookup', Verb.lookup(this));
+  this.option('toAlias', Verb.toAlias);
+  this.option('help', {
+    command: 'verb',
+    configname: 'verbfile',
+    appname: 'verb'
+  });
+
+  /**
+   * Listeners
+   */
+
+  this.on('option', function(key, val) {
+    if (key === 'dest') self.cwd = val;
+  });
+
+  this.on('ask', function(answerVal, answerKey, question) {
+    if (typeof answerVal === 'undefined') {
+      var segs = answerKey.split('author.');
+      if (segs.length > 1) {
+        self.questions.answers[answerKey] = self.common.get(segs.pop());
+      }
+    }
+  });
+
+  /**
+   * Middleware
+   */
+
+  this.preWrite(/(^|\/)[$_]/, function(file, next) {
+    file.basename = file.basename.replace(/^_/, '.');
+    file.basename = file.basename.replace(/^\$/, '');
+    next();
+  });
+
+  Verb.emit('verb.postInit', this, this.base);
+};
+
+/**
+ * Expose logging methods
+ */
+
+Object.defineProperty(Verb.prototype, 'log', {
+  configurable: true,
+  get: function() {
+    function log() {
+      return console.log.bind(console, utils.log.timestamp).apply(console, arguments);
+    }
+    log.warn = function(msg) {
+      return utils.logger('warning', 'yellow').apply(null, arguments);
+    };
+
+    log.success = function() {
+      return utils.logger('success', 'green').apply(null, arguments);
+    };
+
+    log.info = function() {
+      return utils.logger('info', 'cyan').apply(null, arguments);
+    };
+
+    log.error = function() {
+      return utils.logger('error', 'red').apply(null, arguments);
+    };
+    log.__proto__ = utils.log;
+    return log;
+  }
 });
 
 /**
@@ -49,8 +147,7 @@ Verb.lookup = function(app) {
     if (!/^verb-([^-]+)-generator/.test(key)) {
       patterns.unshift(`verb-${key}-generator`);
     }
-
-    if (app.enabled('generators')) {
+    if (app.enabled('generate')) {
       patterns.push(`generate-${key}`);
     }
     return patterns;
@@ -58,29 +155,19 @@ Verb.lookup = function(app) {
 };
 
 /**
- * Initialize verb data
+ * Convert the given `name` to the `alias` to be used in the
+ * command line.
  */
 
-Verb.prototype.initVerb = function(opts) {
-  this.debug('initializing', __filename);
-
-  Verb.emit('verb.preInit', this, this.base);
-  this.data({before: {}, after: {}});
-
-  this.option('toAlias', function(name) {
-    return name.replace(/^(?:verb-([^-]+)-generator$)|(?:generate-)/, '$1');
-  });
-
-  this.option('lookup', Verb.lookup(this));
-  this.data({runner: require('./package')});
-  Verb.emit('verb.postInit', this, this.base);
+Verb.toAlias = function(name) {
+  return name.replace(/^(?:verb-([^-]+)-generator$)|(?:generate-)/, '$1');
 };
 
 /**
- * Expose static `is*` methods from Templates
+ * Expose `pkg` as a static property
  */
 
-Generate._.plugin.is(Verb);
+Verb.pkg = pkg;
 
 /**
  * Expose `Verb`
