@@ -1,8 +1,8 @@
 'use strict';
 
-var Generate = require('../..');
-var generate = new Generate();
+var Base = require('../..');
+var base = new Base({isApp: true});
 
-generate.register('not-exposed', function(app) {
-  
+base.register('not-exposed', function(app) {
+
 });

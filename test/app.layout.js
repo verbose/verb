@@ -1,12 +1,11 @@
 'use strict';
 
 require('mocha');
-require('should');
 var assert = require('assert');
 var assemble = require('..');
 var app;
 
-describe('app.layout', function() {
+describe('.layout()', function() {
   beforeEach(function() {
     app = assemble();
     if (!app.layout) {

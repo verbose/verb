@@ -1,7 +1,7 @@
 {
-  "name": "generator-qux",
+  "name": "generate-qux",
   "private": true,
   "version": "0.1.0",
-  "files": ["verbfile.js"],
-  "main": "verbfile.js"
+  "files": ["generator.js"],
+  "main": "generator.js"
 }

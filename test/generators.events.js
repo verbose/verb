@@ -2,60 +2,86 @@
 
 require('mocha');
 var assert = require('assert');
-var Generate = require('..');
-var generate;
+var Base = require('..');
+var base;
 
-describe('generators.events', function() {
+var generators = require('..');
+
+describe('generators events', function() {
   describe('generator', function() {
     beforeEach(function() {
-      generate = new Generate();
+      base = new Base();
     });
 
     it('should emit generator when a generator is registered', function(cb) {
-      generate = new Generate();
-      generate.on('generator', function(name) {
-        assert.equal(name, 'foo');
+      base = new Base();
+      base.on('generator', function(generator) {
+        assert.equal(generator.alias, 'foo');
         cb();
       });
 
-      generate.register('foo', function() {});
+      base.register('foo', function() {});
+    });
+
+    it('should emit generator when base.generators.get is called', function(cb) {
+      base = new Base();
+
+      base.on('generator', function(generator) {
+        assert.equal(generator.alias, 'foo');
+        cb();
+      });
+
+      base.register('foo', function() {});
+      base.getGenerator('foo');
+    });
+
+    it('should emit generator.get when base.generators.get is called', function(cb) {
+      base = new Base();
+      base.on('generator', function(generator) {
+        assert.equal(generator.alias, 'foo');
+        cb();
+      });
+
+      base.register('foo', function() {});
+      base.getGenerator('foo');
     });
 
     it('should emit error on base when a base generator emits an error', function(cb) {
-      generate = new Generate();
+      base = new Base();
       var called = 0;
 
-      generate.on('error', function(err) {
+      base.on('error', function(err) {
         assert.equal(err.message, 'whatever');
         called++;
       });
 
-      generate.register('foo', function(app) {
+      base.register('foo', function(app) {
         app.emit('error', new Error('whatever'));
       });
 
-      generate.getGenerator('foo');
+      base.getGenerator('foo');
       assert.equal(called, 1);
       cb();
     });
 
     it('should emit error on base when a base generator throws an error', function(cb) {
-      generate = new Generate();
+      base = new Base();
       var called = 0;
 
-      generate.on('error', function(err) {
+      base.on('error', function(err) {
         assert.equal(err.message, 'whatever');
         called++;
       });
 
-      generate.register('foo', function(app) {
+      base.register('foo', function(app) {
         app.task('default', function(cb) {
           cb(new Error('whatever'));
         });
       });
 
-      generate.getGenerator('foo')
+      base.getGenerator('foo')
         .build(function(err) {
+          assert(err);
           assert.equal(called, 1);
           cb();
         });
@@ -63,15 +89,15 @@ describe('generators.events', function() {
     });
 
     it('should emit errors on base from deeply nested generators', function(cb) {
-      generate = new Generate();
+      base = new Base();
       var called = 0;
 
-      generate.on('error', function(err) {
+      base.on('error', function(err) {
         assert.equal(err.message, 'whatever');
         called++;
       });
 
-      generate.register('a', function() {
+      base.register('a', function() {
         this.register('b', function() {
           this.register('c', function() {
             this.register('d', function() {
@@ -83,8 +109,9 @@ describe('generators.events', function() {
         });
       });
 
-      generate.getGenerator('a.b.c.d')
+      base.getGenerator('a.b.c.d')
         .build(function(err) {
+          assert(err);
           assert.equal(called, 1);
           cb();
         });
@@ -92,19 +119,19 @@ describe('generators.events', function() {
     });
 
     it('should bubble up errors to all parent generators', function(cb) {
-      generate = new Generate();
+      base = new Base();
       var called = 0;
 
-      generate.on('error', function(err) {
+      function count() {
+        called++;
+      }
+
+      base.on('error', function(err) {
         assert.equal(err.message, 'whatever');
         called++;
       });
 
-      function count(err) {
-        called++;
-      }
-
-      generate.register('a', function() {
+      base.register('a', function() {
         this.on('error', count);
 
         this.register('b', function() {
@@ -124,9 +151,11 @@ describe('generators.events', function() {
         });
       });
 
-      generate.getGenerator('a.b.c.d')
+      base.getGenerator('a.b.c.d')
         .build(function(err) {
-          assert.equal(called, 5);
+          assert(err);
+          assert.equal(called, 6);
+          assert.equal(err.message, 'whatever');
           cb();
         });
     });

@@ -1,0 +1,9 @@
+{
+  "name": "generate-tests",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "license": "MIT",
+  "base": {}
+}

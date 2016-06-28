@@ -22,7 +22,7 @@ module.exports = function(app) {
     });
   });
 
-  app.register('generate-abc', 'test/fixtures/generators/a/verbfile.js');
+  app.register('generate-abc', 'test/fixtures/generators/a/generator.js');
 
   app.register('generate-bbb', function(app) {
     app.task('default', function(cb) {

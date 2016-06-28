@@ -1,14 +1,14 @@
 'use strict';
 
-var Generate = require('../../..');
-var generate = new Generate();
+var Base = require('../../..');
+var base = new Base();
 
-generate.task('default', function() {});
-generate.task('a', function() {});
-generate.task('b', function() {});
-generate.task('c', function() {});
+base.task('default', function() {});
+base.task('a', function() {});
+base.task('b', function() {});
+base.task('c', function() {});
 
-generate.register('foo', function(app) {
+base.register('foo', function(app) {
   app.task('x', function() {});
   app.task('y', function() {});
   app.task('z', function() {});
@@ -18,4 +18,4 @@ generate.register('foo', function(app) {
  * Expose this instance of `Generate`
  */
 
-module.exports = generate;
+module.exports = base;

@@ -6,7 +6,7 @@ var assert = require('assert');
 var generate = require('..');
 var app;
 
-describe('app.docs', function() {
+describe('app', function() {
   beforeEach(function() {
     app = generate();
     app.create('docs');
@@ -19,7 +19,7 @@ describe('app.docs', function() {
         'b.hbs': {path: 'b.hbs', content: 'b'},
         'c.hbs': {path: 'c.hbs', content: 'c'},
       });
-      assert(Object.keys(app.views.docs).length === 3);
+      assert.each(Object.keys(app.views.docs).length, 3);
     });
   });
 });

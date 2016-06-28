@@ -1,59 +1,63 @@
 'use strict';
 
+require('mocha');
 var path = require('path');
 var assert = require('assert');
-var Verb = require('..');
-var verb;
+var Base = require('..');
+var base;
 
 var fixtures = path.resolve.bind(path, __dirname, 'fixtures');
 
-describe('app.generator', function() {
+describe('.generator', function() {
   beforeEach(function() {
-    verb = new Verb();
-    verb.option('toAlias', function(name) {
-      return name.replace(/^generate-/, '');
+    base = new Base();
+
+    base.option('toAlias', function(key) {
+      return key.replace(/^generate-(.*)/, '$1');
     });
   });
 
-  describe('get generator', function() {
-    it('should get a generator by full name name', function() {
-      var gen = verb.getGenerator('generate-foo');
-      assert(gen);
-      assert.equal(gen.env.alias, 'foo');
-      assert.equal(gen.env.name, 'generate-foo');
-    });
-
-    it('should get a generator by aliased name', function() {
-      var gen = verb.getGenerator('generate-foo');
-      assert(gen);
-      assert.equal(gen.env.alias, 'foo');
-      assert.equal(gen.env.name, 'generate-foo');
-    });
-
+  describe('generator', function() {
     it('should get a generator by alias', function() {
-      var gen = verb.getGenerator('generate-foo');
+      base.register('generate-foo', require('generate-foo'));
+      var gen = base.getGenerator('foo');
       assert(gen);
-      assert.equal(gen.env.alias, 'foo');
       assert.equal(gen.env.name, 'generate-foo');
+      assert.equal(gen.env.alias, 'foo');
+    });
+
+    it('should get a generator using a custom lookup function', function() {
+      base.register('generate-foo', function() {});
+      base.register('generate-bar', function() {});
+
+      var gen = base.getGenerator('foo', {
+        lookup: function(key) {
+          return ['generate-' + key, 'verb-' + key + '-generator', key];
+        }
+      });
+
+      assert(gen);
+      assert.equal(gen.env.name, 'generate-foo');
+      assert.equal(gen.env.alias, 'foo');
     });
   });
 
   describe('register > function', function() {
     it('should register a generator function by name', function() {
-      verb.generator('foo', function() {});
-      assert(verb.generators.hasOwnProperty('foo'));
+      base.generator('foo', function() {});
+      assert(base.generators.hasOwnProperty('foo'));
     });
 
     it('should register a generator function by alias', function() {
-      verb.generator('generate-abc', function() {});
-      assert(verb.generators.hasOwnProperty('generate-abc'));
+      base.generator('generate-abc', function() {});
+      assert(base.generators.hasOwnProperty('generate-abc'));
     });
   });
 
   describe('get > alias', function() {
     it('should get a generator by alias', function() {
-      verb.generator('generate-abc', function() {});
-      var abc = verb.generator('abc');
+      base.generator('generate-abc', function() {});
+      var abc = base.generator('abc');
       assert(abc);
       assert.equal(typeof abc, 'object');
     });
@@ -61,8 +65,8 @@ describe('app.generator', function() {
 
   describe('get > name', function() {
     it('should get a generator by name', function() {
-      verb.generator('generate-abc', function() {});
-      var abc = verb.generator('generate-abc');
+      base.generator('generate-abc', function() {});
+      var abc = base.generator('generate-abc');
       assert(abc);
       assert.equal(typeof abc, 'object');
     });
@@ -70,62 +74,62 @@ describe('app.generator', function() {
 
   describe('generators', function() {
     it('should invoke a registered generator when `getGenerator` is called', function(cb) {
-      verb.register('foo', function(app) {
+      base.register('foo', function(app) {
         app.task('default', function() {});
         cb();
       });
-      verb.getGenerator('foo');
+      base.getGenerator('foo');
     });
 
     it('should expose the generator instance on `app`', function(cb) {
-      verb.register('foo', function(app) {
+      base.register('foo', function(app) {
         app.task('default', function(next) {
           assert.equal(app.get('a'), 'b');
           next();
-        })
+        });
       });
 
-      var foo = verb.getGenerator('foo');
+      var foo = base.getGenerator('foo');
       foo.set('a', 'b');
       foo.build('default', function(err) {
         if (err) return cb(err);
-        cb()
+        cb();
       });
     });
 
     it('should expose the "base" instance on `base`', function(cb) {
-      verb.set('x', 'z');
-      verb.register('foo', function(app, base) {
+      base.set('x', 'z');
+      base.register('foo', function(app, base) {
         app.task('default', function(next) {
-          assert.equal(verb.get('x'), 'z');
+          assert.equal(base.get('x'), 'z');
           next();
-        })
+        });
       });
 
-      var foo = verb.getGenerator('foo');
+      var foo = base.getGenerator('foo');
       foo.set('a', 'b');
       foo.build('default', function(err) {
         if (err) return cb(err);
-        cb()
+        cb();
       });
     });
 
     it('should expose the "env" object on `env`', function(cb) {
-      verb.register('foo', function(app, base, env) {
+      base.register('foo', function(app, base, env) {
         app.task('default', function(next) {
           assert.equal(env.alias, 'foo');
           next();
-        })
+        });
       });
 
-      verb.getGenerator('foo').build('default', function(err) {
+      base.getGenerator('foo').build('default', function(err) {
         if (err) return cb(err);
-        cb()
+        cb();
       });
     });
 
     it('should expose an app\'s generators on app.generators', function(cb) {
-      verb.register('foo', function(app) {
+      base.register('foo', function(app) {
         app.register('a', function() {});
         app.register('b', function() {});
 
@@ -134,45 +138,45 @@ describe('app.generator', function() {
         cb();
       });
 
-      verb.getGenerator('foo');
+      base.getGenerator('foo');
     });
 
-    it('should expose all root generators on verb.generators', function(cb) {
-      verb.register('foo', function(app, b) {
+    it('should expose all root generators on base.generators', function(cb) {
+      base.register('foo', function(app, b) {
         b.generators.hasOwnProperty('foo');
         b.generators.hasOwnProperty('bar');
         b.generators.hasOwnProperty('baz');
         cb();
       });
 
-      verb.register('bar', function(app, base) {});
-      verb.register('baz', function(app, base) {});
-      verb.getGenerator('foo');
+      base.register('bar', function(app, base) {});
+      base.register('baz', function(app, base) {});
+      base.getGenerator('foo');
     });
   });
 
   describe('cross-generators', function() {
     it('should get a generator from another generator', function(cb) {
-      verb.register('foo', function(app, b) {
+      base.register('foo', function(app, b) {
         var bar = b.getGenerator('bar');
         assert(bar);
         cb();
       });
 
-      verb.register('bar', function(app, base) {});
-      verb.register('baz', function(app, base) {});
-      verb.getGenerator('foo');
+      base.register('bar', function(app, base) {});
+      base.register('baz', function(app, base) {});
+      base.getGenerator('foo');
     });
 
     it('should set options on another generator instance', function(cb) {
-      verb.generator('foo', function(app) {
+      base.generator('foo', function(app) {
         app.task('default', function(next) {
           assert.equal(app.option('abc'), 'xyz');
           next();
         });
       });
 
-      verb.generator('bar', function(app, b) {
+      base.generator('bar', function(app, b) {
         var foo = b.getGenerator('foo');
         foo.option('abc', 'xyz');
         foo.build(function(err) {
@@ -185,30 +189,23 @@ describe('app.generator', function() {
 
   describe('generators > filepath', function() {
     it('should register a generator function from a file path', function() {
-      var one = verb.generator('one', fixtures('one/verbfile.js'));
-      assert(verb.generators.hasOwnProperty('one'));
-      assert(typeof verb.generators.one === 'object');
-      assert.deepEqual(verb.generators.one, one);
-    });
-
-    it('should register an instance from a file path', function() {
-      var two = verb.generator('two', fixtures('two/generator.js'));
-      assert(verb.generators.hasOwnProperty('two'));
-      assert(typeof verb.generators.two === 'object');
-      assert.deepEqual(verb.generators.two, two);
+      var one = base.generator('one', fixtures('one/generator.js'));
+      assert(base.generators.hasOwnProperty('one'));
+      assert(typeof base.generators.one === 'object');
+      assert.deepEqual(base.generators.one, one);
     });
 
     it('should get a registered generator by name', function() {
-      var one = verb.generator('one', fixtures('one/generator.js'));
-      var two = verb.generator('two', fixtures('two/generator.js'));
-      assert.deepEqual(verb.generator('one'), one);
-      assert.deepEqual(verb.generator('two'), two);
+      var one = base.generator('one', fixtures('one/generator.js'));
+      var two = base.generator('two', fixtures('two/generator.js'));
+      assert.deepEqual(base.generator('one'), one);
+      assert.deepEqual(base.generator('two'), two);
     });
   });
 
   describe('tasks', function() {
     it('should expose a generator\'s tasks on app.tasks', function(cb) {
-      verb.register('foo', function(app) {
+      base.register('foo', function(app) {
         app.task('a', function() {});
         app.task('b', function() {});
         assert(app.tasks.a);
@@ -216,22 +213,81 @@ describe('app.generator', function() {
         cb();
       });
 
-      verb.getGenerator('foo');
+      base.getGenerator('foo');
     });
 
     it('should get tasks from another generator', function(cb) {
-      verb.register('foo', function(app, b) {
+      base.register('foo', function(app, b) {
         var baz = b.getGenerator('baz');
         var task = baz.tasks.aaa;
         assert(task);
         cb();
       });
 
-      verb.register('bar', function(app, base) {});
-      verb.register('baz', function(app, base) {
+      base.register('bar', function(app, base) {});
+      base.register('baz', function(app, base) {
         app.task('aaa', function() {});
       });
-      verb.getGenerator('foo');
+      base.getGenerator('foo');
+    });
+  });
+
+  describe('namespace', function() {
+    it('should expose `app.namespace`', function(cb) {
+      base.generator('foo', function(app) {
+        assert(typeof app.namespace, 'string');
+        cb();
+      });
+    });
+
+    it('should create namespace from generator alias', function(cb) {
+      base.generator('generate-foo', function(app) {
+        assert.equal(app.namespace, base._name + '.foo');
+        cb();
+      });
+    });
+
+    it('should create sub-generator namespace from parent namespace and alias', function(cb) {
+      var name = base._name;
+      base.generator('generate-foo', function(app) {
+        assert.equal(app.namespace, name + '.foo');
+
+        app.generator('generate-bar', function(bar) {
+          assert.equal(bar.namespace, name + '.foo.bar');
+
+          bar.generator('generate-baz', function(baz) {
+            assert.equal(baz.namespace, name + '.foo.bar.baz');
+
+            baz.generator('generate-qux', function(qux) {
+              assert.equal(qux.namespace, name + '.foo.bar.baz.qux');
+              cb();
+            });
+          });
+        });
+      });
+    });
+
+    it('should expose namespace on `this`', function(cb) {
+      var name = base._name;
+
+      base.generator('generate-foo', function(app, first) {
+        assert.equal(this.namespace, base._name + '.foo');
+
+        this.generator('generate-bar', function() {
+          assert.equal(this.namespace, base._name + '.foo.bar');
+
+          this.generator('generate-baz', function() {
+            assert.equal(this.namespace, base._name + '.foo.bar.baz');
+
+            this.generator('generate-qux', function() {
+              assert.equal(this.namespace, base._name + '.foo.bar.baz.qux');
+              assert.equal(app.namespace, base._name + '.foo');
+              assert.equal(first.namespace, base._name);
+              cb();
+            });
+          });
+        });
+      });
     });
   });
 });

@@ -1,12 +1,11 @@
 'use strict';
 
 require('mocha');
-var path = require('path');
 var assert = require('assert');
 var assemble = require('..');
 var app;
 
-describe('app.page', function() {
+describe('.page()', function() {
   beforeEach(function() {
     app = assemble();
     if (!app.pages) {
@@ -19,14 +18,14 @@ describe('app.page', function() {
       app.page('a.hbs', {path: 'a.hbs', contents: new Buffer('a')});
       app.page('b.hbs', {path: 'b.hbs', contents: new Buffer('b')});
       app.page('c.hbs', {path: 'c.hbs', contents: new Buffer('c')});
-      assert.equal(Object.keys(app.views.pages).length, 3);
+      assert(Object.keys(app.views.pages).length === 3);
     });
   });
-
+  
   describe('load', function() {
     it('should load a page from a non-glob filepath', function() {
       app.page('test/fixtures/pages/a.hbs');
-      assert.equal(Object.keys(app.views.pages).length, 1);
+      assert(Object.keys(app.views.pages).length === 1);
     });
   });
 });

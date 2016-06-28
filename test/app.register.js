@@ -3,25 +3,19 @@
 require('mocha');
 var path = require('path');
 var assert = require('assert');
-var Generate = require('..');
+var generators = require('base-generators');
+var Base = require('..');
 var base;
 
 var fixtures = path.resolve.bind(path, __dirname + '/fixtures');
 
-describe('app.register', function() {
-  it('should register as a plugin', function() {
-    var base = new Generate();
-    assert(base.registered.hasOwnProperty('base-generators'));
-  });
-});
-
 describe('.register', function() {
   beforeEach(function() {
-    base = new Generate();
+    base = new Base();
   });
 
   describe('function', function() {
-    it('should register a generator function', function() {
+    it('should register a generator a function', function() {
       base.register('foo', function() {});
       var foo = base.getGenerator('foo');
       assert(foo);
@@ -38,7 +32,7 @@ describe('.register', function() {
       assert(generator.tasks.hasOwnProperty('default'));
     });
 
-    it('should get a sub-generator from a generator registered as a function', function() {
+    it('should get a generator from a generator registered as a function', function() {
       base.register('foo', function(foo) {
         foo.register('bar', function(bar) {});
       });
@@ -134,7 +128,7 @@ describe('.register', function() {
     });
   });
 
-  describe('.toAlias', function() {
+  describe('alias', function() {
     it('should use a custom function to create the alias', function() {
       base.option('toAlias', function(name) {
         return name.slice(name.lastIndexOf('-') + 1);
@@ -164,8 +158,8 @@ describe('.register', function() {
     });
 
     it('should register a generator from a configfile filepath', function() {
-      base.register('generate-abc', fixtures('generators/a/verbfile.js'));
-      assert(base.generators.hasOwnProperty('generate-abc'));
+      base.register('base-abc', fixtures('generators/a/generator.js'));
+      assert(base.generators.hasOwnProperty('base-abc'));
     });
 
     it('should throw when a generator does not expose the instance', function(cb) {
@@ -173,8 +167,7 @@ describe('.register', function() {
         base.register('not-exposed', require(fixtures('not-exposed.js')));
         cb(new Error('expected an error'));
       } catch (err) {
-        var fp = path.resolve(__dirname, '../node_modules/not-exposed/generator.js');
-        assert.equal(err.message, 'Cannot find module \'' + fp + '\'');
+        assert.equal(err.message, `cannot resolve: 'not-exposed'`);
         cb();
       }
     });
@@ -182,21 +175,21 @@ describe('.register', function() {
 
   describe('instance', function() {
     it('should register an instance', function() {
-      base.register('base-inst', new Generate());
+      base.register('base-inst', new Base());
       assert(base.generators.hasOwnProperty('base-inst'));
     });
 
     it('should get a generator that was registered as an instance', function() {
-      var foo = new Generate();
+      var foo = new Base();
       foo.task('default', function() {});
       base.register('foo', foo);
       assert(base.getGenerator('foo'));
     });
 
     it('should register multiple instances', function() {
-      var foo = new Generate();
-      var bar = new Generate();
-      var baz = new Generate();
+      var foo = new Base();
+      var bar = new Base();
+      var baz = new Base();
       base.register('foo', foo);
       base.register('bar', bar);
       base.register('baz', baz);
@@ -206,15 +199,17 @@ describe('.register', function() {
     });
 
     it('should get tasks from a generator that was registered as an instance', function() {
-      var foo = new Generate();
+      var foo = new Base();
       foo.task('default', function() {});
       base.register('foo', foo);
       var generator = base.getGenerator('foo');
+      assert(generator);
       assert(generator.tasks.hasOwnProperty('default'));
     });
 
     it('should get sub-generators from a generator registered as an instance', function() {
-      var foo = new Generate();
+      var foo = new Base();
+      foo.use(generators());
       foo.register('bar', function() {});
       base.register('foo', foo);
       var generator = base.getGenerator('foo.bar');
@@ -222,10 +217,14 @@ describe('.register', function() {
     });
 
     it('should get tasks from sub-generators registered as an instance', function() {
-      var foo = new Generate();
+      var foo = new Base();
+      foo.use(generators());
+
+      foo.options.isFoo = true;
       foo.register('bar', function(bar) {
         bar.task('whatever', function() {});
       });
+
       base.register('foo', foo);
       var generator = base.getGenerator('foo.bar');
       assert(generator.tasks);

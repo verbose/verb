@@ -6,7 +6,7 @@ var assert = require('assert');
 var generate = require('..');
 var app;
 
-describe('app.doc', function() {
+describe('app', function() {
   beforeEach(function() {
     app = generate();
     app.create('docs');
