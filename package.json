@@ -26,8 +26,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "base-runner": "^0.8.0",
-    "common-middleware": "^0.2.9",
+    "base-runner": "^0.8.1",
+    "common-middleware": "^0.2.10",
     "config-file": "^0.3.2",
     "data-store": "^0.16.0",
     "debug": "^2.2.0",
@@ -36,7 +36,7 @@
     "export-files": "^2.1.1",
     "extend-shallow": "^2.0.1",
     "fs-exists-sync": "^0.1.0",
-    "generate": "^0.7.3",
+    "generate": "^0.8.0",
     "get-value": "^2.0.6",
     "gulp-format-md": "^0.1.9",
     "lazy-cache": "^2.0.1",
@@ -63,7 +63,6 @@
     "gulp-eslint": "^2.0.0",
     "gulp-istanbul": "^1.0.0",
     "gulp-mocha": "^2.2.0",
-    "gulp-reflinks": "^0.1.0",
     "gulp-unused": "^0.1.2",
     "is-absolute": "^0.2.5",
     "load-pkg": "^3.0.1",
@@ -71,8 +70,7 @@
     "npm-install-global": "^0.1.2",
     "resolve": "^1.1.7",
     "should": "^9.0.2",
-    "sinon": "^1.17.4",
-    "verb-readme-generator": "^0.1.14"
+    "sinon": "^1.17.4"
   },
   "keywords": [
     "verb"
