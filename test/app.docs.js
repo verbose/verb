@@ -19,7 +19,7 @@ describe('app', function() {
         'b.hbs': {path: 'b.hbs', content: 'b'},
         'c.hbs': {path: 'c.hbs', content: 'c'},
       });
-      assert.each(Object.keys(app.views.docs).length, 3);
+      assert.equal(Object.keys(app.views.docs).length, 3);
     });
   });
 });
