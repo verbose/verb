@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 process.env.GENERATE_CLI = true;
-require('set-blocking')(true);
+process.on('exit', function() {
+  require('set-blocking')(true);
+});
 
 var util = require('util');
 var Verb = require('..');
@@ -9,11 +11,7 @@ var commands = require('../lib/commands');
 var tasks = require('../lib/tasks');
 var utils = require('../lib/utils');
 var args = process.argv.slice(2);
-var argv = require('yargs-parser')(args);
-if (argv.v) {
-  console.log('generate v' + Verb.pkg.version);
-  process.exit();
-}
+var argv = utils.parseArgs(args);
 
 /**
  * Listen for errors on all instances
@@ -23,6 +21,20 @@ Verb.on('generate.preInit', function(app) {
   app.on('error', function(err) {
     console.log(err.stack);
     process.exit(1);
+  });
+
+  app.on('build', function(event, build) {
+    if (build && typeof event === 'string' && !build.isSilent) {
+      var time = (build && build.time) ? app.log.red(build.time) : '';
+      var result = event === 'finished' ? time + ' ' + app.log.green(app.log.check) : time;
+      app.log(event, build.key, result);
+    }
+  });
+
+  app.on('task', function(event, task) {
+    if (task && (event === 'finished' || event === 'starting') && !task.isSilent) {
+      app.log(event, task.key, app.log.red(task.time));
+    }
   });
 });
 
@@ -71,7 +83,6 @@ utils.runner(Verb, options, argv, function(err, app, runnerContext) {
   var config = app.get('cache.config') || {};
   ctx.argv.tasks = [];
 
-
   app.config.process(config, function(err, config) {
     if (err) return handleErr(app, err);
 
@@ -83,10 +94,7 @@ utils.runner(Verb, options, argv, function(err, app, runnerContext) {
       var arr = tasks(app, ctx, argv);
       app.log.success('running tasks:', arr);
       app.generate(arr, function(err) {
-        if (err) return handleErr(app, err);
-
-        app.emit('done');
-        process.exit();
+        if (err) handleErr(app, err);
       });
     });
   });
