@@ -144,8 +144,8 @@ Object.defineProperty(Verb.prototype, 'log', {
 Verb.lookup = function(app) {
   return function(key) {
     var patterns = [key];
-    if (!/^verb-([^-]+)-generator/.test(key)) {
-      patterns.unshift(`verb-${key}-generator`);
+    if (!/^verb-generate-([^-]+)/.test(key)) {
+      patterns.unshift(`verb-generate-${key}`);
     }
     if (app.enabled('generate')) {
       patterns.push(`generate-${key}`);
@@ -160,7 +160,7 @@ Verb.lookup = function(app) {
  */
 
 Verb.toAlias = function(name) {
-  return name.replace(/^(?:verb-([^-]+)-generator$)|(?:generate-)/, '$1');
+  return name.replace(/^(?:verb-generate-([^-]+)$)|(?:generate-)/, '$1');
 };
 
 /**
