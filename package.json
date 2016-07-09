@@ -63,6 +63,7 @@
     "gulp-eslint": "^2.0.0",
     "gulp-istanbul": "^1.0.0",
     "gulp-mocha": "^2.2.0",
+    "gulp-reflinks": "^0.1.4",
     "gulp-unused": "^0.1.2",
     "is-absolute": "^0.2.5",
     "load-pkg": "^3.0.1",
@@ -70,7 +71,8 @@
     "npm-install-global": "^0.1.2",
     "resolve": "^1.1.7",
     "should": "^9.0.2",
-    "sinon": "^1.17.4"
+    "sinon": "^1.17.4",
+    "verb-generate-readme": "^0.1.21"
   },
   "keywords": [
     "verb"
