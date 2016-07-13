@@ -1,7 +1,6 @@
 'use strict';
 
 require('mocha');
-var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
 var store = require('base-store');
@@ -90,7 +89,7 @@ describe('store', function() {
       assert(!app.store.has('a.b.g.j.z'));
     });
 
-     it('should return true if a key exists `.hasOwn()` on the store', function() {
+    it('should return true if a key exists `.hasOwn()` on the store', function() {
       app.store.set('foo', 'bar');
       app.store.set('baz', null);
       app.store.set('qux', undefined);
@@ -279,8 +278,6 @@ describe('events', function() {
   });
 
   it('should emit `has`:', function(cb) {
-    var keys = [];
-
     app.store.on('has', function(val) {
       assert(val);
       cb();

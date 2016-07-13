@@ -17,7 +17,7 @@ describe('app', function() {
       app.docs({
         'a.hbs': {path: 'a.hbs', content: 'a'},
         'b.hbs': {path: 'b.hbs', content: 'b'},
-        'c.hbs': {path: 'c.hbs', content: 'c'},
+        'c.hbs': {path: 'c.hbs', content: 'c'}
       });
       assert.equal(Object.keys(app.views.docs).length, 3);
     });

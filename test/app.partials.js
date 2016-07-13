@@ -18,7 +18,7 @@ describe('.partials()', function() {
       app.partials({
         'a.hbs': {path: 'a.hbs', contents: new Buffer('a')},
         'b.hbs': {path: 'b.hbs', contents: new Buffer('b')},
-        'c.hbs': {path: 'c.hbs', contents: new Buffer('c')},
+        'c.hbs': {path: 'c.hbs', contents: new Buffer('c')}
       });
 
       assert(Object.keys(app.views.partials).length === 3);

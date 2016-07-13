@@ -5,8 +5,6 @@ var assert = require('assert');
 var Base = require('..');
 var base;
 
-var generators = require('..');
-
 describe('generators events', function() {
   describe('generator', function() {
     beforeEach(function() {

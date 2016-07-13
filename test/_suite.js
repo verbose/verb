@@ -1,5 +1,6 @@
 'use strict';
 
+process.env.GENERATE_TEST = true;
 var generate = require('..');
 var runner = require('base-test-runner')();
 var suite = require('base-test-suite');

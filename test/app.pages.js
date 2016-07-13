@@ -18,7 +18,7 @@ describe('.pages()', function() {
       app.pages({
         'a.hbs': {path: 'a.hbs', contents: new Buffer('a')},
         'b.hbs': {path: 'b.hbs', contents: new Buffer('b')},
-        'c.hbs': {path: 'c.hbs', contents: new Buffer('c')},
+        'c.hbs': {path: 'c.hbs', contents: new Buffer('c')}
       });
       assert.equal(Object.keys(app.views.pages).length, 3);
     });

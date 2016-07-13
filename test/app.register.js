@@ -167,7 +167,7 @@ describe('.register', function() {
         base.register('not-exposed', require(fixtures('not-exposed.js')));
         cb(new Error('expected an error'));
       } catch (err) {
-        assert.equal(err.message, `cannot resolve: 'not-exposed'`);
+        assert.equal(err.message, 'cannot resolve: \'not-exposed\'');
         cb();
       }
     });

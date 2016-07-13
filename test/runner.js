@@ -6,7 +6,6 @@ var assert = require('assert');
 var argv = require('yargs-parser')(process.argv.slice(2));
 var runner = require('base-runner');
 var Generate = require('..');
-var base;
 
 var fixtures = path.resolve.bind(path, __dirname, 'fixtures');
 var config = {
