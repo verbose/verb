@@ -4,7 +4,7 @@
 
 **Built by verb**
 
-The follow projects use verb to build the reamde and other docs:
+The follow projects use verb to build the readme and other docs:
 
 * [micromatch](https://github.com/jonschlinkert/micromatch/) (1.7m downloads/mo) - this readme is pretty extensive, with a TOC and other advanced features
 * [is-glob](https://www.npmjs.com/package/is-glob) (1.6m downloads/mo) - example of simple readme
