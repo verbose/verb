@@ -12,7 +12,9 @@
   "files": [
     "bin",
     "index.js",
-    "lib"
+    "lib",
+    "LICENSE",
+    "README.md"
   ],
   "main": "index.js",
   "preferGlobal": true,
@@ -26,53 +28,54 @@
     "test": "mocha"
   },
   "dependencies": {
-    "base-runner": "^0.8.1",
-    "common-middleware": "^0.2.10",
+    "base-runner": "^0.8.2",
+    "common-middleware": "^0.3.0",
     "config-file": "^0.3.2",
-    "data-store": "^0.16.0",
+    "data-store": "^0.16.1",
     "debug": "^2.2.0",
     "diff": "^2.2.3",
     "engine-base": "^0.1.2",
     "export-files": "^2.1.1",
     "extend-shallow": "^2.0.1",
     "fs-exists-sync": "^0.1.0",
-    "generate": "^0.8.0",
+    "generate": "^0.9.8",
     "get-value": "^2.0.6",
+    "global-modules": "^0.2.3",
     "gulp-format-md": "^0.1.9",
+    "gulp-reflinks": "^0.2.0",
     "lazy-cache": "^2.0.1",
-    "log-utils": "^0.1.4",
-    "reflinks": "^0.2.7",
+    "log-utils": "^0.2.1",
     "set-blocking": "^2.0.0",
     "set-value": "^0.3.3",
+    "strip-color": "^0.1.0",
+    "text-table": "^0.2.0",
     "through2": "^2.0.1",
-    "yargs-parser": "^2.4.0"
+    "yargs-parser": "^2.4.1"
   },
   "devDependencies": {
-    "base-config-process": "^0.1.7",
-    "base-generators": "^0.4.1",
-    "base-questions": "^0.6.6",
+    "base-config-process": "^0.1.9",
+    "base-generators": "^0.4.5",
+    "base-questions": "^0.7.3",
     "base-store": "^0.4.4",
     "base-test-runner": "^0.2.0",
-    "base-test-suite": "^0.1.11",
+    "base-test-suite": "^0.2.3",
     "cross-spawn": "^4.0.0",
     "generate-foo": "^0.1.5",
     "generator-util": "^0.2.9",
-    "global-modules": "^0.2.2",
-    "graceful-fs": "^4.1.4",
+    "graceful-fs": "^4.1.5",
     "gulp": "^3.9.1",
-    "gulp-eslint": "^2.0.0",
+    "gulp-eslint": "^3.0.1",
     "gulp-istanbul": "^1.0.0",
     "gulp-mocha": "^2.2.0",
-    "gulp-reflinks": "^0.1.4",
     "gulp-unused": "^0.1.2",
     "is-absolute": "^0.2.5",
     "load-pkg": "^3.0.1",
     "mocha": "^2.5.3",
     "npm-install-global": "^0.1.2",
     "resolve": "^1.1.7",
-    "should": "^9.0.2",
-    "sinon": "^1.17.4",
-    "verb-generate-readme": "^0.1.21"
+    "should": "^10.0.0",
+    "sinon": "^1.17.5",
+    "verb-generate-readme": "^0.1.28"
   },
   "keywords": [
     "verb"
@@ -80,12 +83,13 @@
   "lintDeps": {
     "ignore": [
       "coverage",
-      "docs"
+      "docs",
+      "lib/templates"
     ]
   },
   "verb": {
-    "toc": false,
-    "layout": "minimal",
+    "toc": true,
+    "layout": "common-minimal",
     "plugins": [
       "gulp-format-md"
     ],
