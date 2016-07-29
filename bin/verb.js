@@ -11,7 +11,7 @@ var commands = require('../lib/commands');
 var tasks = require('../lib/tasks');
 var utils = require('../lib/utils');
 var args = process.argv.slice(2);
-var argv = utils.parseArgs(args);
+var argv = require('yargs-parser')(args);
 
 /**
  * Listen for errors on all instances
@@ -21,20 +21,6 @@ Verb.on('generate.preInit', function(app) {
   app.on('error', function(err) {
     console.log(err.stack);
     process.exit(1);
-  });
-
-  app.on('build', function(event, build) {
-    if (build && typeof event === 'string' && !build.isSilent) {
-      var time = (build && build.time) ? app.log.red(build.time) : '';
-      var result = event === 'finished' ? time + ' ' + app.log.green(app.log.check) : time;
-      app.log(event, build.key, result);
-    }
-  });
-
-  app.on('task', function(event, task) {
-    if (task && (event === 'finished' || event === 'starting') && !task.isSilent) {
-      app.log(event, task.key, app.log.red(task.time));
-    }
   });
 });
 
