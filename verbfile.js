@@ -23,6 +23,7 @@ module.exports = function(app) {
         file.content = file.content.replace(/^(#{2,}\s*\[)\./gm, '$1');
         next(null, file);
       }))
+      .pipe(format())
       .pipe(app.dest('.'));
   });
 };
