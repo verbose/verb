@@ -46,6 +46,12 @@ Generate.on('generate.postInit', function(app) {
 });
 
 /**
+ * Initialize Stores
+ */
+
+utils.stores(Verb.prototype);
+
+/**
  * Initialize verb data
  */
 
@@ -106,36 +112,6 @@ Verb.prototype.initVerb = function(opts) {
 
   Verb.emit('verb.postInit', this, this.base);
 };
-
-/**
- * Expose logging methods
- */
-
-Object.defineProperty(Verb.prototype, 'log', {
-  configurable: true,
-  get: function() {
-    function log() {
-      return console.log.bind(console, utils.log.timestamp).apply(console, arguments);
-    }
-    log.warn = function(msg) {
-      return utils.logger('warning', 'yellow').apply(null, arguments);
-    };
-
-    log.success = function() {
-      return utils.logger('success', 'green').apply(null, arguments);
-    };
-
-    log.info = function() {
-      return utils.logger('info', 'cyan').apply(null, arguments);
-    };
-
-    log.error = function() {
-      return utils.logger('error', 'red').apply(null, arguments);
-    };
-    log.__proto__ = utils.log;
-    return log;
-  }
-});
 
 /**
  * Expose custom lookup function for resolving generators
