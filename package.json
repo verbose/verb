@@ -92,8 +92,12 @@
     ]
   },
   "verb": {
-    "toc": true,
-    "layout": "common-minimal",
+    "toc": {
+      "render": true,
+      "method": "preWrite",
+      "maxdepth": 3
+    },
+    "layout": "app",
     "tasks": [
       "readme"
     ],
