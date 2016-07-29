@@ -45,6 +45,7 @@
     "gulp-reflinks": "^0.2.0",
     "lazy-cache": "^2.0.1",
     "log-utils": "^0.2.1",
+    "macro-store": "^0.1.0",
     "set-blocking": "^2.0.0",
     "set-value": "^0.3.3",
     "strip-color": "^0.1.0",
@@ -90,6 +91,9 @@
   "verb": {
     "toc": true,
     "layout": "common-minimal",
+    "tasks": [
+      "readme"
+    ],
     "plugins": [
       "gulp-format-md"
     ],
@@ -97,28 +101,19 @@
       "list": [
         "assemble",
         "base",
-        "generate"
+        "generate",
+        "update"
       ]
     },
     "reflinks": [
       "assemble",
-      "bach",
       "base",
       "consolidate",
-      "generate",
       "gulp",
       "handlebars",
-      "handlebars-helpers",
       "lodash",
-      "swig",
-      "template-helpers",
-      "templates",
-      "update",
-      "verb",
-      "verb-readme-generator"
-    ],
-    "tasks": [
-      "readme"
+      "nunjucks",
+      "update"
     ],
     "sections": false,
     "lint": {
