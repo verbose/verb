@@ -1,7 +1,7 @@
 <p align="center">
 
 <a href="https://github.com/verbose/verb">
-<img height="250" width="250" src="https://raw.githubusercontent.com/verbose/verb/master/docs/logo.png">
+<img height="250" width="250" src="https://raw.githubusercontent.com/verbose/verb/dev/docs/logo.png">
 </a>
 </p>
 
