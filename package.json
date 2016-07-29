@@ -43,9 +43,12 @@
     "global-modules": "^0.2.3",
     "gulp-format-md": "^0.1.9",
     "gulp-reflinks": "^0.2.0",
+    "kind-of": "^3.0.4",
     "lazy-cache": "^2.0.1",
     "log-utils": "^0.2.1",
     "macro-store": "^0.1.0",
+    "merge-deep": "^3.0.0",
+    "object.pick": "^1.1.2",
     "set-blocking": "^2.0.0",
     "set-value": "^0.3.3",
     "strip-color": "^0.1.0",
@@ -116,6 +119,19 @@
       "update"
     ],
     "sections": false,
+    "lint": {
+      "reflinks": true
+    }
+  },
+  "generator": {
+    "toc": true,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "lint": {
       "reflinks": true
     }
