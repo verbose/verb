@@ -39,7 +39,7 @@
     "computed-property": "^0.1.2",
     "cwd": "^0.8.0",
     "data-store": "^0.8.2",
-    "diff": "^2.0.2",
+    "diff": "^4.0.1",
     "engine-lodash": "^0.8.0",
     "event-stream": "^3.3.1",
     "export-files": "^2.1.0",
